@@ -1,0 +1,127 @@
+#############################################################################################################
+## #Calc WZA for windows
+## #Author Daniel Anstett
+## 
+## 
+## #Modified from Tom Booker WZA Vignette
+## #Last Modified March 1, 2023
+#############################################################################################################
+
+#Install miniconda
+#Make virtual environment in miniconda
+conda create -n wza_env
+
+#Activate conda env
+conda activate wza_env
+
+#Install packages:
+
+#pandas
+conda install pandas
+#scipy
+conda install scipy
+#numpy
+conda install numpy
+
+##############################################################################################
+
+#Implement in virtual environment with the following packages loaded:
+conda activate wza_env
+
+#Implement WZA for MAT, MAP, CMD associated SNPs
+
+#Annual
+python3 /Users/daniel_anstett/Dropbox/AM_Workshop/Mimulus_offset/scripts/SNP_filtering_BF/general_WZA_script.py \
+--correlations /Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_env1_input_bf.csv \
+                              --summary_stat BF \
+                              --window win \
+                              --MAF q_bar \
+                              --output /Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/env1_WZA_bf.csv \
+                              --sep "," \
+                              --large_i_small_p
+                                                            
+python3 /Users/daniel_anstett/Dropbox/AM_Workshop/Mimulus_offset/scripts/SNP_filtering_BF/general_WZA_script.py \
+--correlations /Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_env2_input_bf.csv \
+                              --summary_stat BF \
+                              --window win \
+                              --MAF q_bar \
+                              --output /Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/env2_WZA_bf.csv \
+                              --sep "," \
+                              --large_i_small_p
+
+python3 /Users/daniel_anstett/Dropbox/AM_Workshop/Mimulus_offset/scripts/SNP_filtering_BF/general_WZA_script.py \
+--correlations /Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_env3_input_bf.csv \
+                              --summary_stat BF \
+                              --window win \
+                              --MAF q_bar \
+                              --output /Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/env3_WZA_bf.csv \
+                              --sep "," \
+                              --large_i_small_p                              
+                              
+python3 /Users/daniel_anstett/Dropbox/AM_Workshop/Mimulus_offset/scripts/SNP_filtering_BF/general_WZA_script.py \
+--correlations /Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_env4_input_bf.csv \
+                              --summary_stat BF \
+                              --window win \
+                              --MAF q_bar \
+                              --output /Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/env4_WZA_bf.csv \
+                              --sep "," \
+                              --large_i_small_p                                           
+                              
+python3 /Users/daniel_anstett/Dropbox/AM_Workshop/Mimulus_offset/scripts/SNP_filtering_BF/general_WZA_script.py \
+--correlations /Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_env5_input_bf.csv \
+                              --summary_stat BF \
+                              --window win \
+                              --MAF q_bar \
+                              --output /Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/env5_WZA_bf.csv \
+                              --sep "," \
+                              --large_i_small_p
+                              
+
+
+
+#Seasonal
+
+python3 /Users/daniel_anstett/Dropbox/AM_Workshop/Mimulus_offset/scripts/SNP_filtering_BF/general_WZA_script.py \
+--correlations /Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_env6_input_bf.csv \
+                              --summary_stat BF \
+                              --window win \
+                              --MAF q_bar \
+                              --output /Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/env6_WZA_bf.csv \
+                              --sep "," \
+                              --large_i_small_p                              
+                              
+python3 /Users/daniel_anstett/Dropbox/AM_Workshop/Mimulus_offset/scripts/SNP_filtering_BF/general_WZA_script.py \
+--correlations /Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_env7_input_bf.csv \
+                              --summary_stat BF \
+                              --window win \
+                              --MAF q_bar \
+                              --output /Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/env7_WZA_bf.csv \
+                              --sep "," \
+                              --large_i_small_p                                           
+                              python3 /Users/daniel_anstett/Dropbox/AM_Workshop/Mimulus_offset/scripts
+                              
+python3 /Users/daniel_anstett/Dropbox/AM_Workshop/Mimulus_offset/scripts/SNP_filtering_BF/general_WZA_script.py \
+--correlations /Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_env8_input_bf.csv \
+                              --summary_stat BF \
+                              --window win \
+                              --MAF q_bar \
+                              --output /Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/env8_WZA_bf.csv \
+                              --sep "," \
+                              --large_i_small_p                                           
+
+                              
+python3 /Users/daniel_anstett/Dropbox/AM_Workshop/Mimulus_offset/scripts/SNP_filtering_BF/general_WZA_script.py \
+--correlations /Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_env9_input_bf.csv \
+                              --summary_stat BF \
+                              --window win \
+                              --MAF q_bar \
+                              --output /Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/env9_WZA_bf.csv \
+                              --sep "," \
+                              --large_i_small_p                                           
+                              
+                              
+                              
+                              
+                              
+                              
+                              

@@ -13,16 +13,16 @@ library(tidyverse)
 
 #Import files
 
-snps_env1 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_snps_env1_bf.csv")
-snps_env2 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_snps_env2_bf.csv")
-snps_env3 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_snps_env3_bf.csv")
-snps_env4 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_snps_env4_bf.csv")
-snps_env5 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_snps_env5_bf.csv")
+snps_env1 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env1_bf.csv")
+snps_env2 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env2_bf.csv")
+snps_env3 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env3_bf.csv")
+snps_env4 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env4_bf.csv")
+snps_env5 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env5_bf.csv")
 
-snps_env6 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_snps_env6_bf.csv")
-snps_env7 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_snps_env7_bf.csv")
-snps_env8 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_snps_env8_bf.csv")
-snps_env9 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_snps_env9_bf.csv")
+snps_env6 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env6_bf.csv")
+snps_env7 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env7_bf.csv")
+snps_env8 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env8_bf.csv")
+snps_env9 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env9_bf.csv")
 
 
 
@@ -30,29 +30,29 @@ snps_env9 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA
 ###########################################################################################################
 
 #Filter needed variables for WZA
-#snps_env1_input <- snps_env1 %>% select(BF,win,MAF)
-#snps_env2_input <- snps_env2 %>% select(BF,win,MAF)
-#snps_env3_input <- snps_env3 %>% select(BF,win,MAF)
-#snps_env4_input <- snps_env4 %>% select(BF,win,MAF)
-#snps_env5_input <- snps_env5 %>% select(BF,win,MAF)
+snps_env1_input <- snps_env1 %>% select(BF,win,MAF)
+snps_env2_input <- snps_env2 %>% select(BF,win,MAF)
+snps_env3_input <- snps_env3 %>% select(BF,win,MAF)
+snps_env4_input <- snps_env4 %>% select(BF,win,MAF)
+snps_env5_input <- snps_env5 %>% select(BF,win,MAF)
 
-#snps_env6_input <- snps_env6 %>% select(BF,win,MAF)
-#snps_env7_input <- snps_env7 %>% select(BF,win,MAF)
-#snps_env8_input <- snps_env8 %>% select(BF,win,MAF)
-#snps_env9_input <- snps_env9 %>% select(BF,win,MAF)
+snps_env6_input <- snps_env6 %>% select(BF,win,MAF)
+snps_env7_input <- snps_env7 %>% select(BF,win,MAF)
+snps_env8_input <- snps_env8 %>% select(BF,win,MAF)
+snps_env9_input <- snps_env9 %>% select(BF,win,MAF)
 
 
 #Too large to store on github. Store locally
-#write_csv(snps_env1_input, "/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_env1_input_bf.csv")
-#write_csv(snps_env2_input, "/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_env2_input_bf.csv")
-#write_csv(snps_env3_input, "/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_env3_input_bf.csv")
-#write_csv(snps_env4_input, "/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_env4_input_bf.csv")
-#write_csv(snps_env5_input, "/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_env5_input_bf.csv")   
+write_csv(snps_env1_input, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env1_input_bf.csv")
+write_csv(snps_env2_input, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env2_input_bf.csv")
+write_csv(snps_env3_input, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env3_input_bf.csv")
+write_csv(snps_env4_input, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env4_input_bf.csv")
+write_csv(snps_env5_input, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env5_input_bf.csv")   
 
-#write_csv(snps_env6_input, "/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_env6_input_bf.csv")
-#write_csv(snps_env7_input, "/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_env7_input_bf.csv")
-#write_csv(snps_env8_input, "/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_env8_input_bf.csv")
-#write_csv(snps_env9_input, "/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_env9_input_bf.csv")
+write_csv(snps_env6_input, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env6_input_bf.csv")
+write_csv(snps_env7_input, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env7_input_bf.csv")
+write_csv(snps_env8_input, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env8_input_bf.csv")
+write_csv(snps_env9_input, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env9_input_bf.csv")
 
 #Run python script run_WZA.txt
 #Import WZA scores
@@ -131,6 +131,7 @@ WZA_df_env8_chr <- na.omit(WZA_df_env8_chr)
 WZA_df_env9_chr <- na.omit(WZA_df_env9_chr)
 
 
+#Write out
 write_csv(WZA_df_env1_chr, "data/genomic_data/WZA_win_env1_bf.csv")
 write_csv(WZA_df_env2_chr, "data/genomic_data/WZA_win_env2_bf.csv")
 write_csv(WZA_df_env3_chr, "data/genomic_data/WZA_win_env3_bf.csv")

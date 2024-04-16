@@ -4,3 +4,4 @@ pop_baseline_9.sites.pi filter=lfs diff=lfs merge=lfs -text
 ENV_*_trim.tsv filter=lfs diff=lfs merge=lfs -text
 loci_win.csv filter=lfs diff=lfs merge=lfs -text
 WZA_snps_env*_bf.csv filter=lfs diff=lfs merge=lfs -text
+WZA_env*_input_bf.csv filter=lfs diff=lfs merge=lfs -text

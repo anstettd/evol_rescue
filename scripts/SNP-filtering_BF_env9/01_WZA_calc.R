@@ -35,18 +35,6 @@ prop_A <- function(snp_table) {
 library(tidyverse)
 library(Kendall)
 
-#Import Climate Data
-#climate <- read_csv("data/genomic_data/env_baseline.csv",col_names=FALSE)
-#climate2 <- filter(climate[1:2,])
-#climate5 <- filter(climate[5,])
-#climate_wza <- rbind(climate2,climate5)
-#mat_pop <- as.numeric(climate_wza[1,])
-#map_pop <- as.numeric(climate_wza[2,])
-#cmd_pop <- as.numeric(climate_wza[3,])
-
-
-#optima <- read.csv("/Users/daniel_anstett/Dropbox/AM_Workshop/WZA_vignette/environments.1_0.5_192.alleleFreqs.csv", header = F)
-
 #Import full snp table for baseline
 pop_order<-read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.pop_order", header=F, sep="\t")
 snp<-read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table", header=F, sep=" ")
@@ -73,9 +61,6 @@ all_data$q_bar <- 1 - all_data$p_bar
 
 # take the minimum to get the MAF
 all_data$MAF <- pmin(all_data$p_bar, all_data$q_bar)
-
-#together
-#all_data_filter <- all_data %>% filter(MAF>=0.05)
 
 
 #############################################################################################################

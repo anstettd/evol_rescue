@@ -55,7 +55,7 @@ for (j in 1:8){
 loci_win$V4 <-loci_win_out
 
 #Save file
-write_csv(loci_win, "/Users/daniel_anstett/GitHub/evol_rescue/data/Large_files/loci_win.csv")                                                                                 
+write_csv(loci_win, "data/Large_files/loci_win.csv")                                                                                 
 
                                                                                  
 ###################################################################################

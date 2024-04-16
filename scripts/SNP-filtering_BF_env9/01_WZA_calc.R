@@ -3,7 +3,7 @@
 ## Author Daniel Anstett
 ## 
 ## Modified from Tom Booker WZA Vignette
-## Last Modified August 3, 2022
+## Last Modified April 16, 2024
 #############################################################################################################
 #Functions
 #Calculate frequency
@@ -48,17 +48,17 @@ library(Kendall)
 #optima <- read.csv("/Users/daniel_anstett/Dropbox/AM_Workshop/WZA_vignette/environments.1_0.5_192.alleleFreqs.csv", header = F)
 
 #Import full snp table for baseline
-pop_order<-read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.pop_order", header=F, sep="\t")
-snp<-read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table", header=F, sep=" ")
-loci<-read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.loci", header=F, sep="\t")
-loci_win<-read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/loci_win.csv")
+pop_order<-read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.pop_order", header=F, sep="\t")
+snp<-read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table", header=F, sep=" ")
+loci<-read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.loci", header=F, sep="\t")
+loci_win<-read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/loci_win.csv")
 
 #Calculate frequency using prop_A
 colnames(loci) <- c("chr","snp")
 loci_united <- loci %>% unite(chr_snp,"chr","snp",sep="_")
 snp_chr_snp <- cbind(loci_united,snp)
 freq <- prop_A(snp_chr_snp)
-all_data <-cbind(loci_win,freq) #add snp lables to rows
+all_data <-cbind(loci_win,freq) %>% mutate(chr_snp=paste(chr, snp, sep="_")) #add snp lables to rows
 colnames(all_data)[4] <- "win"
 
 
@@ -81,16 +81,16 @@ all_data$MAF <- pmin(all_data$p_bar, all_data$q_bar)
 #############################################################################################################
 
 #Import BayPass Results
-env1 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_1_trim.tsv",header=F, sep=" ")
-env2 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_2_trim.tsv",header=F, sep=" ")
-env3 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_3_trim.tsv",header=F, sep=" ")
-env4 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_4_trim.tsv",header=F, sep=" ")
-env5 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_5_trim.tsv",header=F, sep=" ")
+env1 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_1_trim.tsv",header=F, sep="\t")
+env2 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_2_trim.tsv",header=F, sep="\t")
+env3 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_3_trim.tsv",header=F, sep="\t")
+env4 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_4_trim.tsv",header=F, sep="\t")
+env5 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_5_trim.tsv",header=F, sep="\t")
 
-env6 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_6_trim.tsv",header=F, sep=" ")
-env7 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_7_trim.tsv",header=F, sep=" ")
-env8 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_8_trim.tsv",header=F, sep=" ")
-env9 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_9_trim.tsv",header=F, sep=" ")
+env6 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_6_trim.tsv",header=F, sep="\t")
+env7 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_7_trim.tsv",header=F, sep="\t")
+env8 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_8_trim.tsv",header=F, sep="\t")
+env9 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_9_trim.tsv",header=F, sep="\t")
 
 #Name Columns
 colnames(env1) <- c("Chromosome","SNP","Env","BF")
@@ -115,26 +115,26 @@ env7_united <- env7 %>% unite(chr_snp,"Chromosome","SNP",sep="_")
 env8_united <- env8 %>% unite(chr_snp,"Chromosome","SNP",sep="_")
 env9_united <- env9 %>% unite(chr_snp,"Chromosome","SNP",sep="_")
 
-snps_env1_bf <- left_join(all_data,env1_united, chr_snp=chr_snp)
-snps_env2_bf <- left_join(all_data,env2_united, chr_snp=chr_snp)
-snps_env3_bf <- left_join(all_data,env3_united, chr_snp=chr_snp)
-snps_env4_bf <- left_join(all_data,env4_united, chr_snp=chr_snp)
-snps_env5_bf <- left_join(all_data,env5_united, chr_snp=chr_snp)
+snps_env1_bf <- left_join(all_data,env1_united, by="chr_snp")
+snps_env2_bf <- left_join(all_data,env2_united, by="chr_snp")
+snps_env3_bf <- left_join(all_data,env3_united, by="chr_snp")
+snps_env4_bf <- left_join(all_data,env4_united, by="chr_snp")
+snps_env5_bf <- left_join(all_data,env5_united, by="chr_snp")
 
-snps_env6_bf <- left_join(all_data,env6_united, chr_snp=chr_snp)
-snps_env7_bf <- left_join(all_data,env7_united, chr_snp=chr_snp)
-snps_env8_bf <- left_join(all_data,env8_united, chr_snp=chr_snp)
-snps_env9_bf <- left_join(all_data,env9_united, chr_snp=chr_snp)
+snps_env6_bf <- left_join(all_data,env6_united, by="chr_snp")
+snps_env7_bf <- left_join(all_data,env7_united, by="chr_snp")
+snps_env8_bf <- left_join(all_data,env8_united, by="chr_snp")
+snps_env9_bf <- left_join(all_data,env9_united, by="chr_snp")
 
 #Too large to store on github. Store locally
-write_csv(snps_env1_bf, "/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_snps_env1_bf.csv")
-write_csv(snps_env2_bf, "/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_snps_env2_bf.csv")
-write_csv(snps_env3_bf, "/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_snps_env3_bf.csv")
-write_csv(snps_env4_bf, "/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_snps_env4_bf.csv")
-write_csv(snps_env5_bf, "/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_snps_env5_bf.csv")     
+write_csv(snps_env1_bf, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env1_bf.csv")
+write_csv(snps_env2_bf, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env2_bf.csv")
+write_csv(snps_env3_bf, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env3_bf.csv")
+write_csv(snps_env4_bf, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env4_bf.csv")
+write_csv(snps_env5_bf, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env5_bf.csv")     
 
-write_csv(snps_env6_bf, "/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_snps_env6_bf.csv")
-write_csv(snps_env7_bf, "/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_snps_env7_bf.csv")
-write_csv(snps_env8_bf, "/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_snps_env8_bf.csv")
-write_csv(snps_env9_bf, "/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/WZA_snps_env9_bf.csv")
+write_csv(snps_env6_bf, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env6_bf.csv")
+write_csv(snps_env7_bf, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env7_bf.csv")
+write_csv(snps_env8_bf, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env8_bf.csv")
+write_csv(snps_env9_bf, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env9_bf.csv")
 

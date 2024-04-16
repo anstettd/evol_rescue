@@ -20,7 +20,7 @@ colnames(loci) <- c("chr","snp")
 loci_united <- loci %>% unite(chr_snp,"chr","snp",sep="_")
 
 #Make cumulative SNP ID
-length_c <- read_csv("data/chr_length.csv")
+length_c <- read_csv("data/genomic_data/chr_length.csv")
 loci_win<-loci %>% mutate(snp_c = ifelse(chr == "CE10_chr1", snp,
                                        ifelse(chr == "CE10_chr2", snp+length_c$length_cumu[1],
                                               ifelse(chr == "CE10_chr3", snp+length_c$length_cumu[2],

@@ -55,6 +55,8 @@ write_csv(snps_env8_input, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/d
 write_csv(snps_env9_input, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env9_input_bf.csv")
 
 #Run python script run_WZA.txt
+#This will save the env*WZA_bf.csv files that you can read back into R below:
+
 #Import WZA scores
 WZA_df_env1 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/env1_WZA_bf.csv")
 WZA_df_env2 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/env2_WZA_bf.csv")

@@ -3,7 +3,7 @@
 ## Author Daniel Anstett
 ## 
 ## 
-## Last Modified August 2, 2022
+## Last Modified April 16, 2024
 ###################################################################################
 
 
@@ -12,15 +12,15 @@
 library(tidyverse)
 library(Kendall)
 
-#Import full snp table for baseline
-pop_order<-read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.pop_order", header=F, sep="\t")
-snp<-read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table", header=F, sep=" ")
-loci<-read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.loci", header=F, sep="\t")
+#Import full snp table for baseline. Large files saved using github lfs 
+pop_order<-read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.pop_order", header=F, sep="\t")
+snp<-read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table", header=F, sep=" ")
+loci<-read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.loci", header=F, sep="\t")
 colnames(loci) <- c("chr","snp")
 loci_united <- loci %>% unite(chr_snp,"chr","snp",sep="_")
 
 #Make cumulative SNP ID
-length_c <- read_csv("Genomics_scripts/Data/chr_length.csv")
+length_c <- read_csv("data/chr_length.csv")
 loci_win<-loci %>% mutate(snp_c = ifelse(chr == "CE10_chr1", snp,
                                        ifelse(chr == "CE10_chr2", snp+length_c$length_cumu[1],
                                               ifelse(chr == "CE10_chr3", snp+length_c$length_cumu[2],
@@ -54,8 +54,8 @@ for (j in 1:8){
 
 loci_win$V4 <-loci_win_out
 
-#Too large to store on github. Store locally
-#write_csv(loci_win, "/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/loci_win.csv")                                                                                 
+#Save file
+write_csv(loci_win, "/Users/daniel_anstett/GitHub/evol_rescue/data/Large_files/loci_win.csv")                                                                                 
 
                                                                                  
 ###################################################################################

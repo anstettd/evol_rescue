@@ -514,6 +514,12 @@ write_csv(snp_set_env9,"data/genomic_data/snp_set_env9.csv")
 write_csv(snp_set_env,"data/genomic_data/snp_set_env.csv")
 
 
+
+
+
+
+
+###########################################################################################################
 #Write only SNP set for BF>30 only
 
 write_csv(env1_united_bf30,"data/genomic_data/snp_set_bf30_env1.csv")

@@ -59,7 +59,7 @@ env9_bon <- wza_win_env9 %>% filter(Z_pVal<1.294264e-06) #19 windows
 #Keep two adjoining windows if they are less than 0.3 log P-value units away from each other.
 env1_bon_peak <- env1_bon %>% filter(!win %in% c(6458,6459)) #19 windows
 env2_bon_peak <- env2_bon %>% filter(!win %in% c(3881,3882)) #14 windows
-env3_bon_peak <- env3_bon %>% filter(!win %in% c(10527,30337)) #30 windows
+env3_bon_peak <- env3_bon %>% filter(!win %in% c(10527)) #30 windows, removed old 30337
 env4_bon_peak <- env4_bon %>% filter(!win %in% c(6451,6457,6458,6468)) #24 windows
 env5_bon_peak <- env5_bon # 12 windows
 

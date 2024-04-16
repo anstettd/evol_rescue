@@ -37,7 +37,7 @@ wza_empri_mat <- ggplot(data = wza_win_env1, aes( x = pos/1e6, y = -log10(Z_pVal
   geom_point(aes(color=as.factor(chr), alpha=0.9))+
   geom_line()+
   scale_y_continuous("-log10(WZA Empirical p-value)", limits=c(0,20))+
-  scale_x_continuous("Position (Mbp)",limits=c(64.5,64.7))+ #MODIFY RANGE HERE TO VIEW DATA UP CLOSE
+  scale_x_continuous("Position (Mbp)",limits=c(0,410))+ #MODIFY RANGE HERE TO VIEW DATA UP CLOSE
   geom_hline(aes(yintercept = -log10(0.05/dim(wza_win_env1)[1])), col = "red", lty = 2, lwd = 1)+
   scale_color_manual(values = rep(c("black", "darkgoldenrod"), 22 )) +
   theme_classic()+
@@ -64,7 +64,7 @@ wza_empri_map <- ggplot(data = wza_win_env2, aes( x = pos/1e6, y = -log10(Z_pVal
   geom_point(aes(color=as.factor(chr), alpha=0.9))+
   geom_line()+
   scale_y_continuous("-log10(WZA Empirical p-value)", limits=c(0,20))+
-  scale_x_continuous("Position (Mbp)",limits=c(38,39))+ #MODIFY RANGE HERE TO VIEW DATA UP CLOSE
+  scale_x_continuous("Position (Mbp)",limits=c(0,410))+ #MODIFY RANGE HERE TO VIEW DATA UP CLOSE
   geom_hline(aes(yintercept = -log10(0.05/dim(wza_win_env2)[1])), col = "red", lty = 2, lwd = 1)+
   scale_color_manual(values = rep(c("black", "deepskyblue"), 22 )) +
   theme_classic()+
@@ -91,7 +91,7 @@ wza_empri_env3 <- ggplot(data = wza_win_env3, aes( x = pos/1e6, y = -log10(Z_pVa
   geom_point(aes(color=as.factor(chr), alpha=0.9))+
   geom_line()+
   scale_y_continuous("-log10(WZA Empirical p-value)", limits=c(0,20))+
-  scale_x_continuous("Position (Mbp)",limits=c(377.0,377.2))+ #MODIFY RANGE HERE TO VIEW DATA UP CLOSE
+  scale_x_continuous("Position (Mbp)",limits=c(0,410))+ #MODIFY RANGE HERE TO VIEW DATA UP CLOSE
   geom_hline(aes(yintercept = -log10(0.05/dim(wza_win_env3)[1])), col = "red", lty = 2, lwd = 1)+
   scale_color_manual(values = rep(c("black", "deepskyblue"), 22 )) +
   theme_classic()+

@@ -26,16 +26,16 @@ env9_united <- read_csv("data/genomic_data/snps_peak_env9_bf.csv")
 
 #Import all BF
 #Import snp env associations (Baseline)
-env1 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_1_trim.tsv",header=F, sep=" ")
-env2 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_2_trim.tsv",header=F, sep=" ")
-env3 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_3_trim.tsv",header=F, sep=" ")
-env4 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_4_trim.tsv",header=F, sep=" ")
-env5 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_5_trim.tsv",header=F, sep=" ")
+env1 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_1_trim.tsv",header=F, sep="\t")
+env2 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_2_trim.tsv",header=F, sep="\t")
+env3 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_3_trim.tsv",header=F, sep="\t")
+env4 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_4_trim.tsv",header=F, sep="\t")
+env5 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_5_trim.tsv",header=F, sep="\t")
 
-env6 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_6_trim.tsv",header=F, sep=" ")
-env7 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_7_trim.tsv",header=F, sep=" ")
-env8 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_8_trim.tsv",header=F, sep=" ")
-env9 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_9_trim.tsv",header=F, sep=" ")
+env6 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_6_trim.tsv",header=F, sep="\t")
+env7 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_7_trim.tsv",header=F, sep="\t")
+env8 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_8_trim.tsv",header=F, sep="\t")
+env9 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_9_trim.tsv",header=F, sep="\t")
 
 #Name Columns
 colnames(env1) <- c("Chromosome","SNP","Env","BF")
@@ -502,16 +502,16 @@ colnames(snp_set_env_wza10) <- "chr_snp"
 
 #Write out WZA BayPass SNP set
 
-#write_csv(snp_set_env1,"data/genomic_data/snp_set_env1.csv")
-#write_csv(snp_set_env2,"data/genomic_data/snp_set_env2.csv")
-#write_csv(snp_set_env3,"data/genomic_data/snp_set_env3.csv")
-#write_csv(snp_set_env4,"data/genomic_data/snp_set_env4.csv")
-#write_csv(snp_set_env5,"data/genomic_data/snp_set_env5.csv")
-#write_csv(snp_set_env6,"data/genomic_data/snp_set_env6.csv")
-#write_csv(snp_set_env7,"data/genomic_data/snp_set_env7.csv")
-#write_csv(snp_set_env8,"data/genomic_data/snp_set_env8.csv")
-#write_csv(snp_set_env9,"data/genomic_data/snp_set_env9.csv")
-#write_csv(snp_set_env,"data/genomic_data/snp_set_env.csv")
+write_csv(snp_set_env1,"data/genomic_data/snp_set_env1.csv")
+write_csv(snp_set_env2,"data/genomic_data/snp_set_env2.csv")
+write_csv(snp_set_env3,"data/genomic_data/snp_set_env3.csv")
+write_csv(snp_set_env4,"data/genomic_data/snp_set_env4.csv")
+write_csv(snp_set_env5,"data/genomic_data/snp_set_env5.csv")
+write_csv(snp_set_env6,"data/genomic_data/snp_set_env6.csv")
+write_csv(snp_set_env7,"data/genomic_data/snp_set_env7.csv")
+write_csv(snp_set_env8,"data/genomic_data/snp_set_env8.csv")
+write_csv(snp_set_env9,"data/genomic_data/snp_set_env9.csv")
+write_csv(snp_set_env,"data/genomic_data/snp_set_env.csv")
 
 
 #Write only SNP set for BF>30 only

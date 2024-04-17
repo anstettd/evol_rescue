@@ -32,47 +32,47 @@ conda activate wza_env
 
 #Annual
 python3 /Users/daniel_anstett/Documents/GitHub/evol_rescue/scripts/SNP-filtering_BF_env9/general_WZA_script.py \
---correlations /Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env1_input_bf.csv \
+--correlations /Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_env1_input_bf.csv \
                               --summary_stat BF \
                               --window win \
                               --MAF q_bar \
-                              --output /Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/env1_WZA_bf.csv \
+                              --output /Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/env1_WZA_bf.csv \
                               --sep "," \
                               --large_i_small_p
                                                             
 python3 /Users/daniel_anstett/Documents/GitHub/evol_rescue/scripts/SNP-filtering_BF_env9/general_WZA_script.py \
---correlations /Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env2_input_bf.csv \
+--correlations /Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_env2_input_bf.csv \
                               --summary_stat BF \
                               --window win \
                               --MAF q_bar \
-                              --output /Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/env2_WZA_bf.csv \
+                              --output /Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/env2_WZA_bf.csv \
                               --sep "," \
                               --large_i_small_p
 
 python3 /Users/daniel_anstett/Documents/GitHub/evol_rescue/scripts/SNP-filtering_BF_env9/general_WZA_script.py \
---correlations /Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env3_input_bf.csv \
+--correlations /Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_env3_input_bf.csv \
                               --summary_stat BF \
                               --window win \
                               --MAF q_bar \
-                              --output /Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/env3_WZA_bf.csv \
+                              --output /Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/env3_WZA_bf.csv \
                               --sep "," \
                               --large_i_small_p                              
                               
 python3 /Users/daniel_anstett/Documents/GitHub/evol_rescue/scripts/SNP-filtering_BF_env9/general_WZA_script.py \
---correlations /Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env4_input_bf.csv \
+--correlations /Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_env4_input_bf.csv \
                               --summary_stat BF \
                               --window win \
                               --MAF q_bar \
-                              --output /Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/env4_WZA_bf.csv \
+                              --output /Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/env4_WZA_bf.csv \
                               --sep "," \
                               --large_i_small_p                                           
                               
 python3 /Users/daniel_anstett/Documents/GitHub/evol_rescue/scripts/SNP-filtering_BF_env9/general_WZA_script.py \
---correlations /Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env5_input_bf.csv \
+--correlations /Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_env5_input_bf.csv \
                               --summary_stat BF \
                               --window win \
                               --MAF q_bar \
-                              --output /Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/env5_WZA_bf.csv \
+                              --output /Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/env5_WZA_bf.csv \
                               --sep "," \
                               --large_i_small_p
                               
@@ -82,40 +82,40 @@ python3 /Users/daniel_anstett/Documents/GitHub/evol_rescue/scripts/SNP-filtering
 #Seasonal
 
 python3 /Users/daniel_anstett/Documents/GitHub/evol_rescue/scripts/SNP-filtering_BF_env9/general_WZA_script.py \
---correlations /Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env6_input_bf.csv \
+--correlations /Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_env6_input_bf.csv \
                               --summary_stat BF \
                               --window win \
                               --MAF q_bar \
-                              --output /Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/env6_WZA_bf.csv \
+                              --output /Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/env6_WZA_bf.csv \
                               --sep "," \
                               --large_i_small_p                              
                               
 python3 /Users/daniel_anstett/Documents/GitHub/evol_rescue/scripts/SNP-filtering_BF_env9/general_WZA_script.py \
---correlations /Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env7_input_bf.csv \
+--correlations /Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_env7_input_bf.csv \
                               --summary_stat BF \
                               --window win \
                               --MAF q_bar \
-                              --output /Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/env7_WZA_bf.csv \
+                              --output /Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/env7_WZA_bf.csv \
                               --sep "," \
                               --large_i_small_p                                           
                               python3 /Users/daniel_anstett/Dropbox/AM_Workshop/Mimulus_offset/scripts
                               
 python3 /Users/daniel_anstett/Documents/GitHub/evol_rescue/scripts/SNP-filtering_BF_env9/general_WZA_script.py \
---correlations /Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env8_input_bf.csv \
+--correlations /Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_env8_input_bf.csv \
                               --summary_stat BF \
                               --window win \
                               --MAF q_bar \
-                              --output /Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/env8_WZA_bf.csv \
+                              --output /Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/env8_WZA_bf.csv \
                               --sep "," \
                               --large_i_small_p                                           
 
                               
 python3 /Users/daniel_anstett/Documents/GitHub/evol_rescue/scripts/SNP-filtering_BF_env9/general_WZA_script.py \
---correlations /Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env9_input_bf.csv \
+--correlations /Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_env9_input_bf.csv \
                               --summary_stat BF \
                               --window win \
                               --MAF q_bar \
-                              --output /Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/env9_WZA_bf.csv \
+                              --output /Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/env9_WZA_bf.csv \
                               --sep "," \
                               --large_i_small_p                                           
                               

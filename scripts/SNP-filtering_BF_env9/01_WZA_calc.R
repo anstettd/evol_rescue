@@ -36,10 +36,10 @@ library(tidyverse)
 library(Kendall)
 
 #Import full snp table for baseline
-pop_order<-read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.pop_order", header=F, sep="\t")
-snp<-read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table", header=F, sep=" ")
-loci<-read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.loci", header=F, sep="\t")
-loci_win<-read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/loci_win.csv")
+pop_order<-read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.pop_order", header=F, sep="\t")
+snp<-read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table", header=F, sep=" ")
+loci<-read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.loci", header=F, sep="\t")
+loci_win<-read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/loci_win.csv")
 
 #Calculate frequency using prop_A
 colnames(loci) <- c("chr","snp")
@@ -66,16 +66,16 @@ all_data$MAF <- pmin(all_data$p_bar, all_data$q_bar)
 #############################################################################################################
 
 #Import BayPass Results
-env1 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_1_trim.tsv",header=F, sep="\t")
-env2 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_2_trim.tsv",header=F, sep="\t")
-env3 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_3_trim.tsv",header=F, sep="\t")
-env4 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_4_trim.tsv",header=F, sep="\t")
-env5 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_5_trim.tsv",header=F, sep="\t")
+env1 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_1_trim.tsv",header=F, sep="\t")
+env2 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_2_trim.tsv",header=F, sep="\t")
+env3 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_3_trim.tsv",header=F, sep="\t")
+env4 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_4_trim.tsv",header=F, sep="\t")
+env5 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_5_trim.tsv",header=F, sep="\t")
 
-env6 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_6_trim.tsv",header=F, sep="\t")
-env7 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_7_trim.tsv",header=F, sep="\t")
-env8 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_8_trim.tsv",header=F, sep="\t")
-env9 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_9_trim.tsv",header=F, sep="\t")
+env6 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_6_trim.tsv",header=F, sep="\t")
+env7 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_7_trim.tsv",header=F, sep="\t")
+env8 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_8_trim.tsv",header=F, sep="\t")
+env9 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_9_trim.tsv",header=F, sep="\t")
 
 #Name Columns
 colnames(env1) <- c("Chromosome","SNP","Env","BF")
@@ -112,14 +112,14 @@ snps_env8_bf <- left_join(all_data,env8_united, by="chr_snp")
 snps_env9_bf <- left_join(all_data,env9_united, by="chr_snp")
 
 #Too large to store on github. Store locally
-write_csv(snps_env1_bf, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env1_bf.csv")
-write_csv(snps_env2_bf, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env2_bf.csv")
-write_csv(snps_env3_bf, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env3_bf.csv")
-write_csv(snps_env4_bf, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env4_bf.csv")
-write_csv(snps_env5_bf, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env5_bf.csv")     
+write_csv(snps_env1_bf, "/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env1_bf.csv")
+write_csv(snps_env2_bf, "/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env2_bf.csv")
+write_csv(snps_env3_bf, "/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env3_bf.csv")
+write_csv(snps_env4_bf, "/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env4_bf.csv")
+write_csv(snps_env5_bf, "/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env5_bf.csv")     
 
-write_csv(snps_env6_bf, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env6_bf.csv")
-write_csv(snps_env7_bf, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env7_bf.csv")
-write_csv(snps_env8_bf, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env8_bf.csv")
-write_csv(snps_env9_bf, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env9_bf.csv")
+write_csv(snps_env6_bf, "/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env6_bf.csv")
+write_csv(snps_env7_bf, "/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env7_bf.csv")
+write_csv(snps_env8_bf, "/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env8_bf.csv")
+write_csv(snps_env9_bf, "/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env9_bf.csv")
 

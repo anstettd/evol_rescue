@@ -13,16 +13,16 @@ library(tidyverse)
 
 #Import files
 
-snps_env1 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env1_bf.csv")
-snps_env2 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env2_bf.csv")
-snps_env3 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env3_bf.csv")
-snps_env4 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env4_bf.csv")
-snps_env5 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env5_bf.csv")
+snps_env1 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env1_bf.csv")
+snps_env2 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env2_bf.csv")
+snps_env3 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env3_bf.csv")
+snps_env4 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env4_bf.csv")
+snps_env5 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env5_bf.csv")
 
-snps_env6 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env6_bf.csv")
-snps_env7 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env7_bf.csv")
-snps_env8 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env8_bf.csv")
-snps_env9 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env9_bf.csv")
+snps_env6 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env6_bf.csv")
+snps_env7 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env7_bf.csv")
+snps_env8 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env8_bf.csv")
+snps_env9 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env9_bf.csv")
 
 
 
@@ -43,16 +43,16 @@ snps_env9_input <- snps_env9 %>% select(BF,win,MAF)
 
 
 #Too large to store on github. Store locally
-write_csv(snps_env1_input, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env1_input_bf.csv")
-write_csv(snps_env2_input, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env2_input_bf.csv")
-write_csv(snps_env3_input, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env3_input_bf.csv")
-write_csv(snps_env4_input, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env4_input_bf.csv")
-write_csv(snps_env5_input, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env5_input_bf.csv")   
+write_csv(snps_env1_input, "/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_env1_input_bf.csv")
+write_csv(snps_env2_input, "/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_env2_input_bf.csv")
+write_csv(snps_env3_input, "/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_env3_input_bf.csv")
+write_csv(snps_env4_input, "/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_env4_input_bf.csv")
+write_csv(snps_env5_input, "/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_env5_input_bf.csv")   
 
-write_csv(snps_env6_input, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env6_input_bf.csv")
-write_csv(snps_env7_input, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env7_input_bf.csv")
-write_csv(snps_env8_input, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env8_input_bf.csv")
-write_csv(snps_env9_input, "/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_env9_input_bf.csv")
+write_csv(snps_env6_input, "/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_env6_input_bf.csv")
+write_csv(snps_env7_input, "/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_env7_input_bf.csv")
+write_csv(snps_env8_input, "/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_env8_input_bf.csv")
+write_csv(snps_env9_input, "/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_env9_input_bf.csv")
 
 #Run python script run_WZA.txt
 #This will save the env*WZA_bf.csv files that you can read back into R below:

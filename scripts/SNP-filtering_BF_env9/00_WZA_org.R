@@ -12,10 +12,11 @@
 library(tidyverse)
 library(Kendall)
 
-#Import full snp table for baseline. Large files saved using github lfs 
-pop_order<-read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.pop_order", header=F, sep="\t")
-snp<-read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table", header=F, sep=" ")
-loci<-read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.loci", header=F, sep="\t")
+#Import full snp table for baseline. Large intermediate files saved locally. 
+#Please contact Daniel Anstett for access
+pop_order<-read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.pop_order", header=F, sep="\t")
+snp<-read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table", header=F, sep=" ")
+loci<-read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.loci", header=F, sep="\t")
 colnames(loci) <- c("chr","snp")
 loci_united <- loci %>% unite(chr_snp,"chr","snp",sep="_")
 
@@ -55,7 +56,7 @@ for (j in 1:8){
 loci_win$V4 <-loci_win_out
 
 #Save file
-write_csv(loci_win, "data/Large_files/loci_win.csv")                                                                                 
+write_csv(loci_win, "/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/loci_win.csv")                                                                                 
 
                                                                                  
 ###################################################################################

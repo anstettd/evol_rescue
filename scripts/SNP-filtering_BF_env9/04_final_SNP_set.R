@@ -26,16 +26,16 @@ env9_united <- read_csv("data/genomic_data/snps_peak_env9_bf.csv")
 
 #Import all BF
 #Import snp env associations (Baseline)
-env1 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_1_trim.tsv",header=F, sep="\t")
-env2 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_2_trim.tsv",header=F, sep="\t")
-env3 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_3_trim.tsv",header=F, sep="\t")
-env4 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_4_trim.tsv",header=F, sep="\t")
-env5 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_5_trim.tsv",header=F, sep="\t")
+env1 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_1_trim.tsv",header=F, sep="\t")
+env2 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_2_trim.tsv",header=F, sep="\t")
+env3 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_3_trim.tsv",header=F, sep="\t")
+env4 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_4_trim.tsv",header=F, sep="\t")
+env5 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_5_trim.tsv",header=F, sep="\t")
 
-env6 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_6_trim.tsv",header=F, sep="\t")
-env7 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_7_trim.tsv",header=F, sep="\t")
-env8 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_8_trim.tsv",header=F, sep="\t")
-env9 <- read.table("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/ENV_9_trim.tsv",header=F, sep="\t")
+env6 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_6_trim.tsv",header=F, sep="\t")
+env7 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_7_trim.tsv",header=F, sep="\t")
+env8 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_8_trim.tsv",header=F, sep="\t")
+env9 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_9_trim.tsv",header=F, sep="\t")
 
 #Name Columns
 colnames(env1) <- c("Chromosome","SNP","Env","BF")
@@ -334,14 +334,14 @@ windows_in <- data.frame()
 windows_in[1,1] <- "any"
 windows_in[1,2] <- 19
 windows_in[1,3] <- 14
-windows_in[1,4] <- 30
+windows_in[1,4] <- 31
 windows_in[1,5] <- 24
 windows_in[1,6] <- 12
 
 windows_in[1,7] <- 11
 windows_in[1,8] <- 23
-windows_in[1,9] <- 18
-windows_in[1,10] <- 19
+windows_in[1,9] <- 17
+windows_in[1,10] <- 17
 
 
 windows_in[2,1] <- ">30"

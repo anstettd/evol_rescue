@@ -27,16 +27,16 @@ wza_win_env8 <- read_csv("data/genomic_data/WZA_win_env8_bf.csv")
 wza_win_env9 <- read_csv("data/genomic_data/WZA_win_env9_bf.csv")
 
 #SNPs
-snps_env1 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env1_bf.csv")
-snps_env2 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env2_bf.csv")
-snps_env3 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env3_bf.csv")
-snps_env4 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env4_bf.csv")
-snps_env5 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env5_bf.csv")
+snps_env1 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env1_bf.csv")
+snps_env2 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env2_bf.csv")
+snps_env3 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env3_bf.csv")
+snps_env4 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env4_bf.csv")
+snps_env5 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env5_bf.csv")
 
-snps_env6 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env6_bf.csv")
-snps_env7 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env7_bf.csv")
-snps_env8 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env8_bf.csv")
-snps_env9 <- read_csv("/Users/daniel_anstett/Documents/GitHub/evol_rescue/data/Large_files/WZA_snps_env9_bf.csv")
+snps_env6 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env6_bf.csv")
+snps_env7 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env7_bf.csv")
+snps_env8 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env8_bf.csv")
+snps_env9 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env9_bf.csv")
 
 
 #Filter by Bonferonnii correction alpha critical = 1.29423e-06, aka 5.887988 sigma
@@ -59,14 +59,20 @@ env9_bon <- wza_win_env9 %>% filter(Z_pVal<1.294264e-06) #19 windows
 #Keep two adjoining windows if they are less than 0.3 log P-value units away from each other.
 env1_bon_peak <- env1_bon %>% filter(!win %in% c(6458,6459)) #19 windows
 env2_bon_peak <- env2_bon %>% filter(!win %in% c(3881,3882)) #14 windows
-env3_bon_peak <- env3_bon %>% filter(!win %in% c(10527)) #30 windows, removed old 30337
-env4_bon_peak <- env4_bon %>% filter(!win %in% c(6451,6457,6458,6468)) #24 windows
+env3_bon_peak <- env3_bon %>% filter(!win %in% c(10527)) #31 windows, (old 30). 
+#30337, which was previously removed is now included
+
+env4_bon_peak <- env4_bon %>% filter(!win %in% c(6451,6457,6458,6468)) #24 windows, 
+#2 adjecent windows (6494,6495) and (10852,10853) kept with diff in logp<0.3. 
+
 env5_bon_peak <- env5_bon # 12 windows
 
 env6_bon_peak <- env6_bon %>% filter(!win %in% c(9939)) #11 windows
 env7_bon_peak <- env7_bon %>% filter(!win %in% c(6451,6458,6459,6462)) #23 windows
-env8_bon_peak <- env8_bon %>% filter(!win %in% c(6457)) #18 windows
-env9_bon_peak <- env9_bon %>% filter(!win %in% c(3881,3882)) #19 windows
+#2 adjecent windows (6467,6468) and (6494,6495) kept with diff in logp<0.3. 
+
+env8_bon_peak <- env8_bon %>% filter(!win %in% c(6457)) #17 windows
+env9_bon_peak <- env9_bon %>% filter(!win %in% c(3881,3882)) #17 windows
 
 
 #Filter SNPs for peak

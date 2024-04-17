@@ -35,15 +35,15 @@ colnames(chr_size)[3] <- "poz"
 
 
 #Import snp env associations
-env1 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_1_trim.tsv",header=F, sep=" ")
-env2 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_2_trim.tsv",header=F, sep=" ")
-env3 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_3_trim.tsv",header=F, sep=" ")
-env4 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_4_trim.tsv",header=F, sep=" ")
-env5 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_5_trim.tsv",header=F, sep=" ")
-env6 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_6_trim.tsv",header=F, sep=" ")
-env7 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_7_trim.tsv",header=F, sep=" ")
-env8 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_8_trim.tsv",header=F, sep=" ")
-env9 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_9_trim.tsv",header=F, sep=" ")
+env1 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_1_trim.tsv",header=F, sep="\t")
+env2 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_2_trim.tsv",header=F, sep="\t")
+env3 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_3_trim.tsv",header=F, sep="\t")
+env4 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_4_trim.tsv",header=F, sep="\t")
+env5 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_5_trim.tsv",header=F, sep="\t")
+env6 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_6_trim.tsv",header=F, sep="\t")
+env7 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_7_trim.tsv",header=F, sep="\t")
+env8 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_8_trim.tsv",header=F, sep="\t")
+env9 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_9_trim.tsv",header=F, sep="\t")
 
 
 #Name Columns
@@ -242,7 +242,7 @@ ggplot(env1_united, aes(x=BP/1e6, y=BF)) +
     axis.text.y = element_text(size=20,face="bold"),
     axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
     axis.title.y = element_text(color="black", size=24,vjust = 1.4, face="bold",hjust=0.5))
-ggsave("Graphs/Manhattan_BF/bf_manhattan_1.png",width=13, height=4.5)
+ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Evol_rescue/Large_graphs/snp_bf/bf_manhattan_1.png",width=13, height=4.5)
 
 #ENV 2 - MAP 
 ggplot(env2_united, aes(x=BP/1e6, y=BF)) +
@@ -266,7 +266,7 @@ ggplot(env2_united, aes(x=BP/1e6, y=BF)) +
     axis.text.y = element_text(size=20,face="bold"),
     axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
     axis.title.y = element_text(color="black", size=24,vjust = 1.4, face="bold",hjust=0.5))
-ggsave("Graphs/Manhattan_BF/bf_manhattan_2.png",width=13, height=4.5)
+ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Evol_rescue/Large_graphs/snp_bf/bf_manhattan_2.png",width=13, height=4.5)
 
 
 #ENV 3 - PAS 
@@ -291,7 +291,7 @@ ggplot(env3_united, aes(x=BP/1e6, y=BF)) +
     axis.text.y = element_text(size=20,face="bold"),
     axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
     axis.title.y = element_text(color="black", size=24,vjust = 1.4, face="bold",hjust=0.5))
-ggsave("Graphs/Manhattan_BF/bf_manhattan_3.png",width=13, height=4.5)
+ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Evol_rescue/Large_graphs/snp_bf/bf_manhattan_3.png",width=13, height=4.5)
 
 
 #ENV 4 - EXT 
@@ -316,7 +316,7 @@ ggplot(env4_united, aes(x=BP/1e6, y=BF)) +
     axis.text.y = element_text(size=20,face="bold"),
     axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
     axis.title.y = element_text(color="black", size=24,vjust = 1.4, face="bold",hjust=0.5))
-ggsave("Graphs/Manhattan_BF/bf_manhattan_4.png",width=13, height=4.5)
+ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Evol_rescue/Large_graphs/snp_bf/bf_manhattan_4.png",width=13, height=4.5)
 
 #ENV 5 - CMD 
 ggplot(env5_united, aes(x=BP/1e6, y=BF)) +
@@ -340,7 +340,7 @@ ggplot(env5_united, aes(x=BP/1e6, y=BF)) +
     axis.text.y = element_text(size=20,face="bold"),
     axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
     axis.title.y = element_text(color="black", size=24,vjust = 1.4, face="bold",hjust=0.5))
-ggsave("Graphs/Manhattan_BF/bf_manhattan_5.png",width=13, height=4.5)
+ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Evol_rescue/Large_graphs/snp_bf/bf_manhattan_5.png",width=13, height=4.5)
 
 
 #ENV 6 - Tave_wt 
@@ -365,7 +365,7 @@ ggplot(env6_united, aes(x=BP/1e6, y=BF)) +
     axis.text.y = element_text(size=20,face="bold"),
     axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
     axis.title.y = element_text(color="black", size=24,vjust = 1.4, face="bold",hjust=0.5))
-ggsave("Graphs/Manhattan_BF/bf_manhattan_6.png",width=13, height=4.5)
+ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Evol_rescue/Large_graphs/snp_bf/bf_manhattan_6.png",width=13, height=4.5)
 
 
 #ENV 7 - Tave_sm 
@@ -390,7 +390,7 @@ ggplot(env7_united, aes(x=BP/1e6, y=BF)) +
     axis.text.y = element_text(size=20,face="bold"),
     axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
     axis.title.y = element_text(color="black", size=24,vjust = 1.4, face="bold",hjust=0.5))
-ggsave("Graphs/Manhattan_BF/bf_manhattan_7.png",width=13, height=4.5)
+ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Evol_rescue/Large_graphs/snp_bf/bf_manhattan_7.png",width=13, height=4.5)
 
 
 #ENV 8 - PPT_wt 
@@ -415,7 +415,7 @@ ggplot(env8_united, aes(x=BP/1e6, y=BF)) +
     axis.text.y = element_text(size=20,face="bold"),
     axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
     axis.title.y = element_text(color="black", size=24,vjust = 1.4, face="bold",hjust=0.5))
-ggsave("Graphs/Manhattan_BF/bf_manhattan_8.png",width=13, height=4.5)
+ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Evol_rescue/Large_graphs/snp_bf/bf_manhattan_8.png",width=13, height=4.5)
 
 
 
@@ -441,7 +441,7 @@ ggplot(env9_united, aes(x=BP/1e6, y=BF)) +
     axis.text.y = element_text(size=20,face="bold"),
     axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
     axis.title.y = element_text(color="black", size=24,vjust = 1.4, face="bold",hjust=0.5))
-ggsave("Graphs/Manhattan_BF/bf_manhattan_9.png",width=13, height=4.5)
+ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Evol_rescue/Large_graphs/snp_bf/bf_manhattan_9.png",width=13, height=4.5)
 
 
 
@@ -461,7 +461,7 @@ ggsave("Graphs/Manhattan_BF/bf_manhattan_9.png",width=13, height=4.5)
 
 
 
-
+#Different sized ENV 2
 
 #ENV 2 - MAP
 ggplot(env2_united, aes(x=BP/1e6, y=BF)) +
@@ -472,10 +472,7 @@ ggplot(env2_united, aes(x=BP/1e6, y=BF)) +
   scale_x_continuous("Position (Mbp)")+
   scale_y_continuous("-log10(BF)", breaks = c(-20,-10,0,10,20,30,40)) +
   theme_man() 
-ggsave("Graphs/Manhattan_BF/bf_manhattan_2.png",width=9, height=6)
-
-
-
+ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Evol_rescue/Large_graphs/snp_bf/bf_manhattan_2.png",width=9, height=6)
 
 
 
@@ -511,7 +508,7 @@ ggplot(env2_united, aes(x=BP, y=BF)) +
   )
 
 #Export. File is very large and somewhat hard to hande/open. 
-ggsave("Graphs/Manhattan_BF/graph_manhattan_2.pdf",width=9, height=6)
+ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Evol_rescue/Large_graphs/snp_bf/graph_manhattan_2.pdf",width=9, height=6)
 
 
 
@@ -548,7 +545,7 @@ ggplot(env5_united, aes(x=BP, y=BF)) +
   )
 
 #Export. File is very large and somewhat hard to hande/open. 
-ggsave("/Users/daniel_anstett/Dropbox/AM_Workshop/large_graphs/Manhattan/graph_manhattan_5.pdf",width=9, height=6)
+ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Evol_rescue/Large_graphs/WZA/graph_manhattan_5.pdf",width=9, height=6)
 
 
 

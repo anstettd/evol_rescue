@@ -78,7 +78,7 @@ wza_empri_map <- ggplot(data = wza_win_env2, aes( x = pos/1e6, y = -log10(Z_pVal
     axis.title.y = element_text(color="black", size=24,vjust = 1.4, face="bold",hjust=0.5)
   )
 wza_empri_map
-ggsave("Graphs/WZA/wza_env2_bf.png", wza_empri_map, width=13, height = 4.5, units = "in")
+ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Evol_rescue/Large_graphs/WZA/wza_env2_bf.png", wza_empri_map, width=13, height = 4.5, units = "in")
 
 #ENV3
 wza_empri_map <- ggplot(data = wza_win_env3, aes( x = pos/1e6, y = -log10(Z_pVal)))+
@@ -103,7 +103,7 @@ wza_empri_map <- ggplot(data = wza_win_env3, aes( x = pos/1e6, y = -log10(Z_pVal
     axis.title.y = element_text(color="black", size=24,vjust = 1.4, face="bold",hjust=0.5)
   )
 wza_empri_map
-ggsave("Graphs/WZA/wza_env3_bf.png", wza_empri_map, width=13, height = 4.5, units = "in")
+ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Evol_rescue/Large_graphs/WZA/wza_env3_bf.png", wza_empri_map, width=13, height = 4.5, units = "in")
 
 #ENV4
 wza_empri_map <- ggplot(data = wza_win_env4, aes( x = pos/1e6, y = -log10(Z_pVal)))+
@@ -128,7 +128,7 @@ wza_empri_map <- ggplot(data = wza_win_env4, aes( x = pos/1e6, y = -log10(Z_pVal
     axis.title.y = element_text(color="black", size=24,vjust = 1.4, face="bold",hjust=0.5)
   )
 wza_empri_map
-ggsave("Graphs/WZA/wza_env4_bf.png", wza_empri_map, width=13, height = 4.5, units = "in")
+ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Evol_rescue/Large_graphs/WZA/wza_env4_bf.png", wza_empri_map, width=13, height = 4.5, units = "in")
 
 
 #ENV5
@@ -154,7 +154,7 @@ wza_empri_cmd <- ggplot(data = wza_win_env5, aes( x = pos/1e6, y = -log10(Z_pVal
     axis.title.y = element_text(color="black", size=24,vjust = 1.4, face="bold",hjust=0.5)
   )
 wza_empri_cmd
-ggsave("Graphs/WZA/wza_env5_bf.png", wza_empri_cmd, width=13, height = 4.5, units = "in")
+ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Evol_rescue/Large_graphs/WZA/wza_env5_bf.png", wza_empri_cmd, width=13, height = 4.5, units = "in")
 
 #ENV6
 wza_empri_map <- ggplot(data = wza_win_env6, aes( x = pos/1e6, y = -log10(Z_pVal)))+
@@ -179,7 +179,7 @@ wza_empri_map <- ggplot(data = wza_win_env6, aes( x = pos/1e6, y = -log10(Z_pVal
     axis.title.y = element_text(color="black", size=24,vjust = 1.4, face="bold",hjust=0.5)
   )
 wza_empri_map
-ggsave("Graphs/WZA/wza_env6_bf.png", wza_empri_map, width=13, height = 4.5, units = "in")
+ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Evol_rescue/Large_graphs/WZA/wza_env6_bf.png", wza_empri_map, width=13, height = 4.5, units = "in")
 
 #ENV7
 wza_empri_map <- ggplot(data = wza_win_env7, aes( x = pos/1e6, y = -log10(Z_pVal)))+
@@ -204,7 +204,7 @@ wza_empri_map <- ggplot(data = wza_win_env7, aes( x = pos/1e6, y = -log10(Z_pVal
     axis.title.y = element_text(color="black", size=24,vjust = 1.4, face="bold",hjust=0.5)
   )
 wza_empri_map
-ggsave("Graphs/WZA/wza_env7_bf.png", wza_empri_map, width=13, height = 4.5, units = "in")
+ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Evol_rescue/Large_graphs/WZA/wza_env7_bf.png", wza_empri_map, width=13, height = 4.5, units = "in")
 
 #ENV8
 wza_empri_map <- ggplot(data = wza_win_env8, aes( x = pos/1e6, y = -log10(Z_pVal)))+
@@ -229,7 +229,7 @@ wza_empri_map <- ggplot(data = wza_win_env8, aes( x = pos/1e6, y = -log10(Z_pVal
     axis.title.y = element_text(color="black", size=24,vjust = 1.4, face="bold",hjust=0.5)
   )
 wza_empri_map
-ggsave("Graphs/WZA/wza_env8_bf.png", wza_empri_map, width=13, height = 4.5, units = "in")
+ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Evol_rescue/Large_graphs/WZA/wza_env8_bf.png", wza_empri_map, width=13, height = 4.5, units = "in")
 
 #ENV9
 wza_empri_map <- ggplot(data = wza_win_env9, aes( x = pos/1e6, y = -log10(Z_pVal)))+
@@ -254,5 +254,5 @@ wza_empri_map <- ggplot(data = wza_win_env9, aes( x = pos/1e6, y = -log10(Z_pVal
     axis.title.y = element_text(color="black", size=24,vjust = 1.4, face="bold",hjust=0.5)
   )
 wza_empri_map
-ggsave("Graphs/WZA/wza_env9_bf.png", wza_empri_map, width=13, height = 4.5, units = "in")
+ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Evol_rescue/Large_graphs/WZA/wza_env9_bf.png", wza_empri_map, width=13, height = 4.5, units = "in")
 

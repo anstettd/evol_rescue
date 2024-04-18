@@ -71,7 +71,7 @@ ggplot(pi_all_pop, aes(x=Lat, y=pi_snp_set)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
-#ggsave("Graphs/Pi_latitude/1_lat_pi_snp_set.pdf",width=6, height = 5.5, units = "in")
+ggsave("Graphs/Pi_latitude/1_lat_pi_snp_set.pdf",width=6, height = 5.5, units = "in")
 
 
 #Median slope vs. lambda.mean.recovery
@@ -93,7 +93,7 @@ ggplot(pi_all_pop, aes(x=Lat, y=pi_all_snps)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
-#ggsave("Graphs/Pi_latitude/2_lat_pi_global.pdf",width=6, height = 5.5, units = "in")
+ggsave("Graphs/Pi_latitude/2_lat_pi_global.pdf",width=6, height = 5.5, units = "in")
 
 
 #Adaptive vs neutral Pi

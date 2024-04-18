@@ -12,7 +12,7 @@ library(tidyverse)
 snp_set <- read_csv("data/genomic_data/snp_set_env.csv")
 
 #Import 2.1 M loci
-loci_base<-read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.loci", 
+loci_base<-read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.loci", 
                       header=F, sep="\t")
 colnames(loci_base) <- c("Chromosome","SNP")
 loci_united <- loci_base %>% unite(chr_snp,"Chromosome","SNP",sep="_")

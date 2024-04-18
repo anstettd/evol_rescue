@@ -27,8 +27,8 @@ pi_raw <- read_csv("data/genomic_data/raw_pi.csv")
 #Joing Data Sets
 demog_recovery <- left_join(demog_recovery,pop_meta,by=c("Site"="Site")) %>% rename(Site_Name=Site)
 pi_pop <- left_join(demog_recovery,pi_raw,by=c("Paper_ID"="Site")) %>% 
-  filter(Paper_ID!=12) #%>% #remove site with unreliable demography data
-  #filter(Paper_ID!=27) 
+  filter(Paper_ID!=12) %>% #remove site with unreliable demography data
+  filter(Paper_ID!=27) 
 
 
 #Run linear models
@@ -70,7 +70,7 @@ ggplot(pi_pop, aes(x=pi_snp_set, y=lambda.mean.recovery)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce hight
   )
-ggsave("Graphs/Demography_pi/1_pi_demography_snpset.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Demography_pi/3_pi_demography_snpset.pdf",width=8, height = 6, units = "in")
 
 
 #global pi
@@ -92,7 +92,7 @@ ggplot(pi_pop, aes(x=pi_all_snps, y=lambda.mean.recovery)) +
     legend.key.height = unit(1.6, "lines") #Reduce hight
   )
 
-ggsave("Graphs/Demography_pi/2_pi_demography_global.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Demography_pi/4_pi_demography_global.pdf",width=8, height = 6, units = "in")
 
 
 

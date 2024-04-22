@@ -502,6 +502,7 @@ colnames(snp_set_env_wza10) <- "chr_snp"
 
 #Write out WZA BayPass SNP set
 
+### These files are used in snp change script 1
 write_csv(snp_set_env1,"data/genomic_data/snp_set_env1.csv")
 write_csv(snp_set_env2,"data/genomic_data/snp_set_env2.csv")
 write_csv(snp_set_env3,"data/genomic_data/snp_set_env3.csv")
@@ -511,6 +512,9 @@ write_csv(snp_set_env6,"data/genomic_data/snp_set_env6.csv")
 write_csv(snp_set_env7,"data/genomic_data/snp_set_env7.csv")
 write_csv(snp_set_env8,"data/genomic_data/snp_set_env8.csv")
 write_csv(snp_set_env9,"data/genomic_data/snp_set_env9.csv")
+
+
+### Main snp set file that is used in most downstream steps
 write_csv(snp_set_env,"data/genomic_data/snp_set_env.csv")
 
 

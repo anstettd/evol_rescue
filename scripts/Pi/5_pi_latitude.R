@@ -18,6 +18,7 @@ all_pop <- read_csv("data/genomic_data/Baseline_Timeseries_pops_final2.csv")%>% 
 
 #Pi
 pi_df <- read_csv("data/genomic_data/baseline_pi.csv")
+#mean(pi_df$pi_all_snps)
 pi_all_pop <-left_join(all_pop,pi_df,by=c("Paper_ID"="Site"))
 ###################################################################################
 

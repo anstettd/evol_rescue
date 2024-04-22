@@ -26,7 +26,7 @@ pi_df <- as.data.frame(1:55)
 
 
 for (i in 1:55){
-  fname_in<-paste("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/Pi/pop_baseline_", i,".sites.pi", sep="")
+  fname_in<-paste("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/Pi/pop_baseline_", i,".sites.pi", sep="")
   pop_temp<-read.table(fname_in, header=F, sep="\t")
   colnames(pop_temp) <- c("Chromosome","SNP","PI")
   pop_temp <- pop_temp %>% unite(chr_snp,"Chromosome","SNP",sep="_")

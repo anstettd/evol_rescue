@@ -14,15 +14,15 @@ library(tidyverse)
 
 
 #Import snp env associations
-env1 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_1_trim.tsv",header=F, sep=" ")
-env2 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_2_trim.tsv",header=F, sep=" ")
-env3 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_3_trim.tsv",header=F, sep=" ")
-env4 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_4_trim.tsv",header=F, sep=" ")
-env5 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_5_trim.tsv",header=F, sep=" ")
-env6 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_6_trim.tsv",header=F, sep=" ")
-env7 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_7_trim.tsv",header=F, sep=" ")
-env8 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_8_trim.tsv",header=F, sep=" ")
-env9 <- read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/trim/ENV_9_trim.tsv",header=F, sep=" ")
+env1 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_1_trim.tsv",header=F, sep="\t")
+env2 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_2_trim.tsv",header=F, sep="\t")
+env3 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_3_trim.tsv",header=F, sep="\t")
+env4 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_4_trim.tsv",header=F, sep="\t")
+env5 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_5_trim.tsv",header=F, sep="\t")
+env6 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_6_trim.tsv",header=F, sep="\t")
+env7 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_7_trim.tsv",header=F, sep="\t")
+env8 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_8_trim.tsv",header=F, sep="\t")
+env9 <- read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/ENV_9_trim.tsv",header=F, sep="\t")
 
 #Name Columns
 colnames(env1) <- c("Chromosome","SNP","Env","BF")
@@ -86,15 +86,15 @@ env9_filter_united <- cbind(env9_united,env9_filter)
 
 
 #Export SNPs with Bf>0
-write_csv(env1_filter_united, "data/env1_BF0.csv",col_names=TRUE)
-write_csv(env2_filter_united, "data/env2_BF0.csv",col_names=TRUE)
-write_csv(env3_filter_united, "data/env3_BF0.csv",col_names=TRUE)
-write_csv(env4_filter_united, "data/env4_BF0.csv",col_names=TRUE)
-write_csv(env5_filter_united, "data/env5_BF0.csv",col_names=TRUE)
-write_csv(env6_filter_united, "data/env6_BF0.csv",col_names=TRUE)
-write_csv(env7_filter_united, "data/env7_BF0.csv",col_names=TRUE)
-write_csv(env8_filter_united, "data/env8_BF0.csv",col_names=TRUE)
-write_csv(env9_filter_united, "data/env9_BF0.csv",col_names=TRUE)
+write_csv(env1_filter_united, "data/snp_change_data/env1_BF0.csv",col_names=TRUE)
+write_csv(env2_filter_united, "data/snp_change_data/env2_BF0.csv",col_names=TRUE)
+write_csv(env3_filter_united, "data/snp_change_data/env3_BF0.csv",col_names=TRUE)
+write_csv(env4_filter_united, "data/snp_change_data/env4_BF0.csv",col_names=TRUE)
+write_csv(env5_filter_united, "data/snp_change_data/env5_BF0.csv",col_names=TRUE)
+write_csv(env6_filter_united, "data/snp_change_data/env6_BF0.csv",col_names=TRUE)
+write_csv(env7_filter_united, "data/snp_change_data/env7_BF0.csv",col_names=TRUE)
+write_csv(env8_filter_united, "data/snp_change_data/env8_BF0.csv",col_names=TRUE)
+write_csv(env9_filter_united, "data/snp_change_data/env9_BF0.csv",col_names=TRUE)
 
 
 

@@ -12,23 +12,23 @@ library(tidyverse)
 ##########################################################################################################
 #Import and filter for high SE
 
-swiss_glm_1 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_1.csv")
-swiss_glm_2 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_2.csv")
-swiss_glm_3 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_3.csv")
-swiss_glm_4 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_4.csv")
-swiss_glm_5 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_5.csv")
-swiss_glm_6 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_6.csv")
-swiss_glm_7 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_7.csv")
-swiss_glm_8 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_8.csv")
-swiss_glm_9 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_9.csv")
-swiss_glm_10 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_10.csv")
-swiss_glm_11 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_11.csv")
-swiss_glm_12 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_12.csv")
-swiss_glm_13 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_13.csv")
-swiss_glm_14 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_14.csv")
-swiss_glm_15 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_15.csv")
-swiss_glm_16 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_16.csv")
-swiss_glm_17 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_17.csv")
+swiss_glm_1 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_1.csv")
+swiss_glm_2 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_2.csv")
+swiss_glm_3 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_3.csv")
+swiss_glm_4 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_4.csv")
+swiss_glm_5 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_5.csv")
+swiss_glm_6 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_6.csv")
+swiss_glm_7 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_7.csv")
+swiss_glm_8 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_8.csv")
+swiss_glm_9 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_9.csv")
+swiss_glm_10 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_10.csv")
+swiss_glm_11 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_11.csv")
+swiss_glm_12 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_12.csv")
+swiss_glm_13 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_13.csv")
+swiss_glm_14 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_14.csv")
+swiss_glm_15 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_15.csv")
+swiss_glm_16 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_16.csv")
+swiss_glm_17 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_17.csv")
 
 
 #Bind glms
@@ -57,8 +57,8 @@ dim(swiss_glm)
 dim(swiss_glm_filter)
 
 #Export
-write_csv(swiss_glm_filter,"/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50.csv")
-write_csv(swiss_glm,"/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_all.csv")
+write_csv(swiss_glm_filter,"/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50.csv")
+write_csv(swiss_glm,"/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_all.csv")
 
 #write_csv(swiss_glm_filter,"/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_ci_filter_minor.csv")
 #write_csv(swiss_glm,"/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_ci_allSE_minor.csv")
@@ -93,23 +93,23 @@ env_slope
 ##########################################################################################################
 #Import and merge minor neutral frequencies
 
-swiss_1 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_1.csv")
-swiss_2 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_2.csv")
-swiss_3 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_3.csv")
-swiss_4 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_4.csv")
-swiss_5 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_5.csv")
-swiss_6 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_6.csv")
-swiss_7 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_7.csv")
-swiss_8 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_8.csv")
-swiss_9 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_9.csv")
-swiss_10 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_10.csv")
-swiss_11 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_11.csv")
-swiss_12 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_12.csv")
-swiss_13 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_13.csv")
-swiss_14 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_14.csv")
-swiss_15 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_15.csv")
-swiss_16 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_16.csv")
-swiss_17 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_17.csv")
+swiss_1 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_1.csv")
+swiss_2 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_2.csv")
+swiss_3 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_3.csv")
+swiss_4 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_4.csv")
+swiss_5 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_5.csv")
+swiss_6 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_6.csv")
+swiss_7 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_7.csv")
+swiss_8 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_8.csv")
+swiss_9 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_9.csv")
+swiss_10 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_10.csv")
+swiss_11 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_11.csv")
+swiss_12 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_12.csv")
+swiss_13 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_13.csv")
+swiss_14 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_14.csv")
+swiss_15 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_15.csv")
+swiss_16 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_16.csv")
+swiss_17 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_17.csv")
 
 
 swiss_bind <- rbind(swiss_1,
@@ -131,7 +131,7 @@ swiss_bind <- rbind(swiss_1,
                     swiss_17
                     )
 
-write_csv(swiss_bind,"/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_fifty_fifty_abund_table.csv")
+write_csv(swiss_bind,"/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_fifty_fifty_abund_table.csv")
 
 
 

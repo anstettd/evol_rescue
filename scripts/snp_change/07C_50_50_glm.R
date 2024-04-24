@@ -113,7 +113,7 @@ slope_melt <- function(dfA,dfB) {
 ## Import data
 
 #Import full snp table for timeseries
-pop_order<-read.table("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/timeseries_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.pop_order", header=F, sep="\t")
+pop_order<-read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/timeseries_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.pop_order", header=F, sep="\t")
 
 #Make pop order to organize site/year headers
 pop_order_2 <- data.frame()
@@ -123,11 +123,11 @@ colnames(pop_order_2)<-"chr_snp"
 
 ###################################################################################
 
-swiss_1 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_1.csv")
+swiss_1 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_1.csv")
 swiss_abA_1 <-  abA(swiss_1,pop_order_2)
 swiss_abB_1 <-  abB(swiss_1,pop_order_2)
 swiss_glm_1 <- slope_melt(swiss_abA_1,swiss_abB_1) #Run glm function
-write_csv(swiss_glm_1,"/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_1.csv")
+write_csv(swiss_glm_1,"/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_1.csv")
 rm(swiss_abA_1)
 rm(swiss_abB_1)
 rm(swiss_glm_1)
@@ -135,163 +135,163 @@ rm(swiss_1)
 
 
 
-swiss_2 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_2.csv")
+swiss_2 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_2.csv")
 swiss_abA_2 <-  abA(swiss_2,pop_order_2)
 swiss_abB_2 <-  abB(swiss_2,pop_order_2)
 swiss_glm_2 <- slope_melt(swiss_abA_2,swiss_abB_2) #Run glm function
-write_csv(swiss_glm_2,"/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_2.csv")
+write_csv(swiss_glm_2,"/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_2.csv")
 rm(swiss_abA_2)
 rm(swiss_abB_2)
 rm(swiss_glm_2)
 rm(swiss_2)
 
-swiss_3 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_3.csv")
+swiss_3 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_3.csv")
 swiss_abA_3 <-  abA(swiss_3,pop_order_2)
 swiss_abB_3 <-  abB(swiss_3,pop_order_2)
 swiss_glm_3 <- slope_melt(swiss_abA_3,swiss_abB_3) #Run glm function
-write_csv(swiss_glm_3,"/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_3.csv")
+write_csv(swiss_glm_3,"/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_3.csv")
 rm(swiss_abA_3)
 rm(swiss_abB_3)
 rm(swiss_glm_3)
 rm(swiss_3)
 
-swiss_4 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_4.csv")
+swiss_4 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_4.csv")
 swiss_abA_4 <-  abA(swiss_4,pop_order_2)
 swiss_abB_4 <-  abB(swiss_4,pop_order_2)
 swiss_glm_4 <- slope_melt(swiss_abA_4,swiss_abB_4) #Run glm function
-write_csv(swiss_glm_4,"/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_4.csv")
+write_csv(swiss_glm_4,"/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_4.csv")
 rm(swiss_abA_4)
 rm(swiss_abB_4)
 rm(swiss_glm_4)
 rm(swiss_4)
 
-swiss_5 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_5.csv")
+swiss_5 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_5.csv")
 swiss_abA_5 <-  abA(swiss_5,pop_order_2)
 swiss_abB_5 <-  abB(swiss_5,pop_order_2)
 swiss_glm_5 <- slope_melt(swiss_abA_5,swiss_abB_5) #Run glm function
-write_csv(swiss_glm_5,"/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_5.csv")
+write_csv(swiss_glm_5,"/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_5.csv")
 rm(swiss_abA_5)
 rm(swiss_abB_5)
 rm(swiss_glm_5)
 rm(swiss_5)
 
-swiss_6 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_6.csv")
+swiss_6 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_6.csv")
 swiss_abA_6 <-  abA(swiss_6,pop_order_2)
 swiss_abB_6 <-  abB(swiss_6,pop_order_2)
 swiss_glm_6 <- slope_melt(swiss_abA_6,swiss_abB_6) #Run glm function
-write_csv(swiss_glm_6,"/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_6.csv")
+write_csv(swiss_glm_6,"/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_6.csv")
 rm(swiss_abA_6)
 rm(swiss_abB_6)
 rm(swiss_glm_6)
 rm(swiss_6)
 
-swiss_7 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_7.csv")
+swiss_7 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_7.csv")
 swiss_abA_7 <-  abA(swiss_7,pop_order_2)
 swiss_abB_7 <-  abB(swiss_7,pop_order_2)
 swiss_glm_7 <- slope_melt(swiss_abA_7,swiss_abB_7) #Run glm function
-write_csv(swiss_glm_7,"/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_7.csv")
+write_csv(swiss_glm_7,"/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_7.csv")
 rm(swiss_abA_7)
 rm(swiss_abB_7)
 rm(swiss_glm_7)
 rm(swiss_7)
 
-swiss_8 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_8.csv")
+swiss_8 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_8.csv")
 swiss_abA_8 <-  abA(swiss_8,pop_order_2)
 swiss_abB_8 <-  abB(swiss_8,pop_order_2)
 swiss_glm_8 <- slope_melt(swiss_abA_8,swiss_abB_8) #Run glm function
-write_csv(swiss_glm_8,"/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_8.csv")
+write_csv(swiss_glm_8,"/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_8.csv")
 rm(swiss_abA_8)
 rm(swiss_abB_8)
 rm(swiss_glm_8)
 rm(swiss_8)
 
-swiss_9 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_9.csv")
+swiss_9 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_9.csv")
 swiss_abA_9 <-  abA(swiss_9,pop_order_2)
 swiss_abB_9 <-  abB(swiss_9,pop_order_2)
 swiss_glm_9 <- slope_melt(swiss_abA_9,swiss_abB_9) #Run glm function
-write_csv(swiss_glm_9,"/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_9.csv")
+write_csv(swiss_glm_9,"/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_9.csv")
 rm(swiss_abA_9)
 rm(swiss_abB_9)
 rm(swiss_glm_9)
 rm(swiss_9)
 
 
-swiss_10 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_10.csv")
+swiss_10 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_10.csv")
 swiss_abA_10 <-  abA(swiss_10,pop_order_2)
 swiss_abB_10 <-  abB(swiss_10,pop_order_2)
 swiss_glm_10 <- slope_melt(swiss_abA_10,swiss_abB_10) #Run glm function
-write_csv(swiss_glm_10,"/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_10.csv")
+write_csv(swiss_glm_10,"/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_10.csv")
 rm(swiss_abA_10)
 rm(swiss_abB_10)
 rm(swiss_glm_10)
 rm(swiss_10)
 
 
-swiss_11 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_11.csv")
+swiss_11 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_11.csv")
 swiss_abA_11 <-  abA(swiss_11,pop_order_2)
 swiss_abB_11 <-  abB(swiss_11,pop_order_2)
 swiss_glm_11 <- slope_melt(swiss_abA_11,swiss_abB_11) #Run glm function
-write_csv(swiss_glm_11,"/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_11.csv")
+write_csv(swiss_glm_11,"/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_11.csv")
 rm(swiss_abA_11)
 rm(swiss_abB_11)
 rm(swiss_glm_11)
 rm(swiss_11)
 
-swiss_12 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_12.csv")
+swiss_12 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_12.csv")
 swiss_abA_12 <-  abA(swiss_12,pop_order_2)
 swiss_abB_12 <-  abB(swiss_12,pop_order_2)
 swiss_glm_12 <- slope_melt(swiss_abA_12,swiss_abB_12) #Run glm function
-write_csv(swiss_glm_12,"/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_12.csv")
+write_csv(swiss_glm_12,"/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_12.csv")
 rm(swiss_abA_12)
 rm(swiss_abB_12)
 rm(swiss_glm_12)
 rm(swiss_12)
 
-swiss_13 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_13.csv")
+swiss_13 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_13.csv")
 swiss_abA_13 <-  abA(swiss_13,pop_order_2)
 swiss_abB_13 <-  abB(swiss_13,pop_order_2)
 swiss_glm_13 <- slope_melt(swiss_abA_13,swiss_abB_13) #Run glm function
-write_csv(swiss_glm_13,"/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_13.csv")
+write_csv(swiss_glm_13,"/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_13.csv")
 rm(swiss_abA_13)
 rm(swiss_abB_13)
 rm(swiss_glm_13)
 rm(swiss_13)
 
-swiss_14 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_14.csv")
+swiss_14 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_14.csv")
 swiss_abA_14 <-  abA(swiss_14,pop_order_2)
 swiss_abB_14 <-  abB(swiss_14,pop_order_2)
 swiss_glm_14 <- slope_melt(swiss_abA_14,swiss_abB_14) #Run glm function
-write_csv(swiss_glm_14,"/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_14.csv")
+write_csv(swiss_glm_14,"/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_14.csv")
 rm(swiss_abA_14)
 rm(swiss_abB_14)
 rm(swiss_glm_14)
 rm(swiss_14)
 
-swiss_15 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_15.csv")
+swiss_15 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_15.csv")
 swiss_abA_15 <-  abA(swiss_15,pop_order_2)
 swiss_abB_15 <-  abB(swiss_15,pop_order_2)
 swiss_glm_15 <- slope_melt(swiss_abA_15,swiss_abB_15) #Run glm function
-write_csv(swiss_glm_15,"/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_15.csv")
+write_csv(swiss_glm_15,"/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_15.csv")
 rm(swiss_abA_15)
 rm(swiss_abB_15)
 rm(swiss_glm_15)
 rm(swiss_15)
 
-swiss_16 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_16.csv")
+swiss_16 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_16.csv")
 swiss_abA_16 <-  abA(swiss_16,pop_order_2)
 swiss_abB_16 <-  abB(swiss_16,pop_order_2)
 swiss_glm_16 <- slope_melt(swiss_abA_16,swiss_abB_16) #Run glm function
-write_csv(swiss_glm_16,"/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_16.csv")
+write_csv(swiss_glm_16,"/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_16.csv")
 rm(swiss_abA_16)
 rm(swiss_abB_16)
 rm(swiss_glm_16)
 rm(swiss_16)
 
-swiss_17 <- read_csv("/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_50_50_abund_table_17.csv")
+swiss_17 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_50_50_abund_table_17.csv")
 swiss_abA_17 <-  abA(swiss_17,pop_order_2)
 swiss_abB_17 <-  abB(swiss_17,pop_order_2)
 swiss_glm_17 <- slope_melt(swiss_abA_17,swiss_abB_17) #Run glm function
-write_csv(swiss_glm_17,"/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_50_50_17.csv")
+write_csv(swiss_glm_17,"/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_17.csv")
 rm(swiss_abA_17)
 rm(swiss_abB_17)
 rm(swiss_glm_17)

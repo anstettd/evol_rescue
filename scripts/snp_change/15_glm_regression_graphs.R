@@ -173,7 +173,7 @@ freq_table_Final$Site <- factor(freq_table_Final$Site, levels = c(1,12,2,3,4,5,6
 ggplot(data=freq_table_Final ,aes(Year,Binomial_A,group=SNP_ID)) + 
   geom_line(stat="smooth",method = "glm", method.args = list(family = "binomial"), se = F, alpha=.09,cex=0.4,color="blue") + 
   labs(y="SNP Frequency",x="Year") +  facet_wrap(.~Site) + theme_spaghetti()
-ggsave("graphs/snp_change/glm_reg/Strong/spaghetii_obs.pdf",width=8, height = 7, units = "in")
+ggsave("graphs/snp_change/glm_reg/spaghetii_obs.pdf",width=8, height = 7, units = "in")
 
 
 

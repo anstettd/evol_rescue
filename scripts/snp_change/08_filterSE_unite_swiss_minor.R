@@ -51,14 +51,11 @@ swiss_glm <- rbind(swiss_glm_1,
                    swiss_glm_17)
 
 #Filter for SE < 5
-swiss_glm_filter <- swiss_glm %>% filter(SE<5.5)
-
-dim(swiss_glm)
-dim(swiss_glm_filter)
+swiss_glm_filter <- swiss_glm %>% filter(SE<5)
 
 #Export
 write_csv(swiss_glm_filter,"/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50.csv")
-write_csv(swiss_glm,"/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_all.csv")
+#write_csv(swiss_glm,"/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50_all.csv")
 
 #write_csv(swiss_glm_filter,"/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_ci_filter_minor.csv")
 #write_csv(swiss_glm,"/Users/daniel_anstett/Dropbox/AM_Workshop/Large_files/swiss_glm_ci_allSE_minor.csv")

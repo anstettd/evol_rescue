@@ -1,10 +1,7 @@
 ##################################################################################
-## Generate input for strength of selection graphs for unique SNPS
-## All ENV SNPs have been joined with duplicates removed
-## Processing for both observation and permuted CI
+## Make strenth of selection histograms
 ## Author Daniel Anstett
 ## 
-## Modified from https://jkzorz.github.io/2020/05/17/Error-bars.html
 ## Last Modified May 17, 2022
 ###################################################################################
 #Function
@@ -22,10 +19,10 @@ theme_ci <- function(){
 library(tidyverse)
 
 #Import files
-env_obs_ci_unique <- read_csv("data/binomial_strong/obs_ci_env_unique.csv")
+env_obs_ci_unique <- read_csv("data/snp_change_data/obs_ci_env_unique.csv")
 
 #Import Medians
-median_pop <- read_csv("data/binomial_strong/median_pop.csv")
+median_pop <- read_csv("data/snp_change_data/median_pop.csv")
 
 
 #Isolate each pop and lable
@@ -78,14 +75,8 @@ site_unique <- unique(site_unique)
 
 median_pop <- left_join(median_pop,site_unique, by="Site")
 
-env_histPop_2 <- env_histPop_25 %>% filter(Site==2 | Site==3 | Site==11)
 env_histPop_1 <- env_histPop_25 %>% filter(Site==3 | Site==11)
-#env_histPop_4 <- env_histPop_25 %>% filter(Site==4)
-#env_histPop_6 <- env_histPop_25 %>% filter(Site==6)
-#env_histPop_11 <- env_histPop_25 %>% filter(Site==11)
-
-median_pop_filter_2<-median_pop %>% filter(Site==1 | Site==3 | Site ==6 | Site==11)
-median_pop_filter_1<-median_pop %>% filter(Site==3 | Site==11)
+env_histPop_2 <- env_histPop_25 %>% filter(Site==2 | Site==3 | Site==11)
 
 
 
@@ -103,7 +94,7 @@ histPop <- ggplot(env_histPop ,aes(x=S,y=obs,ymin=low,ymax=high))+
   theme_ci() + facet_wrap(.~pop_lable) +
   geom_vline(data = median_pop, aes(xintercept = median), linetype="dashed")
 histPop 
-ggsave("graphs/histograms/strong/01_slope_ci_2.5.pdf", histPop, width=12, height = 8, units = "in")
+ggsave("Graphs/Selection/01_selection_2.5.pdf", histPop, width=12, height = 8, units = "in")
 
 
 # -1.25 to 1.25
@@ -117,7 +108,7 @@ histPop <- ggplot(env_histPop_25 ,aes(x=S,y=obs,ymin=low,ymax=high))+
   geom_vline(data = median_pop, aes(xintercept = median), linetype="dashed")
 
 histPop
-ggsave("graphs/histograms/strong/02_slope_ci_1.25.pdf", histPop, width=12, height = 8, units = "in")
+ggsave("Graphs/Selection/02_selection_1.25.pdf", histPop, width=12, height = 8, units = "in")
 
 
 
@@ -125,7 +116,7 @@ ggsave("graphs/histograms/strong/02_slope_ci_1.25.pdf", histPop, width=12, heigh
 ## Individual Graphs
 ###################################################################################
 
-#No CI
+#Sites 3, 11
 histPop1 <- ggplot(env_histPop_1 ,aes(x=S,y=obs,ymin=low,ymax=high))+
   geom_bar(colour = "black", stat = "identity", width = 0.1, fill = "lightblue1")+
   #geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.06) +
@@ -137,7 +128,7 @@ histPop1 <- ggplot(env_histPop_1 ,aes(x=S,y=obs,ymin=low,ymax=high))+
 
 histPop1
 #Export 
-ggsave("graphs/histograms/strong/03_slope_1.25_no_error.pdf",width=10, height = 4, units = "in")
+ggsave("Graphs/Selection/03_s_pop_3_11.pdf",width=10, height = 4, units = "in")
 
 
 #Sites 2, 3, 11
@@ -153,7 +144,7 @@ histPop1 <- ggplot(env_histPop_2 ,aes(x=S,y=obs,ymin=low,ymax=high))+
 
 histPop1
 #Export 
-ggsave("graphs/histograms/strong/04_Pop1_3_11.pdf",width=11, height = 3.5, units = "in")
+ggsave("Graphs/Selection/04_s_pop_1_3_11.pdf",width=11, height = 3.5, units = "in")
 
 
 

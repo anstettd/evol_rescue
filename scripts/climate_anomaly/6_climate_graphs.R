@@ -118,7 +118,7 @@ ppt_wt_lat<-ppt_wt_lat + theme(legend.position = "none",
   scale_x_discrete(labels=Site.label)
 ppt_wt_lat
 
-ggsave("graphs/Climate/PPT_wt_pop.pdf",width=12, height = 8, units = "in")
+ggsave("graphs/Climate/PPT_wt_pop.pdf",width=6, height = 8, units = "in")
 
 
 

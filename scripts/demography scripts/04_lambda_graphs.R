@@ -29,7 +29,7 @@ for (i in 1:length(packages_needed)){
 ### 1. Read in lambda estimates for each site and year & manupulate
 #*******************************************************************************
 dat <- read.csv("data/demography data/siteYear.lambda_2010-2019.csv")
-pop_key <- read_csv("data/genomic_data/offset_pop_beagle.csv") %>% dplyr::select(Site, Paper_ID) #just to get translation of pop names <--> numbers
+pop_key <- read_csv("data/genomic_data/pop_meta_data.csv") %>% dplyr::select(Site, Paper_ID) #just to get translation of pop names <--> numbers
 pop_key[20,1] <- "Mill Creek"
 pop_key[20,2] <- 12
 dat<-left_join(dat,pop_key,by="Site") %>% mutate(lat.2 = round(Latitude, 2), 
@@ -158,6 +158,20 @@ plot_4 <- ggplot(dat_coast, aes(x=Year, y=lambda)) + geom_point(size=2) +
 ggsave("Graphs/Demography/sites/04_coast_fork.pdf",width=6, height = 4, units = "in")
 
 
+#*******************************************************************************
+### 3. Visualize estimates over time for select sites decline
+#*******************************************************************************
 
-
-
+#Little Jamison
+dat_little <- dat %>% filter(Paper_ID==7) %>% filter(Year<2015)
+plot_3 <- ggplot(dat_little, aes(x=Year, y=lambda)) + geom_point(size=2) +
+  geom_smooth(data=filter(dat_little, Year<2015), method="lm", se=FALSE, col="red") +
+  #geom_smooth(data=filter(dat_little, Year>2014), method="lm", se=FALSE, col="blue") +
+  scale_y_continuous(name="Lambda")+ scale_x_continuous(name="")+
+  geom_hline(yintercept=1, linetype="dotted") + theme_classic() + theme(
+    #facet_wrap(~Site.Lat, scale="free") + theme_classic() + theme(
+    axis.text.x = element_text(size=18,face="bold"),
+    axis.text.y = element_text(size=18,face="bold"),
+    axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=22,vjust = 2, face="bold",hjust=0.5))
+ggsave("Graphs/Demography/sites/05_little_jamison.pdf",width=5, height = 4, units = "in")

@@ -4,7 +4,7 @@
 ## Convert monthly temp & precip data October (of the previous year) to September Climate Data
 ## Average across calcualted years 1980 to 2009 
 ## 
-## Last Modified January 22, 2020
+## Last Modified May 2, 2024
 ###################################################################################
 
 # Monthly climate data obtained from Climate NA 

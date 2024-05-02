@@ -3,7 +3,7 @@
 ## CALCULATE WEATHER FOR 2010-2016 
 ## Convert monthly temp & precip data October (of the previous year) to September Annual Weather Data
 ##   
-## Last Modified January 22, 2020
+## Last Modified May 2, 2024
 ###################################################################################
 
 # Monthly climate data obtained from Climate NA 

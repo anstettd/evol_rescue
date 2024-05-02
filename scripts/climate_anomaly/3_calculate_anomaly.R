@@ -3,7 +3,7 @@
 ## CALCULATE DROUGHT ANOMALIES
 ## Use modified weather and cliamte data 
 ## 
-## Last Modified January 22, 2020
+## Last Modified May 2, 2024
 ###################################################################################
 
 ###################################################################################
@@ -81,7 +81,7 @@ seasonal_2018 <- read.csv("data/climate_data/Seasonal/demography_pop_20_Year_201
 seasonal_2019 <- read.csv("data/climate_data/Seasonal/demography_pop_20_Year_2019S.csv", header=T) %>% mutate(Year=2019)
 seasonal_8110 <- read.csv("data/climate_data/Seasonal/demography_pop_20_Normal_1981_2010S.csv", header=T) %>% mutate(Year=8110)
 
-#Merge an calculate anomaly
+#Merge and calculate anomaly
 seasonal_8110 <- seasonal_8110 %>% select(Site,Tave_wt, Tave_sm, PPT_wt, PPT_sm)
 colnames(seasonal_8110) <- c("Site","Tave_wt.clim", "Tave_sm.clim", "PPT_wt.clim", "PPT_sm.clim")
 seasonal <- rbind(seasonal_2010,

@@ -11,13 +11,13 @@ library(GGally)
 library(Hmisc)
 library(RColorBrewer)
 
+#Import population metadata
+pop_meta <- read_csv("data/genomic_data/pop_meta_data.csv") %>% dplyr::select(Site, Paper_ID) #just to get translation of pop names <--> numbers
+pop_meta[20,1] <- "Mill Creek" #Fill in missing information
+pop_meta[20,2] <- 12
 
-#Import data & Prepare data frame
-offset_pop <- read_csv("data/genomic_data/offset_pop_beagle.csv") %>% dplyr::select(Site, Paper_ID) #just to get translation of pop names <--> numbers
-offset_pop[20,1] <- "Mill Creek"
-offset_pop[20,2] <- 12
 demog_recovery <- read_csv("data/demography data/siteYear.lambda_responses_2010-2019.csv")
-demog_recovery <- left_join(demog_recovery,offset_pop,by=c("Site"="Site")) %>% 
+demog_recovery <- left_join(demog_recovery,pop_meta ,by=c("Site"="Site")) %>% 
   rename(Site_Name=Site) %>% 
   filter(Paper_ID!=10) %>% filter(Paper_ID!=12)
 anoms <- read_csv("data/climate_data/climate_anomaly.csv") %>% filter(Paper_ID!=12)
@@ -28,7 +28,7 @@ drought.period <- demo_pop %>%
   dplyr::select(lambda.slope.decline, lambda.mean.drought, 
                 MAT_1215, MAP_1215, PAS_1215, CMD_1215, Tave_wt_1215, 
                 Tave_sm_1215, PPT_wt_1215, PPT_sm_1215)
-ggpairs(drought.period)
+#ggpairs(drought.period)
 
 
 demo_decline_anom <- rcorr(as.matrix(drought.period))
@@ -39,7 +39,7 @@ write.csv(demo_decline_anom$P,"data/climate_data/rcorr_demo_decline_anom_p.csv")
 
 
 ###################################################################################
-#Plot decline vs significant env variables
+#Plot decline vs significant env variables 
 
 # N-S color gradient
 lat_cols=colorRampPalette(brewer.pal(10,"Spectral"))

@@ -27,7 +27,7 @@ library(tidyverse)
 #HistPop unique SNP ascorss all env
 #Updated for binomial data
 obs_env_unique <- read_csv("data/snp_change_data/slope_obs_all_unique.csv") %>% 
-  filter(SE<5.5) %>% mutate(abs_slope = abs(Slope))
+  filter(SE<5) %>% mutate(abs_slope = abs(Slope))
 rand_env_unique <- read_csv("~/Dropbox/z_Documents/aLarge_files/M_gen/rand_slope_histPop_strong_50_50_no_strat.csv")
 
 #Get slope median
@@ -96,10 +96,10 @@ mean_rand$Site <- factor(mean_rand$Site, levels = c(1,12,2,3,4,5,6,7,8,9,10,11))
 #Median 
 histPop <- ggplot(median_rand,aes(x=median))+
   geom_histogram(color="black",fill = "pink")+
-  labs(x = "Non-Climate Associated S Median", y = "Number of Permutations") +
+  labs(x = "Median Strength of Selection", y = "Number of Permutations") +
   geom_vline(xintercept=0) +
   theme_ci() + facet_wrap(.~Site) +
-geom_vline(data = median_obs, aes(xintercept = median), linetype="dashed",color="red")
+geom_vline(data = median_obs, aes(xintercept = median), size=0.5, linetype="dashed",color="blue")
 histPop 
 
 ggsave("Graphs/mean_median_selection/01_rand_median.pdf",width=12, height = 8, units = "in")
@@ -109,17 +109,18 @@ ggsave("Graphs/mean_median_selection/01_rand_median.pdf",width=12, height = 8, u
 #Mean
 histPop_mean <- ggplot(mean_rand,aes(x=mean))+
   geom_histogram(color="black",fill = "pink")+
-  labs(x = "Non-Climate Associated S Mean", y = "Number of Permutations") +
+  labs(x = "Mean Strength of Selection", y = "Number of Permutations") +
   geom_vline(xintercept=0) +
   theme_ci() + facet_wrap(.~Site) +
-  geom_vline(data = mean_obs, aes(xintercept = mean), linetype="dashed",color="red")
+  geom_vline(data = mean_obs, aes(xintercept = mean), size=0.5, linetype="dashed",color="blue")
 histPop_mean
 
 ggsave("Graphs/mean_median_selection/02_rand_mean.pdf",width=12, height = 8, units = "in")
 
 
 ###################################################################################
-#Site specific histograms
+#Site specific histograms Median
+###################################################################################
 
 median_rand_pops <- median_rand %>% filter(Site == 2 | Site == 3 | Site == 11)
 median_obs_pops <- median_obs %>% filter(Site == 2 | Site == 3 | Site == 11)
@@ -129,10 +130,11 @@ median_rand_pops$Site <- droplevels(median_rand_pops$Site) %>% na.omit()
 #Median 
 histPops <- ggplot(median_rand_pops,aes(x=median))+
   geom_histogram(color="black",fill = "pink")+
-  labs(x = "Non-Climate Associated S Median", y = "Number of Permutations") +
+  labs(x = "Median Strength of Selection", y = "Number of Permutations") +
   geom_vline(xintercept=0) +
   theme_ci() + facet_wrap(.~Site) +
-  geom_vline(data = median_obs_pops, aes(xintercept = median), linetype="dashed",color="red")+
+  geom_vline(data = median_obs_pops, aes(xintercept = median), size=1, linetype="dashed",color="blue")+
+  scale_x_continuous(breaks=c(-0.05,0,0.05))+
   theme(strip.text.x = element_text(size=0))
 histPops
 
@@ -151,12 +153,58 @@ histPops <- ggplot(median_rand_pops,aes(x=median))+
   labs(x = "Median SNP Change", y = "Number of Permutations") +
   geom_vline(xintercept=0) +
   theme_ci() + facet_wrap(.~Site) +
-  geom_vline(data = median_obs_pops, aes(xintercept = median), linetype="dashed",color="red")+
+  geom_vline(data = median_obs_pops, aes(xintercept = median), size=1, linetype="dashed",color="blue")+
   scale_x_continuous(breaks=c(-0.05,0,0.05))+
   theme(strip.text.x = element_text(size=0))
 histPops
 
 ggsave("Graphs/mean_median_selection/04_median_pop_3_11.pdf",width=9, height = 3.5, units = "in")
+
+
+
+###################################################################################
+#Site specific histograms Mean
+###################################################################################
+
+mean_rand_pops <- mean_rand %>% filter(Site == 2 | Site == 3 | Site == 11)
+mean_obs_pops <- mean_obs %>% filter(Site == 2 | Site == 3 | Site == 11)
+
+mean_rand_pops$Site <- droplevels(mean_rand_pops$Site) %>% na.omit()
+
+#mean 
+histPops <- ggplot(mean_rand_pops,aes(x=mean))+
+  geom_histogram(color="black",fill = "pink")+
+  labs(x = "Mean Strength of Selection", y = "Number of Permutations") +
+  geom_vline(xintercept=0) +
+  theme_ci() + facet_wrap(.~Site) +
+  geom_vline(data = mean_obs_pops, aes(xintercept = mean), size=1, linetype="dashed",color="blue")+
+  scale_x_continuous(breaks=c(-0.05,0,0.05))+
+  theme(strip.text.x = element_text(size=0))
+histPops
+
+ggsave("Graphs/mean_median_selection/05_mean_pop_2_3_11.pdf",width=11, height = 3.5, units = "in")
+
+
+
+mean_rand_pops <- mean_rand %>% filter(Site == 3 | Site == 11)
+mean_obs_pops <- mean_obs %>% filter(Site == 3 | Site == 11)
+
+mean_rand_pops$Site <- droplevels(mean_rand_pops$Site) %>% na.omit()
+
+#mean 
+histPops <- ggplot(mean_rand_pops,aes(x=mean))+
+  geom_histogram(color="black",fill = "pink")+
+  labs(x = "Mean SNP Change", y = "Number of Permutations") +
+  geom_vline(xintercept=0) +
+  theme_ci() + facet_wrap(.~Site) +
+  geom_vline(data = mean_obs_pops, aes(xintercept = mean), size=1, linetype="dashed",color="blue")+
+  scale_x_continuous(breaks=c(-0.05,0,0.05))+
+  theme(strip.text.x = element_text(size=0))
+histPops
+
+ggsave("Graphs/mean_median_selection/06_mean_pop_3_11.pdf",width=9, height = 3.5, units = "in")
+
+
 
 
 

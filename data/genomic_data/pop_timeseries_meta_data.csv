@@ -1,0 +1,13 @@
+Site_Name,Lat,Long,Paper_ID,Baseline/Timesieries,Region
+Sweetwater,32.89928,-116.5849,1,Timeseries,South
+West Fork Mojave River,34.28425,-117.37539,2,Timeseries,South
+NFMF Tule,36.20081,-118.65092,3,Timeseries,Center
+Redwoods,36.69096,-118.90961,4,Timeseries,Center
+Wawona,37.539,-119.654,5,Timeseries,Center
+Oregon Creek,39.39442,-121.08302,6,Timeseries,Center
+Little Jameson Creek,39.74298,-120.70401,7,Timeseries,Center
+Deep Creek,41.66546,-123.11341,8,Timeseries,North
+O'Neil Creek,41.80979,-123.11887,9,Timeseries,North
+Deer Creek,42.27411,-123.63617,10,Timeseries,North
+Rock Creek,43.37876,-122.95207,11,Timeseries,North
+Mill Creek,34.07808,-116.87558,12,Timeseries,South

@@ -19,7 +19,7 @@ demog_recovery <- read_csv("data/demography data/siteYear.lambda_responses_2010-
 demog_recovery <- left_join(demog_recovery,pop_meta,by=c("Site"="Site")) %>% rename(Site_Name=Site)
 
 #Import Mean Median Selection data
-slope.summary <- read_csv("data/snp_change_data/mean_median_S.csv") %>%  select(Site,Median,Mean)
+slope.summary <- read_csv("data/snp_change_data/mean_median_S.csv") %>% select(Site,Median,Mean)
 
 #Remove unneeded sites
 demo_pop <- left_join(slope.summary,demog_recovery,by=c("Site"="Paper_ID")) %>% filter(Site!=10) %>% 

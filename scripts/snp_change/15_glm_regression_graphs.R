@@ -187,7 +187,7 @@ ggplot(data=freq_env_ver1 ,aes(Year,Binomial_A,group=SNP_ID)) +
   labs(y="SNP Frequency",x="Year") +  facet_wrap(.~Site) + theme_spaghetti() +  
   theme(strip.text.x = element_text(size=0),axis.title = element_text(size =18, face = "bold"),
         axis.title.x = element_blank(), axis.text.x = element_text(size = 16, face = "bold", angle = 45,hjust = 1, vjust = 1))
-ggsave("graphs/snp_change/glm_reg/1_3_11spaghetii_obs.pdf",width=14, height = 5, units = "in")
+ggsave("graphs/snp_change/glm_reg/2_3_11spaghetii_obs.pdf",width=14, height = 5, units = "in")
 
 freq_env_ver2 <- freq_table_Final %>% filter(Site==1 | Site==3 | Site==6 | Site==11)
 ggplot(data=freq_env_ver2 ,aes(Year,Binomial_A,group=SNP_ID)) + 

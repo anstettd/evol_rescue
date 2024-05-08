@@ -456,6 +456,33 @@ snp_set_all <- rbind(snp_set_env1,
 snp_set_env <- as.data.frame(unique(snp_set_all$chr_snp))
 colnames(snp_set_env) <- "chr_snp"
 
+
+#Write out WZA BayPass SNP set
+
+### These files are used in snp change script 1
+write_csv(snp_set_env1,"data/genomic_data/snp_set_env1.csv")
+write_csv(snp_set_env2,"data/genomic_data/snp_set_env2.csv")
+write_csv(snp_set_env3,"data/genomic_data/snp_set_env3.csv")
+write_csv(snp_set_env4,"data/genomic_data/snp_set_env4.csv")
+write_csv(snp_set_env5,"data/genomic_data/snp_set_env5.csv")
+write_csv(snp_set_env6,"data/genomic_data/snp_set_env6.csv")
+write_csv(snp_set_env7,"data/genomic_data/snp_set_env7.csv")
+write_csv(snp_set_env8,"data/genomic_data/snp_set_env8.csv")
+write_csv(snp_set_env9,"data/genomic_data/snp_set_env9.csv")
+
+
+### Main snp set file that is used in most downstream steps
+write_csv(snp_set_env,"data/genomic_data/snp_set_env.csv")
+
+
+
+
+
+
+
+#############################################################################################################
+#Other cutoffs
+
 #BF>30
 snp_set_all_bf30 <- rbind(env1_united_bf30,
                           env2_united_bf30,
@@ -500,68 +527,48 @@ colnames(snp_set_env_wza10) <- "chr_snp"
 
 
 
-#Write out WZA BayPass SNP set
-
-### These files are used in snp change script 1
-write_csv(snp_set_env1,"data/genomic_data/snp_set_env1.csv")
-write_csv(snp_set_env2,"data/genomic_data/snp_set_env2.csv")
-write_csv(snp_set_env3,"data/genomic_data/snp_set_env3.csv")
-write_csv(snp_set_env4,"data/genomic_data/snp_set_env4.csv")
-write_csv(snp_set_env5,"data/genomic_data/snp_set_env5.csv")
-write_csv(snp_set_env6,"data/genomic_data/snp_set_env6.csv")
-write_csv(snp_set_env7,"data/genomic_data/snp_set_env7.csv")
-write_csv(snp_set_env8,"data/genomic_data/snp_set_env8.csv")
-write_csv(snp_set_env9,"data/genomic_data/snp_set_env9.csv")
-
-
-### Main snp set file that is used in most downstream steps
-write_csv(snp_set_env,"data/genomic_data/snp_set_env.csv")
-
-
-
-
 
 
 
 ###########################################################################################################
 #Write only SNP set for BF>30 only
 
-write_csv(env1_united_bf30,"data/genomic_data/snp_set_bf30_env1.csv")
-write_csv(env2_united_bf30,"data/genomic_data/snp_set_bf30_env2.csv")
-write_csv(env3_united_bf30,"data/genomic_data/snp_set_bf30_env3.csv")
-write_csv(env4_united_bf30,"data/genomic_data/snp_set_bf30_env4.csv")
-write_csv(env5_united_bf30,"data/genomic_data/snp_set_bf30_env5.csv")
-write_csv(env6_united_bf30,"data/genomic_data/snp_set_bf30_env6.csv")
-write_csv(env7_united_bf30,"data/genomic_data/snp_set_bf30_env7.csv")
-write_csv(env8_united_bf30,"data/genomic_data/snp_set_bf30_env8.csv")
-write_csv(env9_united_bf30,"data/genomic_data/snp_set_bf30_env9.csv")
-write_csv(snp_set_env_bf30,"data/genomic_data/snp_set_bf30.csv")
+#write_csv(env1_united_bf30,"data/genomic_data/snp_set_bf30_env1.csv")
+#write_csv(env2_united_bf30,"data/genomic_data/snp_set_bf30_env2.csv")
+#write_csv(env3_united_bf30,"data/genomic_data/snp_set_bf30_env3.csv")
+#write_csv(env4_united_bf30,"data/genomic_data/snp_set_bf30_env4.csv")
+#write_csv(env5_united_bf30,"data/genomic_data/snp_set_bf30_env5.csv")
+#write_csv(env6_united_bf30,"data/genomic_data/snp_set_bf30_env6.csv")
+#write_csv(env7_united_bf30,"data/genomic_data/snp_set_bf30_env7.csv")
+#write_csv(env8_united_bf30,"data/genomic_data/snp_set_bf30_env8.csv")
+#write_csv(env9_united_bf30,"data/genomic_data/snp_set_bf30_env9.csv")
+#write_csv(snp_set_env_bf30,"data/genomic_data/snp_set_bf30.csv")
 
 #Write only SNP set for BF>20 only
 
-write_csv(env1_united_bf20,"data/genomic_data/snp_set_bf20_env1.csv")
-write_csv(env2_united_bf20,"data/genomic_data/snp_set_bf20_env2.csv")
-write_csv(env3_united_bf20,"data/genomic_data/snp_set_bf20_env3.csv")
-write_csv(env4_united_bf20,"data/genomic_data/snp_set_bf20_env4.csv")
-write_csv(env5_united_bf20,"data/genomic_data/snp_set_bf20_env5.csv")
-write_csv(env6_united_bf20,"data/genomic_data/snp_set_bf20_env6.csv")
-write_csv(env7_united_bf20,"data/genomic_data/snp_set_bf20_env7.csv")
-write_csv(env8_united_bf20,"data/genomic_data/snp_set_bf20_env8.csv")
-write_csv(env9_united_bf20,"data/genomic_data/snp_set_bf20_env9.csv")
-write_csv(snp_set_env_bf20,"data/genomic_data/snp_set_bf20.csv")
+#write_csv(env1_united_bf20,"data/genomic_data/snp_set_bf20_env1.csv")
+#write_csv(env2_united_bf20,"data/genomic_data/snp_set_bf20_env2.csv")
+#write_csv(env3_united_bf20,"data/genomic_data/snp_set_bf20_env3.csv")
+#write_csv(env4_united_bf20,"data/genomic_data/snp_set_bf20_env4.csv")
+#write_csv(env5_united_bf20,"data/genomic_data/snp_set_bf20_env5.csv")
+#write_csv(env6_united_bf20,"data/genomic_data/snp_set_bf20_env6.csv")
+#write_csv(env7_united_bf20,"data/genomic_data/snp_set_bf20_env7.csv")
+#write_csv(env8_united_bf20,"data/genomic_data/snp_set_bf20_env8.csv")
+#write_csv(env9_united_bf20,"data/genomic_data/snp_set_bf20_env9.csv")
+#write_csv(snp_set_env_bf20,"data/genomic_data/snp_set_bf20.csv")
 
 #Write out for WZA BF>10 only
 
-write_csv(snp_env1_peakbf10_win,"data/genomic_data/snp_set_wza10_env1.csv")
-write_csv(snp_env2_peakbf10_win,"data/genomic_data/snp_set_wza10_env2.csv")
-write_csv(snp_env3_peakbf10_win,"data/genomic_data/snp_set_wza10_env3.csv")
-write_csv(snp_env4_peakbf10_win,"data/genomic_data/snp_set_wza10_env4.csv")
-write_csv(snp_env5_peakbf10_win,"data/genomic_data/snp_set_wza10_env5.csv")
-write_csv(snp_env6_peakbf10_win,"data/genomic_data/snp_set_wza10_env6.csv")
-write_csv(snp_env7_peakbf10_win,"data/genomic_data/snp_set_wza10_env7.csv")
-write_csv(snp_env8_peakbf10_win,"data/genomic_data/snp_set_wza10_env8.csv")
-write_csv(snp_env9_peakbf10_win,"data/genomic_data/snp_set_wza10_env9.csv")
-write_csv(snp_set_env_wza10,"data/genomic_data/snp_set_wza10.csv")
+#write_csv(snp_env1_peakbf10_win,"data/genomic_data/snp_set_wza10_env1.csv")
+#write_csv(snp_env2_peakbf10_win,"data/genomic_data/snp_set_wza10_env2.csv")
+#write_csv(snp_env3_peakbf10_win,"data/genomic_data/snp_set_wza10_env3.csv")
+#write_csv(snp_env4_peakbf10_win,"data/genomic_data/snp_set_wza10_env4.csv")
+#write_csv(snp_env5_peakbf10_win,"data/genomic_data/snp_set_wza10_env5.csv")
+#write_csv(snp_env6_peakbf10_win,"data/genomic_data/snp_set_wza10_env6.csv")
+#write_csv(snp_env7_peakbf10_win,"data/genomic_data/snp_set_wza10_env7.csv")
+#write_csv(snp_env8_peakbf10_win,"data/genomic_data/snp_set_wza10_env8.csv")
+#write_csv(snp_env9_peakbf10_win,"data/genomic_data/snp_set_wza10_env9.csv")
+#write_csv(snp_set_env_wza10,"data/genomic_data/snp_set_wza10.csv")
 
 
 

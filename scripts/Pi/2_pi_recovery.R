@@ -56,9 +56,9 @@ color.list <- lat_cols(n.sites)
 ggplot(pi_pop, aes(x=pi_snp_set, y=lambda.mean.recovery)) + 
   geom_point(aes(fill=as.factor(round(Latitude, 1))),shape=21,size =6)+
   geom_smooth(method=lm,color="black")+
-  scale_y_continuous(name="Mean Lambda after Drought",breaks=seq(0,5,1))+
+  scale_y_continuous(name="Mean Lambda after Drought", limits=c(-0.3,2.5),breaks=seq(0,2.5,0.5))+
   scale_x_continuous(name="Pi (Climate SNP)")+
-                    # ,breaks=c(0.025,0.03,0.035,0.04,0.045))+
+                     #, limits=c(0.2,0.35),breaks=seq(0.1,0.35,0.05))+
   scale_fill_manual(values=color.list) +
   theme_classic() + theme(
     axis.text.x = element_text(size=20, face="bold"),
@@ -77,7 +77,7 @@ ggsave("Graphs/Demography_pi/3_pi_demography_snpset.pdf",width=8, height = 6, un
 ggplot(pi_pop, aes(x=pi_all_snps, y=lambda.mean.recovery)) + 
   geom_point(aes(fill=as.factor(round(Latitude, 1))),shape=21,size =6)+
   geom_smooth(method=lm,color="black", lty="dashed", se=FALSE)+
-  scale_y_continuous(name="Mean Lambda after Drought")+
+  scale_y_continuous(name="Mean Lambda after Drought", limits=c(-0.3,2.5), breaks=seq(0,2.5,0.5))+
   scale_x_continuous(name="Pi (Genome-Wide)")+
                      #,breaks=c(0.04,0.045,0.05,0.055,0.06))+
   scale_fill_manual(values=color.list) +

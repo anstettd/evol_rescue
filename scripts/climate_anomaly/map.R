@@ -63,6 +63,23 @@ mim
 tmap_save(mim, filename = "Graphs/Maps/base_time.png",width=4, height=7)
 
 
+#Baseline + Timeseries, Greyscale
+tmap_mode("plot")
+#tmap_mode("view")
+mim <-
+  tm_shape(calo)+
+  tm_borders()+
+  tm_shape(baseline_pop_sf)+
+  tm_dots(size=0.6,shape=4)+
+  tm_shape(timeseries_pop_sf)+
+  tm_dots(size=0.8,shape=24)+
+  tm_layout(legend.position = c(1.03, 0.73),legend.title.size = 0.001,frame.lwd = NA)
+mim
+tmap_save(mim, filename = "Graphs/Maps/base_time_grey.png",width=4, height=7)
+
+
+
+
 #Plot Baseline
 tmap_mode("plot")
 #tmap_mode("view")

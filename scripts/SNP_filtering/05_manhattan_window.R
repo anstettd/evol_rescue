@@ -256,3 +256,60 @@ wza_empri_map <- ggplot(data = wza_win_env9, aes( x = pos/1e6, y = -log10(Z_pVal
 wza_empri_map
 ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Evol_rescue/Large_graphs/WZA/wza_env9_bf.png", wza_empri_map, width=13, height = 4.5, units = "in")
 
+
+
+
+
+
+
+#ENV8 Grey Scale
+wza_empri_map <- ggplot(data = wza_win_env8, aes( x = pos/1e6, y = -log10(Z_pVal)))+
+  geom_point(aes(color=as.factor(chr), alpha=0.9))+
+  scale_y_continuous("-log10(p-value)", limits=c(0,10))+
+  scale_x_continuous("Position (Mbp)")+
+  geom_hline(aes(yintercept = -log10(0.05/dim(wza_win_env8)[1])), col = "red", lty = 2, lwd = 1)+
+  scale_color_manual(values = rep(c("grey70", "grey70"), 22 )) +
+  theme_classic()+
+  theme(
+    legend.position="none",
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.background = element_blank(),
+    plot.title = element_text(hjust = 0.8),
+    strip.background = element_blank(),
+    strip.placement = "outside",
+    axis.text.x = element_text(size=20, face="bold"),
+    axis.text.y = element_text(size=20,face="bold"),
+    axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=24,vjust = 1.4, face="bold",hjust=0.5)
+  )
+wza_empri_map
+ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Evol_rescue/Large_graphs/WZA/wza_grey_env8_bf.png", wza_empri_map, width=13, height = 4.5, units = "in")
+
+#ENV8 Grey/black Scale
+wza_empri_map <- ggplot(data = wza_win_env8, aes( x = pos/1e6, y = -log10(Z_pVal)))+
+  geom_point(aes(color=as.factor(chr), alpha=0.9))+
+  scale_y_continuous("-log10(p-value)", limits=c(0,10))+
+  scale_x_continuous("Position (Mbp)")+
+  geom_hline(aes(yintercept = -log10(0.05/dim(wza_win_env8)[1])), col = "red", lty = 2, lwd = 1)+
+  scale_color_manual(values = rep(c("black", "grey60"), 22 )) +
+  theme_classic()+
+  theme(
+    legend.position="none",
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.background = element_blank(),
+    plot.title = element_text(hjust = 0.8),
+    strip.background = element_blank(),
+    strip.placement = "outside",
+    axis.text.x = element_text(size=20, face="bold"),
+    axis.text.y = element_text(size=20,face="bold"),
+    axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=24,vjust = 1.4, face="bold",hjust=0.5)
+  )
+wza_empri_map
+ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Evol_rescue/Large_graphs/WZA/wza_grey_black_env8_bf.png", wza_empri_map, width=13, height = 4.5, units = "in")
+
+

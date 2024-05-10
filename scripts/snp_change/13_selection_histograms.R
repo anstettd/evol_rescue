@@ -97,7 +97,7 @@ mean_pop <- left_join(mean_pop,site_unique, by="Site")
 
 # -2.5 to 2.5
 histPop <- ggplot(env_histPop ,aes(x=S,y=obs,ymin=low,ymax=high))+
-  geom_bar(colour = "black", stat = "identity", width = 0.1, fill = "lightblue1")+
+  geom_bar(colour = "black", stat = "identity", width = 0.1, fill = "pink")+ # was lightblue1
   #geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.06) +
   geom_vline(xintercept=0) +
   labs(x = "Strength of Selection", y = "Number of SNPs") +
@@ -110,7 +110,7 @@ ggsave("Graphs/Selection/01_selection_2.5.pdf", histPop, width=12, height = 8, u
 
 # -1.25 to 1.25
 histPop <- ggplot(env_histPop_25 ,aes(x=S,y=obs,ymin=low,ymax=high))+
-  geom_bar(colour = "black", stat = "identity", width = 0.1, fill = "lightblue1")+
+  geom_bar(colour = "black", stat = "identity", width = 0.1, fill = "pink")+
   #geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.06) +
   geom_vline(xintercept=0) +
   labs(x = "Strength of Selection", y = "Number of SNPs") +
@@ -192,15 +192,18 @@ ggsave("Graphs/Selection/05_s_pop_3_11_mean.pdf",width=10, height = 4, units = "
 #Sites 2, 3, 11
 
 histPop1 <- ggplot(env_histPop_2 ,aes(x=S,y=obs,ymin=low,ymax=high))+
-  geom_bar(colour = "black", stat = "identity", width = 0.1, fill = "lightblue1")+
+  geom_bar(colour = "black", stat = "identity", width = 0.1, fill = "pink")+
   #geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.06) +
   geom_vline(xintercept=0) +
   labs(x = "Strength of Selection", y = "Number of SNPs") +
   scale_y_continuous(breaks=seq(0,100,by=25))+ 
   theme_ci() + facet_wrap(.~pop_lable, ncol = 4) + theme(strip.text.x = element_text(size=0)) +
-  geom_vline(data = mean_pop_filter_2, aes(xintercept = mean), size=0.8, linetype="dashed",color="blue")
+  geom_vline(data = mean_pop_filter_2, aes(xintercept = mean), size=1.5,color="red")
 
 histPop1
 #Export 
 ggsave("Graphs/Selection/06_s_pop_2_3_11_mean.pdf",width=11, height = 3.5, units = "in")
+
+
+
 

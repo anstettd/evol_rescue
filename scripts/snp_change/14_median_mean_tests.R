@@ -173,11 +173,11 @@ mean_rand_pops$Site <- droplevels(mean_rand_pops$Site) %>% na.omit()
 
 #mean 
 histPops <- ggplot(mean_rand_pops,aes(x=mean))+
-  geom_histogram(color="black",fill = "pink")+
+  geom_histogram(color="black",fill = "grey70")+
   labs(x = "Mean Strength of Selection", y = "Number of Permutations") +
   geom_vline(xintercept=0) +
   theme_ci() + facet_wrap(.~Site) +
-  geom_vline(data = mean_obs_pops, aes(xintercept = mean), size=1, linetype="dashed",color="blue")+
+  geom_vline(data = mean_obs_pops, aes(xintercept = mean), size=1.5, color="red")+
   scale_x_continuous(breaks=c(-0.05,0,0.05))+
   theme(strip.text.x = element_text(size=0))
 histPops

@@ -21,7 +21,7 @@ cumul <- read_csv("data/genomic_data/pop_meta_data.csv")
 demog_recovery <- left_join(demog_recovery,pop_meta,by=c("Site"="Site")) %>% rename(Site_Name=Site)
 demo_pop <- left_join(cumul,demog_recovery,by="Paper_ID") %>% filter(Paper_ID!=10) %>% filter(Paper_ID!=12)
 anoms <- read_csv("data/climate_data/climate_anomaly.csv")
-demo_pop <- left_join(demo_pop, anoms)
+demo_pop <- left_join(demo_pop, anoms) %>% filter(Site!="Mill Creek") %>% filter(Site!="Buck Meadows") 
 
 
 recovery.period <- demo_pop %>% 
@@ -42,16 +42,16 @@ demo_recovery_anom <- rcorr(as.matrix(recovery.period))
 #Plot decline vs significant env variables 
 
 # N-S color gradient
-lat_cols=colorRampPalette(brewer.pal(10,"Spectral"))
-n.sites <- length(unique(demo_pop$Paper_ID))
+lat_cols=colorRampPalette(brewer.pal(11,"Spectral"))
+n.sites <- length(unique(demo_pop$Paper_ID)) -2
 color.list <- lat_cols(n.sites)
 
 
 #Population recovery and climate anomalies
-a <- ggplot(demo_pop, aes(x=PPT_wt_1619, y=lambda.mean.drought)) + 
+a <- ggplot(demo_pop, aes(x=PPT_wt_1619, y=lambda.mean.recovery)) + 
   geom_point(aes(fill=as.factor(round(Latitude.x, 1))),shape=21,size =6)+
   geom_smooth(method=lm,color="black", lty="dashed", se=FALSE)+
-  scale_y_continuous(name="Mean Lambda During Drought")+
+  scale_y_continuous(name="Mean Lambda After Drought", limits=c(0,2.5), breaks=seq(0,2.5,0.5))+
   scale_x_continuous(name="Winter Precipitation Anomaly")+
   #,breaks=c(0.04,0.045,0.05,0.055,0.06))+
   scale_fill_manual(values=color.list) +

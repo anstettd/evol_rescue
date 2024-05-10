@@ -43,7 +43,7 @@ write.csv(demo_decline_anom$P,"data/climate_data/rcorr_demo_decline_anom_p.csv")
 
 # N-S color gradient
 lat_cols=colorRampPalette(brewer.pal(10,"Spectral"))
-n.sites <- length(unique(demo_pop$Paper_ID))
+n.sites <- length(unique(demo_pop$Paper_ID)) -2
 color.list <- lat_cols(n.sites)
 
 

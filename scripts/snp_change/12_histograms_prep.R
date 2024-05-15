@@ -75,7 +75,7 @@ get_ci <- function(df){
 
 #HistPop unique SNP ascorss all env
 #Updated for binomial data
-obs_env_unique <- read_csv("data/snp_change_data/slope_obs_all_unique.csv") %>% filter(SE<5) %>% filter(Slope>-2.5)
+obs_env_unique <- read_csv("data/snp_change_data/slope_obs_all_unique.csv") %>% filter(SE<5) 
 
 median_pop <- obs_env_unique %>% group_by(Site) %>% summarise(median = median(Slope, na.rm = TRUE))
 

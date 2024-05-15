@@ -118,8 +118,46 @@ ppt_wt_lat<-ppt_wt_lat + theme(legend.position = "none",
   scale_x_discrete(labels=Site.label)
 ppt_wt_lat
 
-ggsave("graphs/Climate/PPT_wt_pop.pdf",width=6, height = 8, units = "in")
+#ggsave("graphs/Climate/PPT_wt_pop.pdf",width=6, height = 8, units = "in")
 
+
+# plot Year vs. PPT_wt
+PPT_wt_plot<-ggplot() + 
+  geom_line(stat="smooth",data = anom_year, aes(y = PPT_wt.anom, x = Year, 
+        group=Latitude,col=factor(Paper_ID)), alpha=0.75,linewidth = 1.5,se=FALSE) + 
+  xlab("Year") + 
+  ylab("Winter Precipitation Anomaly") +
+  theme_classic()+
+  #scale_color_manual(values = lat_cols) +
+  scale_color_manual(values= c("55"="#5E4FA2",
+                               "57"="#456EB1",
+                               "11"="#378EBA",
+                               "9"="#54AEAC",
+                               "8"="#75C8A4",
+                               "7"="#9BD7A4",
+                               "6"="#BEE5A0",
+                               "29"="#DFF299",
+                               "28"="#F1F9A9",
+                               "27"="#FFFFBF",
+                               "5"="#FEEDA2",
+                               "4"="#FDDA86",
+                               "3"="#FDBE6E",
+                               "58"="#FB9F5A",
+                               "2"="#F67B49",
+                               "17"="#E95D47",
+                               "1"="#D8434D",
+                               "15"="#BC2249",
+                               "14"="#9E0142"))#+
+  #scale_y_discrete(breaks=seq(2010,2016,2))
+  #scale_x_discrete(breaks=c(2010,2012,2014,2016)) 
+PPT_wt_plot<-PPT_wt_plot + theme(legend.position = "none",
+                                 axis.title.x=element_text(size=16,vjust = 0, face="bold",hjust=0.5),
+                                 axis.text.x = element_text(size=14, face="bold", angle=0,hjust=0.5),
+                                 axis.text.y = element_text(size=14,face="bold"),
+                                 axis.title.y = element_text(size=16,vjust = 1, face="bold",hjust=0.5))#+
+  #scale_x_discrete(labels=Site.label)
+PPT_wt_plot
+ggsave("Graphs/Climate/PPT_wt_pop.pdf",width=6, height = 8, units = "in")
 
 
 #*******************************************************************************

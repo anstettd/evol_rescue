@@ -1,4 +1,4 @@
-#### PROJECT: Genomic offsets and demographic trajectories of Mimulus cardinalis populations during extreme drought
+ #### PROJECT: Genomic offsets and demographic trajectories of Mimulus cardinalis populations during extreme drought
 #### PURPOSE OF THIS SCRIPT: Produce demography graphs for publication
 #### AUTHOR: Amy Ang & Daniel Anstett
 #### DATE LAST MODIFIED: 20230815
@@ -164,14 +164,15 @@ ggsave("Graphs/Demography/sites/04_coast_fork.pdf",width=6, height = 4, units = 
 
 #Little Jamison
 dat_little <- dat %>% filter(Paper_ID==7) %>% filter(Year<2015)
-plot_3 <- ggplot(dat_little, aes(x=Year, y=lambda)) + geom_point(size=2) +
-  geom_smooth(data=filter(dat_little, Year<2015), method="lm", se=FALSE, col="red") +
+plot_3 <- ggplot(dat_little, aes(x=Year, y=lambda)) + geom_point(size=3,shape=21,fill="#9BD7A4") +
+  geom_smooth(data=filter(dat_little, Year<2015), method="lm", se=FALSE, col="#9BD7A4",size=1.5) +
   #geom_smooth(data=filter(dat_little, Year>2014), method="lm", se=FALSE, col="blue") +
   scale_y_continuous(name="Lambda")+ scale_x_continuous(name="")+
-  geom_hline(yintercept=1, linetype="dotted") + theme_classic() + theme(
+  geom_hline(yintercept=1, linetype="dotted",size=0.8) + theme_classic() + theme(
     #facet_wrap(~Site.Lat, scale="free") + theme_classic() + theme(
     axis.text.x = element_text(size=18,face="bold"),
     axis.text.y = element_text(size=18,face="bold"),
     axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
     axis.title.y = element_text(color="black", size=22,vjust = 2, face="bold",hjust=0.5))
+plot_3
 ggsave("Graphs/Demography/sites/05_little_jamison.pdf",width=5, height = 4, units = "in")

@@ -94,6 +94,11 @@ seasonal <- rbind(seasonal_2010,
                 seasonal_2017,
                 seasonal_2018,
                 seasonal_2019) %>% select(Site,Paper_ID,Latitude,Longitude,Elevation,Tave_wt, Tave_sm, PPT_wt, PPT_sm,Year)
+
+#Export Seasonal Data
+write.csv(seasonal ,'data/climate_data/climate_seasonal.csv') #Export file
+
+#Make Seaonal Anomaly
 seasonal_final <- left_join(seasonal,seasonal_8110,by="Site") %>% 
   mutate(Tave_wt.anom = Tave_wt - Tave_wt.clim,
          Tave_sm.anom = Tave_sm - Tave_sm.clim,

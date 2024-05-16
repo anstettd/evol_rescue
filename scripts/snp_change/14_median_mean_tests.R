@@ -130,7 +130,7 @@ median_rand_pops$Site <- droplevels(median_rand_pops$Site) %>% na.omit()
 #Median 
 histPops <- ggplot(median_rand_pops,aes(x=median))+
   geom_histogram(color="black",fill = "pink")+
-  labs(x = "Median Strength of Selection", y = "Number of Permutations") +
+  labs(x = "Strength of Selection", y = "Number of Permutations") +
   geom_vline(xintercept=0) +
   theme_ci() + facet_wrap(.~Site) +
   geom_vline(data = median_obs_pops, aes(xintercept = median), size=1, linetype="dashed",color="blue")+
@@ -150,7 +150,7 @@ median_rand_pops$Site <- droplevels(median_rand_pops$Site) %>% na.omit()
 #Median 
 histPops <- ggplot(median_rand_pops,aes(x=median))+
   geom_histogram(color="black",fill = "pink")+
-  labs(x = "Median SNP Change", y = "Number of Permutations") +
+  labs(x = "Strength of Selection", y = "Number of Permutations") +
   geom_vline(xintercept=0) +
   theme_ci() + facet_wrap(.~Site) +
   geom_vline(data = median_obs_pops, aes(xintercept = median), size=1, linetype="dashed",color="blue")+
@@ -193,8 +193,8 @@ mean_rand_pops$Site <- droplevels(mean_rand_pops$Site) %>% na.omit()
 
 #mean 
 histPops <- ggplot(mean_rand_pops,aes(x=mean))+
-  geom_histogram(color="black",fill = "pink")+
-  labs(x = "Mean SNP Change", y = "Number of Permutations") +
+  geom_histogram(color="black",fill = "grey70")+
+  labs(x = "Strength of Selection", y = "Number of Permutations") +
   geom_vline(xintercept=0) +
   theme_ci() + facet_wrap(.~Site) +
   geom_vline(data = mean_obs_pops, aes(xintercept = mean), size=1, linetype="dashed",color="blue")+

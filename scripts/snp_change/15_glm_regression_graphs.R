@@ -208,7 +208,7 @@ freq_env_3 <- freq_table_Final %>% filter(Site==3)
 ggplot(data=freq_env_3 ,aes(Year,Binomial_A,group=SNP_ID)) + 
   geom_line(stat="smooth",method = "glm", method.args = list(family = "binomial"), se = F, alpha=.09,cex=0.4,color="blue") + 
   labs(y="SNP Frequency",x="Year") + theme_spaghetti()
-#ggsave("graphs/snp_change/glm_reg/03_spaghetii_obs.pdf",width=4, height = 4, units = "in")
+ggsave("graphs/snp_change/glm_reg/03_spaghetii_obs.pdf",width=4, height = 4, units = "in")
 
 
 freq_env_6 <- freq_table_Final %>% filter(Site==6)

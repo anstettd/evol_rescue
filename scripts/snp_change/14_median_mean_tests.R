@@ -206,6 +206,22 @@ ggsave("Graphs/mean_median_selection/06_mean_pop_3_11.pdf",width=9, height = 3.5
 
 
 
+mean_rand_pops <- mean_rand %>% filter(Site == 3)
+mean_obs_pops <- mean_obs %>% filter(Site == 3)
 
+mean_rand_pops$Site <- droplevels(mean_rand_pops$Site) %>% na.omit()
+
+#mean 
+histPops <- ggplot(mean_rand_pops,aes(x=mean))+
+  geom_histogram(color="black",fill = "grey70")+
+  labs(x = "Mean Strength of Selection", y = "Number of Permutations") +
+  geom_vline(xintercept=0) +
+  theme_ci() + facet_wrap(.~Site) +
+  geom_vline(data = mean_obs_pops, aes(xintercept = mean), size=1.5, color="red")+
+  scale_x_continuous(breaks=c(-0.05,0,0.05))+
+  theme(strip.text.x = element_text(size=0))
+histPops
+
+ggsave("Graphs/mean_median_selection/06_mean_pop_3.pdf",width=4, height = 3.5, units = "in")
 
 

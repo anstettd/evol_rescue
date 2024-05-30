@@ -21,11 +21,11 @@ cumul <- read_csv("data/genomic_data/pop_meta_data.csv")
 demog_recovery <- left_join(demog_recovery,pop_meta,by=c("Site"="Site")) %>% rename(Site_Name=Site)
 demo_pop <- left_join(cumul,demog_recovery,by="Paper_ID") %>% filter(Paper_ID!=10) %>% filter(Paper_ID!=12)
 anoms <- read_csv("data/climate_data/climate_anomaly.csv")
-demo_pop <- left_join(demo_pop, anoms) %>% filter(Site!="Mill Creek") %>% filter(Site!="Buck Meadows") 
+demo_pop <- left_join(demo_pop, anoms) %>% filter(Paper_ID<12)
 
 
 recovery.period <- demo_pop %>% 
-  dplyr::select(lambda.slope.recovery, lambda.mean.recovery, 
+  dplyr::select(lambda.mean.recovery, 
                 MAT_1619, MAP_1619, PAS_1619, CMD_1619, Tave_wt_1619, 
                 Tave_sm_1619, PPT_wt_1619, PPT_sm_1619)
 
@@ -34,8 +34,8 @@ recovery.period <- demo_pop %>%
 demo_recovery_anom <- rcorr(as.matrix(recovery.period))
 
 #Export
-#write.csv(demo_recovery_anom$r,"data/climate_data/rcorr_demo_recovery_anom_r.csv") 
-#write.csv(demo_recovery_anom$P,"data/climate_data/rcorr_demo_recovery_anom_p.csv") 
+write.csv(demo_recovery_anom$r,"data/climate_data/rcorr_demo_recovery_anom_r.csv") 
+write.csv(demo_recovery_anom$P,"data/climate_data/rcorr_demo_recovery_anom_p.csv") 
 
 
 ###################################################################################

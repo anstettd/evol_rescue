@@ -250,7 +250,7 @@ ggplot(env2_united, aes(x=BP/1e6, y=BF)) +
   scale_color_manual(values = rep(c("black", "deepskyblue"), 22 )) +
   geom_hline(yintercept=10, linetype="dashed",color = "red",lty = 2, lwd = 1) +
   geom_hline(yintercept=30, linetype="dashed",color = "deepskyblue", lty = 2, lwd = 1) +
-  scale_y_continuous (breaks = c(-20,-10,0,10,20,30,40))+
+  scale_y_continuous (breaks = c(-20,-10,0,10,20,30,40,50,60), limits=c(-20,60))+
   labs( y = "-log10(BF)", x = "Position (Mbp)")+
   theme_classic() +
   theme(

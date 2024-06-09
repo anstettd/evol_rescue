@@ -147,7 +147,8 @@ ggplot(compare, aes(x=mean.lambda.recovery, y=mean.lambda.recovery.3yrs)) +
 # Join to slopes
 demog.response <- left_join(slopes.lambda, dat.mean.drought) %>%
   left_join(dat.mean.recovery) %>% 
-  dplyr::select(Site, Latitude, Longitude, Elevation, Region, lambda.slope.decline=Lambda.Slope.1011.1415, lambda.slope.recovery=Lambda.Slope.1516.1819, lambda.mean.drought=mean.lambda.drought, lambda.mean.recovery=mean.lambda.recovery)
+  left_join(dat.mean.recovery.3yrs) %>% 
+  dplyr::select(Site, Latitude, Longitude, Elevation, Region, lambda.slope.decline=Lambda.Slope.1011.1415, lambda.slope.recovery=Lambda.Slope.1516.1819, lambda.mean.drought=mean.lambda.drought, lambda.mean.recovery=mean.lambda.recovery, lambda.mean.recovery.3yrs = mean.lambda.recovery.3yrs)
 
 # Save to .csv file 
 write.csv(demog.response,"data/demography data/siteYear.lambda_responses_2010-2019.csv",row.names=FALSE)

@@ -132,6 +132,18 @@ dat.mean.recovery <- dat %>%
   na.omit() %>% 
   summarize(mean.lambda.recovery = exp(mean(log(lambda)))) #GEOMETRIC mean
 
+dat.mean.recovery.3yrs <- dat %>% 
+  group_by(Latitude, Site) %>% 
+  filter(Year==2015|Year==2016|Year==2017) %>% 
+  # NOTE: should we restrict this to a core 3 years, as above?
+  na.omit() %>% 
+  summarize(mean.lambda.recovery.3yrs = exp(mean(log(lambda)))) #GEOMETRIC mean
+
+compare <- left_join(dat.mean.recovery, dat.mean.recovery.3yrs)
+ggplot(compare, aes(x=mean.lambda.recovery, y=mean.lambda.recovery.3yrs)) +
+  geom_point() +
+  geom_abline(slope=1)
+
 # Join to slopes
 demog.response <- left_join(slopes.lambda, dat.mean.drought) %>%
   left_join(dat.mean.recovery) %>% 

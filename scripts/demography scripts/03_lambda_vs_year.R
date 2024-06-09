@@ -127,7 +127,7 @@ dat.mean.drought <- dat %>%
 
 dat.mean.recovery <- dat %>% 
   group_by(Latitude, Site) %>% 
-  filter(Year==2015|Year==2016|Year==2017|Year==2018|Year==2019) %>% 
+  filter(Year==2015|Year==2016|Year==2017|Year==2018) %>% 
   # NOTE: should we restrict this to a core 3 years, as above?
   na.omit() %>% 
   summarize(mean.lambda.recovery = exp(mean(log(lambda)))) #GEOMETRIC mean

@@ -30,7 +30,7 @@ n.sites <- 20
 color.list <- lat_cols(n.sites)
 
 
-  cor(demog_recovery$lambda.mean.drought, demog_recovery$lambda.mean.recovery, method = 'pearson')
+cor.test(demog_recovery$lambda.mean.drought, demog_recovery$lambda.mean.recovery, method = 'pearson')
 
 #Plot lambda decline vs lamda recovery
 ggplot(demog_recovery, aes(x=lambda.mean.drought, y=lambda.mean.recovery)) + 

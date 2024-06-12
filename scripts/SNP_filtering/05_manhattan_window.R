@@ -293,7 +293,7 @@ wza_empri_map <- ggplot(data = wza_win_env8, aes( x = pos/1e6, y = -log10(Z_pVal
   geom_point(aes(color=as.factor(chr), alpha=0.9))+
   scale_y_continuous("-log10(p-value)", limits=c(0,10))+
   scale_x_continuous("Position (Mbp)")+
-  geom_hline(aes(yintercept = -log10(0.05/dim(wza_win_env8)[1])), col = "red", lty = 2, lwd = 1)+
+  geom_hline(aes(yintercept = -log10(0.05/dim(wza_win_env8)[1])), col = "black", lty = 2, lwd = 1)+
   scale_color_manual(values = rep(c("black", "grey60"), 22 )) +
   theme_classic()+
   theme(

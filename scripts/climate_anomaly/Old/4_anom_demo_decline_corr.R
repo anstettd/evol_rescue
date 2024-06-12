@@ -25,23 +25,17 @@ anoms <- read_csv("data/climate_data/climate_anomaly.csv") %>% filter(Paper_ID!=
 demo_pop <- left_join(demog_recovery, anoms, by="Paper_ID")
 
 drought.period <- demo_pop %>% 
-  dplyr::select(lambda.mean.drought, MAT_1215, MAP_1215, PAS_1215, CMD_1215, Tave_wt_1215, 
+  dplyr::select(lambda.slope.decline, lambda.mean.drought, 
+                MAT_1215, MAP_1215, PAS_1215, CMD_1215, Tave_wt_1215, 
                 Tave_sm_1215, PPT_wt_1215, PPT_sm_1215)
-drought.period <- as.data.frame(drought.period)
-
-decline_clim_coeff <- data.frame()
-for (i in 2:9){
-  lm.1 <- lm(lambda.mean.drought~drought.period[,i],data=drought.period)
-  #summary(lm.1)
-  decline_clim_coeff[i-1,1] <- summary(lm.1)$coefficients[2,1] #Slope
-  decline_clim_coeff[i-1,2] <- summary(lm.1)$coefficients[2,4] #P-value
-  decline_clim_coeff[i-1,3] <- summary(lm.1)$adj.r.squared #R2
-}
-
-write_csv(decline_clim_coeff,"data/climate_data/decline_clim_coeff.csv") 
+#ggpairs(drought.period)
 
 
+demo_decline_anom <- rcorr(as.matrix(drought.period))
 
+
+write.csv(demo_decline_anom$r,"data/climate_data/rcorr_demo_decline_anom_r.csv") 
+write.csv(demo_decline_anom$P,"data/climate_data/rcorr_demo_decline_anom_p.csv") 
 
 
 ###################################################################################

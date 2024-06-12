@@ -321,7 +321,8 @@ ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Evol_rescue/Large_
 #ENV 5 - CMD 
 ggplot(env5_united, aes(x=BP/1e6, y=BF)) +
   geom_point(aes(color=as.factor(CHR)), alpha=0.8,size=1.4) +
-  scale_color_manual(values = rep(c("black", "magenta3"), 22 )) +
+  scale_color_manual(values = rep(c("black", "#27AD81FF"), 22 )) +
+  #scale_color_manual(values = rep(c("black", "magenta3"), 22 )) +
   geom_hline(yintercept=10, linetype="dashed",color = "red",lty = 2, lwd = 1) +
   geom_hline(yintercept=30, linetype="dashed",color = "deepskyblue", lty = 2, lwd = 1) +
   scale_y_continuous (breaks = c(-20,-10,0,10,20,30,40,50,60), limits=c(-20,60))+

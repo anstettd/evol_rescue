@@ -137,7 +137,8 @@ wza_empri_cmd <- ggplot(data = wza_win_env5, aes( x = pos/1e6, y = -log10(Z_pVal
   scale_y_continuous("-log10(p-value)", limits=c(0,10))+
   scale_x_continuous("Position (Mbp)")+
   geom_hline(aes(yintercept = -log10(0.05/dim(wza_win_env5)[1])), col = "red", lty = 2, lwd = 1)+
-  scale_color_manual(values = rep(c("black", "magenta3"), 22 )) +
+  scale_color_manual(values = rep(c("black", "#27AD81FF"), 22 )) +
+  #scale_color_manual(values = rep(c("black", "magenta3"), 22 )) +
   theme_classic()+
   theme(
     legend.position="none",

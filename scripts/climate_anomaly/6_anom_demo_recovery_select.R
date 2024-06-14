@@ -1,5 +1,5 @@
 ##################################################################################
-## Correlate pop decline with climate
+## Correlate pop decline with climate for populations with selection data
 ## Author Daniel Anstett
 ## 
 ## 
@@ -41,44 +41,6 @@ for (i in 2:9){
 }
 
 write_csv(recovery_clim_coeff,"data/climate_data/recovery_clim_coeff.csv") 
-
-
-
-
-
-
-###################################################################################
-#Plot decline vs significant env variables 
-
-# N-S color gradient
-lat_cols=colorRampPalette(brewer.pal(11,"Spectral"))
-n.sites <- length(unique(demo_pop$Paper_ID)) -2
-color.list <- lat_cols(n.sites)
-
-
-#Population recovery and climate anomalies
-a <- ggplot(demo_pop, aes(x=PPT_wt_1619, y=lambda.mean.recovery)) + 
-  geom_point(aes(fill=as.factor(round(Latitude.x, 1))),shape=21,size =6)+
-  geom_smooth(method=lm,color="black", lty="dashed", se=FALSE)+
-  scale_y_continuous(name="Mean Lambda After Drought", limits=c(0,2.5), breaks=seq(0,2.5,0.5))+
-  scale_x_continuous(name="Winter Precipitation Anomaly")+
-  #,breaks=c(0.04,0.045,0.05,0.055,0.06))+
-  scale_fill_manual(values=color.list) +
-  theme_classic() + theme(
-    axis.text.x = element_text(size=20, face="bold"),
-    axis.text.y = element_text(size=20,face="bold"),
-    axis.title.x = element_text(color="black", size=24, vjust = 0.5, face="bold"),
-    axis.title.y = element_text(color="black", size=24,vjust = 1.7, face="bold",hjust=0.5),
-    legend.title = element_blank(),
-    legend.text = element_text(size = 14),  # Increase the size of the legend text
-    legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
-    legend.key.height = unit(1.6, "lines") #Reduce hight
-  )
-a
-ggsave("Graphs/Climate/mean_lambda_PPT_wt.pdf",width=8, height = 6, units = "in")
-
-
-
 
 
 

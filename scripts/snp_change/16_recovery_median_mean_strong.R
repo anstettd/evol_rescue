@@ -54,7 +54,7 @@ lat_cols=c("#DC494C","#F88D51","#FDD380","#FEEB9E","#FFFFBF","#D7EF9B","#B2E0A2"
 
 
 
-#Median slope vs. lambda.slope.recovery
+#Median slope vs. lambda.mean.recovery
 ggplot(demo_pop, aes(x=Median, y=lambda.mean.recovery)) + 
   geom_point(aes(fill=as.factor(round(Latitude, 1))),shape=21,size =6)+
   geom_smooth(method=lm,color="black")+
@@ -74,12 +74,12 @@ ggplot(demo_pop, aes(x=Median, y=lambda.mean.recovery)) +
   )
 ggsave("Graphs/Selection_demo/1_median_slope_recovery_lambda.pdf",width=8, height = 6, units = "in")
 
-#Median slope vs. lambda.slope.recovery
+#Median slope vs. lambda.mean.recovery
 ggplot(demo_pop, aes(x=Mean, y=lambda.mean.recovery)) + 
   geom_point(aes(fill=as.factor(round(Latitude, 1))),shape=21,size =6)+
   geom_smooth(method=lm,color="black")+
   scale_y_continuous(name="Mean Lambda after Drought",breaks=c(0.5,1,1.5,2,2.5))+
-  scale_x_continuous(name="Mean Slope",breaks=c(-0.1,0,0.1,0.2))+
+  scale_x_continuous(name="Strength of Selection",breaks=c(-0.1,0,0.1,0.2))+
   scale_fill_manual(values=lat_cols) +
   theme_classic() + theme(
     axis.text.x = element_text(size=20, face="bold"),
@@ -94,7 +94,7 @@ ggplot(demo_pop, aes(x=Mean, y=lambda.mean.recovery)) +
 ggsave("Graphs/Selection_demo/2_mean_slope_recovery_lambda.pdf",width=8, height = 6, units = "in")
 
 
-#Median slope vs. lambda.slope.recovery
+#Median slope vs. lambda.mean.recovery
 ggplot(demo_pop, aes(x=Latitude, y=Median)) + 
   geom_point(aes(fill=as.factor(round(Latitude, 1))),shape=21,size =6)+
   geom_smooth(method=lm,color="black", lty="dashed", se=FALSE)+

@@ -288,9 +288,13 @@ wza_empri_map <- ggplot(data = wza_win_env8, aes( x = pos/1e6, y = -log10(Z_pVal
 wza_empri_map
 ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Evol_rescue/Large_graphs/WZA/wza_grey_env8_bf.png", wza_empri_map, width=13, height = 4.5, units = "in")
 
+
+
+
 #ENV8 Grey/black Scale
 wza_empri_map <- ggplot(data = wza_win_env8, aes( x = pos/1e6, y = -log10(Z_pVal)))+
   geom_point(aes(color=as.factor(chr), alpha=0.9))+
+  #geom_point(aes(color = ifelse(-log10(Z_pVal) > threshold, "pink", as.factor(chr)), alpha = 0.9)) +
   scale_y_continuous("-log10(p-value)", limits=c(0,10))+
   scale_x_continuous("Position (Mbp)")+
   geom_hline(aes(yintercept = -log10(0.05/dim(wza_win_env8)[1])), col = "black", lty = 2, lwd = 1)+
@@ -311,6 +315,10 @@ wza_empri_map <- ggplot(data = wza_win_env8, aes( x = pos/1e6, y = -log10(Z_pVal
     axis.title.y = element_text(color="black", size=24,vjust = 1.4, face="bold",hjust=0.5)
   )
 wza_empri_map
+
+
+
+
 ggsave("/Users/daniel_anstett/Dropbox/a_Papers/Genomics_paper/Evol_rescue/Large_graphs/WZA/wza_grey_black_env8_bf.png", wza_empri_map, width=13, height = 4.5, units = "in")
 
 

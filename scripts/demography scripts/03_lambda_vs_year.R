@@ -63,7 +63,8 @@ ggplot(dat, aes(x=Year, y=lambda)) + #, color=as.factor(round(Latitude, 1))
 
 
 #*******************************************************************************
-### 4A. Calculate mean lambda DURING CORE DROUGHT for each site
+### 3A. Calculate mean lambda DURING CORE DROUGHT for each site 
+# Core drought = 2012-13, 2013-14, 2014-15 transitions
 #*******************************************************************************
 
 dat.mean.drought <- dat %>% 
@@ -73,27 +74,15 @@ dat.mean.drought <- dat %>%
   summarize(mean.lambda.drought = exp(mean(log(lambda)))) #GEOMETRIC mean
 
 #*******************************************************************************
-### 4B. Calculate mean lambda DURING POST-DROUGHT for each site
+### 3B. Calculate mean lambda DURING POST-DROUGHT for each site
+# Post drought = 2015-16, 2016-17, 2017-18 transitions
 #*******************************************************************************
 
 dat.mean.recovery <- dat %>% 
   group_by(Latitude, Site) %>% 
-  filter(Year==2015|Year==2016|Year==2017|Year==2018) %>% 
-  # NOTE: should we restrict this to a core 3 years, as above?
+  filter(Year==2015|Year==2016|Year==2017) %>% 
   na.omit() %>% 
   summarize(mean.lambda.recovery = exp(mean(log(lambda)))) #GEOMETRIC mean
-
-dat.mean.recovery.3yrs <- dat %>% 
-  group_by(Latitude, Site) %>% 
-  filter(Year==2015|Year==2016|Year==2017) %>% 
-  # NOTE: should we restrict this to a core 3 years, as above?
-  na.omit() %>% 
-  summarize(mean.lambda.recovery.3yrs = exp(mean(log(lambda)))) #GEOMETRIC mean
-
-compare <- left_join(dat.mean.recovery, dat.mean.recovery.3yrs)
-ggplot(compare, aes(x=mean.lambda.recovery, y=mean.lambda.recovery.3yrs)) +
-  geom_point() +
-  geom_abline(slope=1)
 
 # Join to slopes
 demog.response <- left_join(slopes.lambda, dat.mean.drought) %>%

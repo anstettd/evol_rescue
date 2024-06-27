@@ -1,7 +1,7 @@
 #### PROJECT: Evolutionary rescue of Mimulus cardinalis populations during extreme drought
 #### PURPOSE OF THIS SCRIPT: Calculate slopes of lambda versus year as a metric of the rate of demographic decline during drought
 #### AUTHOR: Amy Angert
-#### DATE LAST MODIFIED: 20230621
+#### DATE LAST MODIFIED: 20240627
 
 
 #*******************************************************************************
@@ -59,56 +59,7 @@ ggplot(dat, aes(x=Year, y=lambda)) + #, color=as.factor(round(Latitude, 1))
 
 # Note: Mill Creek only has two annual transition estimates during drought (because of 100% plot wash-out in 2010 and flooding that prevented site access in 2013), so Mill Creek should be removed from calculations of demographic declines  
 
-# Note: Canton, NFMF Tule, SFMF Tule, & Redwood have only two annual transition estimates during drought recovery (because of fire and flood closures in 2016 and 2017), so they should be removed from calculations of demographic recovery
-
-#*******************************************************************************
-### 3A. Calculate slopes of lambda over time DURING DROUGHT-INDUCED DECLINE for each site
-#*******************************************************************************
-
-# with cleaned lambdas, 2010-11 through 2014-15
-site.vec <- unique(dat$Site)
-slopes.lam.decline <- c()
-site.lam <- c()
-
-for (i in 1:length(site.vec)) {
-  dat.site <- dat %>% filter(Site==site.vec[i],
-                             Year<2015) 
-  mod <- lm(lambda ~ Year, dat.site)
-  slopes.lam.decline[i] <- coefficients(mod)[2]
-  site.lam[i] <- site.vec[i]
-}
-
-slopes.lambda.decline <- bind_cols(site.lam, slopes.lam.decline) %>% 
-  dplyr::select(Site=...1, Lambda.Slope.1011.1415=...2) 
-
-
-#*******************************************************************************
-### 3B. Calculate slopes of lambda over time DURING POST-DROUGHT RECOVERY for each site
-#*******************************************************************************
-
-# with cleaned lambdas, 2015-16 through 2018-19
-site.vec <- unique(dat$Site)
-slopes.lam.recovery <- c()
-site.lam <- c()
-
-for (i in 1:length(site.vec)) {
-  dat.site <- dat %>% filter(Site==site.vec[i],
-                             Year>2014) 
-  mod <- lm(lambda ~ Year, dat.site)
-  slopes.lam.recovery[i] <- coefficients(mod)[2]
-  site.lam[i] <- site.vec[i]
-}
-
-slopes.lambda.recovery <- bind_cols(site.lam, slopes.lam.recovery) %>% 
-  dplyr::select(Site=...1, Lambda.Slope.1516.1819=...2) 
-# some of these are negative because of an extremely high early value
-
-# Add Latitude and other covariates back in
-covar <- dat %>% 
-  dplyr::select(Site, Latitude, Longitude, Elevation, Region, RegionRank) %>% 
-  unique()
-
-slopes.lambda <- left_join(slopes.lambda.decline, slopes.lambda.recovery) %>% left_join(covar, by="Site") 
+# Note: Canton, NFMF Tule, SFMF Tule, & Redwood have only one annual transition estimate during drought recovery (because of fire and flood closures in 2016 and 2017), so they should be removed from calculations of demographic recovery
 
 
 #*******************************************************************************

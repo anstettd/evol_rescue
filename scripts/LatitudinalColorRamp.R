@@ -35,7 +35,7 @@ pop_meta <- read_csv("data/genomic_data/pop_meta_data.csv")
 # N-S color gradient
 lat_cols=colorRampPalette(brewer.pal(11,"Spectral"))
 n.sites <- length(unique(pop_meta$Site))
-color.list <- as.data.frame(lat_cols(n.sites))
+color.list <- as.data.frame(rev(lat_cols(n.sites)))
 
 #*******************************************************************************
 #### 4. Save color assignments

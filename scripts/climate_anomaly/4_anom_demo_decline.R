@@ -1,10 +1,13 @@
 ##################################################################################
-## Correlate pop decline with climate
-## Author Daniel Anstett
-## 
-## 
-## Last Modified Aug 14, 2023
+#### PROJECT: Evolutionary rescue of Mimulus cardinalis populations during extreme drought
+#### PURPOSE OF THIS SCRIPT: Correlate pop decline with climate
+#### AUTHOR: Daniel Anstett and Amy Angert
+#### DATE LAST MODIFIED: 20240627
 ###################################################################################
+
+# Remove objects and clear workspace
+rm(list = ls(all=TRUE))
+
 #Library install and import
 library(tidyverse)
 library(GGally)
@@ -12,26 +15,34 @@ library(Hmisc)
 library(RColorBrewer)
 
 #Import population metadata
-pop_meta <- read_csv("data/genomic_data/pop_meta_data.csv") %>% dplyr::select(Site, Paper_ID) #just to get translation of pop names <--> numbers
-pop_meta[20,1] <- "Mill Creek" #Fill in missing information
-pop_meta[20,2] <- 12
+pop_meta <- read_csv("data/genomic_data/pop_meta_data.csv") 
 
-demog_recovery <- read_csv("data/demography data/siteYear.lambda_responses_2010-2019.csv")
-demog_recovery <- left_join(demog_recovery,pop_meta ,by=c("Site"="Site")) %>% 
-  rename(Site_Name=Site) %>% 
-  filter(Paper_ID!=10) %>% filter(Paper_ID!=12)
-anoms <- read_csv("data/climate_data/climate_anomaly.csv") %>% filter(Paper_ID!=12)
+#Import demography estimates
+demog_means <- read_csv("data/demography data/siteYear.lambda_responses_2010-2019.csv") %>% select(-Region, -RegionRank)
+demog_means <- left_join(demog_means,pop_meta)
 
-demo_pop <- left_join(demog_recovery, anoms, by="Paper_ID")
+#Import climate anomalies
+anoms <- read_csv("data/climate_data/climate_anomaly.csv") 
+
+#Join and filter
+demo_pop <- left_join(demog_means, anoms) %>% 
+  filter(Site!="Mill Creek") #remove Mill Creek because of unreliable demography data during decline period
 
 drought.period <- demo_pop %>% 
-  dplyr::select(lambda.mean.drought, MAT_1215, MAP_1215, PAS_1215, CMD_1215, Tave_wt_1215, 
-                Tave_sm_1215, PPT_wt_1215, PPT_sm_1215)
+  dplyr::select(mean.lambda.drought, 
+                MAT_1215, 
+                MAP_1215, 
+                PAS_1215, 
+                CMD_1215, 
+                Tave_wt_1215, 
+                Tave_sm_1215, 
+                PPT_wt_1215, 
+                PPT_sm_1215)
 drought.period <- as.data.frame(drought.period)
 
 decline_clim_coeff <- data.frame()
 for (i in 2:9){
-  lm.1 <- lm(lambda.mean.drought~drought.period[,i],data=drought.period)
+  lm.1 <- lm(mean.lambda.drought~drought.period[,i],data=drought.period)
   #summary(lm.1)
   decline_clim_coeff[i-1,1] <- summary(lm.1)$coefficients[2,1] #Slope
   decline_clim_coeff[i-1,2] <- summary(lm.1)$coefficients[2,4] #P-value

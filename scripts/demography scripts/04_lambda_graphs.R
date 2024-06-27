@@ -1,7 +1,7 @@
 #### PROJECT: Evolutionary rescue of Mimulus cardinalis populations during extreme drought
 #### PURPOSE OF THIS SCRIPT: Produce demography graphs for publication
 #### AUTHOR: Amy Angert & Daniel Anstett
-#### DATE LAST MODIFIED: 20230815
+#### DATE LAST MODIFIED: 20240627
 
 
 #*******************************************************************************
@@ -32,12 +32,16 @@ dat <- read.csv("data/demography data/siteYear.lambda_2010-2019.csv")
 pop_key <- read_csv("data/genomic_data/pop_meta_data.csv") %>% dplyr::select(Site, Paper_ID) #just to get translation of pop names <--> numbers
 pop_key[20,1] <- "Mill Creek"
 pop_key[20,2] <- 12
-dat<-left_join(dat,pop_key,by="Site") %>% mutate(lat.2 = round(Latitude, 2), 
-                                                 Site.Lat=paste(lat.2,Paper_ID, sep = "_"),
-                                                 Site.Name=paste(lat.2,Site, sep = "_")
-                                                 ) %>% select(-lat.2) %>% filter(Site!="Mill Creek")
-dat_decline <- dat %>% filter(Year<2015)
-dat_recovery <- dat %>% filter(Year>2014)
+dat<-left_join(dat,pop_key,by="Site") %>% 
+  mutate(lat.2 = round(Latitude, 2), 
+         Site.Lat=paste(lat.2,Paper_ID, sep = "_"),
+         Site.Name=paste(lat.2,Site, sep = "_")) %>% 
+  select(-lat.2) %>% filter(Site!="Mill Creek")
+
+dat_pre <- dat %>% filter(Year<2012)
+dat_drought <- dat %>% filter(between(Year,2012,2014))
+dat_recovery <- dat %>% filter(between(Year,2015,2017))
+dat_post <- dat %>% filter(Year>2017)
 
 
 #*******************************************************************************
@@ -45,9 +49,11 @@ dat_recovery <- dat %>% filter(Year>2014)
 #*******************************************************************************
 
 #Decline & Recovery
-ggplot(dat, aes(x=Year, y=lambda)) + geom_point() +
-  geom_smooth(data=filter(dat, Year<2015), method="lm", se=FALSE, col="red") +
-  geom_smooth(data=filter(dat, Year>2014), method="lm", se=FALSE, col="blue") +
+ggplot(dat, aes(x=Year, y=lambda)) +
+  geom_point(data=filter(dat, Year<2012), col="grey") +
+  geom_point(data=filter(dat, between(Year,2012,2014)), col="red") +
+  geom_point(data=filter(dat, between(Year,2015,2017)), col="blue") +
+  geom_point(data=filter(dat, Year>2017), col="grey") +
   scale_y_continuous(name="Lambda")+ scale_x_continuous(name="Year")+
   geom_hline(yintercept=1, linetype="dotted") +
   facet_wrap(~Site.Name, scale="free") + theme_classic() + theme(
@@ -61,40 +67,6 @@ ggplot(dat, aes(x=Year, y=lambda)) + geom_point() +
 #     legend.title = element_blank())
 
 ggsave("Graphs/Demography/01_decline_recovery.pdf",width=14, height = 8, units = "in")
-
-#Decline
-ggplot(dat_decline, aes(x=Year, y=lambda)) + geom_point() +
-  geom_smooth(method="lm", se=FALSE, col="red") +
-  scale_y_continuous(name="Lambda")+ scale_x_continuous(name="Year")+
-  geom_hline(yintercept=1, linetype="dotted") +
-  facet_wrap(~Site.Name, scale="free") + theme_classic() + theme(
-  #facet_wrap(~Site.Lat, scale="free") + theme_classic() + theme(
-    axis.text.x = element_text(face="bold"),
-    axis.text.y = element_text(size=11,face="bold"),
-    axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
-    axis.title.y = element_text(color="black", size=20,vjust = 2, face="bold",hjust=0.5))
-#+
-#theme(strip.background = element_blank(), strip.text.x = element_blank(),
-#     legend.title = element_blank())
-
-ggsave("Graphs/Demography/02_decline.pdf",width=14, height = 8, units = "in")
-
-#Recovery
-ggplot(dat_recovery, aes(x=Year, y=lambda)) + geom_point() +
-  geom_smooth(method="lm", se=FALSE, col="blue") +
-  scale_y_continuous(name="Lambda")+ scale_x_continuous(name="Year")+
-  geom_hline(yintercept=1, linetype="dotted") +
-  facet_wrap(~Site.Name, scale="free") + theme_classic() + theme(
-  #facet_wrap(~Site.Lat, scale="free") + theme_classic() + theme(
-    axis.text.x = element_text(face="bold"),
-    axis.text.y = element_text(size=11,face="bold"),
-    axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
-    axis.title.y = element_text(color="black", size=20,vjust = 2, face="bold",hjust=0.5))
-#+
-#theme(strip.background = element_blank(), strip.text.x = element_blank(),
-#     legend.title = element_blank())
-
-ggsave("Graphs/Demography/03_recovery.pdf",width=14, height = 8, units = "in")
 
 
 #*******************************************************************************

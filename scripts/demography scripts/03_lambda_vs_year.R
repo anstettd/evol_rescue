@@ -28,23 +28,17 @@ for (i in 1:length(packages_needed)){
 #*******************************************************************************
 ### 1. Read in lambda estimates for each site and year
 #*******************************************************************************
-dat <- read.csv("data/demography data/siteYear.lambda_2010-2019.csv")
+dat <- read.csv("data/demography data/siteYear.lambda_2010-2019.csv") %>% select(-Region, -RegionRank)
 
 
 #*******************************************************************************
 ### 2. Visualize estimates over time for each site
 #*******************************************************************************
 
-# N-S color gradient
-lat_cols=colorRampPalette(brewer.pal(11,"Spectral"))
-n.sites <- length(unique(dat$Site))
-color.list <- lat_cols(n.sites)
-
-ggplot(dat, aes(x=Year, y=lambda)) + #, color=as.factor(round(Latitude, 1))
+ggplot(dat, aes(x=Year, y=lambda)) + 
   geom_point() +
   geom_smooth(data=filter(dat, Year<2015), method="lm", se=FALSE, col="red") +
   geom_smooth(data=filter(dat, Year>2014), method="lm", se=FALSE, col="blue") +
-  #scale_color_manual(values=color.list) +
   ylab("Lambda") +
   #ylim(0,2) +
   geom_hline(yintercept=1, linetype="dotted") +

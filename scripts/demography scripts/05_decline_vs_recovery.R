@@ -29,12 +29,11 @@ n.sites <- 20
 color.list <- lat_cols(n.sites)
 
 
-cor.test(demog_recovery$lambda.mean.drought, demog_recovery$lambda.mean.recovery, method = 'pearson')
+cor.test(demog_recovery$mean.lambda.drought, demog_recovery$mean.lambda.recovery, method = 'pearson')
 
 #Plot lambda decline vs lamda recovery
-ggplot(demog_recovery, aes(x=lambda.mean.drought, y=lambda.mean.recovery)) + 
+ggplot(demog_recovery, aes(x=mean.lambda.drought, y=mean.lambda.recovery)) + 
   geom_point(aes(fill=as.factor(round(Latitude, 1))),shape=21,size =6)+
-  geom_smooth(method=lm,color="black", lty="dashed", se=FALSE)+
   scale_y_continuous(name="Mean Lambda after Drought")+#, limits=c(-0.3,2.5),breaks=seq(0,2.5,0.5))+
   scale_x_continuous(name="Mean Lambda during Drought")+
   #, limits=c(0.2,0.35),breaks=seq(0.1,0.35,0.05))+

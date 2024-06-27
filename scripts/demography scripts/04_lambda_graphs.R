@@ -136,7 +136,7 @@ ggsave("Graphs/Demography/sites/04_coast_fork.pdf",width=6, height = 4, units = 
 
 #Little Jamison
 dat_little <- dat %>% filter(Paper_ID==7) %>% filter(Year<2015)
-plot_3 <- ggplot(dat_little, aes(x=Year, y=lambda)) + geom_point(size=3,shape=21,fill="#9BD7A4") +
+plot_3 <- ggplot(dat_little, aes(x=Year, y=lambda)) + geom_point(size=4,shape=21,fill="#9BD7A4") +
   geom_smooth(data=filter(dat_little, Year<2015), method="lm", se=FALSE, col="#9BD7A4",size=1.5) +
   #geom_smooth(data=filter(dat_little, Year>2014), method="lm", se=FALSE, col="blue") +
   scale_y_continuous(name="Lambda")+ scale_x_continuous(name="")+

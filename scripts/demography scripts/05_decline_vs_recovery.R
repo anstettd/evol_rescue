@@ -1,9 +1,8 @@
 ##################################################################################
-## Correlate lambda decline vs recovery
-## Author Daniel Anstett
-## 
-## 
-## Last Modified June 10, 2024
+#### PROJECT: Evolutionary rescue of Mimulus cardinalis populations during extreme drought
+#### PURPOSE OF THIS SCRIPT: Correlate lambda decline vs recovery as a quick check for density dependence
+#### AUTHOR: Daniel Anstett
+#### DATE LAST MODIFIED: 20230815
 ###################################################################################
 
 #Library install and import

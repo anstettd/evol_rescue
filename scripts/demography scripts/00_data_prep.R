@@ -1,4 +1,4 @@
-#### PROJECT: Genomic offsets and demographic trajectories of Mimulus cardinalis populations during extreme drought
+#### PROJECT: Evolutionary rescue of Mimulus cardinalis populations during extreme drought
 #### PURPOSE OF THIS SCRIPT: Tidy raw demographic vital rate data in preparation for IPM analyses 
 #### AUTHOR: Seema Sheth and Amy Angert
 #### DATE LAST MODIFIED: 20230619

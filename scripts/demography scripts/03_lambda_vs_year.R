@@ -1,4 +1,4 @@
-#### PROJECT: Genomic offsets and demographic trajectories of Mimulus cardinalis populations during extreme drought
+#### PROJECT: Evolutionary rescue of Mimulus cardinalis populations during extreme drought
 #### PURPOSE OF THIS SCRIPT: Calculate slopes of lambda versus year as a metric of the rate of demographic decline during drought
 #### AUTHOR: Amy Angert
 #### DATE LAST MODIFIED: 20230621

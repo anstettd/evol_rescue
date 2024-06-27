@@ -1,6 +1,6 @@
- #### PROJECT: Genomic offsets and demographic trajectories of Mimulus cardinalis populations during extreme drought
+#### PROJECT: Evolutionary rescue of Mimulus cardinalis populations during extreme drought
 #### PURPOSE OF THIS SCRIPT: Produce demography graphs for publication
-#### AUTHOR: Amy Ang & Daniel Anstett
+#### AUTHOR: Amy Angert & Daniel Anstett
 #### DATE LAST MODIFIED: 20230815
 
 

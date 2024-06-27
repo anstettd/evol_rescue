@@ -43,3 +43,5 @@ color.list <- as.data.frame(lat_cols(n.sites))
 
 pop_meta <- cbind(pop_meta, color.list)
 names(pop_meta)[7] = "Lat.Color"
+
+write_csv(pop_meta, "data/genomic_data/pop_meta_data.csv")

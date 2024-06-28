@@ -1,67 +1,90 @@
 ##################################################################################
-## Plot lambda mean against slope summaries
-## Author Daniel Anstett
-## 
-## 
-## Last Modified Aug 14, 2023
+#### PROJECT: Evolutionary rescue of Mimulus cardinalis populations during extreme drought
+#### PURPOSE OF THIS SCRIPT: Test whether lambda recovery is predicted by selection slopes
+#### AUTHOR: Daniel Anstett and Amy Angert
+#### DATE LAST MODIFIED: 20240628
 ###################################################################################
+
+# Remove objects and clear workspace
+rm(list = ls(all=TRUE))
+
 #Library install and import
 library(tidyverse) 
 library(car)
 library(ggrepel)
 library(RColorBrewer)
 
-#Import data & Prepare data frame
-pop_meta <- read_csv("data/genomic_data/pop_meta_data.csv") %>% dplyr::select(Site, Paper_ID) #just to get translation of pop names <--> numbers
-pop_meta[20,1] <- "Mill Creek"
-pop_meta[20,2] <- 12
-demog_recovery <- read_csv("data/demography data/siteYear.lambda_responses_2010-2019.csv")
-demog_recovery <- left_join(demog_recovery,pop_meta,by=c("Site"="Site")) %>% rename(Site_Name=Site)
+#Import demography data + metadata
+demo_pop <- read_csv("data/demography data/siteYear.lambda_responses_2010-2019.csv")
 
-#Import Mean Median Selection data
-slope.summary <- read_csv("data/snp_change_data/mean_median_S.csv") %>% select(Site,Median,Mean)
+#Import selection data
+slope.summary <- read_csv("data/snp_change_data/mean_median_S.csv") %>% select(Site, Median, Mean)
 
-#Remove unneeded sites
-demo_pop <- left_join(slope.summary,demog_recovery,by=c("Site"="Paper_ID")) %>% filter(Site!=10) %>% 
-  filter(Site!=12) 
+#Join frames
+slope_pop <- left_join(demo_pop, slope.summary, by=c("Paper_ID"="Site"))
 
+#Visualize scatter plot
+ggplot(slope_pop, aes(x=Median, y=mean.lambda.recovery)) + geom_point()
+# looks like an extreme outlier - needs test
+
+#Cook's distance check for influential outliers
+mod.check <- lm(mean.lambda.recovery~Median,data=slope_pop)
+cooksd <- cooks.distance(mod.check)
+plot(cooksd, pch="*", cex=2, main="Influential Obs by Cooks distance")  # plot cook's distance
+abline(h = 4*mean(cooksd, na.rm=T), col="red")  # add cutoff line
+text(x=1:length(cooksd)+1, y=cooksd, labels=ifelse(cooksd>4*mean(cooksd, na.rm=T),names(cooksd),""), col="red")  # add labels
+
+#Cull outlier populations
+slope_pop_cull1 <- slope_pop %>% 
+  filter(Paper_ID!=12) %>% #remove influential outlier Mill Creek
+  filter(Paper_ID!=4) %>% #remove influential outlier Redwood Creek
+  droplevels()
+
+#Cook's distance check for further influential outliers
+mod.check <- lm(mean.lambda.recovery~Median,data=slope_pop_cull1)
+cooksd_cull1 <- cooks.distance(mod.check)
+plot(cooksd_cull1, pch="*", cex=2, main="Influential Obs by Cooks distance")  # plot cook's distance
+abline(h = 4*mean(cooksd_cull1, na.rm=T), col="red")  # add cutoff line
+text(x=1:length(cooksd_cull1)+1, y=cooksd_cull1, labels=ifelse(cooksd_cull1>4*mean(cooksd_cull1, na.rm=T),names(cooksd_cull1),""), col="red")  # add labels
+
+#Cull outlier population
+slope_pop_cull2 <- slope_pop_cull1 %>% 
+  filter(Paper_ID!=1) %>% #remove influential outlier Sweetwater R
+  droplevels()
+
+#Cook's distance check for further influential outliers
+mod.check <- lm(mean.lambda.recovery~Median,data=slope_pop_cull2)
+cooksd_cull2 <- cooks.distance(mod.check)
+plot(cooksd_cull2, pch="*", cex=2, main="Influential Obs by Cooks distance")  # plot cook's distance
+abline(h = 4*mean(cooksd_cull2, na.rm=T), col="red")  # add cutoff line
+text(x=1:length(cooksd_cull2)+1, y=cooksd_cull2, labels=ifelse(cooksd_cull2>4*mean(cooksd_cull2, na.rm=T),namescooksd_cull2,""), col="red")  # add labels
 
 #stats
-lm1 <- lm(lambda.mean.recovery~Median,data=demo_pop)
+lm1 <- lm(mean.lambda.recovery~Median, data=slope_pop_cull2)
 summary(lm1)
 Anova(lm1,type="III")
 
-lm2 <- lm(lambda.mean.recovery~Mean,data=demo_pop)
+lm2 <- lm(mean.lambda.recovery~Mean,data=slope_pop_cull2)
 summary(lm2)
 Anova(lm2,type="III")
 
-lm3 <- lm(Median~Latitude,data=demo_pop)
+lm3 <- lm(Median~Latitude,data=slope_pop_cull2)
 summary(lm3)
 Anova(lm3,type="III")
 
 
-###########################################################################################################
-# N-S color gradient
-#lat_cols=colorRampPalette(brewer.pal(10,"Spectral"))
-#n.sites <- length(unique(demo_pop$Site))
-#color.list <- lat_cols(n.sites)
 
+########################################################################################
+slope_pop_graph <- drop_na(slope_pop_cull2)
 
-###########################################################################################################
-
-# N-S color gradient
-lat_cols=c("#DC494C","#F88D51","#FDD380","#FEEB9E","#FFFFBF","#D7EF9B","#B2E0A2","#88CFA4","#5FBAA8","#3F96B7")
-
-
-
-#Median slope vs. lambda.mean.recovery
-ggplot(demo_pop, aes(x=Median, y=lambda.mean.recovery)) + 
+#Lambda recovery vs median selection slope 
+ggplot(slope_pop_graph, aes(x=Median, y=mean.lambda.recovery)) + 
   geom_point(aes(fill=as.factor(round(Latitude, 1))),shape=21,size =6)+
   geom_smooth(method=lm,color="black")+
-  scale_y_continuous(name="Mean Lambda after Drought",breaks=c(0.5,1,1.5,2,2.5))+
-  scale_x_continuous(name="Median Slope",breaks=c(-0.1,0,0.1,0.2))+
+  scale_y_continuous(name="Mean Lambda after Drought")+#,breaks=c(0.5,1,1.5,2,2.5))+
+  scale_x_continuous(name="Median Slope")+#,breaks=c(-0.1,0,0.1,0.2))+
   #,breaks=c(0.025,0.03,0.035,0.04,0.045))+
-  scale_fill_manual(values=lat_cols) +
+  scale_fill_manual(values=slope_pop_graph$Lat.Color) +
   theme_classic() + theme(
     axis.text.x = element_text(size=20, face="bold"),
     axis.text.y = element_text(size=20,face="bold"),
@@ -75,12 +98,12 @@ ggplot(demo_pop, aes(x=Median, y=lambda.mean.recovery)) +
 ggsave("Graphs/Selection_demo/1_median_slope_recovery_lambda.pdf",width=8, height = 6, units = "in")
 
 #Median slope vs. lambda.mean.recovery
-ggplot(demo_pop, aes(x=Mean, y=lambda.mean.recovery)) + 
+ggplot(slope_pop_graph, aes(x=Mean, y=mean.lambda.recovery)) + 
   geom_point(aes(fill=as.factor(round(Latitude, 1))),shape=21,size =6)+
   geom_smooth(method=lm,color="black")+
-  scale_y_continuous(name="Mean Lambda after Drought",breaks=c(0.5,1,1.5,2,2.5))+
-  scale_x_continuous(name="Strength of Selection",breaks=c(-0.1,0,0.1,0.2))+
-  scale_fill_manual(values=lat_cols) +
+  scale_y_continuous(name="Mean Lambda after Drought")+#,breaks=c(0.5,1,1.5,2,2.5))+
+  scale_x_continuous(name="Strength of Selection")+#,breaks=c(-0.1,0,0.1,0.2))+
+  scale_fill_manual(values=slope_pop_graph$Lat.Color) +
   theme_classic() + theme(
     axis.text.x = element_text(size=20, face="bold"),
     axis.text.y = element_text(size=20,face="bold"),
@@ -94,13 +117,13 @@ ggplot(demo_pop, aes(x=Mean, y=lambda.mean.recovery)) +
 ggsave("Graphs/Selection_demo/2_mean_slope_recovery_lambda.pdf",width=8, height = 6, units = "in")
 
 
-#Median slope vs. lambda.mean.recovery
-ggplot(demo_pop, aes(x=Latitude, y=Median)) + 
+#Median slope vs. latitude
+ggplot(slope_pop_graph, aes(x=Latitude, y=Median)) + 
   geom_point(aes(fill=as.factor(round(Latitude, 1))),shape=21,size =6)+
   geom_smooth(method=lm,color="black", lty="dashed", se=FALSE)+
   scale_y_continuous(name="Median",breaks=c(-0.1,0,0.1,0.2),limits = c(-0.1,0.2))+
   scale_x_continuous(name="Latitude")+
-  scale_fill_manual(values=lat_cols) +
+  scale_fill_manual(values=slope_pop_graph$Lat.Color) +
   theme_classic() + theme(
     axis.text.x = element_text(size=20, face="bold"),
     axis.text.y = element_text(size=20,face="bold"),

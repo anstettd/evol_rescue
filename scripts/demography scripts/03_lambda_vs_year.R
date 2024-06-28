@@ -47,13 +47,13 @@ ggplot(dat, aes(x=Year, y=lambda)) +
   #theme(strip.background = element_blank(), strip.text.x = element_blank(),
    #     legend.title = element_blank())
 
-# Note: some sites' slopes (e.g., Buck Meadows, Mill) are affected by 2015-16, which had very high recruitment and we assume indicated relatively early recovery. This is part of the rationale for calculating rates of decline as slope until 2014-15.
+# Note: some sites' slopes (e.g., Buck Meadows, Mill) are affected by 2015-16, which had very high recruitment and we assume indicated relatively early recovery. This is part of the rationale for calculating decline only until 2014-15.
 
 # Note: more generally, slopes are often pulled up or down by single years with extremely high lambdas. High lambda values are dramatically higher with addition of 2016-2019 data and its effects on vital rate model selection and model fits
 
-# Note: Mill Creek only has two annual transition estimates during drought (because of 100% plot wash-out in 2010 and flooding that prevented site access in 2013), so Mill Creek should be removed from calculations of demographic declines  
+# Note: Mill Creek only has one annual transition estimate during drought (because of flooding that prevented site access in 2013)  
 
-# Note: Canton, NFMF Tule, SFMF Tule, & Redwood have only one annual transition estimate during drought recovery (because of fire and flood closures in 2016 and 2017), so they should be removed from calculations of demographic recovery
+# Note: Canton, NFMF Tule, SFMF Tule, & Redwood have only one annual transition estimate during drought recovery (because of fire and flood closures that prevented site access in 2016 or 2017)
 
 
 #*******************************************************************************
@@ -79,8 +79,8 @@ dat.mean.recovery <- dat %>%
   summarize(mean.lambda.recovery = exp(mean(log(lambda)))) #GEOMETRIC mean
 
 # Add Latitude and other covariates back in
-covar <- dat %>% 
-  dplyr::select(Site, Latitude, Longitude, Elevation, Region, RegionRank) %>% 
+covar <- read_csv("data/genomic_data/pop_meta_data.csv") %>% 
+  dplyr::select(Site, Paper_ID, Latitude, Longitude, Lat.Color) %>% 
   unique()
 
 mean.lambda <- left_join(dat.mean.drought, dat.mean.recovery) %>% left_join(covar) # Join to slopes

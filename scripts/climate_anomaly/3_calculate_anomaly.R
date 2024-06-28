@@ -1,19 +1,20 @@
 ##################################################################################
-## Daniel Anstett
-## CALCULATE DROUGHT ANOMALIES
-## Use modified weather and cliamte data 
-## 
-## Last Modified May 2, 2024
+#### PROJECT: Evolutionary rescue of Mimulus cardinalis populations during extreme drought
+#### PURPOSE OF THIS SCRIPT: Calculate climate anomalies for study period
+#### AUTHOR: Daniel Anstett and Amy Angert
+#### DATE LAST MODIFIED: 20240628
 ###################################################################################
 
-###################################################################################
+# Remove objects and clear workspace
+rm(list = ls(all=TRUE))
+
 #Load Libraries
 library(tidyverse)
 
 ###################################################################################
 #Water Year Varaibles 
 #MAT, MAP, CMD
-wna <- read_csv("data/climate_data/demo_climate_wateryear.csv") %>%  #Oct to Setp data
+wna <- read_csv("data/climate_data/demo_climate_wateryear.csv") %>%  #Oct to Sept data
   #Rename variables and take log of MAP
   select(Site=Site, Paper_ID=Paper_ID, MAT.clim=MAT,MAP.clim=MAP,CMD.clim=CMD) %>%
   mutate(log.MAP.clim = log10(MAP.clim))
@@ -28,7 +29,7 @@ wna2 <- wna2 %>% #Selects MAT, MAP, CMD,
 wna2$Site <- as.factor(wna2$Site) ; wna2$Year <- as.numeric(wna2$Year) #define variables
 
 ###################################################################################
-# join climate and weather, calculate anomaly
+#Join climate and weather, calculate anomaly
 wna_all <- left_join(wna2, wna, by=c("Site","Paper_ID")) %>% 
   mutate(CMD.anom = CMD.weath - CMD.clim, 
          MAT.anom = MAT.weath - MAT.clim,
@@ -50,7 +51,7 @@ annual_2018 <- read.csv("data/climate_data/Annual/demography_pop_20_Year_2018Y.c
 annual_2019 <- read.csv("data/climate_data/Annual/demography_pop_20_Year_2019Y.csv", header=T) %>% mutate(Year=2019)
 annual_8110 <- read.csv("data/climate_data/Annual/demography_pop_20_Normal_1981_2010Y.csv", header=T) %>% mutate(Year=8110)
 
-#Merge an calculate anomaly
+#Merge and calculate anomaly
 annual_8110 <- annual_8110 %>% select(Site,PAS) %>% mutate(PAS.clim=PAS) %>% select(-PAS)
 annual <- rbind(annual_2010,
                 annual_2011,
@@ -98,7 +99,7 @@ seasonal <- rbind(seasonal_2010,
 #Export Seasonal Data
 write.csv(seasonal ,'data/climate_data/climate_seasonal.csv') #Export file
 
-#Make Seaonal Anomaly
+#Make Seasonal Anomaly
 seasonal_final <- left_join(seasonal,seasonal_8110,by="Site") %>% 
   mutate(Tave_wt.anom = Tave_wt - Tave_wt.clim,
          Tave_sm.anom = Tave_sm - Tave_sm.clim,
@@ -115,34 +116,34 @@ anomaly_final <- left_join(anomaly,seasonal_final,by=c("Site","Paper_ID","Latitu
 write.csv(anomaly_final ,'data/climate_data/climate_anomaly_yearly.csv') #Export file
 
 #Filter for year
-anomaly_1215_raw <- anomaly_final %>% filter(Year==2012 | Year==2013 | Year==2014 | Year==2015)
-anomaly_1619_raw <- anomaly_final %>% filter(Year==2016 | Year==2017 | Year==2018 | Year==2019)
+anomaly_1214_raw <- anomaly_final %>% filter(Year==2012 | Year==2013 | Year==2014)# | Year==2015)
+anomaly_1517_raw <- anomaly_final %>% filter(Year==2015 | Year==2016 | Year==2017)# | Year==2018 | Year==2019)
 
-#Average Anomaly 2012 to 2015
-anomaly_1215 <- anomaly_1215_raw %>% group_by(Site,Paper_ID,Latitude,Longitude) %>% 
-  summarise(MAT_1215=mean(MAT.anom),
-            MAP_1215=mean(MAP.anom),
-            PAS_1215=mean(PAS.anom),
-            CMD_1215=mean(CMD.anom),
-            Tave_wt_1215=mean(Tave_wt.anom),
-            Tave_sm_1215=mean(Tave_sm.anom),
-            PPT_wt_1215=mean(PPT_wt.anom),
-            PPT_sm_1215=mean(PPT_sm.anom)
+#Average Anomaly 2012-13 to 2014-15
+anomaly_1214 <- anomaly_1214_raw %>% group_by(Site,Paper_ID,Latitude,Longitude) %>% 
+  summarise(MAT_1214=mean(MAT.anom),
+            MAP_1214=mean(MAP.anom),
+            PAS_1214=mean(PAS.anom),
+            CMD_1214=mean(CMD.anom),
+            Tave_wt_1214=mean(Tave_wt.anom),
+            Tave_sm_1214=mean(Tave_sm.anom),
+            PPT_wt_1214=mean(PPT_wt.anom),
+            PPT_sm_1214=mean(PPT_sm.anom)
             )
 
-#Average Anomaly 2016 to 2019
-anomaly_1619 <- anomaly_1619_raw %>% group_by(Site,Paper_ID,Latitude,Longitude) %>% 
-  summarise(MAT_1619=mean(MAT.anom),
-            MAP_1619=mean(MAP.anom),
-            PAS_1619=mean(PAS.anom),
-            CMD_1619=mean(CMD.anom),
-            Tave_wt_1619=mean(Tave_wt.anom),
-            Tave_sm_1619=mean(Tave_sm.anom),
-            PPT_wt_1619=mean(PPT_wt.anom),
-            PPT_sm_1619=mean(PPT_sm.anom)
+#Average Anomaly 2015-16 to 2017-18
+anomaly_1517 <- anomaly_1517_raw %>% group_by(Site,Paper_ID,Latitude,Longitude) %>% 
+  summarise(MAT_1517=mean(MAT.anom),
+            MAP_1517=mean(MAP.anom),
+            PAS_1517=mean(PAS.anom),
+            CMD_1517=mean(CMD.anom),
+            Tave_wt_1517=mean(Tave_wt.anom),
+            Tave_sm_1517=mean(Tave_sm.anom),
+            PPT_wt_1517=mean(PPT_wt.anom),
+            PPT_sm_1517=mean(PPT_sm.anom)
   )
 
-anom <- left_join(anomaly_1215,anomaly_1619,by=c("Site","Paper_ID","Latitude","Longitude"))
+anom <- left_join(anomaly_1214,anomaly_1517,by=c("Site","Paper_ID","Latitude","Longitude"))
 
 
 write.csv(anom ,'data/climate_data/climate_anomaly.csv') #Export file

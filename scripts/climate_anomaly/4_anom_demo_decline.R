@@ -2,7 +2,7 @@
 #### PROJECT: Evolutionary rescue of Mimulus cardinalis populations during extreme drought
 #### PURPOSE OF THIS SCRIPT: Correlate pop decline with climate
 #### AUTHOR: Daniel Anstett and Amy Angert
-#### DATE LAST MODIFIED: 20240627
+#### DATE LAST MODIFIED: 20240628
 ###################################################################################
 
 # Remove objects and clear workspace
@@ -14,41 +14,38 @@ library(GGally)
 library(Hmisc)
 library(RColorBrewer)
 
-#Import population metadata
-pop_meta <- read_csv("data/genomic_data/pop_meta_data.csv") 
-
-#Import demography estimates
-demog_means <- read_csv("data/demography data/siteYear.lambda_responses_2010-2019.csv") %>% select(-Region, -RegionRank)
-demog_means <- left_join(demog_means,pop_meta)
+#Import demography estimates (includes metadata)
+demog_means <- read_csv("data/demography data/siteYear.lambda_responses_2010-2019.csv")
 
 #Import climate anomalies
 anoms <- read_csv("data/climate_data/climate_anomaly.csv") 
 
 #Join and filter
-demo_pop <- left_join(demog_means, anoms) %>% 
-  filter(Site!="Mill Creek") #remove Mill Creek because of unreliable demography data during decline period
+demo_pop <- left_join(demog_means, anoms) 
 
 drought.period <- demo_pop %>% 
   dplyr::select(mean.lambda.drought, 
-                MAT_1215, 
-                MAP_1215, 
-                PAS_1215, 
-                CMD_1215, 
-                Tave_wt_1215, 
-                Tave_sm_1215, 
-                PPT_wt_1215, 
-                PPT_sm_1215)
+                MAT_1214, 
+                MAP_1214, 
+                PAS_1214, 
+                CMD_1214, 
+                Tave_wt_1214, 
+                Tave_sm_1214, 
+                PPT_wt_1214, 
+                PPT_sm_1214)
 drought.period <- as.data.frame(drought.period)
 
 decline_clim_coeff <- data.frame()
 for (i in 2:9){
+  decline_clim_coeff[i-1,1] <- names(drought.period[i])
   lm.1 <- lm(mean.lambda.drought~drought.period[,i],data=drought.period)
   #summary(lm.1)
-  decline_clim_coeff[i-1,1] <- summary(lm.1)$coefficients[2,1] #Slope
-  decline_clim_coeff[i-1,2] <- summary(lm.1)$coefficients[2,4] #P-value
-  decline_clim_coeff[i-1,3] <- summary(lm.1)$adj.r.squared #R2
+  decline_clim_coeff[i-1,2] <- summary(lm.1)$coefficients[2,1] #Slope
+  decline_clim_coeff[i-1,3] <- summary(lm.1)$coefficients[2,4] #P-value
+  decline_clim_coeff[i-1,4] <- summary(lm.1)$adj.r.squared #R2
 }
 
+names(decline_clim_coeff) <- c("Var", "Slope", "P", "AdjR2")
 write_csv(decline_clim_coeff,"data/climate_data/decline_clim_coeff.csv") 
 
 

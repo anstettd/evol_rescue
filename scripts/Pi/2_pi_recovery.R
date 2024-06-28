@@ -92,15 +92,17 @@ Anova(lm_all,type="III")
 
 ###########################################################################################################
 
-# Mean Lambda
+# Graphs of lambda recovery vs genetic diversity
+
+pi_pop_graph <- drop_na(pi_pop_cull4)
 
 # pi snp set
-ggplot(pi_pop_cull4, aes(x=pi_snp_set, y=mean.lambda.recovery)) + 
+ggplot(pi_pop_graph, aes(x=pi_snp_set, y=mean.lambda.recovery)) + 
   geom_point(aes(fill=as.factor(round(Latitude, 1))), shape=21, size =6)+
   geom_smooth(method=lm,color="black")+
   scale_y_continuous(name="Mean Lambda after Drought", limits=c(-0.3,2.5), breaks=seq(0,2.5,0.5))+
   scale_x_continuous(name="Pi (Climate SNP)", limits=c(0.2,0.35), breaks=seq(0.1,0.35,0.05)) +  
-  scale_fill_manual(values=pi_pop_cull4$Lat.Color) +
+  scale_fill_manual(values=pi_pop_graph$Lat.Color) +
   theme_classic() + theme(
     axis.text.x = element_text(size=20, face="bold"),
     axis.text.y = element_text(size=20,face="bold"),
@@ -115,12 +117,12 @@ ggsave("Graphs/Demography_pi/3_pi_demography_snpset.pdf",width=8, height = 6, un
 
 
 #global pi
-ggplot(pi_pop_cull4, aes(x=pi_all_snps, y=mean.lambda.recovery)) + 
+ggplot(pi_pop_graph, aes(x=pi_all_snps, y=mean.lambda.recovery)) + 
   geom_point(aes(fill=as.factor(round(Latitude, 1))),shape=21,size =6)+
   geom_smooth(method=lm,color="black", lty="dashed", se=FALSE)+
   scale_y_continuous(name="Mean Lambda after Drought", limits=c(-0.3,2.5), breaks=seq(0,2.5,0.5))+
   scale_x_continuous(name="Pi (Genome-Wide)")+#, breaks=c(0.04,0.045,0.05,0.055,0.06))+
-  scale_fill_manual(values=pi_pop_cull4$Lat.Color) +
+  scale_fill_manual(values=pi_pop_graph$Lat.Color) +
   theme_classic() + theme(
     axis.text.x = element_text(size=20, face="bold"),
     axis.text.y = element_text(size=20,face="bold"),

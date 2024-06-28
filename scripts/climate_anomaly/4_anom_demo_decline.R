@@ -21,7 +21,7 @@ demog_means <- read_csv("data/demography data/siteYear.lambda_responses_2010-201
 anoms <- read_csv("data/climate_data/climate_anomaly.csv") 
 
 #Join and filter
-demo_pop <- left_join(demog_means, anoms) 
+demo_pop <- left_join(demog_means, anoms, by=c("Site", "Latitude", "Paper_ID")) #necessary to specify this list because Mill Creek longitude is not the same between files, so anom values turn to NA if default joining by all shared columns
 
 drought.period <- demo_pop %>% 
   dplyr::select(mean.lambda.drought, 

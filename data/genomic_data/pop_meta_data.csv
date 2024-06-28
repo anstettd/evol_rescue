@@ -1,20 +1,21 @@
-Site,Paper_ID,Demo_ID,Region,Latitude,Longitude,Lat.Color
-Coast Fork of Williamette,55,25,North,43.6517,-123.088,#5E4FA2
-Canton Creek,57,24,North,43.4137,-122.7804,#456EB1
-Rock Creek,11,15,North,43.37876,-122.9521,#378EBA
-O'Neil Creek,9,16,North,41.80979,-123.1189,#54AEAC
-Deep Creek,8,17,North,41.66546,-123.1134,#75C8A4
-Little Jameson Creek,7,18,Center,39.74298,-120.704,#9BD7A4
-Oregon Creek,6,29,Center,39.39704,-121.082,#BEE5A0
-Rainbow Pool,29,35,Center,37.81878,-120.0073,#DFF299
-Carlon,28,1,Center,37.81006,-119.8568,#F1F9A9
-Buck Meadows,27,31,Center,37.77722,-120.0633,#FFFFBF
-Wawona,5,32,Center,37.53822,-119.6514,#FEEDA2
-Redwood Creek,4,8,Center,36.68952,-118.9096,#FDDA86
-North Fork Middle Fork Tule,3,10,Center,36.20081,-118.6509,#FDBE6E
-South Fork Middle Fork Tule,58,3,Center,36.13756,-118.5741,#FB9F5A
-West Fork Mojave River,2,7,South,34.28425,-117.3754,#F67B49
-Whitewater Canyon,17,12,South,33.99329,-116.6627,#E95D47
-Sweetwater River,1,2,South,32.89913,-116.5865,#D8434D
-Kitchen Creek,15,14,South,32.75206,-116.4522,#BC2249
-Hauser Creek,14,13,South,32.65822,-116.5323,#9E0142
+Site,Paper_ID,Demo_ID,Region,Latitude,Longitude
+Coast Fork of Williamette,55,25,North,43.6517,-123.088
+Canton Creek,57,24,North,43.4137,-122.7804
+Rock Creek,11,15,North,43.37876,-122.9521
+O'Neil Creek,9,16,North,41.80979,-123.1189
+Deep Creek,8,17,North,41.66546,-123.1134
+Little Jameson Creek,7,18,Center,39.74298,-120.704
+Oregon Creek,6,29,Center,39.39704,-121.082
+Rainbow Pool,29,35,Center,37.81878,-120.0073
+Carlon,28,1,Center,37.81006,-119.8568
+Buck Meadows,27,31,Center,37.77722,-120.0633
+Wawona,5,32,Center,37.53822,-119.6514
+Redwood Creek,4,8,Center,36.68952,-118.9096
+North Fork Middle Fork Tule,3,10,Center,36.20081,-118.6509
+South Fork Middle Fork Tule,58,3,Center,36.13756,-118.5741
+West Fork Mojave River,2,7,South,34.28425,-117.3754
+Whitewater Canyon,17,12,South,33.99329,-116.6627
+Sweetwater River,1,2,South,32.89913,-116.5865
+Kitchen Creek,15,14,South,32.75206,-116.4522
+Hauser Creek,14,13,South,32.65822,-116.5323
+Mill Creek,12,11,South,34.07808,-116.87558

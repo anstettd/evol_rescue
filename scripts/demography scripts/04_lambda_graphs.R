@@ -26,17 +26,10 @@ for (i in 1:length(packages_needed)){
 
 
 #*******************************************************************************
-### 1. Read in lambda estimates for each site and year & manupulate
+### 1. Read in lambda estimates for each site and year 
 #*******************************************************************************
-dat <- read.csv("data/demography data/siteYear.lambda_2010-2019.csv")
-pop_key <- read_csv("data/genomic_data/pop_meta_data.csv") %>% dplyr::select(Site, Paper_ID) #just to get translation of pop names <--> numbers
-pop_key[20,1] <- "Mill Creek"
-pop_key[20,2] <- 12
-dat<-left_join(dat,pop_key,by="Site") %>% 
-  mutate(lat.2 = round(Latitude, 2), 
-         Site.Lat=paste(lat.2,Paper_ID, sep = "_"),
-         Site.Name=paste(lat.2,Site, sep = "_")) %>% 
-  select(-lat.2) %>% filter(Site!="Mill Creek")
+dat <- read.csv("data/demography data/siteYear.lambda_2010-2019.csv") %>% 
+  mutate(Site.Name=paste(Latitude,Site, sep = "_")) 
 
 dat_pre <- dat %>% filter(Year<2012)
 dat_drought <- dat %>% filter(between(Year,2012,2014))

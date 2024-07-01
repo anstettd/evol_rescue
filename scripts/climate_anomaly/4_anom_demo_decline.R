@@ -70,7 +70,7 @@ a <- ggplot(demo_pop, aes(x=PPT_wt_1214, y=mean.lambda.drought)) +
     legend.title = element_blank(),
     legend.text = element_text(size = 14),  # Increase the size of the legend text
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
-    legend.key.height = unit(1.6, "lines") #Reduce hight
+    legend.key.height = unit(1.6, "lines") #Reduce height
   )
 a
 ggsave("Graphs/Climate/drought_lambda_PPT_wt.pdf",width=8, height = 6, units = "in")

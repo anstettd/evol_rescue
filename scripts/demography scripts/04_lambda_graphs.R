@@ -31,14 +31,46 @@ for (i in 1:length(packages_needed)){
 dat <- read.csv("data/demography data/siteYear.lambda_2010-2019.csv") %>% 
   mutate(Site.Name=paste(Latitude,Site, sep = "_")) 
 
+# add color ramp column
+color <- read_csv("data/genomic_data/pop_meta_data.csv") %>% 
+  dplyr::select(Site, Lat.Color) %>% 
+  unique()
+
+dat <- left_join(dat, color)
+
 dat_pre <- dat %>% filter(Year<2012)
 dat_drought <- dat %>% filter(between(Year,2012,2014))
 dat_recovery <- dat %>% filter(between(Year,2015,2017))
 dat_post <- dat %>% filter(Year>2017)
 
+dat_decline <- dat %>% filter(Year<2015)
 
 #*******************************************************************************
-### 2. Visualize estimates over time for all sites
+### 1. Visualize declines over time for all sites (Fig S1)
+#*******************************************************************************
+
+#Decline only
+ggplot(dat_decline, aes(x=Year, y=lambda)) +
+  geom_point(aes(fill=as.factor(round(Latitude, 1))), shape=21, size=6) +
+  #geom_smooth(method=lm, aes(color=as.factor(round(Latitude, 1)))) + 
+  scale_fill_manual(values=dat_decline$Lat.Color) +
+  scale_y_continuous(name="Lambda")+ scale_x_continuous(name="Year")+
+  geom_hline(yintercept=1, linetype="dotted") +
+  facet_wrap(~Site.Name, scale="free") + theme_classic() + theme(
+    #facet_wrap(~Site.Lat, scale="free") + theme_classic() + theme(
+    axis.text.x = element_text(face="bold"),
+    axis.text.y = element_text(size=11,face="bold"),
+    axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=20,vjust = 2, face="bold",hjust=0.5))
+#+
+#theme(strip.background = element_blank(), strip.text.x = element_blank(),
+#     legend.title = element_blank())
+
+ggsave("Graphs/Demography/01_decline.pdf",width=14, height = 8, units = "in")
+
+
+#*******************************************************************************
+### 3. Visualize estimates over time for all sites (Fig S9)
 #*******************************************************************************
 
 #Decline & Recovery
@@ -63,7 +95,7 @@ ggsave("Graphs/Demography/01_decline_recovery.pdf",width=14, height = 8, units =
 
 
 #*******************************************************************************
-### 2. Visualize estimates over time for select sites
+### 4. Visualize estimates over time for select sites
 #*******************************************************************************
 
 #Kitchen creek
@@ -124,7 +156,7 @@ ggsave("Graphs/Demography/sites/04_coast_fork.pdf",width=6, height = 4, units = 
 
 
 #*******************************************************************************
-### 3. Visualize estimates over time for select sites decline
+### 5. Visualize decline over time for select sites (Fig 1D)
 #*******************************************************************************
 
 #Little Jamison

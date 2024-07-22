@@ -42,7 +42,6 @@ dat_pre <- dat %>% filter(Year<2012)
 dat_drought <- dat %>% filter(between(Year,2012,2014))
 dat_recovery <- dat %>% filter(between(Year,2015,2017))
 dat_post <- dat %>% filter(Year>2017)
-
 dat_decline <- dat %>% filter(Year<2015)
 
 #*******************************************************************************
@@ -52,8 +51,8 @@ dat_decline <- dat %>% filter(Year<2015)
 #Decline only
 ggplot(dat_decline, aes(x=Year, y=lambda)) +
   geom_point(aes(fill=as.factor(round(Latitude, 1))), shape=21, size=6) +
-  #geom_smooth(method=lm, aes(color=as.factor(round(Latitude, 1)))) + 
-  scale_fill_manual(values=dat_decline$Lat.Color) +
+  geom_smooth(method=lm, se=FALSE, aes(color=as.factor(round(Latitude, 1)))) + 
+  scale_color_manual(values=rev(unique(dat_decline$Lat.Color)), aesthetics = c("color", "fill")) +
   scale_y_continuous(name="Lambda")+ scale_x_continuous(name="Year")+
   geom_hline(yintercept=1, linetype="dotted") +
   facet_wrap(~Site.Name, scale="free") + theme_classic() + theme(

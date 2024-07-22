@@ -50,7 +50,7 @@ dat_decline <- dat %>% filter(Year<2015)
 
 #Decline only
 ggplot(dat_decline, aes(x=Year, y=lambda)) +
-  geom_point(aes(fill=as.factor(round(Latitude, 1))), shape=21, size=6) +
+  geom_point(aes(fill=as.factor(round(Latitude, 1))), shape=21, size=4) +
   geom_smooth(method=lm, se=FALSE, aes(color=as.factor(round(Latitude, 1)))) + 
   scale_color_manual(values=rev(unique(dat_decline$Lat.Color)), aesthetics = c("color", "fill")) +
   scale_y_continuous(name="Lambda")+ scale_x_continuous(name="Year")+
@@ -60,10 +60,7 @@ ggplot(dat_decline, aes(x=Year, y=lambda)) +
     axis.text.x = element_text(face="bold"),
     axis.text.y = element_text(size=11,face="bold"),
     axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
-    axis.title.y = element_text(color="black", size=20,vjust = 2, face="bold",hjust=0.5))
-#+
-#theme(strip.background = element_blank(), strip.text.x = element_blank(),
-#     legend.title = element_blank())
+    axis.title.y = element_text(color="black", size=20,vjust = 2, face="bold",hjust=0.5)) + theme(strip.background = element_blank(), strip.text.x = element_blank(), legend.title = element_blank())
 
 ggsave("Graphs/Demography/01_decline.pdf",width=14, height = 8, units = "in")
 

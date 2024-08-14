@@ -12,13 +12,13 @@ library(RColorBrewer)
 library(cowplot)
 
 #Import population metadata
-pop_meta <- read_csv("data/genomic_data/pop_meta_data.csv") %>% dplyr::select(Site, Paper_ID) #just to get translation of pop names <--> numbers
-pop_meta[20,1] <- "Mill Creek" #Fill in missing information
-pop_meta[20,2] <- 12
+#pop_meta <- read_csv("data/genomic_data/pop_meta_data.csv") %>% dplyr::select(Site, Paper_ID) #just to get translation of pop names <--> numbers
+#pop_meta[20,1] <- "Mill Creek" #Fill in missing information
+#pop_meta[20,2] <- 12
 
 #Import Demography Data
-demog_recovery <- read_csv("data/demography data/siteYear.lambda_responses_2010-2019.csv") #%>% 
-  #filter(Site!="Mill Creek") %>% filter(Site!= "Buck Meadows")
+demog_recovery <- read_csv("data/demography data/siteYear.lambda_responses_2010-2019.csv") %>% 
+  filter(Paper_ID!=12) 
 
 
 ###########################################################################################################

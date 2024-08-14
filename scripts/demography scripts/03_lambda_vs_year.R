@@ -28,8 +28,8 @@ for (i in 1:length(packages_needed)){
 #*******************************************************************************
 ### 1. Read in lambda estimates for each site and year
 #*******************************************************************************
-dat <- read.csv("data/demography data/siteYear.lambda_2010-2019.csv") %>% select(-Region, -RegionRank)
-
+dat <- read.csv("data/demography data/siteYear.lambda_2010-2019.csv") %>% select(-Region, -RegionRank) %>% filter(Site!="Mill Creek")
+ 
 
 #*******************************************************************************
 ### 2. Visualize estimates over time for each site
@@ -50,8 +50,6 @@ ggplot(dat, aes(x=Year, y=lambda)) +
 # Note: some sites' slopes (e.g., Buck Meadows, Mill) are affected by 2015-16, which had very high recruitment and we assume indicated relatively early recovery. This is part of the rationale for calculating decline only until 2014-15.
 
 # Note: more generally, slopes are often pulled up or down by single years with extremely high lambdas. High lambda values are dramatically higher with addition of 2016-2019 data and its effects on vital rate model selection and model fits
-
-# Note: Mill Creek only has one annual transition estimate during drought (because of flooding that prevented site access in 2013)  
 
 # Note: Canton, NFMF Tule, SFMF Tule, & Redwood have only one annual transition estimate during drought recovery (because of fire and flood closures that prevented site access in 2016 or 2017)
 

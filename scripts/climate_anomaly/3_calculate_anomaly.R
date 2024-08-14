@@ -143,7 +143,7 @@ anomaly_1517 <- anomaly_1517_raw %>% group_by(Site,Paper_ID,Latitude,Longitude) 
             PPT_sm_1517=mean(PPT_sm.anom)
   )
 
-anom <- left_join(anomaly_1214,anomaly_1517,by=c("Site","Paper_ID","Latitude","Longitude"))
+anom <- left_join(anomaly_1214,anomaly_1517,by=c("Site","Paper_ID","Latitude","Longitude")) %>% filter(Paper_ID!=12)
 
 
 write.csv(anom ,'data/climate_data/climate_anomaly.csv') #Export file

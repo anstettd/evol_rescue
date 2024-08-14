@@ -26,7 +26,7 @@ for (i in 1:length(packages_needed)){
 #*******************************************************************************
 #### 2. Read in metadata file (sorted high to low latitude)
 #*******************************************************************************
-pop_meta <- read_csv("data/genomic_data/pop_meta_data.csv") %>% 
+pop_meta <- read_csv("data/genomic_data/pop_meta_data.csv") %>% #filter(Paper_ID!=12) 
   arrange(Latitude)
 
 #*******************************************************************************

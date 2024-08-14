@@ -1,21 +1,20 @@
-Site,Paper_ID,Demo_ID,Region,Latitude,Longitude,Lat.Color
-Hauser Creek,14,13,South,32.65822,-116.5323,#9E0142
-Kitchen Creek,15,14,South,32.75206,-116.4522,#BA2148
-Sweetwater River,1,2,South,32.89913,-116.5865,#D6404E
-Whitewater Canyon,17,12,South,33.99329,-116.6627,#E65948
-Mill Creek,12,11,South,34.07808,-116.87558,#F47346
-West Fork Mojave River,2,7,South,34.28425,-117.3754,#F99655
-South Fork Middle Fork Tule,58,3,Center,36.13756,-118.5741,#FDB567
-North Fork Middle Fork Tule,3,10,Center,36.20081,-118.6509,#FDD07D
-Redwood Creek,4,8,Center,36.68952,-118.9096,#FEE695
-Wawona,5,32,Center,37.53822,-119.6514,#FEF6B1
-Buck Meadows,27,31,Center,37.77722,-120.0633,#F8FCB4
-Carlon,28,1,Center,37.81006,-119.8568,#EBF7A0
-Rainbow Pool,29,35,Center,37.81878,-120.0073,#D3ED9B
-Oregon Creek,6,29,Center,39.39704,-121.082,#B4E0A2
-Little Jameson Creek,7,18,Center,39.74298,-120.704,#91D3A4
-Deep Creek,8,17,North,41.66546,-123.1134,#6DC4A4
-O'Neil Creek,9,16,North,41.80979,-123.1189,#50A9AF
-Rock Creek,11,15,North,43.37876,-122.9521,#348BBB
-Canton Creek,57,24,North,43.4137,-122.7804,#466DB0
-Coast Fork of Williamette,55,25,North,43.6517,-123.088,#5E4FA2
+Site,Paper_ID,Demo_ID,Region,Latitude,Longitude,Lat.Color,lat_cols(n.sites),lat_cols(n.sites)
+Hauser Creek,14,13,South,32.65822,-116.5323,#9E0142,#9E0142,#9E0142
+Kitchen Creek,15,14,South,32.75206,-116.4522,#BA2148,#BC2249,#BC2249
+Sweetwater River,1,2,South,32.89913,-116.5865,#D6404E,#D8434D,#D8434D
+Whitewater Canyon,17,12,South,33.99329,-116.6627,#E65948,#E95D47,#E95D47
+West Fork Mojave River,2,7,South,34.28425,-117.3754,#F99655,#F67B49,#F67B49
+South Fork Middle Fork Tule,58,3,Center,36.13756,-118.5741,#FDB567,#FB9F5A,#FB9F5A
+North Fork Middle Fork Tule,3,10,Center,36.20081,-118.6509,#FDD07D,#FDBE6E,#FDBE6E
+Redwood Creek,4,8,Center,36.68952,-118.9096,#FEE695,#FDDA86,#FDDA86
+Wawona,5,32,Center,37.53822,-119.6514,#FEF6B1,#FEEDA2,#FEEDA2
+Buck Meadows,27,31,Center,37.77722,-120.0633,#F8FCB4,#FFFFBF,#FFFFBF
+Carlon,28,1,Center,37.81006,-119.8568,#EBF7A0,#F1F9A9,#F1F9A9
+Rainbow Pool,29,35,Center,37.81878,-120.0073,#D3ED9B,#DFF299,#DFF299
+Oregon Creek,6,29,Center,39.39704,-121.082,#B4E0A2,#BEE5A0,#BEE5A0
+Little Jameson Creek,7,18,Center,39.74298,-120.704,#91D3A4,#9BD7A4,#9BD7A4
+Deep Creek,8,17,North,41.66546,-123.1134,#6DC4A4,#75C8A4,#75C8A4
+O'Neil Creek,9,16,North,41.80979,-123.1189,#50A9AF,#54AEAC,#54AEAC
+Rock Creek,11,15,North,43.37876,-122.9521,#348BBB,#378EBA,#378EBA
+Canton Creek,57,24,North,43.4137,-122.7804,#466DB0,#456EB1,#456EB1
+Coast Fork of Williamette,55,25,North,43.6517,-123.088,#5E4FA2,#5E4FA2,#5E4FA2

@@ -55,17 +55,23 @@ write_csv(decline_clim_coeff,"data/climate_data/decline_clim_coeff.csv")
 ###################################################################################
 #Plot decline vs significant climate anomalies 
 
+#Set color as factor
+demo_pop$Lat.Color<-as.factor(demo_pop$Lat.Color)
+demo_pop$Lat.Color<-factor(demo_pop$Lat.Color,levels=demo_pop$Lat.Color)
+
+
+#Winter Precipitation Anomaly
 a <- ggplot(demo_pop, aes(x=PPT_wt_1214, y=mean.lambda.drought)) + 
-  geom_point(aes(fill=as.factor(round(Latitude, 1))),shape=21,size =6)+
-  geom_smooth(method=lm,color="black")+
+  geom_smooth(method=lm,color="black",size=1.25,fill="gray71")+
+  geom_point(aes(fill=demo_pop$Lat.Color), shape=21, size =6)+
   scale_y_continuous(name="Mean Lambda During Drought")+
-  scale_x_continuous(name="Winter Precipitation Anomaly")+
+  scale_x_continuous(name="Winter Precipitation Anomaly (2012-2014)")+
   #,breaks=c(0.04,0.045,0.05,0.055,0.06))+
-  scale_fill_manual(values=demo_pop$Lat.Color) +
+  scale_fill_manual(labels=round(demo_pop$Latitude,1), values=as.character(demo_pop$Lat.Color)) +
   theme_classic() + theme(
     axis.text.x = element_text(size=20, face="bold"),
     axis.text.y = element_text(size=20,face="bold"),
-    axis.title.x = element_text(color="black", size=24, vjust = 0.5, face="bold"),
+    axis.title.x = element_text(color="black", size=22, vjust = 0.5, face="bold"),
     axis.title.y = element_text(color="black", size=24,vjust = 1.7, face="bold",hjust=0.5),
     legend.title = element_blank(),
     legend.text = element_text(size = 14),  # Increase the size of the legend text
@@ -73,15 +79,16 @@ a <- ggplot(demo_pop, aes(x=PPT_wt_1214, y=mean.lambda.drought)) +
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
 a
-ggsave("Graphs/Climate/drought_lambda_PPT_wt.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Climate/Decline_lambda/1_drought_lambda_PPT_wt.pdf",width=8, height = 6, units = "in")
 
-b <- ggplot(demo_pop, aes(x=CMD_1214, y=mean.lambda.drought)) + 
-  geom_point(aes(fill=as.factor(round(Latitude, 1))),shape=21,size =6)+
-  geom_smooth(method=lm,color="black")+
+# CMD Anomaly
+b <- ggplot(demo_pop, aes(x=CMD_1214, y=mean.lambda.drought)) +
+  geom_smooth(method=lm,color="black",size=1.25,fill="gray71")+
+  geom_point(aes(fill=demo_pop$Lat.Color), shape=21, size =6)+
   scale_y_continuous(name="Mean Lambda During Drought")+
-  scale_x_continuous(name="Mean Annual Moisture Deficit Anomaly")+
+  scale_x_continuous(name="Cumulative Moisture Deficit Anomaly")+
   #,breaks=c(0.04,0.045,0.05,0.055,0.06))+
-  scale_fill_manual(values=demo_pop$Lat.Color) +
+  scale_fill_manual(labels=round(demo_pop$Latitude,1), values=as.character(demo_pop$Lat.Color)) +
   theme_classic() + theme(
     axis.text.x = element_text(size=20, face="bold"),
     axis.text.y = element_text(size=20,face="bold"),
@@ -93,15 +100,16 @@ b <- ggplot(demo_pop, aes(x=CMD_1214, y=mean.lambda.drought)) +
     legend.key.height = unit(1.6, "lines") #Reduce hight
   )
 b
-ggsave("Graphs/Climate/drought_lambda_CMD.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Climate/Decline_lambda/2_drought_lambda_CMD.pdf",width=8, height = 6, units = "in")
 
+# MAP Anomaly
 c <- ggplot(demo_pop, aes(x=MAP_1214, y=mean.lambda.drought)) + 
-  geom_point(aes(fill=as.factor(round(Latitude, 1))),shape=21,size =6)+
-  geom_smooth(method=lm,color="black")+
+  geom_smooth(method=lm,color="black",size=1.25,fill="gray71")+
+  geom_point(aes(fill=demo_pop$Lat.Color), shape=21, size =6)+
   scale_y_continuous(name="Mean Lambda During Drought")+
   scale_x_continuous(name="Mean Annual Precipitation Anomaly")+
   #,breaks=c(0.04,0.045,0.05,0.055,0.06))+
-  scale_fill_manual(values=demo_pop$Lat.Color) +
+  scale_fill_manual(labels=round(demo_pop$Latitude,1), values=as.character(demo_pop$Lat.Color)) +
   theme_classic() + theme(
     axis.text.x = element_text(size=20, face="bold"),
     axis.text.y = element_text(size=20,face="bold"),
@@ -113,15 +121,16 @@ c <- ggplot(demo_pop, aes(x=MAP_1214, y=mean.lambda.drought)) +
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
 c
-ggsave("Graphs/Climate/drought_lambda_MAP.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Climate/Decline_lambda/3_drought_lambda_MAP.pdf",width=8, height = 6, units = "in")
 
+#Summer Temperature Anomaly
 d <- ggplot(demo_pop, aes(x=Tave_sm_1214, y=mean.lambda.drought)) + 
-  geom_point(aes(fill=as.factor(round(Latitude, 1))),shape=21,size =6)+
-  geom_smooth(method=lm,color="black")+
+  geom_smooth(method=lm,color="black",size=1.25,fill="gray71")+
+  geom_point(aes(fill=demo_pop$Lat.Color), shape=21, size =6)+
   scale_y_continuous(name="Mean Lambda During Drought")+
   scale_x_continuous(name="Summer Temperature Anomaly")+
   #,breaks=c(0.04,0.045,0.05,0.055,0.06))+
-  scale_fill_manual(values=demo_pop$Lat.Color) +
+  scale_fill_manual(labels=round(demo_pop$Latitude,1), values=as.character(demo_pop$Lat.Color)) +
   theme_classic() + theme(
     axis.text.x = element_text(size=20, face="bold"),
     axis.text.y = element_text(size=20,face="bold"),
@@ -133,7 +142,7 @@ d <- ggplot(demo_pop, aes(x=Tave_sm_1214, y=mean.lambda.drought)) +
     legend.key.height = unit(1.6, "lines") #Reduce hight
   )
 d
-ggsave("Graphs/Climate/drought_lambda_Tave_sm.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Climate/Decline_lambda/4_drought_lambda_Tave_sm.pdf",width=8, height = 6, units = "in")
 
 
 

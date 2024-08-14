@@ -34,7 +34,8 @@ plot(cooksd, pch="*", cex=2, main="Influential Obs by Cooks distance")  # plot c
 abline(h = 4*mean(cooksd, na.rm=T), col="red")  # add cutoff line
 text(x=1:length(cooksd)+1, y=cooksd, labels=ifelse(cooksd>4*mean(cooksd, na.rm=T),names(cooksd),""), col="red")  # add labels
 
-#Cull outlier population
+#Cull outlier population 
+#Remove Mill Creek only due to sampling incositencies across sub populations
 pi_pop_cull1 <- pi_pop %>% 
   filter(Paper_ID!=12) #remove influential outlier Mill Creek
 
@@ -79,30 +80,27 @@ abline(h = 4*mean(cooksd_cull4, na.rm=T), col="red")  # add cutoff line
 text(x=1:length(cooksd_cull4)+1, y=cooksd_cull4, labels=ifelse(cooksd_cull4>4*mean(cooksd_cull4, na.rm=T),names(cooksd_cull4),""), col="red")  # add labels
 #no more influential outliers
 
-#Run linear models
-lm_snp <- lm(mean.lambda.recovery~pi_snp_set,data=pi_pop_cull4)
-lm_all <- lm(mean.lambda.recovery~pi_all_snps,data=pi_pop_cull4)
-
-#Get summary and Anova for each model
-summary(lm_snp)
-Anova(lm_snp,type="III")
-summary(lm_all)
-Anova(lm_all,type="III")
 
 
 ###########################################################################################################
 
 # Graphs of lambda recovery vs genetic diversity
 
-pi_pop_graph <- drop_na(pi_pop_cull4)
+
+#### All outlier removal #### 
+
+pi_pop_graph_cull4 <- drop_na(pi_pop_cull4)
+lm_snp_1 <- lm(mean.lambda.recovery~pi_snp_set,data=pi_pop_cull4)
+summary(lm_snp_1)
+Anova(lm_snp_1,type="III")
 
 # pi snp set
-ggplot(pi_pop_graph, aes(x=pi_snp_set, y=mean.lambda.recovery)) + 
+ggplot(pi_pop_graph_cull4, aes(x=pi_snp_set, y=mean.lambda.recovery)) + 
   geom_point(aes(fill=as.factor(round(Latitude, 1))), shape=21, size =6)+
   geom_smooth(method=lm,color="black")+
   scale_y_continuous(name="Mean Lambda after Drought", limits=c(-0.3,2.5), breaks=seq(0,2.5,0.5))+
   scale_x_continuous(name="Pi (Climate SNP)", limits=c(0.2,0.35), breaks=seq(0.1,0.35,0.05)) +  
-  scale_fill_manual(values=pi_pop_graph$Lat.Color) +
+  scale_fill_manual(values=pi_pop_graph_cull4$Lat.Color) +
   theme_classic() + theme(
     axis.text.x = element_text(size=20, face="bold"),
     axis.text.y = element_text(size=20,face="bold"),
@@ -113,14 +111,130 @@ ggplot(pi_pop_graph, aes(x=pi_snp_set, y=mean.lambda.recovery)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
-ggsave("Graphs/Demography_pi/3_pi_demography_snpset.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Demography_pi/1_pi_demography_snpset_cull4.pdf",width=8, height = 6, units = "in")
 
 
 #global pi
-ggplot(pi_pop_graph, aes(x=pi_all_snps, y=mean.lambda.recovery)) + 
+lm_all_1 <- lm(mean.lambda.recovery~pi_all_snps,data=pi_pop_graph_cull4)
+summary(lm_all_1)
+Anova(lm_all_1,type="III")
+
+ggplot(pi_pop_graph_cull4, aes(x=pi_all_snps, y=mean.lambda.recovery)) + 
   geom_point(aes(fill=as.factor(round(Latitude, 1))),shape=21,size =6)+
   geom_smooth(method=lm,color="black", lty="dashed", se=FALSE)+
   scale_y_continuous(name="Mean Lambda after Drought", limits=c(-0.3,2.5), breaks=seq(0,2.5,0.5))+
+  scale_x_continuous(name="Pi (Genome-Wide)")+#, breaks=c(0.04,0.045,0.05,0.055,0.06))+
+  scale_fill_manual(values=pi_pop_graph_cull4$Lat.Color) +
+  theme_classic() + theme(
+    axis.text.x = element_text(size=20, face="bold"),
+    axis.text.y = element_text(size=20,face="bold"),
+    axis.title.x = element_text(color="black", size=24, vjust = 0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=24,vjust = 1.7, face="bold",hjust=0.5),
+    legend.title = element_blank(),
+    legend.text = element_text(size = 14),  # Increase the size of the legend text
+    legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
+    legend.key.height = unit(1.6, "lines") #Reduce hight
+  )
+
+ggsave("Graphs/Demography_pi/2_pi_demography_global_cull4.pdf",width=8, height = 6, units = "in")
+
+
+
+
+#### Remove Mill Creek #### 
+
+pi_pop_graph_cull1 <- drop_na(pi_pop_cull1)
+lm_snp_2 <- lm(mean.lambda.recovery~pi_snp_set,data=pi_pop_cull1)
+summary(lm_snp_2)
+Anova(lm_snp_2,type="III")
+
+# pi snp set
+ggplot(pi_pop_graph_cull1, aes(x=pi_snp_set, y=mean.lambda.recovery)) + 
+  geom_point(aes(fill=as.factor(round(Latitude, 1))), shape=21, size =6)+
+  geom_smooth(method=lm,color="black")+
+  scale_y_continuous(name="Mean Lambda after Drought")+
+  #, limits=c(-0.3,2.5),breaks=seq(0,2.5,0.5))+
+  scale_x_continuous(name="Pi (Climate SNP)")+
+  #, limits=c(0.2,0.35), breaks=seq(0.1,0.35,0.05)) +  
+  scale_fill_manual(values=pi_pop_graph_cull1$Lat.Color) +
+  theme_classic() + theme(
+    axis.text.x = element_text(size=20, face="bold"),
+    axis.text.y = element_text(size=20,face="bold"),
+    axis.title.x = element_text(color="black", size=24, vjust = 0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=24,vjust = 1.7, face="bold",hjust=0.5),
+    legend.title = element_blank(),
+    legend.text = element_text(size = 14),  # Increase the size of the legend text
+    legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
+    legend.key.height = unit(1.6, "lines") #Reduce height
+  )
+ggsave("Graphs/Demography_pi/3_pi_demography_snpset_cullmill.pdf",width=8, height = 6, units = "in")
+
+
+#global pi
+lm_all_2 <- lm(mean.lambda.recovery~pi_all_snps,data=pi_pop_graph_cull1)
+summary(lm_all_2)
+Anova(lm_all_2,type="III")
+
+ggplot(pi_pop_graph_cull1, aes(x=pi_all_snps, y=mean.lambda.recovery)) + 
+  geom_point(aes(fill=as.factor(round(Latitude, 1))),shape=21,size =6)+
+  geom_smooth(method=lm,color="black", lty="dashed", se=FALSE)+
+  scale_y_continuous(name="Mean Lambda after Drought")+
+  #, limits=c(-0.3,2.5), breaks=seq(0,2.5,0.5))+
+  scale_x_continuous(name="Pi (Genome-Wide)")+#, breaks=c(0.04,0.045,0.05,0.055,0.06))+
+  scale_fill_manual(values=pi_pop_graph_cull1$Lat.Color) +
+  theme_classic() + theme(
+    axis.text.x = element_text(size=20, face="bold"),
+    axis.text.y = element_text(size=20,face="bold"),
+    axis.title.x = element_text(color="black", size=24, vjust = 0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=24,vjust = 1.7, face="bold",hjust=0.5),
+    legend.title = element_blank(),
+    legend.text = element_text(size = 14),  # Increase the size of the legend text
+    legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
+    legend.key.height = unit(1.6, "lines") #Reduce hight
+  )
+
+ggsave("Graphs/Demography_pi/4_pi_demography_global_cullmill.pdf",width=8, height = 6, units = "in")
+
+
+#### All Data #### 
+
+pi_pop_graph <- drop_na(pi_pop)
+lm_snp_3 <- lm(mean.lambda.recovery~pi_snp_set,data=pi_pop_graph)
+summary(lm_snp_3)
+Anova(lm_snp_3,type="III")
+
+# pi snp set
+ggplot(pi_pop_graph, aes(x=pi_snp_set, y=mean.lambda.recovery)) + 
+  geom_point(aes(fill=as.factor(round(Latitude, 1))), shape=21, size =6)+
+  geom_smooth(method=lm,color="black", lty="dashed", se=FALSE)+
+  scale_y_continuous(name="Mean Lambda after Drought")+
+                     #, limits=c(-0.3,2.5),breaks=seq(0,2.5,0.5))+
+  scale_x_continuous(name="Pi (Climate SNP)")+
+#, limits=c(0.2,0.35), breaks=seq(0.1,0.35,0.05)) +  
+  scale_fill_manual(values=pi_pop$Lat.Color) +
+  theme_classic() + theme(
+    axis.text.x = element_text(size=20, face="bold"),
+    axis.text.y = element_text(size=20,face="bold"),
+    axis.title.x = element_text(color="black", size=24, vjust = 0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=24,vjust = 1.7, face="bold",hjust=0.5),
+    legend.title = element_blank(),
+    legend.text = element_text(size = 14),  # Increase the size of the legend text
+    legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
+    legend.key.height = unit(1.6, "lines") #Reduce height
+  )
+ggsave("Graphs/Demography_pi/5_pi_demography_snpset.pdf",width=8, height = 6, units = "in")
+
+
+#global pi
+lm_all_3 <- lm(mean.lambda.recovery~pi_all_snps,data=pi_pop_graph)
+summary(lm_all_3)
+Anova(lm_all_3,type="III")
+
+ggplot(pi_pop_graph, aes(x=pi_all_snps, y=mean.lambda.recovery)) + 
+  geom_point(aes(fill=as.factor(round(Latitude, 1))),shape=21,size =6)+
+  geom_smooth(method=lm,color="black", lty="dashed", se=FALSE)+
+  scale_y_continuous(name="Mean Lambda after Drought")+
+                     #, limits=c(-0.3,2.5), breaks=seq(0,2.5,0.5))+
   scale_x_continuous(name="Pi (Genome-Wide)")+#, breaks=c(0.04,0.045,0.05,0.055,0.06))+
   scale_fill_manual(values=pi_pop_graph$Lat.Color) +
   theme_classic() + theme(
@@ -134,10 +248,5 @@ ggplot(pi_pop_graph, aes(x=pi_all_snps, y=mean.lambda.recovery)) +
     legend.key.height = unit(1.6, "lines") #Reduce hight
   )
 
-ggsave("Graphs/Demography_pi/4_pi_demography_global.pdf",width=8, height = 6, units = "in")
-
-
-
-
-
+ggsave("Graphs/Demography_pi/6_pi_demography_global.pdf",width=8, height = 6, units = "in")
 

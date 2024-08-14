@@ -27,6 +27,9 @@ slope_pop <- left_join(demo_pop, slope.summary, by=c("Paper_ID"="Site"))
 ggplot(slope_pop, aes(x=Median, y=mean.lambda.recovery)) + geom_point()
 # looks like an extreme outlier - needs test
 
+#Remove Mill Creek only due to sampling incositencies across sub populations
+slope_pop_cull_mill <- slope_pop %>% filter(Paper_ID!=12)
+
 #Cook's distance check for influential outliers
 mod.check <- lm(mean.lambda.recovery~Median,data=slope_pop)
 cooksd <- cooks.distance(mod.check)
@@ -60,27 +63,84 @@ abline(h = 4*mean(cooksd_cull2, na.rm=T), col="red")  # add cutoff line
 text(x=1:length(cooksd_cull2)+1, y=cooksd_cull2, labels=ifelse(cooksd_cull2>4*mean(cooksd_cull2, na.rm=T),namescooksd_cull2,""), col="red")  # add labels
 
 #stats
-lm1 <- lm(mean.lambda.recovery~Median, data=slope_pop_cull2)
-summary(lm1)
-Anova(lm1,type="III")
+#lm1 <- lm(mean.lambda.recovery~Median, data=slope_pop_graph_cull2)
+#summary(lm1)
+#Anova(lm1,type="III")
 
-lm2 <- lm(mean.lambda.recovery~Mean,data=slope_pop_cull2)
-summary(lm2)
-Anova(lm2,type="III")
+#lm2 <- lm(mean.lambda.recovery~Mean,data=slope_pop_cull2)
+#summary(lm2)
+#Anova(lm2,type="III")
 
-lm3 <- lm(Median~Latitude,data=slope_pop_cull2)
-summary(lm3)
-Anova(lm3,type="III")
+#lm3 <- lm(Median~Latitude,data=slope_pop_cull2)
+#summary(lm3)
+#Anova(lm3,type="III")
 
 
 
 ########################################################################################
-slope_pop_graph <- drop_na(slope_pop_cull2)
-
 #Lambda recovery vs median selection slope 
-ggplot(slope_pop_graph, aes(x=Median, y=mean.lambda.recovery)) + 
+
+#### All outlier removal #### 
+slope_pop_graph_cull2 <- drop_na(slope_pop_cull2)
+lm1 <- lm(mean.lambda.recovery~Median,data=slope_pop_graph_cull2)
+summary(lm1)
+Anova(lm1,type="III")
+
+ggplot(slope_pop_graph_cull2, aes(x=Median, y=mean.lambda.recovery)) + 
   geom_point(aes(fill=as.factor(round(Latitude, 1))),shape=21,size =6)+
   geom_smooth(method=lm,color="black")+
+  scale_y_continuous(name="Mean Lambda after Drought")+#,breaks=c(0.5,1,1.5,2,2.5))+
+  scale_x_continuous(name="Median Slope")+#,breaks=c(-0.1,0,0.1,0.2))+
+  #,breaks=c(0.025,0.03,0.035,0.04,0.045))+
+  scale_fill_manual(values=slope_pop_graph_cull2$Lat.Color) +
+  theme_classic() + theme(
+    axis.text.x = element_text(size=20, face="bold"),
+    axis.text.y = element_text(size=20,face="bold"),
+    axis.title.x = element_text(color="black", size=24, vjust = 0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=24,vjust = 1.7, face="bold",hjust=0.5),
+    legend.title = element_blank(),
+    legend.text = element_text(size = 14),  # Increase the size of the legend text
+    legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
+    legend.key.height = unit(1.6, "lines") #Reduce height
+  )
+ggsave("Graphs/Selection_demo/1_median_slope_recovery_lambda_cull2.pdf",width=8, height = 6, units = "in")
+
+#### Removal of Mill Creek #### 
+slope_pop_graph_cull_mill <- drop_na(slope_pop_cull_mill)
+lm2 <- lm(mean.lambda.recovery~Median,data=slope_pop_graph_cull_mill)
+summary(lm2)
+Anova(lm2,type="III")
+
+ggplot(slope_pop_graph_cull_mill, aes(x=Median, y=mean.lambda.recovery)) + 
+  geom_point(aes(fill=as.factor(round(Latitude, 1))),shape=21,size =6)+
+  geom_smooth(method=lm,color="black")+
+  scale_y_continuous(name="Mean Lambda after Drought")+#,breaks=c(0.5,1,1.5,2,2.5))+
+  scale_x_continuous(name="Median Slope")+#,breaks=c(-0.1,0,0.1,0.2))+
+  #,breaks=c(0.025,0.03,0.035,0.04,0.045))+
+  scale_fill_manual(values=slope_pop_graph_cull_mill$Lat.Color) +
+  theme_classic() + theme(
+    axis.text.x = element_text(size=20, face="bold"),
+    axis.text.y = element_text(size=20,face="bold"),
+    axis.title.x = element_text(color="black", size=24, vjust = 0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=24,vjust = 1.7, face="bold",hjust=0.5),
+    legend.title = element_blank(),
+    legend.text = element_text(size = 14),  # Increase the size of the legend text
+    legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
+    legend.key.height = unit(1.6, "lines") #Reduce height
+  )
+ggsave("Graphs/Selection_demo/2_median_slope_recovery_lambda_cull_mill.pdf",width=8, height = 6, units = "in")
+
+
+#### No removal #### 
+slope_pop_graph <- drop_na(slope_pop)
+lm3 <- lm(mean.lambda.recovery~Median,data=slope_pop_graph)
+summary(lm3)
+Anova(lm3,type="III")
+
+#All outlier removal
+ggplot(slope_pop_graph, aes(x=Median, y=mean.lambda.recovery)) + 
+  geom_point(aes(fill=as.factor(round(Latitude, 1))),shape=21,size =6)+
+  geom_smooth(method=lm,color="black", lty="dashed", se=FALSE)+
   scale_y_continuous(name="Mean Lambda after Drought")+#,breaks=c(0.5,1,1.5,2,2.5))+
   scale_x_continuous(name="Median Slope")+#,breaks=c(-0.1,0,0.1,0.2))+
   #,breaks=c(0.025,0.03,0.035,0.04,0.045))+
@@ -95,8 +155,29 @@ ggplot(slope_pop_graph, aes(x=Median, y=mean.lambda.recovery)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
-ggsave("Graphs/Selection_demo/1_median_slope_recovery_lambda.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Selection_demo/3_median_slope_recovery_lambda.pdf",width=8, height = 6, units = "in")
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+########################################################################################
 #Median slope vs. lambda.mean.recovery
 ggplot(slope_pop_graph, aes(x=Mean, y=mean.lambda.recovery)) + 
   geom_point(aes(fill=as.factor(round(Latitude, 1))),shape=21,size =6)+
@@ -114,11 +195,11 @@ ggplot(slope_pop_graph, aes(x=Mean, y=mean.lambda.recovery)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
-ggsave("Graphs/Selection_demo/2_mean_slope_recovery_lambda.pdf",width=8, height = 6, units = "in")
+#ggsave("Graphs/Selection_demo/4_mean_slope_recovery_lambda.pdf",width=8, height = 6, units = "in")
 
 
 #Median slope vs. latitude
-ggplot(slope_pop_graph, aes(x=Latitude, y=Median)) + 
+ggplot(slope_pop_graph, aes(x=Latitude, y=Mean)) + 
   geom_point(aes(fill=as.factor(round(Latitude, 1))),shape=21,size =6)+
   geom_smooth(method=lm,color="black", lty="dashed", se=FALSE)+
   scale_y_continuous(name="Median",breaks=c(-0.1,0,0.1,0.2),limits = c(-0.1,0.2))+
@@ -135,7 +216,7 @@ ggplot(slope_pop_graph, aes(x=Latitude, y=Median)) +
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
 
-ggsave("Graphs/Selection_demo/3_median_latitude.pdf",width=8, height = 6, units = "in")
+#ggsave("Graphs/Selection_demo/5_median_latitude.pdf",width=8, height = 6, units = "in")
 
 
 

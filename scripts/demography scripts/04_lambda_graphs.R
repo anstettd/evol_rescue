@@ -29,7 +29,7 @@ for (i in 1:length(packages_needed)){
 ### 1. Read in lambda estimates for each site and year 
 #*******************************************************************************
 dat <- read.csv("data/demography data/siteYear.lambda_2010-2019.csv") %>% 
-  mutate(Site.Name=paste(Latitude,Site, sep = "_")) 
+  mutate(Site.Name=paste(Latitude,Site, sep = "_")) %>% filter(Year!=2018)
 
 # add color ramp column
 color <- read_csv("data/genomic_data/pop_meta_data.csv") %>% 
@@ -62,7 +62,7 @@ ggplot(dat_decline, aes(x=Year, y=lambda)) +
     axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
     axis.title.y = element_text(color="black", size=20,vjust = 2, face="bold",hjust=0.5)) + theme(strip.background = element_blank(), strip.text.x = element_blank(), legend.title = element_blank())
 
-ggsave("Graphs/Demography/01_decline.pdf",width=14, height = 8, units = "in")
+#ggsave("Graphs/Demography/01_decline.pdf",width=14, height = 8, units = "in")
 
 
 #*******************************************************************************
@@ -91,7 +91,27 @@ ggsave("Graphs/Demography/01_decline_recovery.pdf",width=14, height = 8, units =
 
 
 #*******************************************************************************
-### 4. Visualize estimates over time for select sites
+### 4. Visualize decline over time for select sites (Fig 1D)
+#*******************************************************************************
+
+#Little Jamison
+dat_little <- dat %>% filter(Site=="Little Jameson Creek") %>% filter(Year<2015)
+plot_3 <- ggplot(dat_little, aes(x=Year, y=lambda)) + geom_point(size=4,shape=21,fill="#9BD7A4") +
+  #geom_smooth(data=filter(dat_little, Year<2015), method="lm", se=FALSE, col="#9BD7A4",size=1.5) +
+  #geom_smooth(data=filter(dat_little, Year>2014), method="lm", se=FALSE, col="blue") +
+  scale_y_continuous(name="Lambda")+ scale_x_continuous(name="")+
+  geom_hline(yintercept=1, linetype="dotted",size=0.8) + theme_classic() + theme(
+    #facet_wrap(~Site.Lat, scale="free") + theme_classic() + theme(
+    axis.text.x = element_text(size=18,face="bold"),
+    axis.text.y = element_text(size=18,face="bold"),
+    axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=22,vjust = 2, face="bold",hjust=0.5))
+plot_3
+ggsave("Graphs/Demography/sites/05_little_jamison.pdf",width=5, height = 4, units = "in")
+
+
+#*******************************************************************************
+### 5. Visualize estimates over time for select sites
 #*******************************************************************************
 
 #Kitchen creek
@@ -151,21 +171,3 @@ plot_4 <- ggplot(dat_coast, aes(x=Year, y=lambda)) + geom_point(size=2) +
 ggsave("Graphs/Demography/sites/04_coast_fork.pdf",width=6, height = 4, units = "in")
 
 
-#*******************************************************************************
-### 5. Visualize decline over time for select sites (Fig 1D)
-#*******************************************************************************
-
-#Little Jamison
-dat_little <- dat %>% filter(Paper_ID==7) %>% filter(Year<2015)
-plot_3 <- ggplot(dat_little, aes(x=Year, y=lambda)) + geom_point(size=4,shape=21,fill="#9BD7A4") +
-  geom_smooth(data=filter(dat_little, Year<2015), method="lm", se=FALSE, col="#9BD7A4",size=1.5) +
-  #geom_smooth(data=filter(dat_little, Year>2014), method="lm", se=FALSE, col="blue") +
-  scale_y_continuous(name="Lambda")+ scale_x_continuous(name="")+
-  geom_hline(yintercept=1, linetype="dotted",size=0.8) + theme_classic() + theme(
-    #facet_wrap(~Site.Lat, scale="free") + theme_classic() + theme(
-    axis.text.x = element_text(size=18,face="bold"),
-    axis.text.y = element_text(size=18,face="bold"),
-    axis.title.x = element_text(color="black", size=20, vjust = 0.5, face="bold"),
-    axis.title.y = element_text(color="black", size=22,vjust = 2, face="bold",hjust=0.5))
-plot_3
-ggsave("Graphs/Demography/sites/05_little_jamison.pdf",width=5, height = 4, units = "in")

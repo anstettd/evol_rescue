@@ -5,6 +5,9 @@
 #### DATE LAST MODIFIED: 20230815
 ###################################################################################
 
+# Remove objects and clear workspace
+rm(list = ls(all=TRUE))
+
 #Library install and import
 library(tidyverse) 
 library(car)

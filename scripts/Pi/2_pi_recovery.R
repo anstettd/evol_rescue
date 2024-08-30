@@ -169,6 +169,27 @@ ggplot(pi_pop_graph_cull4, aes(x=pi_snp_set, y=mean.lambda.recovery)) +
 ggsave("Graphs/Demography_pi/3_pi_demography_snpset_cull4.pdf",width=8, height = 6, units = "in")
 
 
+# pi snp set inset
+ggplot(pi_pop_graph_cull4, aes(x=pi_snp_set, y=mean.lambda.recovery)) +
+  geom_smooth(method=lm,color="black",size=1.8,fill="gray75")+
+  geom_point(aes(fill=pi_pop_graph_cull4$Lat.Color), shape=21, size =6)+
+  scale_y_continuous(name="Mean Lambda after Drought", limits=c(-0.3,2.5), breaks=seq(0,2.5,0.5))+
+  scale_x_continuous(name="Pi (Climate SNP)", limits=c(0.2,0.35), breaks=seq(0.1,0.30,0.05)) +  
+  scale_fill_manual(labels=round(pi_pop_graph_cull4$Latitude,1), 
+                    values=as.character(pi_pop_graph_cull4$Lat.Color)) +
+  theme_classic() + theme(
+    axis.text.x = element_text(size=30, face="bold"),
+    axis.text.y = element_text(size=30,face="bold"),
+    axis.title.x = element_text(color="black", size=0, vjust = 0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=0,vjust = 1.7, face="bold",hjust=0.5),
+    legend.title = element_blank(), legend.position="none",
+    legend.text = element_text(size = 0),  # Increase the size of the legend text
+    legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
+    legend.key.height = unit(1.6, "lines") #Reduce height
+  )
+ggsave("Graphs/Demography_pi/3_pi_demography_inset.pdf",width=7, height = 7, units = "in")
+
+
 #global pi
 lm_all_1 <- lm(mean.lambda.recovery~pi_all_snps,data=pi_pop_graph_cull4)
 summary(lm_all_1)

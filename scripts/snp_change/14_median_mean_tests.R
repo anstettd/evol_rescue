@@ -8,7 +8,10 @@
 ## 
 ## Last Modified Sept 2, 2023
 ###################################################################################
+# Remove objects and clear workspace
+rm(list = ls(all=TRUE))
 
+#Function
 theme_ci <- function(){ 
   theme_classic() %+replace%    #replace elements we want to change
     theme(axis.text.x = element_text(size = 14, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
@@ -16,8 +19,6 @@ theme_ci <- function(){
           axis.text.y = element_text(size = 16, face = "bold"),
           strip.background = element_blank(),strip.text.x = element_text(size = 16, face = "bold"))
 }
-
-
 
 ###################################################################################
 #Import libraries
@@ -27,10 +28,10 @@ library(tidyverse)
 #HistPop unique SNP ascorss all env
 #Updated for binomial data
 obs_env_unique <- read_csv("data/snp_change_data/slope_obs_all_unique.csv") %>% 
-  filter(SE<5) %>% mutate(abs_slope = abs(Slope))
-rand_env_unique <- read_csv("~/Dropbox/z_Documents/aLarge_files/M_gen/rand_slope_histPop_strong_50_50_no_strat.csv")
+  filter(SE<5) %>% mutate(abs_slope = abs(Slope)) %>% filter(Site!=12)
+rand_env_unique <- read_csv("~/Dropbox/z_Documents/aLarge_files/M_gen/rand_slope_histPop_strong_50_50_no_strat.csv") %>% filter(Site!=12)
 
-#Get slope median
+##Get slope median
 median_obs <- obs_env_unique %>% group_by(Site) %>% summarise(median = median(Slope, na.rm = TRUE))
 median_rand <- rand_env_unique %>% group_by(Site,Seed_ID) %>% summarise(median = median(Slope, na.rm = TRUE))
 
@@ -40,11 +41,30 @@ mean_rand <- rand_env_unique %>% group_by(Site,Seed_ID) %>% summarise(mean = mea
 
 
 ###################################################################################
+##Get SD per site for permuted slopes data
+# Calculate standard deviation for each dataset within each population
+std_dev_table <- rand_env_unique %>%
+  group_by(Site, Seed_ID) %>%
+  summarise(standard_deviation = sd(Slope, na.rm = TRUE)) %>%
+  ungroup()
+
+# Calculate the range (min and max) of standard deviations for each population
+std_dev_range <- std_dev_table %>%
+  group_by(Site) %>%
+  summarise(
+    mean_std_dev = mean(standard_deviation)
+  )
+
+#Get min and max
+min(std_dev_range[,2])
+max(std_dev_range[,2])
+###################################################################################
+
 #Test median and mean slope is different from zero
 wilcox.out <- as.data.frame(median_obs) 
 wilcox.out <- cbind(wilcox.out,mean_obs[,2])
 
-for (i in 1:12){
+for (i in 1:11){
   obs_test <- as.data.frame(obs_env_unique  %>% filter(Site==i))
   wilcox.out[i,4] <- wilcox.test(obs_test$Slope, mu = 0)$p.value
 }
@@ -62,7 +82,7 @@ emp_out<-as.data.frame(median_obs %>% select(Site,median))
 
 
 
-for(i in 1:12){
+for(i in 1:11){
 median_rand_1 <- as.data.frame(median_rand %>% filter(Site==i))
 median_rand_vec <- as.vector(median_rand_1[,3])
 mean_rand_1 <- as.data.frame(mean_rand %>% filter(Site==i))
@@ -87,10 +107,10 @@ write_csv(emp_out, "data/snp_change_data/mean_median_S.csv")
 #Make Median and Mean histograms
 
 median_rand$Site <- as.factor(median_rand$Site)
-median_rand$Site <- factor(median_rand$Site, levels = c(1,12,2,3,4,5,6,7,8,9,10,11))
+median_rand$Site <- factor(median_rand$Site, levels = c(1,2,3,4,5,6,7,8,9,10,11))
 
 mean_rand$Site <- as.factor(mean_rand$Site)
-mean_rand$Site <- factor(mean_rand$Site, levels = c(1,12,2,3,4,5,6,7,8,9,10,11))
+mean_rand$Site <- factor(mean_rand$Site, levels = c(1,2,3,4,5,6,7,8,9,10,11))
 
 
 #Median 

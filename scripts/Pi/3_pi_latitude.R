@@ -10,11 +10,14 @@ library(tidyverse)
 library(car)
 library(ggrepel)
 library(RColorBrewer)
+library(cowplot)
 
 ###################################################################################
 #Import data & Prepare data frame
 #Baseline & Timeseries
-all_pop <- read_csv("data/genomic_data/Baseline_Timeseries_pops_final2.csv")%>% filter(Paper_ID<56)
+all_pop <- read_csv("data/genomic_data/Baseline_Timeseries_pops_final2.csv")%>% filter(Paper_ID<56) %>% filter(Paper_ID!=12)
+
+all_pop <- all_pop %>% mutate()
 
 #Pi
 pi_df <- read_csv("data/genomic_data/baseline_pi.csv")
@@ -48,16 +51,38 @@ Anova(lm4,type="III")
 #Make Latitude-pi graphs
 
 # N-S color gradient
-lat_cols=colorRampPalette(brewer.pal(10,"Spectral"))
-n.sites <- length(unique(pi_all_pop$Site_Name))
-color.list <- lat_cols(n.sites)
+
+color.list <- c("Baseline"="grey40","Timeseries_Demography"="red","Timeseries"="cyan2","Demography"="orange")
+
 
 
 #Pi  
-ggplot(pi_all_pop, aes(x=Lat, y=pi_snp_set)) + 
+ggplot(pi_all_pop, aes(x=Lat, y=pi_snp_set,fill=Type)) + 
   #geom_point(aes(fill=as.factor(round(Lat, 1))),shape=21,size =6)+
-  geom_point(aes(x=Lat,y=pi_snp_set),shape=19,size =4)+
-  stat_smooth(method =lm,color="black",formula = y ~ x+I(x^2))+
+  geom_point(aes(x=Lat,y=pi_snp_set),shape=21,size =4)+
+  #stat_smooth(method=lm,color="black",formula = y ~ x+I(x^2))+
+  scale_y_continuous(name="Pi (Climate Associated)")+
+  scale_x_continuous(name="Latitude")+
+  #,breaks=c(0.025,0.03,0.035,0.04,0.045))+
+  scale_fill_manual(values=color.list) +
+  theme_classic() + theme(
+    axis.text.x = element_text(size=20, face="bold"),
+    axis.text.y = element_text(size=20,face="bold"),
+    axis.title.x = element_text(color="black", size=24, vjust = 0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=24,vjust = 1.7, face="bold",hjust=0.5),
+    legend.title = element_blank(),legend.position="none",
+    legend.text = element_text(size = 14),  # Increase the size of the legend text
+    legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
+    legend.key.height = unit(1.6, "lines") #Reduce height
+  )
+ggsave("Graphs/Pi_latitude/1_lat_pi_snp_set.pdf",width=6, height = 5.5, units = "in")
+
+
+#Pi  
+ggplot(pi_all_pop, aes(x=Lat, y=pi_snp_set,fill=Type)) + 
+  #geom_point(aes(fill=as.factor(round(Lat, 1))),shape=21,size =6)+
+  geom_point(aes(x=Lat,y=pi_snp_set),shape=21,size =4)+
+  #stat_smooth(method=lm,color="black",formula = y ~ x+I(x^2))+
   scale_y_continuous(name="Pi (Climate Associated)")+
   scale_x_continuous(name="Latitude")+
   #,breaks=c(0.025,0.03,0.035,0.04,0.045))+
@@ -72,14 +97,15 @@ ggplot(pi_all_pop, aes(x=Lat, y=pi_snp_set)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
-ggsave("Graphs/Pi_latitude/1_lat_pi_snp_set.pdf",width=6, height = 5.5, units = "in")
+ggsave("Graphs/Pi_latitude/legend.pdf",width=6, height = 5.5, units = "in")
+
 
 
 #Median slope vs. lambda.mean.recovery
-ggplot(pi_all_pop, aes(x=Lat, y=pi_all_snps)) + 
+ggplot(pi_all_pop, aes(x=Lat, y=pi_all_snps,fill=Type)) + 
   #geom_point(aes(fill=as.factor(round(Lat, 1))),shape=21,size =6)+
-  geom_point(aes(x=Lat,y=pi_all_snps),shape=19,size =4)+
-  stat_smooth(method =lm,color="black")+
+  geom_point(aes(x=Lat,y=pi_all_snps),shape=21,size =4)+
+  #stat_smooth(method =lm,color="black")+
   scale_y_continuous(name="Pi (Genome-Wide)")+
   scale_x_continuous(name="Latitude")+
   #,breaks=c(0.025,0.03,0.035,0.04,0.045))+
@@ -89,12 +115,14 @@ ggplot(pi_all_pop, aes(x=Lat, y=pi_all_snps)) +
     axis.text.y = element_text(size=20,face="bold"),
     axis.title.x = element_text(color="black", size=24, vjust = 0.5, face="bold"),
     axis.title.y = element_text(color="black", size=24,vjust = 1.7, face="bold",hjust=0.5),
-    legend.title = element_blank(),
+    legend.title = element_blank(), legend.position="none",
     legend.text = element_text(size = 14),  # Increase the size of the legend text
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
 ggsave("Graphs/Pi_latitude/2_lat_pi_global.pdf",width=6, height = 5.5, units = "in")
+
+
 
 
 #Adaptive vs neutral Pi

@@ -4,8 +4,11 @@
 ## 
 ## Last Modified May 17, 2022
 ###################################################################################
-#Function
+# Remove objects and clear workspace
+rm(list = ls(all=TRUE))
 
+
+#Function
 theme_ci <- function(){ 
   theme_classic() %+replace%    #replace elements we want to change
     theme(axis.text.x = element_text(size = 14, face = "bold", angle = 0,hjust = 0.4, vjust = 0.7), 
@@ -38,18 +41,18 @@ mean_pop <- obs_env_unique %>% group_by(Site) %>% summarise(mean = mean(Slope, n
 
 
 #Isolate each pop and lable
-env_p1 <- env_obs_ci_unique %>% select(S,p1,p1_low,p1_up) %>% mutate(Site=1,pop_lable="A Site 1")
-env_p12 <- env_obs_ci_unique %>% select(S,p12,p1_low,p12_up) %>% mutate(Site=12,pop_lable="B Site 12")
-env_p2 <- env_obs_ci_unique %>% select(S,p2,p1_low,p2_up) %>% mutate(Site=2,pop_lable="C Site 2")
-env_p3 <- env_obs_ci_unique %>% select(S,p3,p1_low,p3_up) %>% mutate(Site=3,pop_lable="D Site 3")
-env_p4 <- env_obs_ci_unique %>% select(S,p4,p1_low,p4_up) %>% mutate(Site=4,pop_lable="E Site 4")
-env_p5 <- env_obs_ci_unique %>% select(S,p5,p1_low,p5_up) %>% mutate(Site=5,pop_lable="F Site 5")
-env_p6 <- env_obs_ci_unique %>% select(S,p6,p1_low,p6_up) %>% mutate(Site=6,pop_lable="G Site 6")
-env_p7 <- env_obs_ci_unique %>% select(S,p7,p1_low,p7_up) %>% mutate(Site=7,pop_lable="H Site 7")
-env_p8 <- env_obs_ci_unique %>% select(S,p8,p1_low,p8_up) %>% mutate(Site=8,pop_lable="I Site 8")
-env_p9 <- env_obs_ci_unique %>% select(S,p9,p1_low,p9_up) %>% mutate(Site=9,pop_lable="J Site 9")
-env_p10 <- env_obs_ci_unique %>% select(S,p10,p1_low,p10_up) %>% mutate(Site=10,pop_lable="K Site 10")
-env_p11 <- env_obs_ci_unique %>% select(S,p11,p1_low,p11_up) %>% mutate(Site=11,pop_lable="L Site 11")
+env_p1 <- env_obs_ci_unique %>% select(S,p1,p1_low,p1_up) %>% mutate(Site=1,pop_lable="Site 1")
+#env_p12 <- env_obs_ci_unique %>% select(S,p12,p1_low,p12_up) %>% mutate(Site=12,pop_lable="B Site 12")
+env_p2 <- env_obs_ci_unique %>% select(S,p2,p1_low,p2_up) %>% mutate(Site=2,pop_lable="Site 2")
+env_p3 <- env_obs_ci_unique %>% select(S,p3,p1_low,p3_up) %>% mutate(Site=3,pop_lable="Site 3")
+env_p4 <- env_obs_ci_unique %>% select(S,p4,p1_low,p4_up) %>% mutate(Site=4,pop_lable="Site 4")
+env_p5 <- env_obs_ci_unique %>% select(S,p5,p1_low,p5_up) %>% mutate(Site=5,pop_lable="Site 5")
+env_p6 <- env_obs_ci_unique %>% select(S,p6,p1_low,p6_up) %>% mutate(Site=6,pop_lable="Site 6")
+env_p7 <- env_obs_ci_unique %>% select(S,p7,p1_low,p7_up) %>% mutate(Site=7,pop_lable="Site 7")
+env_p8 <- env_obs_ci_unique %>% select(S,p8,p1_low,p8_up) %>% mutate(Site=8,pop_lable="Site 8")
+env_p9 <- env_obs_ci_unique %>% select(S,p9,p1_low,p9_up) %>% mutate(Site=9,pop_lable="Site 9")
+env_p10 <- env_obs_ci_unique %>% select(S,p10,p1_low,p10_up) %>% mutate(Site=10,pop_lable="Site 10")
+env_p11 <- env_obs_ci_unique %>% select(S,p11,p1_low,p11_up) %>% mutate(Site=11,pop_lable="Site 11")
 
 #Rename columns
 colnames(env_p1) = c("S","obs","low","high","Site","pop_lable")
@@ -63,11 +66,11 @@ colnames(env_p8) = c("S","obs","low","high","Site","pop_lable")
 colnames(env_p9) = c("S","obs","low","high","Site","pop_lable")
 colnames(env_p10) = c("S","obs","low","high","Site","pop_lable")
 colnames(env_p11) = c("S","obs","low","high","Site","pop_lable")
-colnames(env_p12) = c("S","obs","low","high","Site","pop_lable")
+#colnames(env_p12) = c("S","obs","low","high","Site","pop_lable")
 
 #Bind long dataset
 env_histPop <- rbind(env_p1,
-                     env_p12,
+                     #env_p12,
                      env_p2,
                      env_p3,
                      env_p4,
@@ -85,8 +88,8 @@ env_histPop_25 <- env_histPop %>% filter(S <= 1.25 & S>= -1.25)
 site_unique <- env_histPop %>% select(Site,pop_lable) 
 site_unique <- unique(site_unique)
 
-median_pop <- left_join(median_pop,site_unique, by="Site")
-mean_pop <- left_join(mean_pop,site_unique, by="Site")
+median_pop <- left_join(median_pop,site_unique, by="Site") %>% filter(Site!=12)
+mean_pop <- left_join(mean_pop,site_unique, by="Site") %>% filter(Site!=12)
 
 
 

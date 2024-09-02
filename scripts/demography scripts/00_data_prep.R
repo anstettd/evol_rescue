@@ -214,8 +214,8 @@ data$SiteYear = paste(data$Site, data$Year, sep=":") %>% factor()
 #### 3. Remove unwanted data
 #*******************************************************************************
 
-# Remove sites that were not monitored after 2014 and one site with problematic/missing data (Deer Creek, where frequent plot washouts cause identifications to be unreliable)
-# Retain focal 20 populations
+# Remove sites that were not monitored after 2014 
+# Retain focal 21 populations
 focal.sites <- c("Coast Fork of Williamette",
                  "Canton Creek",
                  "Rock Creek",
@@ -235,7 +235,8 @@ focal.sites <- c("Coast Fork of Williamette",
                  "Whitewater Canyon",
                  "Sweetwater River",
                  "Kitchen Creek",
-                 "Hauser Creek")
+                 "Hauser Creek",
+                 "Deer Creek")
 
 data <- data %>% filter(Site %in% focal.sites) %>% droplevels()
 
@@ -246,7 +247,7 @@ data <- subset(data, Class!="D" | is.na(Class))
 data <- subset(data, Class!="E" & Class!="?" | is.na(Class))
 
 # Double check that Deer Creek 2013 Plot 4 Line 1, where existing plants were all marked D in 2014 but should have been marked E, are not in the data frame
-# deer2013P04 <- subset(data, Site=="Deer Creek" & Year==2013 & PlotID==238) #no rows
+deer2013P04 <- subset(data, Site=="Deer Creek" & Year==2013 & PlotID==238) #no rows
 
 # Remove rows for which size at time t AND size at t+1 is NA
 data <- data[!(is.na(data$logSize) & is.na(data$logSizeNext)),]
@@ -312,7 +313,7 @@ tail(data.indivs)
 data.indivs=data.indivs[order(-data.indivs$Latitude,data.indivs$Year),]
 
 # Summarize for methods
-length(unique(data.indivs$Site))
+length(unique(data.indivs$Site)) #Deer Creek has dropped out because of frequent plot wash-outs
 length(unique(data.indivs$ID))
 site.n <- data.indivs %>% 
   group_by(Site) %>% 

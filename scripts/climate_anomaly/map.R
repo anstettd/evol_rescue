@@ -136,7 +136,7 @@ mim_base <-
   tm_borders()+
   tm_shape(pi_all_pop_sf)+
   tm_dots(size=0.4,shape=21, col="pi_snp_set",palette = snp_pallet, border.col="black" )+
-  tm_layout(frame = FALSE,legend.position = c(0.59, 0.39),legend.title.size = 0.001,legend.text.size=1.28)
+  tm_layout(frame = FALSE,legend.position = c(0.59, 0.42),legend.title.size = 0.001,legend.text.size=1.28)
 mim_base
 tmap_save(mim_base, filename = "Graphs/Maps/pi_snp_set.png",width=4, height=7)
 
@@ -153,6 +153,6 @@ mim_base <-
   tm_borders()+
   tm_shape(pi_all_pop_sf)+
   tm_dots(size=0.4,shape=21, col="pi_all_snps",palette = global_pallet, border.col="black" )+
-  tm_layout(frame = FALSE,legend.position = c(0.59, 0.45),legend.title.size = 0.001,legend.text.size=1.28)
+  tm_layout(frame = FALSE,legend.position = c(0.59, 0.5),legend.title.size = 0.001,legend.text.size=1.28)
 mim_base
 tmap_save(mim_base, filename = "Graphs/Maps/pi_global.png",width=4, height=7)

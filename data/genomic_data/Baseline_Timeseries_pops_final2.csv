@@ -1,21 +1,21 @@
 Site_Name,Lat,Long,Paper_ID,Baseline/Timesieries,Type
-Sweetwater,32.89928,-116.5849,1,Timeseries,Timeseries_Demography
-Mill Creek,34.07808,-116.87558,12,Timeseries,Timeseries_Demography
-West Fork Mojave River,34.28425,-117.37539,2,Timeseries,Timeseries_Demography
-NFMF Tule,36.20081,-118.65092,3,Timeseries,Timeseries_Demography
-Redwoods,36.69096,-118.90961,4,Timeseries,Timeseries_Demography
-Wawona,37.539,-119.654,5,Timeseries,Timeseries_Demography
-Oregon Creek,39.39442,-121.08302,6,Timeseries,Timeseries_Demography
-Little Jameson Creek,39.74298,-120.70401,7,Timeseries,Timeseries_Demography
-Deep Creek,41.66546,-123.11341,8,Timeseries,Timeseries_Demography
-O'Neil Creek,41.80979,-123.11887,9,Timeseries,Timeseries_Demography
-Deer Creek,42.27411,-123.63617,10,Timeseries,Timeseries
-Rock Creek,43.37876,-122.95207,11,Timeseries,Timeseries_Demography
+Sweetwater,32.89928,-116.5849,1,Timeseries,Baseline + Timeseries + Demography
+Mill Creek,34.07808,-116.87558,12,Timeseries,Baseline + Timeseries + Demography
+West Fork Mojave River,34.28425,-117.37539,2,Timeseries,Baseline + Timeseries + Demography
+NFMF Tule,36.20081,-118.65092,3,Timeseries,Baseline + Timeseries + Demography
+Redwoods,36.69096,-118.90961,4,Timeseries,Baseline + Timeseries + Demography
+Wawona,37.539,-119.654,5,Timeseries,Baseline + Timeseries + Demography
+Oregon Creek,39.39442,-121.08302,6,Timeseries,Baseline + Timeseries + Demography
+Little Jameson Creek,39.74298,-120.70401,7,Timeseries,Baseline + Timeseries + Demography
+Deep Creek,41.66546,-123.11341,8,Timeseries,Baseline + Timeseries + Demography
+O'Neil Creek,41.80979,-123.11887,9,Timeseries,Baseline + Timeseries + Demography
+Deer Creek,42.27411,-123.63617,10,Timeseries,Baseline + Timeseries
+Rock Creek,43.37876,-122.95207,11,Timeseries,Baseline + Timeseries + Demography
 Cottonwood Creek,32.60831,-116.70098,13,Baseline,Baseline
-Hauser Creek,32.65822,-116.53235,14,Baseline,Demography
-Kitchen Creek,32.75206,-116.45221,15,Baseline,Demography
+Hauser Creek,32.65822,-116.53235,14,Baseline,Baseline + Demography
+Kitchen Creek,32.75206,-116.45221,15,Baseline,Baseline + Demography
 Chariot Canyon,33.03596,-116.53623,16,Baseline,Baseline
-Whitewater Canyon,33.99329,-116.66267,17,Baseline,Demography
+Whitewater Canyon,33.99329,-116.66267,17,Baseline,Baseline + Demography
 Arroyo Sequit,34.06511,-118.93279,18,Baseline,Baseline
 Trib to W Fork Mojave River,34.28497,-117.37862,19,Baseline,Baseline
 Manzana Creek,34.77171,-119.94363,20,Baseline,Baseline
@@ -25,9 +25,9 @@ Baker Creek,37.15761,-118.3334,23,Baseline,Baseline
 Unknown Creek ,37.3592,-119.34498,24,Baseline,Baseline
 Crane Creek,37.70377,-119.75363,25,Baseline,Baseline
 Tenaya Creek - Yosemite,37.743,-119.562,26,Baseline,Baseline
-Buck Meadows,37.7769,-120.063,27,Baseline,Demography
-Carlon,37.81006667,-119.8568,28,Baseline,Demography
-Rainbow Pool,37.8188,-120.0074333,29,Baseline,Demography
+Buck Meadows,37.7769,-120.063,27,Baseline,Baseline + Demography
+Carlon,37.81006667,-119.8568,28,Baseline,Baseline + Demography
+Rainbow Pool,37.8188,-120.0074333,29,Baseline,Baseline + Demography
 Deer Flat Creek,37.89761,-121.94553,30,Baseline,Baseline
 Fivemile Creek ,38.06638,-120.35368,31,Baseline,Baseline
 Nicasio Creek,38.0695,-122.76317,32,Baseline,Baseline
@@ -53,5 +53,5 @@ Cow Creek,42.92653,-123.48479,51,Baseline,Baseline
 Honey Creek,43.30581667,-122.95505,52,Baseline,Baseline
 North Fork Umpqua,43.3282,-123.0154,53,Baseline,Baseline
 Susan Creek,43.4137,-122.78043,54,Baseline,Baseline
-Coast Fork Willamette,43.66,-123.0799667,55,Baseline,Demography
+Coast Fork Willamette,43.66,-123.0799667,55,Baseline,Baseline + Demography
 "Yakima, WA",46.72734,-120.82678,56,Baseline,Baseline

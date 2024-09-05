@@ -76,7 +76,7 @@ ggplot(slope_pop_graph, aes(x=Median, y=mean.lambda.recovery)) +
   geom_smooth(method=lm,color="black",size=1.25,fill="gray71")+
   geom_point(aes(fill=slope_pop_graph$Lat.Color), shape=21, size =6)+
   scale_y_continuous(name="Mean Lambda after Drought")+#,breaks=c(0.5,1,1.5,2,2.5))+
-  scale_x_continuous(name="Median Slope")+#,breaks=c(-0.1,0,0.1,0.2))+
+  scale_x_continuous(name="Median Strength of Selection")+#,breaks=c(-0.1,0,0.1,0.2))+
   #,breaks=c(0.025,0.03,0.035,0.04,0.045))+
   scale_fill_manual(labels=round(slope_pop_graph$Latitude,1), values=as.character(slope_pop_graph$Lat.Color)) +
   theme_classic() + theme(
@@ -105,7 +105,7 @@ ggplot(slope_pop_graph_cull2, aes(x=Median, y=mean.lambda.recovery)) +
   geom_smooth(method=lm,color="black",size=1.8,fill="gray75")+
   geom_point(aes(fill=slope_pop_graph_cull2$Lat.Color), shape=21, size =6)+
   scale_y_continuous(name="Mean Lambda after Drought")+#,breaks=c(0.5,1,1.5,2,2.5))+
-  scale_x_continuous(name="Median Slope")+#,breaks=c(-0.1,0,0.1,0.2))+
+  scale_x_continuous(name="Median Strength of Selection")+#,breaks=c(-0.1,0,0.1,0.2))+
   #,breaks=c(0.025,0.03,0.035,0.04,0.045))+
   scale_fill_manual(labels=round(slope_pop_graph_cull2$Latitude,1),
                     values=as.character(slope_pop_graph_cull2$Lat.Color)) +

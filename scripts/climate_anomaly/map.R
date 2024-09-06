@@ -109,7 +109,7 @@ pi_global_map = ggplot(data=world,fill="lightgrey",col="black",size=0.3) +
   theme_minimal() +
   coord_sf(xlim = c(xmin,xmax), ylim = c(ymin+0.5,ymax), expand = FALSE) +
   geom_point(data=pi_all_pop, aes(x=Long, y=Lat, fill=pi_all_snps), shape=21, size=4, alpha=0.8) +
-  scale_fill_gradient(low="#D1E5F0", high="#08417b") +
+  scale_fill_gradient(low="white", high="grey30") +
   labs(x="Longitude",y="Latitude") +
   theme(axis.text=element_text(size=12),axis.title=element_text(size=16),legend.position = c(.99, .80),
         legend.justification = c("right", "top"),

@@ -1,44 +1,42 @@
 ##################################################################################
 #### PROJECT: Evolutionary rescue of Mimulus cardinalis populations during extreme drought
-#### PURPOSE OF THIS SCRIPT: Generate 
+#### PURPOSE OF THIS SCRIPT: Generate map of baseline and time series populations
 #### AUTHOR: Modified from Seema Sheth's script from 2018 PNAS paper
-#### DATE LAST MODIFIED: Aug 29 2024
+#### DATE LAST MODIFIED: 4 Sep 2024 BUT THIS CODE IS NOT WORKING YET - DO NOT USE
 ###################################################################################
 
 # remove objects and clear workspace
 rm(list = ls(all=TRUE))
 
 #load packages
-library(sp)
+library(sp) #no longer actively developed --> best to switch to sf
+#library(rgdal) #not available for this version of R
+#library(maptools) #not available for this version of R
+#library(rgeos) #not available for this version of R
+library(sf)
 library(maps)
 library(mapdata)
-library(rgdal)
 library(raster)
-library(maptools)
-library(rgeos)
 library(rworldmap)
 library(rworldxtra)
 library(RColorBrewer)
-library(plyr)
-library(dplyr)
+#library(plyr)
+#library(dplyr)
+library(tidyverse)
 
-# set working directory
-#setwd("/Users/ssheth/Google Drive/demography_PNAS_November2017")
 
 #*************************************
-# Plot map of demography populations, Fig. 2a
+# Read in population locations
 #*************************************
 
 #read in M. cardinalis demography data and extract lat/lon for each population
 #data=read.csv("Data/Mcard_demog_data_2010-2013.csv") %>% select(Latitude,Longitude) %>% unique() %>% arrange(-Latitude)
 
 #Baseline & Timeseries
-#all_pop <- read_csv("data/genomic_data/Baseline_Timeseries_pops_final2.csv")%>% filter(Paper_ID<56)
+all_pop <- read_csv("data/genomic_data/Baseline_Timeseries_pops_final2.csv")%>% filter(Paper_ID<56)
 #all_pop_sf <- st_as_sf(all_pop,coords=c("Long","Lat"), crs=EPSG4326)
 timeseries_pop <- all_pop %>% filter(Paper_ID<12) %>% dplyr::select(Long,Lat)
-#timeseries_pop_sf <- st_as_sf(timeseries_pop,coords=c("Long","Lat"), crs=EPSG4326)
 baseline_pop <- all_pop %>% filter(Paper_ID>12) %>% dplyr::select(Long,Lat)
-#baseline_pop_sf <- st_as_sf(baseline_pop,coords=c("Long","Lat"), crs=EPSG4326)
 
 #Demography
 #demo_pop <- read_csv("data/genomic_data/pop_meta_data.csv")
@@ -56,61 +54,64 @@ baseline_pop <- all_pop %>% filter(Paper_ID>12) %>% dplyr::select(Long,Lat)
 #localities=rbind(localities,baja)
 
 #create numeric codes for sites
-data$Site.code=rev(seq(1,32,1))
-lat_cols=colorRampPalette(brewer.pal(11,"Spectral"))
-data$Col=lat_cols(32)[as.numeric(cut(data$Latitude,breaks = 32))]
+#data$Site.code=rev(seq(1,32,1))
+#lat_cols=colorRampPalette(brewer.pal(11,"Spectral"))
+#data$Col=lat_cols(32)[as.numeric(cut(data$Latitude,breaks = 32))]
 
 #define projections
 prj.wgs = "+proj=longlat +ellps=WGS84"
 prj.aea = "+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0"
 
 #convert to spatial data
-coordinates(data) <- ~Longitude+Latitude
-class(data)
-coordinates(localities)<- ~Longitude+Latitude
+timeseries_pop_sf_wgs <- st_as_sf(timeseries_pop,coords=c("Long","Lat"), crs=prj.wgs)
+baseline_pop_sf_wgs <- st_as_sf(baseline_pop,coords=c("Long","Lat"), crs=prj.wgs)
 
-#project demography site locations
-proj4string(data) = CRS(prj.wgs)
-dat.aea = spTransform(data, CRS=CRS(prj.aea))
+#coordinates(timeseries_pop) <- ~Long+Lat
+#class(timeseries_pop)
+#coordinates(baseline_pop)<- ~Long+Lat
 
-#project occurrence site locations
-proj4string(localities) = CRS(prj.wgs)
-localities.aea = spTransform(localities, CRS=CRS(prj.aea))
+#re-project pop locations
+timeseries_pop_sf_aea = st_transform(timeseries_pop_sf_wgs, CRS=CRS(prj.aea))
+baseline_pop_sf_aea = st_transform(baseline_pop_sf_wgs, CRS=CRS(prj.aea))
 
 # crop to buffered bounding box
-ymin = min(localities$Latitude) - 1.5
-ymax = max(localities$Latitude) + 1.5
-xmin = min(data$Longitude) - 1.5 # latitude labels look nicer bounding by demography sites vs. all locality data
-xmax = max(data$Longitude) + 1.5 # latitude labels look nicer bounding by demography sites vs. all locality data
-e = extent(xmin, xmax, ymin, ymax)
+ymin = min(baseline_pop$Lat) - 1
+ymax = max(baseline_pop$Lat) + 1
+xmin = min(baseline_pop$Long) - 1 
+xmax = max(baseline_pop$Long) + 1
+e = c(xmin, ymin, xmax, ymax)
+#e = extent(xmin, xmax, ymin, ymax)
+bbox.wgs = st_bbox(e)
+bbox.aea = st_transform(bbox.wgs, CRS(prj.aea)) #cannot st_transform a bbox
 
-# see 'help' for this function, you  need to set the directory to one folder level above where the destination file is saved 
-ecoreg = readOGR(dsn="data/raw_data/ecoregions.shp", layer="us_eco_l3_no_st") 
+# ecoregions (why? for gridlines?) 
+ecoreg = read_sf(dsn="data/map_data/ecoregions.shp", layer="us_eco_l3_no_st") 
 
 # project to match sites
-ecoreg.wgs = spTransform(ecoreg, CRS(prj.wgs))
-ecoreg.aea = spTransform(ecoreg, CRS(prj.aea))
+ecoreg.wgs = st_transform(ecoreg, CRS(prj.wgs))
+ecoreg.aea = st_transform(ecoreg, CRS(prj.aea))
 
 # crop polygon to buffered bounding box
-bbox = as(e, "SpatialPolygons")
-proj4string(bbox) = CRS(prj.wgs)
-bbox.aea = spTransform(bbox, CRS=CRS(prj.aea))
-ecoreg.crop.aea <- crop(ecoreg.aea, bbox.aea) 
-ecoreg.crop.wgs <- crop(ecoreg.wgs, bbox) 
+bbox = st_cast(bbox.wgs, "POLYGON")
+#as(e, "SpatialPolygons")
+#proj4string(bbox) = CRS(prj.wgs)
+#bbox.aea = st_transform(bbox, CRS=CRS(prj.aea))
+ecoreg.crop.aea <- st_crop(ecoreg.aea, bbox.aea) 
+ecoreg.crop.wgs <- st_crop(ecoreg.wgs, bbox.wgs) 
 
 ## world map polygons
 data(countriesLow)
 data(countriesHigh)
-countriesLow.aea = spTransform(countriesLow, CRS=CRS(prj.aea))
-countriesHigh.aea = spTransform(countriesHigh, CRS=CRS(prj.aea))
+countriesLow.aea = st_transform(countriesLow, CRS=CRS(prj.aea))
+countriesHigh.aea = st_transform(countriesHigh, CRS=CRS(prj.aea))
 
 # North American polygon
 northAmerica.aea=subset(countriesLow.aea,continent=="North America"|GEO3=="Meso-America")
 
 ## state polygons
-sta = readOGR("data/raw_data/gz_2010_us_040_00_500k/gz_2010_us_040_00_500k.shp")
-projection(sta) = CRS(prj.wgs)
-sta.aea = spTransform(sta, CRS=CRS(prj.aea))
+#sta = readOGR("data/raw_data/gz_2010_us_040_00_500k/gz_2010_us_040_00_500k.shp")
+#projection(sta) = CRS(prj.wgs)
+#sta.aea = spTransform(sta, CRS=CRS(prj.aea))
 
 ## gridlines
 # create unprojected gridlines

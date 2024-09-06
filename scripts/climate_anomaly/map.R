@@ -80,7 +80,7 @@ save_plot(filename = "Graphs/Maps/base_time_map.png",
 ###################################################################################
 ### Read in nucleutide diversity estimates (Pi)
 pi_df <- read_csv("data/genomic_data/baseline_pi.csv")
-pi_all_pop <-left_join(all_pop, pi_df,by=c("Paper_ID"="Site"))
+pi_all_pop <-left_join(all_pop, pi_df,by=c("Paper_ID"="Site")) %>% filter(Site==12)
 #pi_all_pop_sf <- st_as_sf(pi_all_pop,coords=c("Long","Lat"), crs=EPSG4326)
 
 

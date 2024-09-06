@@ -86,33 +86,43 @@ pi_all_pop <-left_join(all_pop, pi_df,by=c("Paper_ID"="Site")) %>% filter(Site==
 
 ############################################################################################ Plot pi on maps
 
-snp_pallet <- c("#2166AC","#67A9CF","#D1E5F0","#FDDBC7","#EF8A62","#B2182B")
+############################################################################################ Plot pi on maps
 
-#Plot climate-SNP pi
-tmap_mode("plot")
-#tmap_mode("view")
-mim_base <-
-  tm_shape(calo)+
-  tm_borders()+
-  tm_shape(pi_all_pop_sf)+
-  tm_dots(size=0.4,shape=21, col="pi_snp_set",palette = snp_pallet, border.col="black" )+
-  tm_layout(frame = FALSE,legend.position = c(0.59, 0.42),legend.title.size = 0.001,legend.text.size=1.28)
-mim_base
-tmap_save(mim_base, filename = "Graphs/Maps/pi_snp_set.png",width=4, height=7)
+# color pallet
+pi_pallet <- c("#08417b","#2166AC","#67A9CF","#D1E5F0")
 
+# pi of climate SNP
+pi_climate_map = ggplot(data=world,fill="lightgrey",col="black",size=0.3) + 
+  geom_sf() +
+  geom_polygon(aes(x = long, y = lat, group = group), data=states, fill="transparent", col="black",size=0.2) +
+  theme_minimal() +
+  coord_sf(xlim = c(xmin,xmax), ylim = c(ymin+0.5,ymax), expand = FALSE) +
+  geom_point(data=pi_all_pop, aes(x=Long, y=Lat, fill=pi_snp_set), shape=21, size=4, alpha=0.8) +
+  scale_fill_gradient(limits = range(pi_all_pop$pi_snp_set, pi_all_pop$pi_all_snps)) +
+  #scale_fill_manual(values=pi_pallet, guide = "none") +
+  labs(x="Longitude",y="Latitude") +
+  theme(axis.text=element_text(size=12),axis.title=element_text(size=16),legend.position = c(.99, .80),
+        legend.justification = c("right", "top"),
+        legend.box.just = "right",
+        legend.margin = margin(6, 6, 6, 6),
+        plot.title=element_text(hjust=0,size=18),
+        legend.title = element_blank()) 
+pi_climate_map
 
-# Load the RdBu palette
-
-global_pallet <- c("#08417b","#2166AC","#67A9CF","#D1E5F0")
-
-#Plot Global pi
-tmap_mode("plot")
-#tmap_mode("view")
-mim_base <-
-  tm_shape(calo)+
-  tm_borders()+
-  tm_shape(pi_all_pop_sf)+
-  tm_dots(size=0.4,shape=21, col="pi_all_snps",palette = global_pallet, border.col="black" )+
-  tm_layout(frame = FALSE,legend.position = c(0.59, 0.5),legend.title.size = 0.001,legend.text.size=1.28)
-mim_base
-tmap_save(mim_base, filename = "Graphs/Maps/pi_global.png",width=4, height=7)
+# pi of all SNP
+pi_global_map = ggplot(data=world,fill="lightgrey",col="black",size=0.3) + 
+  geom_sf() +
+  geom_polygon(aes(x = long, y = lat, group = group), data=states, fill="transparent", col="black",size=0.2) +
+  theme_minimal() +
+  coord_sf(xlim = c(xmin,xmax), ylim = c(ymin+0.5,ymax), expand = FALSE) +
+  geom_point(data=pi_all_pop, aes(x=Long, y=Lat, fill=pi_all_snps), shape=21, size=4, alpha=0.8) +
+  scale_fill_gradient(limits = range(pi_all_pop$pi_snp_set, pi_all_pop$pi_all_snps)) +
+  #scale_fill_manual(values=pi_pallet, guide = "none") +
+  labs(x="Longitude",y="Latitude") +
+  theme(axis.text=element_text(size=12),axis.title=element_text(size=16),legend.position = c(.99, .80),
+        legend.justification = c("right", "top"),
+        legend.box.just = "right",
+        legend.margin = margin(6, 6, 6, 6),
+        plot.title=element_text(hjust=0,size=18),
+        legend.title = element_blank()) 
+pi_global_map

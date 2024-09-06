@@ -29,7 +29,7 @@ for (i in 1:length(packages_needed)){
 ### Read in population locations from Baseline & Time Series datasets
 
 # Pops used in genome sequencing
-all_pop <- read_csv("data/genomic_data/Baseline_Timeseries_pops_final2.csv") %>% filter(Paper_ID<56)
+all_pop <- read_csv("data/genomic_data/Baseline_Timeseries_pops_final2.csv") %>% filter(Paper_ID<56) 
 timeseries_pop <- all_pop %>% filter(Paper_ID<12) %>% dplyr::select(Long,Lat)
 baseline_pop <- all_pop %>% filter(Paper_ID>11) %>% dplyr::select(Long,Lat)
 
@@ -69,7 +69,7 @@ card_map_focal_pops = ggplot(data=world,fill="lightgrey",col="black",size=0.3) +
 
 card_map_focal_pops
 
-# save map 
+# save genomics sampling map 
 save_plot(filename = "Graphs/Maps/base_time_map.png",
           plot = card_map_focal_pops,
           bg = "transparent", 
@@ -80,16 +80,9 @@ save_plot(filename = "Graphs/Maps/base_time_map.png",
 ###################################################################################
 ### Read in nucleutide diversity estimates (Pi)
 pi_df <- read_csv("data/genomic_data/baseline_pi.csv")
-pi_all_pop <-left_join(all_pop, pi_df,by=c("Paper_ID"="Site")) %>% filter(Site==12)
-#pi_all_pop_sf <- st_as_sf(pi_all_pop,coords=c("Long","Lat"), crs=EPSG4326)
-
+pi_all_pop <-left_join(all_pop, pi_df,by=c("Paper_ID"="Site")) %>% filter(Paper_ID!=12)
 
 ############################################################################################ Plot pi on maps
-
-############################################################################################ Plot pi on maps
-
-# color pallet
-pi_pallet <- c("#08417b","#2166AC","#67A9CF","#D1E5F0")
 
 # pi of climate SNP
 pi_climate_map = ggplot(data=world,fill="lightgrey",col="black",size=0.3) + 
@@ -98,8 +91,8 @@ pi_climate_map = ggplot(data=world,fill="lightgrey",col="black",size=0.3) +
   theme_minimal() +
   coord_sf(xlim = c(xmin,xmax), ylim = c(ymin+0.5,ymax), expand = FALSE) +
   geom_point(data=pi_all_pop, aes(x=Long, y=Lat, fill=pi_snp_set), shape=21, size=4, alpha=0.8) +
-  scale_fill_gradient(limits = range(pi_all_pop$pi_snp_set, pi_all_pop$pi_all_snps)) +
-  #scale_fill_manual(values=pi_pallet, guide = "none") +
+  scale_fill_gradient(low="blanchedalmond", high="firebrick3") +
+  #scale_fill_gradient(limits = range(pi_all_pop$pi_snp_set, pi_all_pop$pi_all_snps)) +
   labs(x="Longitude",y="Latitude") +
   theme(axis.text=element_text(size=12),axis.title=element_text(size=16),legend.position = c(.99, .80),
         legend.justification = c("right", "top"),
@@ -116,8 +109,7 @@ pi_global_map = ggplot(data=world,fill="lightgrey",col="black",size=0.3) +
   theme_minimal() +
   coord_sf(xlim = c(xmin,xmax), ylim = c(ymin+0.5,ymax), expand = FALSE) +
   geom_point(data=pi_all_pop, aes(x=Long, y=Lat, fill=pi_all_snps), shape=21, size=4, alpha=0.8) +
-  scale_fill_gradient(limits = range(pi_all_pop$pi_snp_set, pi_all_pop$pi_all_snps)) +
-  #scale_fill_manual(values=pi_pallet, guide = "none") +
+  scale_fill_gradient(low="#D1E5F0", high="#08417b") +
   labs(x="Longitude",y="Latitude") +
   theme(axis.text=element_text(size=12),axis.title=element_text(size=16),legend.position = c(.99, .80),
         legend.justification = c("right", "top"),
@@ -126,3 +118,15 @@ pi_global_map = ggplot(data=world,fill="lightgrey",col="black",size=0.3) +
         plot.title=element_text(hjust=0,size=18),
         legend.title = element_blank()) 
 pi_global_map
+
+# save pi maps
+save_plot(filename = "Graphs/Maps/pi_climate_snps_map.png",
+          plot = pi_climate_map,
+          bg = "transparent", 
+          base_width = 4, base_height = 8)
+
+save_plot(filename = "Graphs/Maps/pi_all_snps_map.png",
+          plot = pi_global_map,
+          bg = "transparent", 
+          base_width = 4, base_height = 8)
+

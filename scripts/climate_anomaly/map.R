@@ -94,13 +94,19 @@ pi_climate_map = ggplot(data=world,fill="lightgrey",col="black",size=0.3) +
   scale_fill_gradient(low="blanchedalmond", high="firebrick3") +
   #scale_fill_gradient(limits = range(pi_all_pop$pi_snp_set, pi_all_pop$pi_all_snps)) +
   labs(x="Longitude",y="Latitude") +
-  theme(axis.text=element_text(size=12),axis.title=element_text(size=16),legend.position = c(.99, .80),
+  theme(axis.text=element_text(size=12),axis.title=element_text(size=16),legend.position = c(.93, .79),
         legend.justification = c("right", "top"),
         legend.box.just = "right",
         legend.margin = margin(6, 6, 6, 6),
         plot.title=element_text(hjust=0,size=18),
         legend.title = element_blank()) 
 pi_climate_map
+
+# save pi map
+save_plot(filename = "Graphs/Maps/pi_climate_snps_map.png",
+          plot = pi_climate_map,
+          bg = "transparent", 
+          base_width = 4, base_height = 8)
 
 # pi of all SNP
 pi_global_map = ggplot(data=world,fill="lightgrey",col="black",size=0.3) + 
@@ -111,7 +117,7 @@ pi_global_map = ggplot(data=world,fill="lightgrey",col="black",size=0.3) +
   geom_point(data=pi_all_pop, aes(x=Long, y=Lat, fill=pi_all_snps), shape=21, size=4, alpha=0.8) +
   scale_fill_gradient(low="white", high="grey30") +
   labs(x="Longitude",y="Latitude") +
-  theme(axis.text=element_text(size=12),axis.title=element_text(size=16),legend.position = c(.99, .80),
+  theme(axis.text=element_text(size=12),axis.title=element_text(size=16),legend.position = c(.95, .79),
         legend.justification = c("right", "top"),
         legend.box.just = "right",
         legend.margin = margin(6, 6, 6, 6),
@@ -119,12 +125,7 @@ pi_global_map = ggplot(data=world,fill="lightgrey",col="black",size=0.3) +
         legend.title = element_blank()) 
 pi_global_map
 
-# save pi maps
-save_plot(filename = "Graphs/Maps/pi_climate_snps_map.png",
-          plot = pi_climate_map,
-          bg = "transparent", 
-          base_width = 4, base_height = 8)
-
+# save pi map
 save_plot(filename = "Graphs/Maps/pi_all_snps_map.png",
           plot = pi_global_map,
           bg = "transparent", 

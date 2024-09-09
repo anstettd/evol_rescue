@@ -74,6 +74,10 @@ save_plot(filename = "Graphs/Maps/base_time_map.png",
           plot = card_map_focal_pops,
           bg = "transparent", 
           base_width = 4, base_height = 8)
+save_plot(filename = "Graphs/Maps/base_time_map.pdf",
+          plot = card_map_focal_pops,
+          bg = "transparent", 
+          base_width = 4, base_height = 8)
 
 
 
@@ -107,6 +111,10 @@ save_plot(filename = "Graphs/Maps/pi_climate_snps_map.png",
           plot = pi_climate_map,
           bg = "transparent", 
           base_width = 4, base_height = 8)
+save_plot(filename = "Graphs/Maps/pi_climate_snps_map.pdf",
+          plot = pi_climate_map,
+          bg = "transparent", 
+          base_width = 4, base_height = 8)
 
 # pi of all SNP
 pi_global_map = ggplot(data=world,fill="lightgrey",col="black",size=0.3) + 
@@ -127,6 +135,10 @@ pi_global_map
 
 # save pi map
 save_plot(filename = "Graphs/Maps/pi_all_snps_map.png",
+          plot = pi_global_map,
+          bg = "transparent", 
+          base_width = 4, base_height = 8)
+save_plot(filename = "Graphs/Maps/pi_all_snps_map.pdf",
           plot = pi_global_map,
           bg = "transparent", 
           base_width = 4, base_height = 8)

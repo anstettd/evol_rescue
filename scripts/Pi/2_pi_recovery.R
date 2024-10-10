@@ -89,17 +89,18 @@ pi_pop_graph$Lat.Color<-factor(pi_pop_graph$Lat.Color,levels=pi_pop_graph$Lat.Co
 ggplot(pi_pop_graph, aes(x=pi_snp_set, y=mean.lambda.recovery)) +
   geom_smooth(method=lm,color="black",size=1.8,fill="gray75")+
   geom_point(aes(fill=pi_pop_graph$Lat.Color), shape=21, size =6)+
+  geom_hline(yintercept = 1, linetype = "dotted", color = "black", size = 0.7) +
   scale_y_continuous(name="Mean Lambda after Drought")+
   #, limits=c(-0.3,2.5),breaks=seq(0,2.5,0.5))+
   scale_x_continuous(name="Pi (Climate SNP)")+
   #, limits=c(0.2,0.35), breaks=seq(0.1,0.35,0.05)) +  
-  scale_fill_manual(labels=round(pi_pop_graph$Latitude,1), values=as.character(pi_pop_graph$Lat.Color)) +
+  scale_fill_manual(name = "Latitude (°N)",labels=round(pi_pop_graph$Latitude,1), values=as.character(pi_pop_graph$Lat.Color)) +
   theme_classic() + theme(
     axis.text.x = element_text(size=20, face="bold"),
     axis.text.y = element_text(size=20,face="bold"),
     axis.title.x = element_text(color="black", size=24, vjust = 0.5, face="bold"),
     axis.title.y = element_text(color="black", size=24,vjust = 1.7, face="bold",hjust=0.5),
-    legend.title = element_blank(),
+    legend.title = element_text(size = 13, face = "bold"),
     legend.text = element_text(size = 14),  # Increase the size of the legend text
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
@@ -118,16 +119,17 @@ pi_pop_graph$Lat.Color<-factor(pi_pop_graph$Lat.Color,levels=pi_pop_graph$Lat.Co
 ggplot(pi_pop_graph, aes(x=pi_all_snps, y=mean.lambda.recovery)) +
   geom_smooth(method=lm,color="black", lty="dashed", size=1.8, se=FALSE)+
   geom_point(aes(fill=pi_pop_graph$Lat.Color), shape=21, size =6)+
+  geom_hline(yintercept = 1, linetype = "dotted", color = "black", size = 0.7) +
   scale_y_continuous(name="Mean Lambda after Drought")+
   #, limits=c(-0.3,2.5), breaks=seq(0,2.5,0.5))+
   scale_x_continuous(name="Pi (Genome-Wide)")+#, breaks=c(0.04,0.045,0.05,0.055,0.06))+
-  scale_fill_manual(labels=round(pi_pop_graph$Latitude,1), values=as.character(pi_pop_graph$Lat.Color)) +
+  scale_fill_manual(name = "Latitude (°N)",labels=round(pi_pop_graph$Latitude,1), values=as.character(pi_pop_graph$Lat.Color)) +
   theme_classic() + theme(
     axis.text.x = element_text(size=20, face="bold"),
     axis.text.y = element_text(size=20,face="bold"),
     axis.title.x = element_text(color="black", size=24, vjust = 0.5, face="bold"),
     axis.title.y = element_text(color="black", size=24,vjust = 1.7, face="bold",hjust=0.5),
-    legend.title = element_blank(),
+    legend.title = element_text(size = 13, face = "bold"),
     legend.text = element_text(size = 14),  # Increase the size of the legend text
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce hight
@@ -147,6 +149,28 @@ Anova(lm_snp_1,type="III")
 
 pi_pop_graph_cull4$Lat.Color<-as.factor(pi_pop_graph_cull4$Lat.Color)
 pi_pop_graph_cull4$Lat.Color<-factor(pi_pop_graph_cull4$Lat.Color,levels=pi_pop_graph_cull4$Lat.Color)
+
+# pi snp set inset
+ggplot(pi_pop_graph_cull4, aes(x=pi_snp_set, y=mean.lambda.recovery)) +
+  geom_smooth(method=lm,color="black",size=1.8,fill="gray75")+
+  geom_point(aes(fill=pi_pop_graph_cull4$Lat.Color), shape=21, size =6)+
+  geom_hline(yintercept = 1, linetype = "dotted", color = "black", size = 0.7) +
+  scale_y_continuous(name="Mean Lambda after Drought", limits=c(-0.3,2.5), breaks=seq(0,2.5,0.5))+
+  scale_x_continuous(name="Pi (Climate SNP)", limits=c(0.2,0.35), breaks=seq(0.1,0.30,0.05)) +  
+  scale_fill_manual(labels=round(pi_pop_graph_cull4$Latitude,1), 
+                    values=as.character(pi_pop_graph_cull4$Lat.Color)) +
+  theme_classic() + theme(
+    axis.text.x = element_text(size=30, face="bold"),
+    axis.text.y = element_text(size=30,face="bold"),
+    axis.title.x = element_text(color="black", size=0, vjust = 0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=0,vjust = 1.7, face="bold",hjust=0.5),
+    legend.title = element_blank(), legend.position="none",
+    legend.text = element_text(size = 0),  # Increase the size of the legend text
+    legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
+    legend.key.height = unit(1.6, "lines") #Reduce height
+  )
+ggsave("Graphs/Demography_pi/3_pi_demography_inset.pdf",width=7, height = 7, units = "in")
+
 
 # pi snp set
 ggplot(pi_pop_graph_cull4, aes(x=pi_snp_set, y=mean.lambda.recovery)) +
@@ -169,25 +193,6 @@ ggplot(pi_pop_graph_cull4, aes(x=pi_snp_set, y=mean.lambda.recovery)) +
 ggsave("Graphs/Demography_pi/3_pi_demography_snpset_cull4.pdf",width=8, height = 6, units = "in")
 
 
-# pi snp set inset
-ggplot(pi_pop_graph_cull4, aes(x=pi_snp_set, y=mean.lambda.recovery)) +
-  geom_smooth(method=lm,color="black",size=1.8,fill="gray75")+
-  geom_point(aes(fill=pi_pop_graph_cull4$Lat.Color), shape=21, size =6)+
-  scale_y_continuous(name="Mean Lambda after Drought", limits=c(-0.3,2.5), breaks=seq(0,2.5,0.5))+
-  scale_x_continuous(name="Pi (Climate SNP)", limits=c(0.2,0.35), breaks=seq(0.1,0.30,0.05)) +  
-  scale_fill_manual(labels=round(pi_pop_graph_cull4$Latitude,1), 
-                    values=as.character(pi_pop_graph_cull4$Lat.Color)) +
-  theme_classic() + theme(
-    axis.text.x = element_text(size=30, face="bold"),
-    axis.text.y = element_text(size=30,face="bold"),
-    axis.title.x = element_text(color="black", size=0, vjust = 0.5, face="bold"),
-    axis.title.y = element_text(color="black", size=0,vjust = 1.7, face="bold",hjust=0.5),
-    legend.title = element_blank(), legend.position="none",
-    legend.text = element_text(size = 0),  # Increase the size of the legend text
-    legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
-    legend.key.height = unit(1.6, "lines") #Reduce height
-  )
-ggsave("Graphs/Demography_pi/3_pi_demography_inset.pdf",width=7, height = 7, units = "in")
 
 
 #global pi

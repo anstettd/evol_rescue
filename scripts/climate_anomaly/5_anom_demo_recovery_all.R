@@ -61,10 +61,11 @@ demo_pop$Lat.Color<-factor(demo_pop$Lat.Color,levels=demo_pop$Lat.Color)
 a <- ggplot(demo_pop, aes(x=PPT_wt_1517, y=mean.lambda.recovery)) +
   geom_smooth(method=lm,color="black", lty="dashed", se=FALSE)+
   geom_point(aes(fill=demo_pop$Lat.Color), shape=21, size =6)+
+  geom_hline(yintercept = 1, linetype = "dotted", color = "black", size = 0.7) +
   scale_y_continuous(name="Mean Lambda After Drought")+#, limits=c(0,2.5), breaks=seq(0,2.5,0.5))+
   scale_x_continuous(name="Winter Precipitation Anomaly (2015-2017)")+
   #,breaks=c(0.04,0.045,0.05,0.055,0.06))+
-  scale_fill_manual(labels=round(demo_pop$Latitude,1), values=as.character(demo_pop$Lat.Color)) +
+  scale_fill_manual(name = "Latitude (°N)",labels=round(demo_pop$Latitude,1), values=as.character(demo_pop$Lat.Color)) +
   theme_classic() + theme(
     axis.text.x = element_text(size=20, face="bold"),
     axis.text.y = element_text(size=20,face="bold"),

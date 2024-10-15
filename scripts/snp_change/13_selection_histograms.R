@@ -105,7 +105,7 @@ histPop <- ggplot(env_histPop ,aes(x=S,y=obs,ymin=low,ymax=high))+
   geom_vline(xintercept=0) +
   labs(x = "Strength of Selection", y = "Number of SNPs") +
   #scale_y_continuous(limits=c(0,40))+ 
-  theme_ci() + facet_wrap(.~pop_lable) +
+  theme_ci() + facet_wrap(.~Site) +
   geom_vline(data = mean_pop, aes(xintercept = mean), size=0.9, linetype="dashed",color="red")
 histPop 
 ggsave("Graphs/Selection/01_selection_2.5.pdf", histPop, width=12, height = 8, units = "in")
@@ -118,7 +118,7 @@ histPop <- ggplot(env_histPop_25 ,aes(x=S,y=obs,ymin=low,ymax=high))+
   geom_vline(xintercept=0) +
   labs(x = "Strength of Selection", y = "Number of SNPs") +
   scale_y_continuous(limits=c(0,125),breaks=seq(0,125,by=25))+ 
-  theme_ci() + facet_wrap(.~pop_lable)+
+  theme_ci() + facet_wrap(.~Site)+
   geom_vline(data = mean_pop, aes(xintercept = mean), size=1.2, linetype="dashed",color="red")
 
 histPop

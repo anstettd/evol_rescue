@@ -169,7 +169,7 @@ ggsave("graphs/snp_change/glm_reg_red/spaghetii_obs.pdf",width=8, height = 7, un
 
 
 
-scale_y_continuous(name="Mean Lambda after Drought", limits=c(-0.3,2.5), breaks=seq(0,2.5,0.5))+
+#scale_y_continuous(name="Mean Lambda after Drought", limits=c(-0.3,2.5), breaks=seq(0,2.5,0.5))+
 
 
 #Combination sites

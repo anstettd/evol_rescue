@@ -29,7 +29,7 @@ for (i in 1:length(packages_needed)){
 ### 1. Read in lambda estimates for each site and year 
 #*******************************************************************************
 dat <- read.csv("data/demography data/siteYear.lambda_2010-2019.csv") %>% 
-  mutate(Site.Name=paste(Latitude,Site, sep = "_")) %>% filter(Year!=2018)
+  mutate(Site.Name=paste(Latitude,Site, sep = "_")) %>% filter(Year!=2018) %>% filter(Site!="Mill Creek")
 
 # add color ramp column
 color <- read_csv("data/genomic_data/pop_meta_data.csv") %>% 
@@ -66,7 +66,7 @@ ggplot(dat_decline, aes(x=Year, y=lambda)) +
 
 
 #*******************************************************************************
-### 3. Visualize estimates over time for all sites (Fig S9)
+### 3. Visualize estimates over time for all sites (Fig S1)
 #*******************************************************************************
 
 #Decline & Recovery
@@ -75,7 +75,8 @@ ggplot(dat, aes(x=Year, y=lambda)) +
   geom_point(data=filter(dat, between(Year,2012,2014)), col="red") +
   geom_point(data=filter(dat, between(Year,2015,2017)), col="blue") +
   geom_point(data=filter(dat, Year>2017), col="grey") +
-  scale_y_continuous(name="Lambda")+ scale_x_continuous(name="Year")+
+  scale_y_continuous(name="Lambda")+ 
+  scale_x_continuous(name="Year",limits = c(2010, 2017))+
   geom_hline(yintercept=1, linetype="dotted") +
   facet_wrap(~Site.Name, scale="free") + theme_classic() + theme(
   #facet_wrap(~Site.Lat, scale="free") + theme_classic() + theme(
@@ -88,6 +89,7 @@ ggplot(dat, aes(x=Year, y=lambda)) +
 #     legend.title = element_blank())
 
 ggsave("Graphs/Demography/01_decline_recovery.pdf",width=14, height = 8, units = "in")
+
 
 
 #*******************************************************************************

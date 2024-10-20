@@ -1,0 +1,42 @@
+#################################################################
+#Population Genomic Analysis pipeline for Mimulus cardinalis
+
+#Author: Daniel Anstett
+#Last updated April 18  2021
+#################################################################
+
+
+#################################################################
+# Haplotype caller for all samples
+
+
+
+#!/bin/bash
+ 
+#PBS -l walltime=024:00:00,select=1:ncpus=4:mem=64gb
+#PBS -N hapcal_all_JJ
+#PBS -A st-angert-1
+#PBS -m abe
+#PBS -M daniel.anstett@botany.ubc.ca
+#PBS -o hapcal_all_JJ.output.txt
+#PBS -e hapcal_all_JJ.error.txt
+ 
+################################################################################
+
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate gatk4
+
+FILE="/project/st-angert-1/list/hap_call_2/hapcal_all_JJ.csv"
+
+cd $PBS_O_WORKDIR
+
+while IFS=, read -r f1; 
+do
+
+gatk --java-options "-Xmx4g" HaplotypeCaller -R /scratch/st-angert-1/mc_ref/CE10g_v2.0.fa -I /scratch/st-angert-1/RG_Bam/$f1"_marked_rg.sorted.bam" -O /scratch/st-angert-1/var_sample/$f1".g.vcf.gz" -ERC GVCF
+
+done < $FILE
+
+conda deactivate
+
+

@@ -1,0 +1,39 @@
+#################################################################
+#Population Genomic Analysis pipeline for Mimulus cardinalis
+
+#Author: Daniel Anstett
+#Last updated May 12  2021
+#################################################################
+
+
+#################################################################
+# Select indel variants chr1 
+
+
+
+#!/bin/bash
+ 
+#PBS -l walltime=00:20:00,select=1:ncpus=1:mem=32gb
+#PBS -N select_indel_chr1
+#PBS -A st-angert-1
+#PBS -m abe
+#PBS -M daniel.anstett@botany.ubc.ca
+#PBS -o select_indel_chr1.output.txt
+#PBS -e select_indel_chr1.error.txt
+ 
+################################################################################
+
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate gatk4
+
+cd $PBS_O_WORKDIR
+
+gatk SelectVariants -V /scratch/st-angert-1/gold_set2/genotypeGVCF/gold_chr1.vcf.gz -select-type INDEL  -O /scratch/st-angert-1/gold_set2/gold_indel/gold_chr1_indel.vcf.gz
+
+gatk IndexFeatureFile -I /scratch/st-angert-1/gold_set2/gold_indel/gold_chr1_indel.vcf.gz
+
+gatk VariantsToTable -V /scratch/st-angert-1/gold_set2/gold_indel/gold_chr1_indel.vcf.gz -O /scratch/st-angert-1/gold_set2/gold_indel/cov_indel2_chr1.tsv -F CHROM -F POS -F TYPE -F DP 
+
+conda deactivate
+
+

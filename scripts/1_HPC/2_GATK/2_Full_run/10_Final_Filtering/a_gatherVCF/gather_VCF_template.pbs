@@ -1,0 +1,38 @@
+#################################################################
+#Population Genomic Analysis pipeline for Mimulus cardinalis
+
+#Author: Daniel Anstett
+#Last updated May 15 2021
+#################################################################
+
+
+#################################################################
+# Gather VCF snp sites only  
+
+
+
+#!/bin/bash
+ 
+#PBS -l walltime=02:00:00,select=1:ncpus=1:mem=64gb
+#PBS -N gather_var_snp
+#PBS -A st-angert-1
+#PBS -m abe
+#PBS -M daniel.anstett@botany.ubc.ca
+#PBS -o gather_var_snp.output.txt
+#PBS -e gather_var_snp.error.txt
+ 
+################################################################################
+
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate gatk4
+
+cd $PBS_O_WORKDIR
+
+gatk GatherVcfs --arguments_file /scratch/st-angert-1/9_applyVQSR/all_var_snp.csv -O /scratch/st-angert-1/10_gatherVCF/all_var_snp.vcf.gz
+ 
+
+gatk IndexFeatureFile -I /scratch/st-angert-1/10_gatherVCF/all_var_snp.vcf.gz
+
+conda deactivate
+
+

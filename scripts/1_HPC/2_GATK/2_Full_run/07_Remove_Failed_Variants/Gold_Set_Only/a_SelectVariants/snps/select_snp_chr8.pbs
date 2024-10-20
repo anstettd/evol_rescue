@@ -1,0 +1,35 @@
+#################################################################
+#Population Genomic Analysis pipeline for Mimulus cardinalis
+
+#Author: Daniel Anstett
+#Last updated May 12  2021
+#################################################################
+
+
+#################################################################
+# Select snp variants chr8 
+
+
+
+#!/bin/bash
+ 
+#PBS -l walltime=00:20:00,select=1:ncpus=1:mem=32gb
+#PBS -N select_snp_chr8
+#PBS -A st-angert-1
+#PBS -m abe
+#PBS -M daniel.anstett@botany.ubc.ca
+#PBS -o select_snp_chr8.output.txt
+#PBS -e select_snp_chr8.error.txt
+ 
+################################################################################
+
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate gatk4
+
+cd $PBS_O_WORKDIR
+
+gatk SelectVariants -V /scratch/st-angert-1/gold_set2/filtered_snp/gold_chr8_snps_filtered.vcf.gz -select-type SNP --exclude-filtered TRUE  -O /scratch/st-angert-1/gold_set2/7a_select_variants/snp/gold_chr8_snps_filtered_pass.vcf.gz
+
+conda deactivate
+
+

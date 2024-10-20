@@ -1,0 +1,35 @@
+#################################################################
+#Population Genomic Analysis pipeline for Mimulus cardinalis
+
+#Author: Daniel Anstett
+#Last updated May 11 2021
+#################################################################
+
+
+#################################################################
+# Select snp variants chr6 
+
+
+
+#!/bin/bash
+ 
+#PBS -l walltime=24:00:00,select=1:ncpus=1:mem=170gb
+#PBS -N select_snp_chr6
+#PBS -A st-angert-1
+#PBS -m abe
+#PBS -M daniel.anstett@botany.ubc.ca
+#PBS -o select_snp_chr6.output.txt
+#PBS -e select_snp_chr6.error.txt
+ 
+################################################################################
+
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate gatk4
+
+cd $PBS_O_WORKDIR
+
+gatk SelectVariants -V /scratch/st-angert-1/4_gather_VCF/chr6_raw_var.vcf.gz -select-type SNP -O /scratch/st-angert-1/5_select_var/snp/chr6_snp_raw_var.vcf.gz
+
+conda deactivate
+
+

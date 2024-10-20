@@ -1,0 +1,38 @@
+#################################################################
+#Population Genomic Analysis pipeline for Mimulus cardinalis
+
+#Author: Daniel Anstett
+#Last updated March 24 2023
+#################################################################
+
+
+#################################################################
+# Run Beagle to input missing SNPs
+
+
+
+#!/bin/bash
+ 
+#PBS -l walltime=48:00:00,select=1:ncpus=16:mem=100gb
+#PBS -N run_beagle
+#PBS -A st-angert-1
+#PBS -m abe
+#PBS -M daniel.anstett@botany.ubc.ca
+#PBS -o run_beagle.output.txt
+#PBS -e run_beagle.error.txt
+ 
+################################################################################
+
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate beagle 
+
+cd $PBS_O_WORKDIR
+
+beagle -Xmx50G gt=/scratch/st-angert-1/10_select_final_snps/all_vqsr_filtered_variants.vcf.gz \ 
+out=/scratch/st-angert-1/18_beagle/beagle_output \
+map=/scratch/st-angert-1/18_beagle/gen_map_order.map \
+nthreads=16
+
+conda deactivate
+
+

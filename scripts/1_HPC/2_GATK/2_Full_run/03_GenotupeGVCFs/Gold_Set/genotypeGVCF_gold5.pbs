@@ -1,0 +1,35 @@
+#################################################################
+#Population Genomic Analysis pipeline for Mimulus cardinalis
+
+#Author: Daniel Anstett
+#Last updated May 11 2021
+#################################################################
+
+
+#################################################################
+# GenotypeGVCF for gold chr5 
+
+
+
+#!/bin/bash
+ 
+#PBS -l walltime=80:00:00,select=1:ncpus=1:mem=170gb
+#PBS -N gGVCF_gold5
+#PBS -A st-angert-1
+#PBS -m abe
+#PBS -M daniel.anstett@botany.ubc.ca
+#PBS -o genotypeGVCF_gold5.output.txt
+#PBS -e genotypeGVCF_gold5.error.txt
+ 
+################################################################################
+
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate gatk4
+
+cd $PBS_O_WORKDIR
+
+gatk GenotypeGVCFs -R /scratch/st-angert-1/mc_ref/CE10g_v2.0.fa -V gendb://"/scratch/st-angert-1/gold_set2/db_import/gold_chr5" -O /scratch/st-angert-1/gold_set2/genotypeGVCF/gold_chr5.vcf.gz
+
+conda deactivate
+
+

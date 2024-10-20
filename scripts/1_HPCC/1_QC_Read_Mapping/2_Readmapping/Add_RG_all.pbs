@@ -1,0 +1,42 @@
+#################################################################
+#Population Genomic Analysis pipeline for Mimulus cardinalis
+
+#Author: Daniel Anstett
+#Last updated April 10  2021
+#################################################################
+
+
+#################################################################
+# Replace read groups for all samples 
+
+
+
+#!/bin/bash
+ 
+#PBS -l walltime=80:00:00,select=1:ncpus=1:mem=170gb
+#PBS -N RG_all
+#PBS -A st-angert-1
+#PBS -m abe
+#PBS -M daniel.anstett@botany.ubc.ca
+#PBS -o Add_RG_all.output.txt
+#PBS -e Add_RG_all.error.txt
+ 
+################################################################################
+
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate gatk4
+
+cd $PBS_O_WORKDIR
+
+FILE="/project/st-angert-1/list/NanuQ_Mimulus_Timeseries_RG_Info.csv"
+
+while IFS=, read -r f1 f2 f3; 
+do
+
+gatk AddOrReplaceReadGroups -I /project/st-angert-1/RG_Bam/$f3"_marked_rg.sorted.bam" -O /scratch/st-angert-1/RG_Bam_2/$f3"_marked_rg.sorted.bam" --RGLB $f1 --RGPL illumina --RGPU $f2 --RGSM $f3 --CREATE_INDEX true
+
+done < $FILE
+
+conda deactivate
+
+

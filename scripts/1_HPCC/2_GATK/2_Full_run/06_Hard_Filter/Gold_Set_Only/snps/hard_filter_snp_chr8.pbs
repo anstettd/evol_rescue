@@ -1,0 +1,36 @@
+#################################################################
+#Population Genomic Analysis pipeline for Mimulus cardinalis
+
+#Author: Daniel Anstett
+#Last updated May 20  2021
+#################################################################
+
+
+#################################################################
+# Extract snp coverage chr8 
+
+
+
+#!/bin/bash
+ 
+#PBS -l walltime=01:20:00,select=1:ncpus=1:mem=100gb
+#PBS -N hard_filter_snp_chr8
+#PBS -A st-angert-1
+#PBS -m abe
+#PBS -M daniel.anstett@botany.ubc.ca
+#PBS -o hard_filter_snp_chr8.output.txt
+#PBS -e hard_filter_snp_chr8.error.txt
+ 
+################################################################################
+
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate gatk4
+
+cd $PBS_O_WORKDIR
+
+gatk VariantFiltration -V /scratch/st-angert-1/gold_set2/gold_snp/gold_chr8_snp.vcf.gz --filter-expression "MQ < 50.0 || AN < 21.6 || SOR < -1.0 || SOR > 1.0 || AF < 0.25 || AF > 0.75 || ExcessHet > 10.0 || BaseQRankSum < -1.0 || BaseQRankSum > 1.0 || DP < 9.226439 || DP > 232.7875" --filter-name "My_Filters" --missing-values-evaluate-as-failing true -O /scratch/st-angert-1/gold_set2/filtered_snp/gold_chr8_snps_filtered.vcf.gz
+
+
+conda deactivate
+
+

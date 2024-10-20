@@ -1,0 +1,35 @@
+#################################################################
+#Population Genomic Analysis pipeline for Mimulus cardinalis
+
+#Author: Daniel Anstett
+#Last updated May 7 2021
+#################################################################
+
+
+#################################################################
+# Apply_bqsr  40 NS.1480.001.IDT_i7_149---IDT_i5_149.98 
+
+
+
+#!/bin/bash
+ 
+#PBS -l walltime=03:00:00,select=1:ncpus=1:mem=170gb
+#PBS -N apply_bqsr_40
+#PBS -A st-angert-1
+#PBS -m abe
+#PBS -M daniel.anstett@botany.ubc.ca
+#PBS -o apply_bqsr_40.output.txt
+#PBS -e apply_bqsr_40.error.txt
+ 
+################################################################################
+
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate gatk4
+
+cd $PBS_O_WORKDIR
+
+gatk ApplyBQSR -R /scratch/st-angert-1/mc_ref/CE10g_v2.0.fa -I /project/st-angert-1/RG_Bam_2/NS.1480.001.IDT_i7_149---IDT_i5_149.98_marked_rg.sorted.bam --bqsr-recal-file /scratch/st-angert-1/base_recal/base_recal_NS.1480.001.IDT_i7_149---IDT_i5_149.98.table -O /scratch/st-angert-1/apply_bqsr/NS.1480.001.IDT_i7_149---IDT_i5_149.98_recal_marked_rg.sort.bam
+
+conda deactivate
+
+

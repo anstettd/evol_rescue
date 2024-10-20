@@ -1,0 +1,43 @@
+#################################################################
+#Population Genomic Analysis pipeline for Mimulus cardinalis
+
+#Author: Daniel Anstett
+#Last updated May 19 2021
+#################################################################
+
+
+#################################################################
+# Gather VCF snp sites only  
+
+
+
+#!/bin/bash
+ 
+#PBS -l walltime=02:00:00,select=1:ncpus=1:mem=64gb
+#PBS -N gather_gold_snp_sites_only
+#PBS -A st-angert-1
+#PBS -m abe
+#PBS -M daniel.anstett@botany.ubc.ca
+#PBS -o gather_gold_snp_sites_only.output.txt
+#PBS -e gather_gold_snp_sites_only.error.txt
+ 
+################################################################################
+
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate gatk4
+
+cd $PBS_O_WORKDIR
+
+gatk GatherVcfs --arguments_file /scratch/st-angert-1/gold_set/filtered_snp/snp_gold.csv -O /scratch/st-angert-1/gold_set/filtered_snp/gold_filtered_snps.vcf.gz 
+
+gatk IndexFeatureFile -I /scratch/st-angert-1/gold_set/filtered_snp/gold_filtered_snps.vcf.gz
+
+gatk SelectVariants -V /scratch/st-angert-1/gold_set/filtered_snp/gold_filtered_snps.vcf.gz -O /scratch/st-angert-1/gold_set/filtered_snp/gold_filtered_snps_passed.vcf.gz --exclude-filtered true
+
+gatk IndexFeatureFile -I /scratch/st-angert-1/gold_set/filtered_snp/gold_filtered_snps_passed.vcf.gz
+
+#gatk VariantsToTable -V /scratch/st-angert-1/gold_set/filtered_snp/gold_filtered_snps.vcf.gz -O /scratch/st-angert-1/gold_set/filtered_snp/filtered_snp_gold_var.txt -F CHROM -F POS -F TYPE -F MQ -F AN -F SOR -F AF -F ExcessHet -F BaseQRankSum -F DP -F FILTER
+
+conda deactivate
+
+

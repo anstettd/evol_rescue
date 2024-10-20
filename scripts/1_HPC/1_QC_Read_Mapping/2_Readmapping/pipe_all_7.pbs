@@ -1,0 +1,44 @@
+#################################################################
+#Population Genomic Analysis pipeline for Mimulus cardinalis
+
+#Author: Daniel Anstett
+#Last updated Feb 19 2021
+#################################################################
+
+
+#################################################################
+#Use bwa mem to generate sam file
+
+
+
+#!/bin/bash
+ 
+#PBS -l walltime=05:00:00,select=1:ncpus=30:mem=32gb
+#PBS -N pipe_all_7
+#PBS -A st-angert-1
+#PBS -m abe
+#PBS -M daniel.anstett@botany.ubc.ca
+#PBS -o pipe_all_7.output.txt
+#PBS -e pipe_all_7.error.txt
+ 
+################################################################################
+
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate bwa
+
+
+cd $PBS_O_WORKDIR
+
+FILE=/project/st-angert-1/raw_data/all_raw/all_raw_7.csv
+
+while IFS=, read -r f1;
+do
+bwa mem /scratch/st-angert-1/mc_ref/CE10g_v2.0.fa /project/st-angert-1/trim_all/$f1"_R1_paired.fastq.gz" /project/st-angert-1/trim_all/$f1"_R2_paired.fastq.gz" -t 30 | samtools sort -@30 -o /scratch/st-angert-1/output/$f1".sorted.bam" -
+
+samtools index /scratch/st-angert-1/output/$f1".sorted.bam" /scratch/st-angert-1/output/$f1".sorted.bam.bai"
+
+done < $FILE
+
+conda deactivate
+
+

@@ -1,0 +1,48 @@
+#################################################################
+#Population Genomic Analysis pipeline for Mimulus cardinalis
+
+#Author: Daniel Anstett
+#Last updated Feb 19 2021
+#################################################################
+
+
+#################################################################
+#Calculate coverage
+
+
+
+#!/bin/bash
+ 
+#PBS -l walltime=05:00:00,select=1:ncpus=1:mem=16gb
+#PBS -N coverage
+#PBS -A st-angert-1
+#PBS -m abe
+#PBS -M daniel.anstett@botany.ubc.ca
+#PBS -o coverage.output.txt
+#PBS -e coverage.error.txt
+ 
+################################################################################
+
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate bwa
+
+
+cd $PBS_O_WORKDIR
+
+FILE="/project/st-angert-1/raw_data/all_names.csv"
+
+while IFS=, read -r f1;
+do
+
+map=$(samtools view -c /scratch/st-angert-1/mark/$f1"_marked.sorted.bam")
+cov=$(echo " $map * 150 / 431108464" | bc -l)
+
+#$( expr $map \* 150\/431108464 )
+
+echo "$f1,$cov"  >> /scratch/st-angert-1/coverage.csv
+
+done < $FILE
+
+conda deactivate
+
+

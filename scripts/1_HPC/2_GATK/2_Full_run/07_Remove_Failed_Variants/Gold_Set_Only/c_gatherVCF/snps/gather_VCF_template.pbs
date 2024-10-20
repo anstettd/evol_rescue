@@ -1,0 +1,37 @@
+#################################################################
+#Population Genomic Analysis pipeline for Mimulus cardinalis
+
+#Author: Daniel Anstett
+#Last updated May 15 2021
+#################################################################
+
+
+#################################################################
+# Gather VCF snp sites only  
+
+
+
+#!/bin/bash
+ 
+#PBS -l walltime=02:00:00,select=1:ncpus=1:mem=64gb
+#PBS -N gather_gold_snp_sites_onlyXX
+#PBS -A st-angert-1
+#PBS -m abe
+#PBS -M daniel.anstett@botany.ubc.ca
+#PBS -o gather_gold_snp_sites_only.output.txt
+#PBS -e gather_gold_snp_sites_only.error.txt
+ 
+################################################################################
+
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate gatk4
+
+cd $PBS_O_WORKDIR
+
+gatk GatherVcfs --arguments_file /scratch/st-angert-1/gold_set2/7b_make_sites/snp/gold_snp_chr_list.csv -O /scratch/st-angert-1/gold_set2/7b_make_sites/snp/gold_snp_filtered.vcf.gz  
+
+gatk IndexFeatureFile -I /scratch/st-angert-1/gold_set2/7b_make_sites/snp/gold_snp_filtered.vcf.gz
+
+conda deactivate
+
+

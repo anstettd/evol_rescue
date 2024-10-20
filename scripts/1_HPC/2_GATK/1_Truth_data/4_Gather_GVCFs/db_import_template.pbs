@@ -1,0 +1,35 @@
+#################################################################
+#Population Genomic Analysis pipeline for Mimulus cardinalis
+
+#Author: Daniel Anstett
+#Last updated April 27  2021
+#################################################################
+
+
+#################################################################
+# Genomics DBImport per chromsome, per 5M bp 
+
+
+
+#!/bin/bash
+ 
+#PBS -l walltime=10:00:00,select=1:ncpus=30:mem=170gb
+#PBS -N db_chrXX_YY_ZZ
+#PBS -A st-angert-1
+#PBS -m abe
+#PBS -M daniel.anstett@botany.ubc.ca
+#PBS -o db_chrXX_YY_ZZ.output.txt
+#PBS -e db_chrXX_YY_ZZ.error.txt
+ 
+################################################################################
+
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate gatk4
+
+cd $PBS_O_WORKDIR
+
+gatk GenomicsDBImport --genomicsdb-workspace-path /scratch/st-angert-1/db_import/chrXX_YY_ZZ --batch-size 665 -L CE10_chrXX:YY-ZZ --sample-name-map /project/st-angert-1/list/Genomics_Import_All.sample_map --reader-threads 30
+
+conda deactivate
+
+

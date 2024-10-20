@@ -1,0 +1,35 @@
+#################################################################
+#Population Genomic Analysis pipeline for Mimulus cardinalis
+
+#Author: Daniel Anstett
+#Last updated May 11 2021
+#################################################################
+
+
+#################################################################
+# Select indel variants chrXX 
+
+
+
+#!/bin/bash
+ 
+#PBS -l walltime=24:00:00,select=1:ncpus=1:mem=170gb
+#PBS -N select_indel_chrXX
+#PBS -A st-angert-1
+#PBS -m abe
+#PBS -M daniel.anstett@botany.ubc.ca
+#PBS -o select_indel_chrXX.output.txt
+#PBS -e select_indel_chrXX.error.txt
+ 
+################################################################################
+
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate gatk4
+
+cd $PBS_O_WORKDIR
+
+gatk SelectVariants -V /scratch/st-angert-1/4_gather_VCF/chrXX_raw_var.vcf.gz -select-type INDEL -O /scratch/st-angert-1/5_select_var/indel/chrXX_indel_raw_var.vcf.gz
+
+conda deactivate
+
+

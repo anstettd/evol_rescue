@@ -1,0 +1,37 @@
+#################################################################
+#Population Genomic Analysis pipeline for Mimulus cardinalis
+
+#Author: Daniel Anstett
+#Last updated April 29  2021
+#################################################################
+
+
+#################################################################
+# Genomics DBImport per chromsome, per 5M bp 
+
+
+
+#!/bin/bash
+ 
+#PBS -l walltime=02:00:00,select=1:ncpus=30:mem=170gb
+#PBS -N db_chr4_45000001_49669322
+#PBS -A st-angert-1
+#PBS -m abe
+#PBS -M daniel.anstett@botany.ubc.ca
+#PBS -o db_chr4_45000001_49669322.output.txt
+#PBS -e db_chr4_45000001_49669322.error.txt
+ 
+################################################################################
+
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate gatk4
+
+cd $PBS_O_WORKDIR
+
+
+
+gatk GenomicsDBImport -V /scratch/st-angert-1/var_sample/NS.1489.004.IDT_i7_184---IDT_i5_184.93.g.vcf.gz -V /scratch/st-angert-1/var_sample/NS.1480.001.IDT_i7_176---IDT_i5_176.135.g.vcf.gz -V /scratch/st-angert-1/var_sample/NS.1493.004.IDT_i7_2---IDT_i5_2.894.g.vcf.gz -V /scratch/st-angert-1/var_sample/NS.1493.004.IDT_i7_15---IDT_i5_15.913.g.vcf.gz -V /scratch/st-angert-1/var_sample/NS.1481.002.IDT_i7_85---IDT_i5_85.169.g.vcf.gz -V /scratch/st-angert-1/var_sample/NS.1480.001.IDT_i7_130---IDT_i5_130.147.g.vcf.gz -V /scratch/st-angert-1/var_sample/NS.1493.004.IDT_i7_39---IDT_i5_39.916.g.vcf.gz -V /scratch/st-angert-1/var_sample/NS.1493.004.IDT_i7_53---IDT_i5_53.31.g.vcf.gz -V /scratch/st-angert-1/var_sample/NS.1481.002.IDT_i7_47---IDT_i5_47.63.g.vcf.gz -V /scratch/st-angert-1/var_sample/NS.1493.004.IDT_i7_89---IDT_i5_89.348.g.vcf.gz -V /scratch/st-angert-1/var_sample/NS.1481.002.IDT_i7_61---IDT_i5_61.167.g.vcf.gz -V /scratch/st-angert-1/var_sample/NS.1480.001.IDT_i7_124---IDT_i5_124.85.g.vcf.gz --genomicsdb-workspace-path /scratch/st-angert-1/db_import/db_import_gold/gold_chr4_45000001_49669322 -L CE10_chr4:45000001-49669322 --reader-threads 30
+
+conda deactivate
+
+

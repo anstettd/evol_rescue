@@ -1,0 +1,36 @@
+#################################################################
+#Population Genomic Analysis pipeline for Mimulus cardinalis
+
+#Author: Daniel Anstett
+#Last updated May 15 2021
+#################################################################
+
+
+#################################################################
+# Gather VCF indel sites only  
+
+
+
+#!/bin/bash
+ 
+#PBS -l walltime=02:00:00,select=1:ncpus=1:mem=170gb
+#PBS -N var_recal_indel
+#PBS -A st-angert-1
+#PBS -m abe
+#PBS -M daniel.anstett@botany.ubc.ca
+#PBS -o var_recal_indel.output.txt
+#PBS -e var_recal_indel.error.txt
+ 
+################################################################################
+
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate gatk4
+
+cd $PBS_O_WORKDIR
+
+gatk VariantRecalibrator --arguments_file /scratch/st-angert-1/5_select_var/indel/all_indel_raw_chr_list.csv --resource:GOLD_INDELs,known=false,training=true,truth=true,prior=10.0 /scratch/st-angert-1/gold_set2/7b_make_sites/indel/gold_indel_filtered.vcf.gz  --mode INDEL -an MQRankSum -an ReadPosRankSum -an FS -an MQ -an SOR -an DP --trust-all-polymorphic  --truth-sensitivity-tranche 100.0 --truth-sensitivity-tranche  99.0 --truth-sensitivity-tranche  90.0 --truth-sensitivity-tranche  70.0 --truth-sensitivity-tranche  50.0 --output-model /scratch/st-angert-1/8_var_recal/indel/indel.model.report --max-gaussians 6 --rscript-file  /scratch/st-angert-1/8_var_recal/indel/indel_output.plots.R --tranches-file /scratch/st-angert-1/8_var_recal/indel/indel_output.tranches --output   /scratch/st-angert-1/8_var_recal/indel/indel.recal.vcf.gz
+
+
+conda deactivate
+
+

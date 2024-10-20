@@ -1,0 +1,11 @@
+-I /scratch/st-angert-1/3_genotypeGVCF/gvcf_all_chr2_0000001_5000000.vcf.gz
+-I /scratch/st-angert-1/3_genotypeGVCF/gvcf_all_chr2_5000001_10000000.vcf.gz
+-I /scratch/st-angert-1/3_genotypeGVCF/gvcf_all_chr2_10000001_15000000.vcf.gz
+-I /scratch/st-angert-1/3_genotypeGVCF/gvcf_all_chr2_15000001_20000000.vcf.gz
+-I /scratch/st-angert-1/3_genotypeGVCF/gvcf_all_chr2_20000001_25000000.vcf.gz
+-I /scratch/st-angert-1/3_genotypeGVCF/gvcf_all_chr2_25000001_30000000.vcf.gz
+-I /scratch/st-angert-1/3_genotypeGVCF/gvcf_all_chr2_30000001_35000000.vcf.gz
+-I /scratch/st-angert-1/3_genotypeGVCF/gvcf_all_chr2_35000001_40000000.vcf.gz
+-I /scratch/st-angert-1/3_genotypeGVCF/gvcf_all_chr2_40000001_45000000.vcf.gz
+-I /scratch/st-angert-1/3_genotypeGVCF/gvcf_all_chr2_45000001_50000000.vcf.gz
+-I /scratch/st-angert-1/3_genotypeGVCF/gvcf_all_chr2_50000001_53456921.vcf.gz

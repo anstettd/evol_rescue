@@ -130,23 +130,29 @@ ggsave("Graphs/Selection/02_selection_1.25.pdf", histPop, width=12, height = 8, 
 ## Individual Graphs Median
 ###################################################################################
 
-env_histPop_1 <- env_histPop_25 %>% filter(Site==2 | Site==11)
+env_histPop_1 <- env_histPop_25 %>% filter(Site==3 | Site==11)
 env_histPop_2 <- env_histPop_25 %>% filter(Site==2 | Site==3 | Site==11)
 env_histPop_3 <- env_histPop_25 %>% filter(Site==3)
 
-median_pop_filter_1<-median_pop %>% filter(Site==2 | Site==11)
+env_histPop_1$pop_lable <- as.factor(env_histPop_1$pop_lable) 
+env_histPop_1$pop_lable <- factor(env_histPop_1$pop_lable,levels = c("Site 3", "Site 11"))
+
+env_histPop_2$pop_lable <- as.factor(env_histPop_2$pop_lable) 
+env_histPop_2$pop_lable <- factor(env_histPop_2$pop_lable,levels = c("Site 2", "Site 3", "Site 11"))
+
+median_pop_filter_1<-median_pop %>% filter(Site==3 | Site==11)
 median_pop_filter_2<-median_pop %>% filter(Site==2 | Site==3 | Site==11)
 
 
 #Sites 3, 11
 histPop1 <- ggplot(env_histPop_1 ,aes(x=S,y=obs,ymin=low,ymax=high))+
-  geom_bar(colour = "black", stat = "identity", width = 0.1, fill = "lightblue1")+
+  geom_bar(colour = "black", stat = "identity", width = 0.1, fill = "pink")+
   #geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.06) +
   geom_vline(xintercept=0) +
   labs(x = "Strength of Selection", y = "Number of SNPs") +
   scale_y_continuous(breaks=seq(0,100,by=25))+ 
-  theme_ci() + facet_wrap(.~pop_lable, ncol = 4)+ theme(strip.text.x = element_text(size=0))+
-  geom_vline(data = median_pop_filter_1, aes(xintercept = median), size=0.8, linetype="dashed",color="blue")
+  theme_ci() + facet_wrap(.~as.factor(pop_lable), ncol = 4)+ theme(strip.text.x = element_text(size=0))+
+  geom_vline(data = median_pop_filter_1, aes(xintercept = median), size=0.8, linetype="dashed",color="red")
 
 histPop1
 #Export 
@@ -155,16 +161,16 @@ ggsave("Graphs/Selection/03_s_pop_3_11.pdf",width=10, height = 4, units = "in")
 
 #Sites 2, 3, 11
 
-histPop1 <- ggplot(env_histPop_2 ,aes(x=S,y=obs,ymin=low,ymax=high))+
+histPop2 <- ggplot(env_histPop_2 ,aes(x=S,y=obs,ymin=low,ymax=high))+
   geom_bar(colour = "black", stat = "identity", width = 0.1, fill = "pink")+
   #geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.06) +
   geom_vline(xintercept=0) +
   labs(x = "Strength of Selection", y = "Number of SNPs") +
   scale_y_continuous(breaks=seq(0,100,by=25))+ 
-  theme_ci() + facet_wrap(.~pop_lable, ncol = 4) + theme(strip.text.x = element_text(size=0)) +
+  theme_ci() + facet_wrap(.~as.factor(pop_lable), ncol = 4) + theme(strip.text.x = element_text(size=0)) +
   geom_vline(data = median_pop_filter_2, aes(xintercept = median), size=0.8, linetype="dashed",color="red")
 
-histPop1
+histPop2
 #Export 
 ggsave("Graphs/Selection/04_s_pop_2_3_11.pdf",width=11, height = 3.5, units = "in")
 

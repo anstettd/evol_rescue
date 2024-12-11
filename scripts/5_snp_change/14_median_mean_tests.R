@@ -153,7 +153,7 @@ histPops <- ggplot(median_rand_pops,aes(x=median))+
   labs(x = "Strength of Selection", y = "Number of Permutations") +
   geom_vline(xintercept=0) +
   theme_ci() + facet_wrap(.~Site) +
-  geom_vline(data = median_obs_pops, aes(xintercept = median), size=1, linetype="dashed",color="blue")+
+  geom_vline(data = median_obs_pops, aes(xintercept = median), size=1, linetype="dashed",color="red")+
   scale_x_continuous(breaks=c(-0.05,0,0.05))+
   theme(strip.text.x = element_text(size=0))
 histPops
@@ -173,7 +173,7 @@ histPops <- ggplot(median_rand_pops,aes(x=median))+
   labs(x = "Strength of Selection", y = "Number of Permutations") +
   geom_vline(xintercept=0) +
   theme_ci() + facet_wrap(.~Site) +
-  geom_vline(data = median_obs_pops, aes(xintercept = median), size=1, linetype="dashed",color="blue")+
+  geom_vline(data = median_obs_pops, aes(xintercept = median), size=1, linetype="dashed",color="red")+
   scale_x_continuous(breaks=c(-0.05,0,0.05))+
   theme(strip.text.x = element_text(size=0))
 histPops

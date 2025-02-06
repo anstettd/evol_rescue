@@ -32,10 +32,11 @@ cor.test(demog_recovery$mean.lambda.drought, demog_recovery$mean.lambda.recovery
 demog_recovery$Lat.Color<-as.factor(demog_recovery$Lat.Color)
 demog_recovery$Lat.Color<-factor(demog_recovery$Lat.Color,levels=demog_recovery$Lat.Color)
 
-#Plot lambda decline vs lamda recovery
+#Plot lambda decline vs lamda recovery (Fig. S9)
 ggplot(demog_recovery, aes(x=mean.lambda.drought, y=mean.lambda.recovery)) + 
   geom_point(aes(fill=demog_recovery$Lat.Color), shape=21, size =6)+
   geom_hline(yintercept = 1, linetype = "dotted", color = "black", size = 0.7) +
+  geom_vline(xintercept = 1, linetype = "dotted", color = "black", size = 0.7) +
   scale_y_continuous(name="Mean Lambda after Drought")+#, limits=c(-0.3,2.5),breaks=seq(0,2.5,0.5))+
   scale_x_continuous(name="Mean Lambda during Drought")+
   #, limits=c(0.2,0.35),breaks=seq(0.1,0.35,0.05))+

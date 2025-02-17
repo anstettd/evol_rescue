@@ -1,7 +1,7 @@
 #### PROJECT: Evolutionary rescue of Mimulus cardinalis populations during extreme drought
 #### PURPOSE OF THIS SCRIPT: Calculate slopes of lambda versus year as a metric of the rate of demographic decline during drought
 #### AUTHOR: Amy Angert
-#### DATE LAST MODIFIED: 20240627
+#### DATE LAST MODIFIED: 20250217
 
 
 #*******************************************************************************
@@ -55,7 +55,19 @@ ggplot(dat, aes(x=Year, y=lambda)) +
 
 
 #*******************************************************************************
-### 3A. Calculate mean lambda DURING CORE DROUGHT for each site 
+### 3A. Calculate mean lambda BEFORE DROUGHT for each site
+# Before drought = 2010-11, 2011-12 transitions
+#*******************************************************************************
+
+dat.mean.pre <- dat %>%
+  group_by(Latitude, Site) %>%
+  filter(Year==2010|Year==2011) %>%
+  na.omit() %>%
+  summarize(mean.lambda.pre = exp(mean(log(lambda)))) #GEOMETRIC mean
+
+
+#*******************************************************************************
+### 3B. Calculate mean lambda DURING CORE DROUGHT for each site 
 # Core drought = 2012-13, 2013-14, 2014-15 transitions
 #*******************************************************************************
 
@@ -65,8 +77,9 @@ dat.mean.drought <- dat %>%
   na.omit() %>% 
   summarize(mean.lambda.drought = exp(mean(log(lambda)))) #GEOMETRIC mean
 
+
 #*******************************************************************************
-### 3B. Calculate mean lambda DURING POST-DROUGHT for each site
+### 3C. Calculate mean lambda DURING POST-DROUGHT for each site
 # Post drought = 2015-16, 2016-17, 2017-18 transitions
 #*******************************************************************************
 
@@ -81,7 +94,7 @@ covar <- read_csv("data/genomic_data/pop_meta_data.csv") %>%
   dplyr::select(Site, Paper_ID, Latitude, Longitude, Lat.Color) %>% 
   unique()
 
-mean.lambda <- left_join(dat.mean.drought, dat.mean.recovery) %>% left_join(covar) # Join to slopes
+mean.lambda <- left_join(dat.mean.pre, dat.mean.drought) %>% left_join(dat.mean.recovery) %>% left_join(covar) # Join to slopes
 
 # Save to .csv file 
 write.csv(mean.lambda,"data/demography data/siteYear.lambda_responses_2010-2019.csv",row.names=FALSE)

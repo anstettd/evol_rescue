@@ -2,7 +2,7 @@
 #### PROJECT: Evolutionary rescue of Mimulus cardinalis populations during extreme drought
 #### PURPOSE OF THIS SCRIPT: Test whether lambda is predicted by genetic diversity (pi) 
 #### AUTHOR: Daniel Anstett and Amy Angert
-#### DATE LAST MODIFIED: 20240628
+#### DATE LAST MODIFIED: 20250310
 ###################################################################################
 
 # Remove objects and clear workspace
@@ -223,5 +223,51 @@ ggplot(pi_pop_graph_cull4, aes(x=pi_all_snps, y=mean.lambda.recovery)) +
 
 ggsave("Graphs/Demography_pi/4_pi_demography_global_cull4.pdf",width=8, height = 6, units = "in")
 
+# graphs with slopes with and without outliers overlain
 
+#climate pi, with and without outliers
+ggplot(pi_pop_graph, aes(x=pi_snp_set, y=mean.lambda.recovery)) +
+  geom_smooth(method=lm,color="black",size=1.8,fill="gray75")+
+  geom_smooth(data=pi_pop_graph_cull4, aes(x=pi_snp_set, y=mean.lambda.recovery), method=lm, color="black", linetype="dashed", fill="grey50") +
+  geom_point(aes(fill=pi_pop_graph$Lat.Color), shape=21, size =6)+
+  geom_hline(yintercept = 1, linetype = "dotted", color = "black", size = 0.7) +
+  scale_y_continuous(name="Mean Lambda after Drought")+
+  #, limits=c(-0.3,2.5),breaks=seq(0,2.5,0.5))+
+  scale_x_continuous(name="Pi (Climate SNP)")+
+  #, limits=c(0.2,0.35), breaks=seq(0.1,0.35,0.05)) +  
+  scale_fill_manual(name = "Latitude (°N)",labels=round(pi_pop_graph$Latitude,1), values=as.character(pi_pop_graph$Lat.Color)) +
+  theme_classic() + theme(
+    axis.text.x = element_text(size=20, face="bold"),
+    axis.text.y = element_text(size=20,face="bold"),
+    axis.title.x = element_text(color="black", size=24, vjust = 0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=24,vjust = 1.7, face="bold",hjust=0.5),
+    legend.title = element_text(size = 13, face = "bold"),
+    legend.text = element_text(size = 14),  # Increase the size of the legend text
+    legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
+    legend.key.height = unit(1.6, "lines") #Reduce height
+  )
+ggsave("Graphs/Demography_pi/5_pi_demography_snpset_compare.pdf",width=8, height = 6, units = "in")
+
+#global pi, with and without outliers
+ggplot(pi_pop_graph, aes(x=pi_all_snps, y=mean.lambda.recovery)) +
+  geom_smooth(method=lm,color="black",size=1.8,fill="gray75")+
+  geom_smooth(data=pi_pop_graph_cull4, aes(x=pi_all_snps, y=mean.lambda.recovery), method=lm, color="black", linetype="dashed", fill="grey50") +
+  geom_point(aes(fill=pi_pop_graph$Lat.Color), shape=21, size =6)+
+  geom_hline(yintercept = 1, linetype = "dotted", color = "black", size = 0.7) +
+  scale_y_continuous(name="Mean Lambda after Drought")+
+  #, limits=c(-0.3,2.5),breaks=seq(0,2.5,0.5))+
+  scale_x_continuous(name="Pi (Climate SNP)")+
+  #, limits=c(0.2,0.35), breaks=seq(0.1,0.35,0.05)) +  
+  scale_fill_manual(name = "Latitude (°N)",labels=round(pi_pop_graph$Latitude,1), values=as.character(pi_pop_graph$Lat.Color)) +
+  theme_classic() + theme(
+    axis.text.x = element_text(size=20, face="bold"),
+    axis.text.y = element_text(size=20,face="bold"),
+    axis.title.x = element_text(color="black", size=24, vjust = 0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=24,vjust = 1.7, face="bold",hjust=0.5),
+    legend.title = element_text(size = 13, face = "bold"),
+    legend.text = element_text(size = 14),  # Increase the size of the legend text
+    legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
+    legend.key.height = unit(1.6, "lines") #Reduce height
+  )
+ggsave("Graphs/Demography_pi/6_pi_demography_global_compare.pdf",width=8, height = 6, units = "in")
 

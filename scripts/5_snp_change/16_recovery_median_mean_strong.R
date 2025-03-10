@@ -102,6 +102,30 @@ Anova(lm1,type="III")
 slope_pop_graph_cull2$Lat.Color<-as.factor(slope_pop_graph_cull2$Lat.Color)
 slope_pop_graph_cull2$Lat.Color<-factor(slope_pop_graph_cull2$Lat.Color,levels=slope_pop_graph_cull2$Lat.Color)
 
+ggplot(slope_pop_graph_cull2, aes(x=Median, y=mean.lambda.recovery)) + 
+  geom_smooth(method=lm,color="black",size=1.8,fill="gray75")+
+  geom_point(aes(fill=slope_pop_graph_cull2$Lat.Color), shape=21, size =6)+
+  geom_hline(yintercept = 1, linetype = "dotted", color = "black", size = 0.7) +
+  scale_y_continuous(name="Mean Lambda after Drought")+#,breaks=c(0.5,1,1.5,2,2.5))+
+  scale_x_continuous(name="Median Strength of Selection")+#,breaks=c(-0.1,0,0.1,0.2))+
+  #,breaks=c(0.025,0.03,0.035,0.04,0.045))+
+  scale_fill_manual(name = "Latitude (°N)",labels=round(slope_pop_graph_cull2$Latitude,1),
+                    values=as.character(slope_pop_graph_cull2$Lat.Color)) +
+  theme_classic() + theme(
+    axis.text.x = element_text(size=20, face="bold"),
+    axis.text.y = element_text(size=20,face="bold"),
+    axis.title.x = element_text(color="black", size=24, vjust = 0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=24,vjust = 1.7, face="bold",hjust=0.5),
+    legend.title = element_text(size = 13, face = "bold"),
+    legend.text = element_text(size = 14),  # Increase the size of the legend text
+    legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
+    legend.key.height = unit(1.6, "lines") #Reduce height
+  )
+ggsave("Graphs/Demo_selection/2_median_slope_recovery_lambda.pdf",width=8, height = 6, units = "in")
+
+
+## Overlay slopes with and without outlier removal
+
 ggplot(slope_pop_graph, aes(x=Median, y=mean.lambda.recovery)) + 
   geom_smooth(method=lm,color="black",size=1.8,fill="gray75")+
   geom_point(aes(fill=slope_pop_graph$Lat.Color), shape=21, size =6)+
@@ -122,31 +146,7 @@ ggplot(slope_pop_graph, aes(x=Median, y=mean.lambda.recovery)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
-ggsave("Graphs/Demo_selection/2_median_slope_recovery_lambda.pdf",width=8, height = 6, units = "in")
 
-
-## Overlay slopes with and without outlier removal
-
-ggplot(slope_pop_graph_cull2, aes(x=Median, y=mean.lambda.recovery)) + 
-  geom_smooth(method=lm,color="black",size=1.8,fill="gray75")+
-  geom_point(aes(fill=slope_pop_graph_cull2$Lat.Color), shape=21, size =6)+
-  geom_hline(yintercept = 1, linetype = "dotted", color = "black", size = 0.7) +
-  geom_abline(slope=coef(lm3)[2], intercept=coef(lm3)[1]) + 
-  scale_y_continuous(name="Mean Lambda after Drought")+#,breaks=c(0.5,1,1.5,2,2.5))+
-  scale_x_continuous(name="Median Strength of Selection")+#,breaks=c(-0.1,0,0.1,0.2))+
-  #,breaks=c(0.025,0.03,0.035,0.04,0.045))+
-  scale_fill_manual(name = "Latitude (°N)",labels=round(slope_pop_graph_cull2$Latitude,1),
-                    values=as.character(slope_pop_graph_cull2$Lat.Color)) +
-  theme_classic() + theme(
-    axis.text.x = element_text(size=20, face="bold"),
-    axis.text.y = element_text(size=20,face="bold"),
-    axis.title.x = element_text(color="black", size=24, vjust = 0.5, face="bold"),
-    axis.title.y = element_text(color="black", size=24,vjust = 1.7, face="bold",hjust=0.5),
-    legend.title = element_text(size = 13, face = "bold"),
-    legend.text = element_text(size = 14),  # Increase the size of the legend text
-    legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
-    legend.key.height = unit(1.6, "lines") #Reduce height
-  )
 ggsave("Graphs/Demo_selection/3_median_slope_recovery_lambda.pdf",width=8, height = 6, units = "in")
 
 

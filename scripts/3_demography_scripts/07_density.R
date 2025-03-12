@@ -1,7 +1,8 @@
 ##################################################
 # Population density over time
 
-# This script visualizes density trends over time
+# This script visualizes density trends over time 
+# and relates them to genetic metrics
 # Last updated 2025 03 11
 ##################################################
 

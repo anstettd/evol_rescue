@@ -110,6 +110,33 @@ ggplot(geno_pop, aes(x=Latitude, y=curves.dens.quad)) +
   ggpubr::stat_cor(method = "pearson") + 
   theme_classic()
 
+# density ~ lambda
+ggplot(geno_pop, aes(x=mean.lambda.drought, y=slopes.dens.drought)) + 
+  geom_point() + 
+  geom_smooth(method="lm", se=TRUE, color="black") + 
+  #ggpubr::stat_regline_equation(formula=y~x) + 
+  ggpubr::stat_cor(method = "pearson") + 
+  theme_classic()
+ggplot(geno_pop, aes(x=mean.lambda.recovery, y=slopes.dens.recovery)) + 
+  geom_point() + 
+  scale_color_manual(values=color.list) + 
+  geom_smooth(method="lm", se=TRUE, color="black") + 
+  #ggpubr::stat_regline_equation(formula=y~x) + 
+  ggpubr::stat_cor(method = "pearson") + 
+  theme_classic()
+ggplot(geno_pop, aes(x=mean.lambda.drought, y=curves.dens.quad)) + 
+  geom_point() + 
+  geom_smooth(method="lm", se=TRUE, color="black") + 
+  #ggpubr::stat_regline_equation(formula=y~x) + 
+  ggpubr::stat_cor(method = "pearson") + 
+  theme_classic()
+ggplot(geno_pop, aes(x=mean.lambda.recovery, y=curves.dens.quad)) + 
+  geom_point() + 
+  geom_smooth(method="lm", se=TRUE, color="black") + 
+  #ggpubr::stat_regline_equation(formula=y~x) + 
+  ggpubr::stat_cor(method = "pearson") + 
+  theme_classic()
+
 # density ~ climate snp diversity
 ggplot(geno_pop, aes(x=pi_snp_set, y=slopes.dens.drought)) + 
   geom_point() + 

@@ -21,7 +21,7 @@ library(RColorBrewer)
 
 ###################################################################################
 #Import main trait dataset from resurrection common garden in greenhouse
-y5 <- read_csv("Data/traits_anstett2021.csv") %>% 
+y5 <- read_csv("data/trait_data/traits_anstett2021.csv") %>% 
   mutate(SLA_scaled = scale(SLA, center=T, scale=T),
          FT_scaled = scale(Experiment_Date, center=T, scale=T),
          WC_scaled = scale(Water_Content, center=T, scale=T),
@@ -41,6 +41,8 @@ slope.reg<-matrix(nrow=length(treatment.v)*length(site.v)*5, ncol=5)
 ###################################################################################
 ###################################################################################
 #Get slopes of SLA Vs Year
+hist(y5$SLA_scaled)
+
 fullmod.SLA <- lmer(SLA_scaled ~ Site*Year_scaled*Drought + (1|Family) + (1|Block),
                     control=lmerControl(optimizer = "bobyqa", optCtrl=list(maxfun=100000)), data=y5)
 
@@ -61,8 +63,11 @@ for (i in 1:length(treatment.v)){
 }
 
 #Get slopes of Date of FLowering Vs Year
+hist(y5$FT_scaled)
+
 fullmod.FT <- lmer(FT_scaled ~ Site*Year_scaled*Drought + (1|Family) + (1|Block),
                    control=lmerControl(optimizer = "bobyqa", optCtrl=list(maxfun=100000)), data=y5)
+
 for (i in 1:length(treatment.v)){
   vis_FT<-visreg(fullmod.FT, xvar="Year_scaled", by="Site", cond=list(Drought=treatment.v[i]))
   Res_FT<-vis_FT$res
@@ -81,7 +86,9 @@ for (i in 1:length(treatment.v)){
 
 
 #Get slopes of Water Content Vs Year
-fullmod.WC <- lmer(WC_scaled ~ Site + Year_scaled + Drought + (1|Family) + (1|Block),
+hist(y5$WC_scaled)
+
+fullmod.WC <- lmer(WC_scaled ~ Site*Year_scaled*Drought + (1|Family) + (1|Block),
                    control=lmerControl(optimizer = "bobyqa", optCtrl=list(maxfun=100000)), data=y5)
 
 for (i in 1:length(treatment.v)){
@@ -102,8 +109,11 @@ for (i in 1:length(treatment.v)){
 
 
 #Get slopes of Assimilation Vs Year
+hist(y5$A_scaled)
+
 fullmod.A <- lmer(A_scaled ~ Site*Year_scaled*Drought + (1|Family) + (1|Block),
                   control=lmerControl(optimizer = "bobyqa", optCtrl=list(maxfun=100000)), data=y5)
+
 for (i in 1:length(treatment.v)){
   vis_A<-visreg(fullmod.A, xvar="Year_scaled", by="Site", cond=list(Drought=treatment.v[i]))
   Res_A<-vis_A$res
@@ -121,8 +131,11 @@ for (i in 1:length(treatment.v)){
 }
 
 #Get slopes of Stomatal Conductance Vs Year
-fullmod.gs <- lmer(Stomatal_Conductance ~ Site*Year_scaled*Drought  + (1|Family) + (1|Block),
+hist(y5$SC_scaled)
+
+fullmod.gs <- lmer(SC_scaled ~ Site*Year_scaled*Drought  + (1|Family) + (1|Block),
                    control=lmerControl(optimizer = "bobyqa", optCtrl=list(maxfun=100000)), data=y5)
+
 for (i in 1:length(treatment.v)){
   vis_gs<-visreg(fullmod.gs, xvar="Year_scaled", by="Site", cond=list(Drought=treatment.v[i]))
   Res_gs<-vis_gs$res
@@ -145,16 +158,19 @@ trait_change$Site <- as.numeric(gsub("S", "", trait_change$Site))
 trait_change$Slope=as.numeric(trait_change$Slope)
 trait_change$SE_slope=as.numeric(trait_change$SE_slope)
 
-# make cumulative index of total trait change towards drought avoidance vs drought escape
+# make cumulative indexes of total trait change towards drought avoidance vs drought escape
 # for all traits except flowering time and water content, positive slopes indicate evolution towards drought escape
 # for flowering time and water content, negative slope indicates evolution towards drought escape
 # so, for index of total trait change, flowering time and water content slopes are subtracted so that bigger values mean greater evolution towards drought escape across all measured traits
 
 trait_change <- trait_change %>% select(-SE_slope) %>% 
   pivot_wider(names_from = c(Trait, Treatment), values_from=Slope) %>% 
-  mutate(trait.change.dry = SLA_D - FT_D + SC_D + A_D - WC_D,
-         trait.change.wet = SLA_W - FT_W - WC_W + SC_W + A_W,
-         trait.change = trait.change.dry + trait.change.wet)
+  mutate(trait.change.all.dry = SLA_D - FT_D + SC_D + A_D - WC_D,
+         trait.change.all.wet = SLA_W - FT_W - WC_W + SC_W + A_W,
+         trait.change.best.dry = SLA_D - FT_D,
+         trait.change.best.wet = SLA_W - FT_W,
+         trait.change.all = trait.change.all.dry + trait.change.all.wet,
+         trait.change.best = trait.change.best.dry + trait.change.best.wet)
 write_csv(trait_change, "data/trait_data/trait_slopes.csv")
 
 # Read in demography data (includes metadata)
@@ -179,8 +195,430 @@ trait_geno_pop <- left_join(geno_pop, trait_change, by=c("SiteID"="Site"))
 color.list <- trait_geno_pop$Lat.Color
 
 
-# Recovery lambda ~ total trait evolution (dry treatment)
-ggplot(data=trait_geno_pop, aes(x=tot.change.dry, y=mean.lambda.recovery, color=as.character(Latitude))) +
+### GENOMIC SELECTION - TRAIT EVOLUTION
+# Median S ~ SLA evolution (dry treatment)
+ggplot(data=trait_geno_pop, aes(x=Median, y=SLA_D, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  ylab("Rate of evolution towards higher SLA (dry treatment") +
+  xlab("Median S (climate loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(SLA_D ~ Median, data=trait_geno_pop)) 
+
+# Median S ~ SLA evolution (wet treatment)
+ggplot(data=trait_geno_pop, aes(x=Median, y=SLA_W, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  ylab("Rate of evolution towards higher SLA (wet treatment") +
+  xlab("Median S (climate loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(SLA_W ~ Median, data=trait_geno_pop)) 
+
+# Median S ~ FT evolution (dry treatment)
+ggplot(data=trait_geno_pop, aes(x=Median, y=FT_D, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  ylab("Rate of evolution towards later flowering (dry treatment") +
+  xlab("Median S (climate loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(FT_D ~ Median, data=trait_geno_pop)) 
+
+# Median S ~ FT evolution (wet treatment)
+ggplot(data=trait_geno_pop, aes(x=Median, y=FT_W, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  geom_hline(yintercept=1, linetype="dotted") +
+  ylab("Rate of evolution towards later flowering (wet treatment") +
+  xlab("Median S (climate loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(FT_W ~ Median, data=trait_geno_pop)) 
+
+# Median S ~ all trait evolution (dry treatment)
+ggplot(data=trait_geno_pop, aes(x=Median, y=trait.change.all.dry, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  ylab("Rate of evolution towards drought avoidance (dry treatment") +
+  xlab("Median S (climate loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(trait.change.all.dry ~ Median, data=trait_geno_pop)) 
+
+# Median S ~ all trait evolution (wet treatment)
+ggplot(data=trait_geno_pop, aes(x=Median, y=trait.change.all.wet, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  ylab("Rate of evolution towards drought avoidance (wet treatment") +
+  xlab("Median S (climate loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(trait.change.all.wet ~ Median, data=trait_geno_pop)) 
+
+# Median S ~ best trait evolution (dry treatment)
+ggplot(data=trait_geno_pop, aes(x=Median, y=trait.change.best.dry, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  ylab("Rate of evolution towards drought avoidance (dry treatment") +
+  xlab("Median S (climate loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(trait.change.best.dry ~ Median, data=trait_geno_pop)) 
+
+# Median S ~ best trait evolution (wet treatment)
+ggplot(data=trait_geno_pop, aes(x=Median, y=trait.change.best.wet, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  ylab("Rate of evolution towards drought avoidance (wet treatment") +
+  xlab("Median S (climate loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(trait.change.best.wet ~ Median, data=trait_geno_pop)) 
+
+# Median S ~ all trait evolution
+ggplot(data=trait_geno_pop, aes(x=Median, y=trait.change.all, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  ylab("Rate of evolution towards drought avoidance") +
+  xlab("Median S (climate loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(trait.change.all ~ Median, data=trait_geno_pop)) 
+
+# Median S ~ best trait evolution (both treatments)
+ggplot(data=trait_geno_pop, aes(x=Median, y=trait.change.best, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  ylab("Rate of evolution towards drought avoidance") +
+  xlab("Median S (climate loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(trait.change.best ~ Median, data=trait_geno_pop)) 
+
+
+### NUCLEOTIDE DIVERSITY - TRAIT EVOLUTION
+# Climate Pi ~ SLA evolution (dry treatment)
+ggplot(data=trait_geno_pop, aes(x=pi_snp_set, y=SLA_D, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  ylab("Rate of evolution towards higher SLA (dry treatment") +
+  xlab("Pi (climate loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(SLA_D ~ pi_snp_set, data=trait_geno_pop)) 
+
+# Climate Pi ~ SLA evolution (wet treatment)
+ggplot(data=trait_geno_pop, aes(x=pi_snp_set, y=SLA_W, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  ylab("Rate of evolution towards higher SLA (wet treatment") +
+  xlab("Pi (climate loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(SLA_W ~ pi_snp_set, data=trait_geno_pop)) 
+
+# Climate Pi ~ FT evolution (dry treatment)
+ggplot(data=trait_geno_pop, aes(x=pi_snp_set, y=FT_D, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  ylab("Rate of evolution towards later flowering (dry treatment") +
+  xlab("Pi (climate loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(FT_D ~ pi_snp_set, data=trait_geno_pop)) 
+
+# Climate Pi ~ FT evolution (wet treatment)
+ggplot(data=trait_geno_pop, aes(x=pi_snp_set, y=FT_W, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  geom_hline(yintercept=1, linetype="dotted") +
+  ylab("Rate of evolution towards later flowering (wet treatment") +
+  xlab("Pi (climate loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(FT_W ~ pi_snp_set, data=trait_geno_pop)) 
+
+# Climate Pi ~ all trait evolution (dry treatment)
+ggplot(data=trait_geno_pop, aes(x=pi_snp_set, y=trait.change.all.dry, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  ylab("Rate of evolution towards drought avoidance (dry treatment") +
+  xlab("Pi (climate loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(trait.change.all.dry ~ pi_snp_set, data=trait_geno_pop)) 
+
+# Climate Pi ~ all trait evolution (wet treatment)
+ggplot(data=trait_geno_pop, aes(x=pi_snp_set, y=trait.change.all.wet, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  geom_hline(yintercept=1, linetype="dotted") +
+  ylab("Rate of evolution towards drought avoidance (wet treatment") +
+  xlab("Pi (climate loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(trait.change.all.wet ~ pi_snp_set, data=trait_geno_pop)) 
+
+# Climate Pi ~ best trait evolution (dry treatment)
+ggplot(data=trait_geno_pop, aes(x=pi_snp_set, y=trait.change.best.dry, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  ylab("Rate of evolution towards drought avoidance (dry treatment") +
+  xlab("Pi (climate loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(trait.change.best.dry ~ pi_snp_set, data=trait_geno_pop)) 
+
+# Climate Pi ~ best trait evolution (wet treatment)
+ggplot(data=trait_geno_pop, aes(x=pi_snp_set, y=trait.change.best.wet, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  ylab("Rate of evolution towards drought avoidance (wet treatment") +
+  xlab("Pi (climate loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(trait.change.best.wet ~ pi_snp_set, data=trait_geno_pop)) 
+
+# Climate Pi ~ all trait evolution
+ggplot(data=trait_geno_pop, aes(x=pi_snp_set, y=trait.change.all, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  ylab("Rate of evolution towards drought avoidance") +
+  xlab("Pi (climate loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(trait.change.all ~ pi_snp_set, data=trait_geno_pop)) 
+
+# Climate Pi ~ best trait evolution (both treatments)
+ggplot(data=trait_geno_pop, aes(x=pi_snp_set, y=trait.change.best, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  ylab("Rate of evolution towards drought avoidance") +
+  xlab("Pi (climate loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(trait.change.best ~ pi_snp_set, data=trait_geno_pop)) 
+
+# All Pi ~ SLA evolution (dry treatment)
+ggplot(data=trait_geno_pop, aes(x=pi_all_snps, y=SLA_D, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  ylab("Rate of evolution towards higher SLA (dry treatment") +
+  xlab("Pi (all loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(SLA_D ~ pi_all_snps, data=trait_geno_pop)) 
+
+# All Pi ~ SLA evolution (wet treatment)
+ggplot(data=trait_geno_pop, aes(x=pi_all_snps, y=SLA_W, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  ylab("Rate of evolution towards higher SLA (wet treatment") +
+  xlab("Pi (all loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(SLA_W ~ pi_all_snps, data=trait_geno_pop)) 
+
+# All Pi ~ FT evolution (dry treatment)
+ggplot(data=trait_geno_pop, aes(x=pi_all_snps, y=FT_D, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  ylab("Rate of evolution towards later flowering (dry treatment") +
+  xlab("Pi (all loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(FT_D ~ pi_all_snps, data=trait_geno_pop)) 
+
+# All Pi ~ FT evolution (wet treatment)
+ggplot(data=trait_geno_pop, aes(x=pi_all_snps, y=FT_W, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  geom_hline(yintercept=1, linetype="dotted") +
+  ylab("Rate of evolution towards later flowering (wet treatment") +
+  xlab("Pi (all loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(FT_W ~ pi_all_snps, data=trait_geno_pop)) 
+
+# All Pi ~ all trait evolution (dry treatment)
+ggplot(data=trait_geno_pop, aes(x=pi_all_snps, y=trait.change.all.dry, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  ylab("Rate of evolution towards drought avoidance (dry treatment") +
+  xlab("Pi (all loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(trait.change.all.dry ~ pi_all_snps, data=trait_geno_pop)) 
+
+# All Pi ~ all trait evolution (wet treatment)
+ggplot(data=trait_geno_pop, aes(x=pi_all_snps, y=trait.change.all.wet, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  ylab("Rate of evolution towards drought avoidance (wet treatment") +
+  xlab("Pi (all loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(trait.change.all.wet ~ pi_all_snps, data=trait_geno_pop)) 
+
+# All Pi ~ best trait evolution (dry treatment)
+ggplot(data=trait_geno_pop, aes(x=pi_all_snps, y=trait.change.best.dry, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  ylab("Rate of evolution towards drought avoidance (dry treatment") +
+  xlab("Pi (all loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(trait.change.best.dry ~ pi_all_snps, data=trait_geno_pop)) 
+
+# All Pi ~ best trait evolution (wet treatment)
+ggplot(data=trait_geno_pop, aes(x=pi_all_snps, y=trait.change.best.wet, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  ylab("Rate of evolution towards drought avoidance (wet treatment") +
+  xlab("Pi (all loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(trait.change.best.wet ~ pi_all_snps, data=trait_geno_pop)) 
+
+# All Pi ~ all trait evolution
+ggplot(data=trait_geno_pop, aes(x=pi_all_snps, y=trait.change.all, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  ylab("Rate of evolution towards drought avoidance") +
+  xlab("Pi (all loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(trait.change.all ~ pi_all_snps, data=trait_geno_pop)) 
+
+# All Pi ~ best trait evolution (both treatments)
+ggplot(data=trait_geno_pop, aes(x=pi_all_snps, y=trait.change.best, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  ylab("Rate of evolution towards drought avoidance") +
+  xlab("Pi (all loci)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(trait.change.best ~ pi_all_snps, data=trait_geno_pop)) 
+
+
+
+### LAMBDA - TRAIT EVOLUTION
+# Recovery lambda ~ SLA evolution (dry treatment)
+ggplot(data=trait_geno_pop, aes(x=SLA_D, y=mean.lambda.recovery, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  geom_hline(yintercept=1, linetype="dotted") +
+  xlab("Rate of evolution towards higher SLA (dry treatment") +
+  ylab("Rate of population recovery (lambda)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(mean.lambda.recovery ~ SLA_D, data=trait_geno_pop)) 
+
+# Recovery lambda ~ SLA evolution (wet treatment)
+ggplot(data=trait_geno_pop, aes(x=SLA_W, y=mean.lambda.recovery, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  geom_hline(yintercept=1, linetype="dotted") +
+  xlab("Rate of evolution towards higher SLA (dry treatment") +
+  ylab("Rate of population recovery (lambda)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(mean.lambda.recovery ~ SLA_W, data=trait_geno_pop)) 
+
+# Recovery lambda ~ FT evolution (dry treatment)
+ggplot(data=trait_geno_pop, aes(x=FT_D, y=mean.lambda.recovery, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  geom_hline(yintercept=1, linetype="dotted") +
+  xlab("Rate of evolution towards later flowering (dry treatment") +
+  ylab("Rate of population recovery (lambda)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(mean.lambda.recovery ~ FT_D, data=trait_geno_pop)) 
+
+# Recovery lambda ~ SLA evolution (wet treatment)
+ggplot(data=trait_geno_pop, aes(x=SLA_W, y=mean.lambda.recovery, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  geom_hline(yintercept=1, linetype="dotted") +
+  xlab("Rate of evolution towards later flowering (wet treatment") +
+  ylab("Rate of population recovery (lambda)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(mean.lambda.recovery ~ SLA_W, data=trait_geno_pop)) 
+
+# Recovery lambda ~ all trait evolution (dry treatment)
+ggplot(data=trait_geno_pop, aes(x=trait.change.all.dry, y=mean.lambda.recovery, color=as.character(Latitude))) +
   geom_point(size=3) +
   geom_smooth(method="lm", color="black", linetype="dotted") +
   geom_hline(yintercept=1, linetype="dotted") +
@@ -190,10 +628,23 @@ ggplot(data=trait_geno_pop, aes(x=tot.change.dry, y=mean.lambda.recovery, color=
   theme_classic() +
   theme(legend.title = element_blank())
 
-summary(lm(mean.lambda.recovery ~ tot.change.dry, data=trait_geno_pop)) 
+summary(lm(mean.lambda.recovery ~ trait.change.all.dry, data=trait_geno_pop)) 
+
+# Recovery lambda ~ total trait evolution, SLA-FT (dry treatment)
+ggplot(data=trait_geno_pop, aes(x=trait.change.best.dry, y=mean.lambda.recovery, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  geom_hline(yintercept=1, linetype="dotted") +
+  xlab("Rate of evolution towards drought escape (dry treatment") +
+  ylab("Rate of population recovery (lambda)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(mean.lambda.recovery ~ trait.change.best.dry, data=trait_geno_pop)) 
 
 # Recovery lambda ~ total trait evolution (wet treatments)
-ggplot(data=trait_geno_pop, aes(x=tot.change.wet, y=mean.lambda.recovery, color=as.character(Latitude))) +
+ggplot(data=trait_geno_pop, aes(x=trait.change.all.wet, y=mean.lambda.recovery, color=as.character(Latitude))) +
   geom_point(size=3) +
   geom_smooth(method="lm", color="black", linetype="dotted") +
   geom_hline(yintercept=1, linetype="dotted") +
@@ -203,10 +654,23 @@ ggplot(data=trait_geno_pop, aes(x=tot.change.wet, y=mean.lambda.recovery, color=
   theme_classic() +
   theme(legend.title = element_blank())
 
-summary(lm(mean.lambda.recovery ~ tot.change.wet, data=trait_geno_pop))  
+summary(lm(mean.lambda.recovery ~ trait.change.all.wet, data=trait_geno_pop))  
+
+# Recovery lambda ~ total trait evolution, SLA-FT (wet treatments)
+ggplot(data=trait_geno_pop, aes(x=trait.change.best.wet, y=mean.lambda.recovery, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  geom_hline(yintercept=1, linetype="dotted") +
+  xlab("Rate of evolution towards drought escape (wet treatment)") +
+  ylab("Rate of population recovery (lambda)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(mean.lambda.recovery ~ trait.change.best.wet, data=trait_geno_pop))  
 
 # Recovery lambda ~ total trait evolution (both treatments)
-ggplot(data=trait_geno_pop, aes(x=trait_change, y=mean.lambda.recovery, color=as.character(Latitude))) +
+ggplot(data=trait_geno_pop, aes(x=trait.change.all, y=mean.lambda.recovery, color=as.character(Latitude))) +
   geom_point(size=3) +
   geom_smooth(method="lm", color="black", linetype="dotted") +
   geom_hline(yintercept=1, linetype="dotted") +
@@ -216,14 +680,27 @@ ggplot(data=trait_geno_pop, aes(x=trait_change, y=mean.lambda.recovery, color=as
   theme_classic() +
   theme(legend.title = element_blank())
 
-summary(lm(mean.lambda.recovery ~ trait_change, data=trait_geno_pop))  
+summary(lm(mean.lambda.recovery ~ trait.change.all, data=trait_geno_pop))  
+
+# Recovery lambda ~ total trait evolution, SLA-FT (both treatments)
+ggplot(data=trait_geno_pop, aes(x=trait.change.best, y=mean.lambda.recovery, color=as.character(Latitude))) +
+  geom_point(size=3) +
+  geom_smooth(method="lm", color="black", linetype="dotted") +
+  geom_hline(yintercept=1, linetype="dotted") +
+  xlab("Rate of evolution towards drought escape") +
+  ylab("Rate of population recovery (lambda)") + 
+  scale_color_manual(values=color.list) +
+  theme_classic() +
+  theme(legend.title = element_blank())
+
+summary(lm(mean.lambda.recovery ~ trait.change.best, data=trait_geno_pop))  
 
 
 
 
-
+### DENSITY - TRAIT EVOLUTON
 # Density convexity ~ total trait evolution (dry treatment)
-ggplot(data=trait_geno_pop, aes(x=tot.change.dry, y=curves.dens.quad, color=as.character(Latitude))) +
+ggplot(data=trait_geno_pop, aes(x=trait.change.all.dry, y=curves.dens.quad, color=as.character(Latitude))) +
   geom_point(size=3) +
   geom_smooth(method="lm", color="black", linetype="dotted") +
   geom_hline(yintercept=0, linetype="dotted") +
@@ -233,10 +710,10 @@ ggplot(data=trait_geno_pop, aes(x=tot.change.dry, y=curves.dens.quad, color=as.c
   theme_classic() +
   theme(legend.title = element_blank())
 
-summary(lm(curves.dens.quad ~ tot.change.dry, data=trait_geno_pop))  
+summary(lm(curves.dens.quad ~ trait.change.all.dry, data=trait_geno_pop))  
 
 # Density convexity ~ total trait evolution (wet treatment)
-ggplot(data=trait_geno_pop, aes(x=tot.change.wet, y=curves.dens.quad, color=as.character(Latitude))) +
+ggplot(data=trait_geno_pop, aes(x=trait.change.all.wet, y=curves.dens.quad, color=as.character(Latitude))) +
   geom_point(size=3) +
   geom_smooth(method="lm", color="black", linetype="dotted") +
   geom_hline(yintercept=0, linetype="dotted") +
@@ -246,4 +723,4 @@ ggplot(data=trait_geno_pop, aes(x=tot.change.wet, y=curves.dens.quad, color=as.c
   theme_classic() +
   theme(legend.title = element_blank())
 
-summary(lm(curves.dens.quad ~ tot.change.wet, data=trait_geno_pop))  
+summary(lm(curves.dens.quad ~ trait.change.all.wet, data=trait_geno_pop))  

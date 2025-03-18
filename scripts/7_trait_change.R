@@ -249,7 +249,7 @@ summary(lm(FT_W ~ Median, data=trait_geno_pop))
 ggplot(data=trait_geno_pop, aes(x=Median, y=trait.change.all.dry, color=as.character(Latitude))) +
   geom_point(size=3) +
   geom_smooth(method="lm", color="black", linetype="dotted") +
-  ylab("Rate of evolution towards drought avoidance (dry treatment") +
+  ylab("Rate of evolution towards drought escape (dry treatment") +
   xlab("Median S (climate loci)") + 
   scale_color_manual(values=color.list) +
   theme_classic() +
@@ -261,7 +261,7 @@ summary(lm(trait.change.all.dry ~ Median, data=trait_geno_pop))
 ggplot(data=trait_geno_pop, aes(x=Median, y=trait.change.all.wet, color=as.character(Latitude))) +
   geom_point(size=3) +
   geom_smooth(method="lm", color="black", linetype="dotted") +
-  ylab("Rate of evolution towards drought avoidance (wet treatment") +
+  ylab("Rate of evolution towards drought escape (wet treatment") +
   xlab("Median S (climate loci)") + 
   scale_color_manual(values=color.list) +
   theme_classic() +
@@ -273,7 +273,7 @@ summary(lm(trait.change.all.wet ~ Median, data=trait_geno_pop))
 ggplot(data=trait_geno_pop, aes(x=Median, y=trait.change.best.dry, color=as.character(Latitude))) +
   geom_point(size=3) +
   geom_smooth(method="lm", color="black", linetype="dotted") +
-  ylab("Rate of evolution towards drought avoidance (dry treatment") +
+  ylab("Rate of evolution towards drought escape (dry treatment") +
   xlab("Median S (climate loci)") + 
   scale_color_manual(values=color.list) +
   theme_classic() +
@@ -285,7 +285,7 @@ summary(lm(trait.change.best.dry ~ Median, data=trait_geno_pop))
 ggplot(data=trait_geno_pop, aes(x=Median, y=trait.change.best.wet, color=as.character(Latitude))) +
   geom_point(size=3) +
   geom_smooth(method="lm", color="black", linetype="dotted") +
-  ylab("Rate of evolution towards drought avoidance (wet treatment") +
+  ylab("Rate of evolution towards drought escape (wet treatment") +
   xlab("Median S (climate loci)") + 
   scale_color_manual(values=color.list) +
   theme_classic() +
@@ -297,7 +297,7 @@ summary(lm(trait.change.best.wet ~ Median, data=trait_geno_pop))
 ggplot(data=trait_geno_pop, aes(x=Median, y=trait.change.all, color=as.character(Latitude))) +
   geom_point(size=3) +
   geom_smooth(method="lm", color="black", linetype="dotted") +
-  ylab("Rate of evolution towards drought avoidance") +
+  ylab("Rate of evolution towards drought escape") +
   xlab("Median S (climate loci)") + 
   scale_color_manual(values=color.list) +
   theme_classic() +
@@ -309,7 +309,7 @@ summary(lm(trait.change.all ~ Median, data=trait_geno_pop))
 ggplot(data=trait_geno_pop, aes(x=Median, y=trait.change.best, color=as.character(Latitude))) +
   geom_point(size=3) +
   geom_smooth(method="lm", color="black", linetype="dotted") +
-  ylab("Rate of evolution towards drought avoidance") +
+  ylab("Rate of evolution towards drought escape") +
   xlab("Median S (climate loci)") + 
   scale_color_manual(values=color.list) +
   theme_classic() +
@@ -372,7 +372,7 @@ summary(lm(FT_W ~ pi_snp_set, data=trait_geno_pop))
 ggplot(data=trait_geno_pop, aes(x=pi_snp_set, y=trait.change.all.dry, color=as.character(Latitude))) +
   geom_point(size=3) +
   geom_smooth(method="lm", color="black", linetype="dotted") +
-  ylab("Rate of evolution towards drought avoidance (dry treatment") +
+  ylab("Rate of evolution towards drought escape (dry treatment") +
   xlab("Pi (climate loci)") + 
   scale_color_manual(values=color.list) +
   theme_classic() +
@@ -385,7 +385,7 @@ ggplot(data=trait_geno_pop, aes(x=pi_snp_set, y=trait.change.all.wet, color=as.c
   geom_point(size=3) +
   geom_smooth(method="lm", color="black", linetype="dotted") +
   geom_hline(yintercept=1, linetype="dotted") +
-  ylab("Rate of evolution towards drought avoidance (wet treatment") +
+  ylab("Rate of evolution towards drought escape (wet treatment") +
   xlab("Pi (climate loci)") + 
   scale_color_manual(values=color.list) +
   theme_classic() +
@@ -397,7 +397,7 @@ summary(lm(trait.change.all.wet ~ pi_snp_set, data=trait_geno_pop))
 ggplot(data=trait_geno_pop, aes(x=pi_snp_set, y=trait.change.best.dry, color=as.character(Latitude))) +
   geom_point(size=3) +
   geom_smooth(method="lm", color="black", linetype="dotted") +
-  ylab("Rate of evolution towards drought avoidance (dry treatment") +
+  ylab("Rate of evolution towards drought escape (dry treatment") +
   xlab("Pi (climate loci)") + 
   scale_color_manual(values=color.list) +
   theme_classic() +
@@ -409,7 +409,7 @@ summary(lm(trait.change.best.dry ~ pi_snp_set, data=trait_geno_pop))
 ggplot(data=trait_geno_pop, aes(x=pi_snp_set, y=trait.change.best.wet, color=as.character(Latitude))) +
   geom_point(size=3) +
   geom_smooth(method="lm", color="black", linetype="dotted") +
-  ylab("Rate of evolution towards drought avoidance (wet treatment") +
+  ylab("Rate of evolution towards drought escape (wet treatment") +
   xlab("Pi (climate loci)") + 
   scale_color_manual(values=color.list) +
   theme_classic() +
@@ -421,7 +421,7 @@ summary(lm(trait.change.best.wet ~ pi_snp_set, data=trait_geno_pop))
 ggplot(data=trait_geno_pop, aes(x=pi_snp_set, y=trait.change.all, color=as.character(Latitude))) +
   geom_point(size=3) +
   geom_smooth(method="lm", color="black", linetype="dotted") +
-  ylab("Rate of evolution towards drought avoidance") +
+  ylab("Rate of evolution towards drought escape") +
   xlab("Pi (climate loci)") + 
   scale_color_manual(values=color.list) +
   theme_classic() +
@@ -433,7 +433,7 @@ summary(lm(trait.change.all ~ pi_snp_set, data=trait_geno_pop))
 ggplot(data=trait_geno_pop, aes(x=pi_snp_set, y=trait.change.best, color=as.character(Latitude))) +
   geom_point(size=3) +
   geom_smooth(method="lm", color="black", linetype="dotted") +
-  ylab("Rate of evolution towards drought avoidance") +
+  ylab("Rate of evolution towards drought escape") +
   xlab("Pi (climate loci)") + 
   scale_color_manual(values=color.list) +
   theme_classic() +
@@ -494,7 +494,7 @@ summary(lm(FT_W ~ pi_all_snps, data=trait_geno_pop))
 ggplot(data=trait_geno_pop, aes(x=pi_all_snps, y=trait.change.all.dry, color=as.character(Latitude))) +
   geom_point(size=3) +
   geom_smooth(method="lm", color="black", linetype="dotted") +
-  ylab("Rate of evolution towards drought avoidance (dry treatment") +
+  ylab("Rate of evolution towards drought escape (dry treatment") +
   xlab("Pi (all loci)") + 
   scale_color_manual(values=color.list) +
   theme_classic() +
@@ -506,7 +506,7 @@ summary(lm(trait.change.all.dry ~ pi_all_snps, data=trait_geno_pop))
 ggplot(data=trait_geno_pop, aes(x=pi_all_snps, y=trait.change.all.wet, color=as.character(Latitude))) +
   geom_point(size=3) +
   geom_smooth(method="lm", color="black", linetype="dotted") +
-  ylab("Rate of evolution towards drought avoidance (wet treatment") +
+  ylab("Rate of evolution towards drought escape (wet treatment") +
   xlab("Pi (all loci)") + 
   scale_color_manual(values=color.list) +
   theme_classic() +
@@ -518,7 +518,7 @@ summary(lm(trait.change.all.wet ~ pi_all_snps, data=trait_geno_pop))
 ggplot(data=trait_geno_pop, aes(x=pi_all_snps, y=trait.change.best.dry, color=as.character(Latitude))) +
   geom_point(size=3) +
   geom_smooth(method="lm", color="black", linetype="dotted") +
-  ylab("Rate of evolution towards drought avoidance (dry treatment") +
+  ylab("Rate of evolution towards drought escape (dry treatment") +
   xlab("Pi (all loci)") + 
   scale_color_manual(values=color.list) +
   theme_classic() +
@@ -530,7 +530,7 @@ summary(lm(trait.change.best.dry ~ pi_all_snps, data=trait_geno_pop))
 ggplot(data=trait_geno_pop, aes(x=pi_all_snps, y=trait.change.best.wet, color=as.character(Latitude))) +
   geom_point(size=3) +
   geom_smooth(method="lm", color="black", linetype="dotted") +
-  ylab("Rate of evolution towards drought avoidance (wet treatment") +
+  ylab("Rate of evolution towards drought escape (wet treatment") +
   xlab("Pi (all loci)") + 
   scale_color_manual(values=color.list) +
   theme_classic() +
@@ -542,7 +542,7 @@ summary(lm(trait.change.best.wet ~ pi_all_snps, data=trait_geno_pop))
 ggplot(data=trait_geno_pop, aes(x=pi_all_snps, y=trait.change.all, color=as.character(Latitude))) +
   geom_point(size=3) +
   geom_smooth(method="lm", color="black", linetype="dotted") +
-  ylab("Rate of evolution towards drought avoidance") +
+  ylab("Rate of evolution towards drought escape") +
   xlab("Pi (all loci)") + 
   scale_color_manual(values=color.list) +
   theme_classic() +
@@ -554,7 +554,7 @@ summary(lm(trait.change.all ~ pi_all_snps, data=trait_geno_pop))
 ggplot(data=trait_geno_pop, aes(x=pi_all_snps, y=trait.change.best, color=as.character(Latitude))) +
   geom_point(size=3) +
   geom_smooth(method="lm", color="black", linetype="dotted") +
-  ylab("Rate of evolution towards drought avoidance") +
+  ylab("Rate of evolution towards drought escape") +
   xlab("Pi (all loci)") + 
   scale_color_manual(values=color.list) +
   theme_classic() +

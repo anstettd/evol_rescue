@@ -3,45 +3,147 @@
 
 # This script visualizes density trends over time 
 # and relates them to genetic metrics
-# Last updated 2025 03 11
+# Last updated 2025 04 03
 ##################################################
 
 library(tidyverse)
 library(RColorBrewer)
 
-### Read in tidy data & remove Mill Creek and Deer Creek
-counts <- read_csv("data/demography data/tidy_counts.csv")
+### Read in raw count data 
+counts <- read_csv("data/demography data/counts_by_plot.csv") %>% 
+  filter(Year>2009) %>% #drop years outside the scope of this analysis
+  filter(Year<2020) %>% 
+  select(-EffectiveTransectLength) #drop unwanted column
 
-pop_meta <- read_csv("data/genomic_data/pop_meta_data.csv") %>% mutate(Site=gsub(" ", "", Site)) %>% select(Site, Lat.Color)
+### Derive sampled area across all years (J + A + D; exclude E)
+plot_area <- counts %>% 
+  group_by(PlotID) %>% 
+  filter(Class!="E") %>% 
+  mutate(min_x = min(xmin),
+         max_x = max(xmax),
+         min_y = min(ymin),
+         max_y = max(ymax),
+         max_area = (max_x - min_x)*(max_y - min_y))
 
-counts <- left_join(counts, pop_meta) %>% drop_na(Lat.Color) %>% arrange(SiteLatitude)
-unique(counts$Site)
+density <- plot_area %>% 
+  filter(Class=="J"|Class=="A") %>% 
+  select(PlotID, Year, Class, Count, max_area) %>% 
+  pivot_wider(names_from = Class, values_from = Count) %>% 
+  mutate_at(c(4:5), ~replace(., is.na(.), 0)) %>% 
+  mutate(N = J + A,
+         Density_J = J/max_area,
+         Density_A = A/max_area,
+         Density_N = N/max_area)
+
+density <- density %>% 
+  group_by(PlotID) %>% 
+  mutate(max_dj = max(Density_J),
+         max_da = max(Density_A),
+         max_dn = max(Density_N)) %>% 
+  ungroup() %>% 
+  mutate(RelDens_J = Density_J/max_dj,
+         RelDens_A = Density_A/max_da,
+         RelDens_N = Density_N/max_dn)
+
+### Join with site metadata
+counts_meta <- read_csv("data/demography data/tidy_counts.csv") %>% #obsolete density estimates; use file only to link PlotIDs to Sites
+  select(PlotID, Site) %>% 
+  distinct()
+  
+density <- left_join(density, counts_meta) %>% 
+  filter(Site!="MillCreek") %>% #remove unusable sites
+  filter(Site!="DeerCreek")
+
+
+pop_meta <- read_csv("data/genomic_data/pop_meta_data.csv") %>% mutate(Site=gsub(" ", "", Site)) %>% 
+  select(1:7)
+
+density <- left_join(density, pop_meta) %>% drop_na(Lat.Color) %>% arrange(Latitude)
+unique(density$Site)
+
 
 ### Graphs of density trends over time
-color.list = unique(counts$Lat.Color)
+color.list = unique(density$Lat.Color)
 
-# log density
-ggplot(counts, aes(x=Year, y=logdens, color=as.factor(SiteLatitude))) +
+# density of all plants
+ggplot(density, aes(x=Year, y=Density_N, color=as.factor(Latitude))) +
   geom_point(alpha=0.3) +
   geom_smooth(method="lm", formula=y~poly(x,2)) +
-  ylab("Log(density)") +
+  ylab("Total plant density") +
   scale_color_manual(values=color.list) +
-  facet_wrap(~SiteLatitude, scale="free") +
+  facet_wrap(~Latitude, scale="free") +
   theme_classic()
 
+# density of juveniles
+ggplot(density, aes(x=Year, y=Density_J, color=as.factor(Latitude))) +
+  geom_point(alpha=0.3) +
+  geom_smooth(method="lm", formula=y~poly(x,2)) +
+  ylab("Juvenile plant density") +
+  scale_color_manual(values=color.list) +
+  facet_wrap(~Latitude, scale="free") +
+  theme_classic()
 
-# relative density
-ggplot(counts, aes(x=Year, y=reldens, color=as.factor(SiteLatitude))) +
+# density of adults
+ggplot(density, aes(x=Year, y=Density_A, color=as.factor(Latitude))) +
+  geom_point(alpha=0.3) +
+  geom_smooth(method="lm", formula=y~poly(x,2)) +
+  ylab("Adult plant density") +
+  scale_color_manual(values=color.list) +
+  facet_wrap(~Latitude, scale="free") +
+  theme_classic()
+
+# relative density of all plants
+ggplot(density, aes(x=Year, y=RelDens_N, color=as.factor(Latitude))) +
   geom_point(alpha=0.3) +
   geom_smooth(method="lm", formula=y~poly(x,2)) +
   ggpubr::stat_regline_equation(formula=y~poly(x,2), label.x=2010, label.y=0.95, size=2.5) + 
   ylim(0,1) +
-  ylab("Relative density") +
+  ylab("Relative plant density") +
   scale_color_manual(values=color.list) +
-  facet_wrap(~SiteLatitude, nrow=3, scale="free") +
+  facet_wrap(~Latitude, nrow=3, scale="free") +
   theme_classic() +
   theme(strip.background = element_blank(), strip.text.x = element_blank(),
         legend.title = element_blank())
+
+# relative density of juveniles
+ggplot(density, aes(x=Year, y=RelDens_J, color=as.factor(Latitude))) +
+  geom_point(alpha=0.3) +
+  geom_smooth(method="glm", method.args = list(family="binomial"), formula=y~poly(x,2)) +
+  ggpubr::stat_regline_equation(formula=y~poly(x,2), label.x=2010, label.y=0.95, size=2.5) + 
+  ylim(0,1) +
+  ylab("Relative density of juvenile plants") +
+  scale_color_manual(values=color.list) +
+  facet_wrap(~Latitude, nrow=3, scale="free") +
+  theme_classic() +
+  theme(strip.background = element_blank(), strip.text.x = element_blank(),
+        legend.title = element_blank())
+
+# relative density of adults
+ggplot(density, aes(x=Year, y=RelDens_A, color=as.factor(Latitude))) +
+  geom_point(alpha=0.3) +
+  geom_smooth(method="glm", method.args = list(family="binomial"), formula=y~poly(x,2)) +
+  ggpubr::stat_regline_equation(formula=y~poly(x,2), label.x=2010, label.y=0.95, size=2.5) + 
+  ylim(0,1) +
+  ylab("Relative density of adult plants") +
+  scale_color_manual(values=color.list) +
+  facet_wrap(~Latitude, nrow=3, scale="free") +
+  theme_classic() +
+  theme(strip.background = element_blank(), strip.text.x = element_blank(),
+        legend.title = element_blank())
+
+# classes overlain
+density_tall <- density %>% select(Year, Site, Lat.Color, Latitude, RelDens_J, RelDens_A, RelDens_N) %>%   pivot_longer(cols=5:7, names_to="Class", values_to="RelDens")
+
+ggplot(density_tall, aes(x=Year, y=RelDens, group=Class, color=as.factor(Latitude))) +
+  geom_point(alpha=0.3) +
+  geom_smooth(method="glm", method.args = list(family="binomial"), formula=y~poly(x,2)) +
+  ylab("Total plant density") +
+  scale_color_manual(values=color.list) +
+  facet_wrap(~Latitude, scale="free") +
+  theme_classic()  +
+  theme(strip.background = element_blank(), strip.text.x = element_blank())
+
+
 
 
 ### Summarizing indices of density trajectories

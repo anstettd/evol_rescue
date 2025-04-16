@@ -1,0 +1,161 @@
+Site,SiteNum,Plot,Line,PlotCode,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019
+Buck Meadows,31,1,1,100,y,y,y,n,y,y,y,y,y,y
+Buck Meadows,31,1,2,101,y,y,y,n,y,y,y,y,y,y
+Buck Meadows,31,1,3,102,y,y,y,n,y,y,y,y,y,y
+Buck Meadows,31,1,4,103,y,y,y,n,y,y,y,n,y,y
+Buck Meadows,31,1,5,104,y,y,y,n,y,y,y,n,y,y
+Buck Meadows,31,1,6,105,y,y,y,n,y,y,y,n,y,y
+Buck Meadows,31,1,7,106,y,y,y,n,y,y,y,n,y,y
+Buck Meadows,31,2,1,107,y,y,n,n,NA,NA,NA,NA,NA,NA
+Buck Meadows,31,2,2,108,y,y,n,n,NA,NA,NA,NA,NA,NA
+Buck Meadows,31,3,1,109,y,y,y,n,y,y,y,y,y,y
+Buck Meadows,31,3,2,219,NA,y,y,n,y,y,y,y,y,y
+Buck Meadows,31,3,3,308,NA,NA,NA,n,y,y,y,y,y,y
+Buck Meadows,31,4,1,218,NA,y,y,n,y,y,y,n,NA,NA
+Canton Creek,24,1,1,78,y,y,y,y,y,y,y,n,y,y
+Canton Creek,24,2,1,79,y,y,y,y,y,y,y,n,y,y
+Canton Creek,24,3,1,241,NA,NA,y,y,y,y,y,n,y,y
+Canton Creek,24,4,1,303,NA,NA,NA,y,y,y,y,n,y,y
+Carlon,1,4,2,21,n,y,y,n,NA,NA,NA,NA,NA,NA
+Carlon,1,4,3,309,NA,NA,NA,n,y,y,y,y,y,y
+Carlon,1,6,1,18,y,y,y,n,y,y,y,y,y,y
+Carlon,1,7,1,19,y,y,y,n,y,y,y,y,y,y
+Carlon,1,7,2,20,y,y,y,n,y,y,y,y,y,y
+Carlon,1,7,3,295,NA,NA,y,n,y,y,y,y,y,NA
+Coast Fork Willamette,25,0,0,93,y,y,y,n,y,n,n,NA,NA,NA
+Coast Fork Willamette,25,1,0,226,y,y,y,n,n,NA,NA,NA,NA,NA
+Coast Fork Willamette,25,1,1,80,y,y,y,y,y,y,y,y,y,y
+Coast Fork Willamette,25,1,2,243,NA,NA,y,y,y,y,y,y,y,y
+Coast Fork Willamette,25,1,3,297,NA,NA,NA,y,y,n,y,y,y,y
+Coast Fork Willamette,25,2,0,242,NA,NA,y,y,n,NA,NA,NA,NA,NA
+Coast Fork Willamette,25,2,1,221,NA,y,y,y,y,y,y,n,y,y
+Coast Fork Willamette,25,3,0,244,y,y,y,y,y,NA,NA,NA,NA,NA
+Coast Fork Willamette,25,3,1,222,NA,y,y,y,y,y,y,y,y,y
+Coast Fork Willamette,25,4,0,299,NA,NA,NA,y,y,y,y,n,NA,NA
+Coast Fork Willamette,25,4,1,229,NA,y,y,y,y,y,y,n,y,y
+Coast Fork Willamette,25,5,0,230,NA,y,n,y,y,y,n,n,NA,NA
+Coast Fork Willamette,25,5,1,300,NA,NA,NA,y,y,y,y,y,y,n
+Coast Fork Willamette,25,5,2,314,NA,NA,NA,NA,NA,NA,NA,y,y,n
+Coast Fork Willamette,25,5,3,315,NA,NA,NA,NA,NA,NA,NA,y,y,n
+Coast Fork Willamette,25,6,0,228,y,y,y,y,NA,NA,NA,NA,NA,NA
+Coast Fork Willamette,25,6,1,298,NA,NA,NA,y,y,y,y,y,y,y
+Coast Fork Willamette,25,7,0,231,NA,y,y,y,y,n,n,y,NA,NA
+Coast Fork Willamette,25,8,1,245,NA,NA,y,y,y,y,y,y,y,n
+Deep Creek,17,1,1,67,y,y,y,y,n,y,y,y,y,y
+Deep Creek,17,1,2,274,NA,NA,y,y,n,y,y,y,y,y
+Deep Creek,17,2,1,235,NA,NA,y,y,y,y,n,n,NA,NA
+Deep Creek,17,3,1,236,NA,NA,y,y,y,y,y,y,n,NA
+Deep Creek,17,4,1,237,NA,NA,y,y,y,y,y,n,n,y
+Hauser Creek,13,1,1,53,y,y,y,y,y,y,y,y,y,y
+Hauser Creek,13,2,1,54,y,y,y,y,y,y,y,y,y,y
+Hauser Creek,13,3,1,200,NA,y,y,y,y,y,y,y,y,y
+Kitchen Creek,14,1,0,96,y,y,y,y,y,y,y,y,y,y
+Kitchen Creek,14,1,1,55,y,y,y,y,y,y,y,y,y,y
+Kitchen Creek,14,2,1,56,y,y,y,y,y,y,y,y,y,y
+Kitchen Creek,14,3,1,57,y,y,y,y,y,y,y,y,y,y
+Kitchen Creek,14,4,1,272,NA,NA,y,y,y,y,y,y,y,y
+Kitchen Creek,14,5,1,273,NA,NA,y,y,y,y,y,y,y,y
+Kitchen Creek,14,6,0,312,NA,NA,NA,NA,NA,NA,y,y,y,NA
+Little Jameson,18,1,1,68,y,y,y,y,y,y,y,y,y,y
+Little Jameson,18,2,1,69,y,y,y,y,y,y,y,y,y,y
+Little Jameson,18,2,2,252,NA,NA,y,y,y,y,y,y,y,y
+North Fork Middle Fork Tule,10,1,1,41,y,NA,NA,NA,NA,NA,NA,NA,NA,NA
+North Fork Middle Fork Tule,10,2,1,42,y,y,y,y,y,y,y,n,n,NA
+North Fork Middle Fork Tule,10,3,1,43,y,y,y,y,y,y,y,n,y,n
+North Fork Middle Fork Tule,10,3,2,291,NA,NA,y,y,y,y,y,n,y,y
+North Fork Middle Fork Tule,10,3,3,292,NA,NA,y,y,y,y,y,n,y,y
+North Fork Middle Fork Tule,10,4,1,214,NA,y,y,y,y,y,y,n,y,y
+O'Neil Creek,16,1,1,63,y,y,y,y,y,y,y,y,y,y
+O'Neil Creek,16,2,1,64,y,y,y,y,y,y,y,y,y,y
+O'Neil Creek,16,3,1,65,y,y,y,y,y,y,y,NA,NA,NA
+O'Neil Creek,16,4,1,66,y,y,y,y,y,y,y,y,y,y
+O'Neil Creek,16,5,1,201,NA,y,y,y,y,y,y,y,y,y
+O'Neil Creek,16,6,1,246,NA,NA,y,y,y,y,y,y,NA,NA
+Oregon Creek,29,1,1,85,y,y,y,y,y,y,y,y,y,y
+Oregon Creek,29,2,1,86,y,y,y,y,y,y,y,y,y,n
+Oregon Creek,29,3,1,87,y,y,y,y,y,y,y,y,n,n
+Oregon Creek,29,4,1,88,y,y,y,y,y,y,y,y,y,y
+Oregon Creek,29,5,1,89,y,y,y,y,y,y,y,y,y,y
+Oregon Creek,29,6,1,203,NA,y,y,y,y,y,y,y,y,y
+Oregon Creek,29,7,1,253,NA,NA,y,y,y,y,y,y,y,y
+Oregon Creek,29,8,1,254,NA,NA,y,y,y,y,y,y,y,y
+Oregon Creek,29,9,1,255,NA,NA,y,y,y,y,y,y,y,y
+Rainbow Pool,35,1,1,173,y,y,y,n,y,y,y,y,y,y
+Rainbow Pool,35,2,1,174,y,y,y,n,y,y,y,y,n,NA
+Rainbow Pool,35,3,1,175,y,n,NA,n,NA,NA,NA,NA,NA,NA
+Rainbow Pool,35,4,1,176,y,y,y,n,y,y,y,y,y,y
+Rainbow Pool,35,5,1,177,y,y,y,n,y,y,y,y,y,y
+Rainbow Pool,35,6,1,178,y,y,y,n,y,y,y,y,y,n
+Rainbow Pool,35,7,1,179,y,y,y,n,y,y,y,y,y,n
+Rainbow Pool,35,8,1,180,y,y,y,n,y,y,y,y,y,y
+Rainbow Pool,35,8.5,1,189,NA,y,y,n,y,y,y,y,y,y
+Rainbow Pool,35,9,1,181,NA,NA,NA,n,y,y,y,y,y,y
+Rainbow Pool,35,12,1,184,y,y,n,n,NA,NA,NA,NA,NA,NA
+Rainbow Pool,35,13,1,185,y,y,n,n,NA,NA,NA,NA,NA,NA
+Rainbow Pool,35,14,1,186,NA,y,n,n,NA,NA,NA,NA,NA,NA
+Rainbow Pool,35,17,1,311,y,y,y,n,y,y,y,y,y,n
+Rainbow Pool,35,18,1,190,y,y,y,n,NA,NA,NA,NA,NA,NA
+Rainbow Pool,35,20,1,192,NA,y,NA,n,NA,NA,NA,NA,NA,NA
+Rainbow Pool,35,21,1,193,NA,NA,NA,n,NA,NA,NA,NA,NA,NA
+Rainbow Pool,35,22,1,194,NA,y,NA,n,NA,NA,NA,NA,NA,NA
+Redwood Creek,8,1,1,35,y,y,y,y,y,y,n,y,y,y
+Redwood Creek,8,2,1,36,y,y,y,y,y,y,n,y,y,y
+Redwood Creek,8,3,1,213,NA,y,y,y,y,y,n,y,y,y
+Redwood Creek,8,4,1,256,NA,NA,y,y,y,y,n,y,n,NA
+Redwood Creek,8,5,1,310,NA,NA,NA,NA,y,y,n,y,n,NA
+Rock Creek,15,1,1,58,y,y,y,lost,y,y,y,y,y,y
+Rock Creek,15,1,2,240,NA,NA,y,lost,y,y,y,y,y,y
+Rock Creek,15,2,1,59,y,y,y,lost,y,y,y,n,y,y
+Rock Creek,15,2,2,239,NA,NA,y,lost,y,y,y,n,y,y
+Rock Creek,15,3,1,60,y,n,y,lost,y,y,y,y,y,y
+Rock Creek,15,4,1,61,y,n,n,lost,NA,NA,NA,NA,NA,NA
+Rock Creek,15,5,1,62,y,y,y,lost,y,y,y,y,y,y
+South Fork Middle Fork Tule,3,1,1,25,y,n,y,y,y,y,y,n,y,y
+South Fork Middle Fork Tule,3,1,2,258,NA,NA,y,y,y,y,y,n,y,y
+South Fork Middle Fork Tule,3,2,1,26,y,n,y,y,y,y,y,n,y,y
+South Fork Middle Fork Tule,3,2,2,259,NA,NA,y,y,y,y,y,n,y,y
+South Fork Middle Fork Tule,3,3,1,260,NA,NA,y,y,y,y,y,n,NA,NA
+South Fork Middle Fork Tule,3,4,1,261,NA,NA,y,y,y,y,y,n,y,y
+South Fork Middle Fork Tule,3,4,2,262,NA,NA,y,y,y,y,y,n,n,NA
+South Fork Middle Fork Tule,3,5,1,263,NA,NA,y,y,y,y,y,n,y,y
+South Fork Middle Fork Tule,3,6,1,264,NA,NA,y,y,y,y,y,n,NA,y
+Sweetwater River,2,1,1,22,y,y,y,y,y,y,y,y,y,y
+Sweetwater River,2,1,2,296,NA,NA,NA,y,y,y,y,y,y,y
+Sweetwater River,2,1,3,307,NA,NA,NA,NA,y,y,y,y,y,y
+Sweetwater River,2,2,1,23,y,y,y,y,y,y,y,y,y,y
+Sweetwater River,2,3,1,24,y,y,y,y,y,y,y,y,y,y
+Sweetwater River,2,4,1,197,NA,y,y,y,y,y,y,y,y,y
+WawoNA,32,1,1,110,n,n,n,y,y,y,y,y,y,y
+WawoNA,32,2,1,111,y,y,y,y,y,y,y,y,y,y
+WawoNA,32,2,2,112,y,y,y,y,y,y,y,y,y,y
+WawoNA,32,2,3,113,y,y,y,y,y,y,y,n,y,y
+WawoNA,32,2,4,114,y,y,y,y,y,y,y,n,y,y
+WawoNA,32,3,1,115,n,y,y,y,y,y,y,y,NA,NA
+WawoNA,32,4,1,116,y,y,y,y,y,y,y,y,y,y
+WawoNA,32,4,2,117,y,y,y,y,y,y,y,y,y,y
+WawoNA,32,4,3,118,y,y,y,y,y,y,y,y,n,NA
+WawoNA,32,4,4,119,y,y,y,y,y,y,y,y,y,y
+WawoNA,32,4,5,316,NA,NA,NA,NA,NA,NA,NA,y,y,y
+WawoNA,32,8,1,125,y,y,y,y,y,y,y,y,NA,NA
+WawoNA,32,8,2,126,y,y,y,y,y,y,y,y,y,y
+WawoNA,32,9,1,128,y,y,y,y,y,y,y,y,y,n
+West Fork Mojave,7,1,1,32,y,y,y,y,y,y,y,y,y,y
+West Fork Mojave,7,2,1,33,y,y,y,y,y,y,y,y,y,y
+West Fork Mojave,7,3,1,34,y,NA,NA,NA,NA,NA,NA,NA,NA,NA
+West Fork Mojave,7,4,1,202,NA,y,y,y,y,y,y,y,y,y
+West Fork Mojave,7,5,1,271,NA,NA,y,y,y,y,y,y,y,y
+West Fork Mojave,7,6,1,306,NA,NA,NA,NA,y,y,y,y,y,y
+Whitewater Canyon,12,1,1,47,y,y,y,NA,NA,NA,NA,NA,NA,NA
+Whitewater Canyon,12,2,1,48,y,y,y,NA,NA,NA,NA,NA,NA,NA
+Whitewater Canyon,12,3,1,49,y,y,y,NA,NA,NA,NA,NA,NA,NA
+Whitewater Canyon,12,4,1,50,y,y,y,NA,NA,NA,NA,NA,NA,NA
+Whitewater Canyon,12,5,1,51,y,y,y,NA,NA,NA,NA,NA,NA,NA
+Whitewater Canyon,12,6,1,52,y,y,y,y,NA,NA,NA,NA,NA,NA
+Whitewater Canyon,12,7,1,196,NA,y,y,y,y,y,y,NA,NA,NA
+Whitewater Canyon,12,8,1,198,NA,y,y,y,y,y,y,NA,NA,NA
+Whitewater Canyon,12,9,1,199,NA,y,y,y,y,y,y,NA,NA,NA
+Whitewater Canyon,12,10,1,269,NA,NA,y,y,y,y,y,y,y,y
+Whitewater Canyon,12,10,2,313,NA,NA,NA,NA,NA,NA,NA,y,y,y
+Whitewater Canyon,12,10,3,327,NA,NA,NA,NA,NA,NA,NA,NA,NA,y
+Whitewater Canyon,12,11,1,270,NA,NA,y,y,y,y,y,y,y,y
+Whitewater Canyon,12,12,1,301,NA,NA,NA,y,y,y,y,y,n,y

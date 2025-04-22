@@ -1,0 +1,32 @@
+#make bed file
+
+plink --vcf input.vcf \
+	--make-bed \
+	--out output_prefix
+
+plink --vcf vcf.gz \
+        --keep-allele-order \
+     	--make-bed \
+     	--set-missing-var-ids @:# \
+        --allow-extra-chr \
+        --double-id \
+        --out output_name
+
+
+
+
+/scratch/st-angert-1/10_select_final_snps/baseline_filtered_variants.vcf.gz
+
+
+#plink clump 
+
+plink --bfile input.bed \ # you can transform from VCF to BED format using PLINK
+      --clump identified_outlier_SNPs.txt \ # your SNP outlier file (the one you attached, save in tab delimited format)
+      --clump-snp-field SNP \ # will search for header called SNP in your identified_outlier_SNPs.txt 
+      --clump-field BF \ # by default, should be p-values in identified_outlier_SNPs.txt for GWAS; but for GEA maybe you can change it to BF scores, I haven't test it before, you can give it a try?
+      --clump-kb 250 \  # clump threshold for bp distance
+      --clump-r2 0.4 \ # clump threshold for LD r2
+      --allow-extra-chr \ # add this if your chromosome name is not simply 01,02,03,04 etc
+      #--clump-range gene.annotation.txt \ # optional, if you have a gene annotation file for your reference genome (VCF called on)
+      #--clump-range-border 5 \ # optional, linked to above 
+      --out output.name

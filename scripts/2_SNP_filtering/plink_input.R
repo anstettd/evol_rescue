@@ -111,10 +111,7 @@ write_tsv(snp_set_env9_all,"data/genomic_data/plink_input_env9.tsv")
 
 
 
-
-
-
-
+clump_env1<-read_csv("data/genomic_data/baseline_env1_clumped.csv", col_names = T)
 
 
 #snps_env1 <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/WZA_snps_env1_bf.csv")

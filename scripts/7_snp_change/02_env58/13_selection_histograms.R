@@ -22,13 +22,13 @@ theme_ci <- function(){
 library(tidyverse)
 
 #Import files
-env_obs_ci_unique <- read_csv("data/snp_change_2/obs_ci_env_unique.csv")
+env_obs_ci_unique <- read_csv("data/snp_change_2/obs_ci_env_unique_58.csv")
 
 
 #Import Medians
 #median_pop <- read_csv("data/snp_change_2/median_pop.csv")
 
-obs_env_unique <- read_csv("data/snp_change_2/slope_obs_all_unique.csv") %>% 
+obs_env_unique <- read_csv("data/snp_change_2/slope_obs_all_unique_env58.csv") %>% 
   filter(SE<5) %>% mutate(abs_slope = abs(Slope))
 
 #Get slope median
@@ -108,7 +108,7 @@ histPop <- ggplot(env_histPop ,aes(x=S,y=obs,ymin=low,ymax=high))+
   theme_ci() + facet_wrap(.~Site) +
   geom_vline(data = mean_pop, aes(xintercept = mean), size=0.9, linetype="dashed",color="red")
 histPop 
-ggsave("Graphs/snp_change_2/01_selection_2.5_mean.pdf", histPop, width=12, height = 8, units = "in")
+ggsave("Graphs/snp_change_2/01_selection_2.5_mean_58.pdf", histPop, width=12, height = 8, units = "in")
 
 
 # -1.25 to 1.25
@@ -117,12 +117,12 @@ histPop <- ggplot(env_histPop_25 ,aes(x=S,y=obs,ymin=low,ymax=high))+
   #geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.06) +
   geom_vline(xintercept=0) +
   labs(x = "Strength of Selection", y = "Number of SNPs") +
-  scale_y_continuous(limits=c(0,125),breaks=seq(0,125,by=25))+ 
+  #scale_y_continuous(limits=c(0,125),breaks=seq(0,125,by=25))+ 
   theme_ci() + facet_wrap(.~Site)+
   geom_vline(data = mean_pop, aes(xintercept = mean), size=1.2, linetype="dashed",color="red")
 
 histPop
-ggsave("Graphs/snp_change_2/02_selection_1.25_mean.pdf", histPop, width=12, height = 8, units = "in")
+ggsave("Graphs/snp_change_2/02_selection_1.25_mean_58.pdf", histPop, width=12, height = 8, units = "in")
 
 
 ###################################################################################
@@ -139,7 +139,7 @@ histPop <- ggplot(env_histPop ,aes(x=S,y=obs,ymin=low,ymax=high))+
   theme_ci() + facet_wrap(.~Site) +
   geom_vline(data = median_pop, aes(xintercept = median), size=0.9, linetype="dashed",color="red")
 histPop 
-ggsave("Graphs/snp_change_2/01_selection_2.5_median.pdf", histPop, width=12, height = 8, units = "in")
+ggsave("Graphs/snp_change_2/01_selection_2.5_median_58.pdf", histPop, width=12, height = 8, units = "in")
 
 
 # -1.25 to 1.25
@@ -148,12 +148,12 @@ histPop <- ggplot(env_histPop_25 ,aes(x=S,y=obs,ymin=low,ymax=high))+
   #geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.06) +
   geom_vline(xintercept=0) +
   labs(x = "Strength of Selection", y = "Number of SNPs") +
-  scale_y_continuous(limits=c(0,125),breaks=seq(0,125,by=25))+ 
+  #scale_y_continuous(limits=c(0,125),breaks=seq(0,125,by=25))+ 
   theme_ci() + facet_wrap(.~Site)+
   geom_vline(data = median_pop, aes(xintercept = median), size=1.2, linetype="dashed",color="red")
 
 histPop
-ggsave("Graphs/snp_change_2/02_selection_1.25_median.pdf", histPop, width=12, height = 8, units = "in")
+ggsave("Graphs/snp_change_2/02_selection_1.25_median_58.pdf", histPop, width=12, height = 8, units = "in")
 
 
 

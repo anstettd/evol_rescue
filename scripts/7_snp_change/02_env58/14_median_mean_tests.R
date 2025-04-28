@@ -27,9 +27,9 @@ library(tidyverse)
 ###################################################################################
 #HistPop unique SNP ascorss all env
 #Updated for binomial data
-obs_env_unique <- read_csv("data/snp_change_2/slope_obs_all_unique.csv") %>% 
+obs_env_unique <- read_csv("data/snp_change_2/slope_obs_all_unique_env58.csv") %>% 
   filter(SE<5) %>% mutate(abs_slope = abs(Slope)) %>% filter(Site!=12)
-rand_env_unique <- read_csv("~/Dropbox/z_Documents/aLarge_files/M_gen/rand_slope_histPop_strong_50_50_clump.csv") %>% filter(Site!=12)
+rand_env_unique <- read_csv("~/Dropbox/z_Documents/aLarge_files/M_gen/rand_slope_histPop_strong_50_50_clump_58.csv") %>% filter(Site!=12)
 
 ##Get slope median
 median_obs <- obs_env_unique %>% group_by(Site) %>% summarise(median = median(Slope, na.rm = TRUE))
@@ -72,7 +72,7 @@ for (i in 1:11){
 colnames(wilcox.out) <- c("Site","Median","Mean","p-value")
 
 
-write_csv(wilcox.out, "Graphs/snp_change_2/wilcox_S_all.csv")
+write_csv(wilcox.out, "Graphs/snp_change_2/wilcox_S_env58.csv")
 
 
 ###################################################################################
@@ -101,7 +101,7 @@ emp_out[i,7] <- 1 - emp_out[i,6]
 colnames(emp_out) <- c("Site","Median","Median_Percentile","Median_p-value",
                        "Mean","Mean_Percentile","Mean_p-value")
 
-write_csv(emp_out, "Graphs/snp_change_2/mean_median_S_all.csv")
+write_csv(emp_out, "Graphs/snp_change_2/mean_median_S_env58.csv")
 
 ###################################################################################
 #Make Median and Mean histograms
@@ -122,7 +122,7 @@ histPop <- ggplot(median_rand,aes(x=median))+
 geom_vline(data = median_obs, aes(xintercept = median), size=0.5, linetype="dashed",color="red")
 histPop 
 
-ggsave("Graphs/snp_change_2/03_rand_median.pdf",width=12, height = 8, units = "in")
+ggsave("Graphs/snp_change_2/03_rand_median_58.pdf",width=12, height = 8, units = "in")
 
 
 
@@ -135,7 +135,7 @@ histPop_mean <- ggplot(mean_rand,aes(x=mean))+
   geom_vline(data = mean_obs, aes(xintercept = mean), size=0.5, linetype="dashed",color="red")
 histPop_mean
 
-ggsave("Graphs/snp_change_2/04_rand_mean.pdf",width=12, height = 8, units = "in")
+ggsave("Graphs/snp_change_2/04_rand_mean_58.pdf",width=12, height = 8, units = "in")
 
 
 

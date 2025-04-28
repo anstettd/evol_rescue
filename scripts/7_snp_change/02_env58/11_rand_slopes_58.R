@@ -19,7 +19,7 @@ library(tidyverse)
 swiss_glm <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/swiss_glm_50_50.csv")
 
 #Import obs (snp set) slopes
-obs_env_unique <- read_csv("data/snp_change_2/slope_obs_all_unique.csv") %>% 
+obs_env_unique <- read_csv("data/snp_change_2/slope_obs_all_unique_env58.csv") %>% 
   filter(SE<5) %>% mutate(abs_slope = abs(Slope))
 
 
@@ -42,7 +42,7 @@ for(i in 1:12){
 
 
 
-write_csv(rand_master, "~/Dropbox/z_Documents/aLarge_files/M_gen/rand_slope_histPop_strong_50_50_clump.csv")
+write_csv(rand_master, "~/Dropbox/z_Documents/aLarge_files/M_gen/rand_slope_histPop_strong_50_50_clump_58.csv")
 
 
 

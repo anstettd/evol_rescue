@@ -62,25 +62,25 @@ library(tidyverse)
 library(boot)
 
 #Import timeseries frequencies
-freqA_env1 <- read_csv("data/snp_change_data/freqA_env1.csv")
-freqA_env2 <- read_csv("data/snp_change_data/freqA_env2.csv")
-freqA_env3 <- read_csv("data/snp_change_data/freqA_env3.csv")
-freqA_env4 <- read_csv("data/snp_change_data/freqA_env4.csv")
-freqA_env5 <- read_csv("data/snp_change_data/freqA_env5.csv")
-freqA_env6 <- read_csv("data/snp_change_data/freqA_env6.csv")
-freqA_env7 <- read_csv("data/snp_change_data/freqA_env7.csv")
-freqA_env8 <- read_csv("data/snp_change_data/freqA_env8.csv")
-freqA_env9 <- read_csv("data/snp_change_data/freqA_env9.csv")
+freqA_env1 <- read_csv("data/snp_change_2/freqA_env1.csv")
+freqA_env2 <- read_csv("data/snp_change_2/freqA_env2.csv")
+freqA_env3 <- read_csv("data/snp_change_2/freqA_env3.csv")
+freqA_env4 <- read_csv("data/snp_change_2/freqA_env4.csv")
+freqA_env5 <- read_csv("data/snp_change_2/freqA_env5.csv")
+freqA_env6 <- read_csv("data/snp_change_2/freqA_env6.csv")
+freqA_env7 <- read_csv("data/snp_change_2/freqA_env7.csv")
+freqA_env8 <- read_csv("data/snp_change_2/freqA_env8.csv")
+freqA_env9 <- read_csv("data/snp_change_2/freqA_env9.csv")
 
-freqB_env1 <- read_csv("data/snp_change_data/freqB_env1.csv")
-freqB_env2 <- read_csv("data/snp_change_data/freqB_env2.csv")
-freqB_env3 <- read_csv("data/snp_change_data/freqB_env3.csv")
-freqB_env4 <- read_csv("data/snp_change_data/freqB_env4.csv")
-freqB_env5 <- read_csv("data/snp_change_data/freqB_env5.csv")
-freqB_env6 <- read_csv("data/snp_change_data/freqB_env6.csv")
-freqB_env7 <- read_csv("data/snp_change_data/freqB_env7.csv")
-freqB_env8 <- read_csv("data/snp_change_data/freqB_env8.csv")
-freqB_env9 <- read_csv("data/snp_change_data/freqB_env9.csv")
+freqB_env1 <- read_csv("data/snp_change_2/freqB_env1.csv")
+freqB_env2 <- read_csv("data/snp_change_2/freqB_env2.csv")
+freqB_env3 <- read_csv("data/snp_change_2/freqB_env3.csv")
+freqB_env4 <- read_csv("data/snp_change_2/freqB_env4.csv")
+freqB_env5 <- read_csv("data/snp_change_2/freqB_env5.csv")
+freqB_env6 <- read_csv("data/snp_change_2/freqB_env6.csv")
+freqB_env7 <- read_csv("data/snp_change_2/freqB_env7.csv")
+freqB_env8 <- read_csv("data/snp_change_2/freqB_env8.csv")
+freqB_env9 <- read_csv("data/snp_change_2/freqB_env9.csv")
 
 
 ###################################################################################
@@ -140,6 +140,9 @@ slope_env7 <- glm_obs(freqA_env7,freqB_env7,"Tave_sm")
 slope_env8 <- glm_obs(freqA_env8,freqB_env8,"PPT_wt")
 slope_env9 <- glm_obs(freqA_env9,freqB_env9,"PPT_sm")
 
+slope_env_58 <- rbind(slope_env5,
+                       slope_env8)
+
 slope_env_all <- rbind(slope_env1,
                        slope_env2,
                        slope_env3,
@@ -152,6 +155,12 @@ slope_env_all <- rbind(slope_env1,
 
 #Get unique SNP for merged env
 
+slope_env_unique_58 <- data.frame()
+for (i in 1:dim(slope_env_58)){
+  slope.temp_58 <- slope_env_58 %>% filter(Site==i)
+  slope.unique_58 <- slope.temp_58 [!duplicated(slope.temp_58 [ , "snp_ID"]), ]
+  slope_env_unique_58  <- rbind(slope_env_unique_58,slope.unique_58)
+}
 slope_env_all_unique <- data.frame()
 for (i in 1:dim(slope_env_all)){
   slope.temp <- slope_env_all %>% filter(Site==i)
@@ -162,17 +171,17 @@ for (i in 1:dim(slope_env_all)){
 
 ###################################################################################
 #Export
-write_csv(slope_env1, "data/snp_change_data/slope_obs_env1.csv")
-write_csv(slope_env2, "data/snp_change_data/slope_obs_env2.csv")
-write_csv(slope_env3, "data/snp_change_data/slope_obs_env3.csv")
-write_csv(slope_env4, "data/snp_change_data/slope_obs_env4.csv")
-write_csv(slope_env5, "data/snp_change_data/slope_obs_env5.csv")
-write_csv(slope_env6, "data/snp_change_data/slope_obs_env6.csv")
-write_csv(slope_env7, "data/snp_change_data/slope_obs_env7.csv")
-write_csv(slope_env8, "data/snp_change_data/slope_obs_env8.csv")
-write_csv(slope_env9, "data/snp_change_data/slope_obs_env9.csv")
-#write_csv(slope_env_all, "data/snp_change_data/slope_obs_all.csv")
-write_csv(slope_env_all_unique, "data/snp_change_data/slope_obs_all_unique.csv")
+write_csv(slope_env1, "data/snp_change_2/slope_obs_env1.csv")
+write_csv(slope_env2, "data/snp_change_2/slope_obs_env2.csv")
+write_csv(slope_env3, "data/snp_change_2/slope_obs_env3.csv")
+write_csv(slope_env4, "data/snp_change_2/slope_obs_env4.csv")
+write_csv(slope_env5, "data/snp_change_2/slope_obs_env5.csv")
+write_csv(slope_env6, "data/snp_change_2/slope_obs_env6.csv")
+write_csv(slope_env7, "data/snp_change_2/slope_obs_env7.csv")
+write_csv(slope_env8, "data/snp_change_2/slope_obs_env8.csv")
+write_csv(slope_env9, "data/snp_change_2/slope_obs_env9.csv")
+write_csv(slope_env_unique_58, "data/snp_change_2/slope_obs_unique_env58.csv")
+write_csv(slope_env_all_unique, "data/snp_change_2/slope_obs_all_unique.csv")
 
 
 

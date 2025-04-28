@@ -5,7 +5,7 @@
 ## Author Daniel Anstett
 ## 
 ## 
-## Last Modified May 25, 2023
+## Last Modified April 28, 2025
 ###################################################################################
 #Import libraries
 library(tidyverse)
@@ -282,33 +282,33 @@ FATB_n <- function(snp_base,snp_time,climate_table,env_in){
 
 
 #Import Baseline Climate 
-climate <- read_csv("data/snp_change_data/climate_pop.csv")
+climate <- read_csv("data/snp_change_2/climate_pop.csv")
 
 #Import pop names (site_year names)
 pop_order<-read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/timeseries_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.pop_order", header=F, sep="\t")
 
 ##SNP set abundances
 #Timeseries SNP abundances
-snp1_time <- read_csv("data/snp_change_data/snp_set_time_env1.csv")
-snp2_time <- read_csv("data/snp_change_data/snp_set_time_env2.csv")
-snp3_time <- read_csv("data/snp_change_data/snp_set_time_env3.csv")
-snp4_time <- read_csv("data/snp_change_data/snp_set_time_env4.csv")
-snp5_time <- read_csv("data/snp_change_data/snp_set_time_env5.csv")
-snp6_time <- read_csv("data/snp_change_data/snp_set_time_env6.csv")
-snp7_time <- read_csv("data/snp_change_data/snp_set_time_env7.csv")
-snp8_time <- read_csv("data/snp_change_data/snp_set_time_env8.csv")
-snp9_time <- read_csv("data/snp_change_data/snp_set_time_env9.csv")
+snp1_time <- read_csv("data/snp_change_2/snp_set_time_env1.csv")
+snp2_time <- read_csv("data/snp_change_2/snp_set_time_env2.csv")
+snp3_time <- read_csv("data/snp_change_2/snp_set_time_env3.csv")
+snp4_time <- read_csv("data/snp_change_2/snp_set_time_env4.csv")
+snp5_time <- read_csv("data/snp_change_2/snp_set_time_env5.csv")
+snp6_time <- read_csv("data/snp_change_2/snp_set_time_env6.csv")
+snp7_time <- read_csv("data/snp_change_2/snp_set_time_env7.csv")
+snp8_time <- read_csv("data/snp_change_2/snp_set_time_env8.csv")
+snp9_time <- read_csv("data/snp_change_2/snp_set_time_env9.csv")
 
 #Baseline SNP abundances
-env1_base <- read_csv("data/snp_change_data/snp_set_base_env1.csv")
-env2_base <- read_csv("data/snp_change_data/snp_set_base_env2.csv")
-env3_base <- read_csv("data/snp_change_data/snp_set_base_env3.csv")
-env4_base <- read_csv("data/snp_change_data/snp_set_base_env4.csv")
-env5_base <- read_csv("data/snp_change_data/snp_set_base_env5.csv")
-env6_base <- read_csv("data/snp_change_data/snp_set_base_env6.csv")
-env7_base <- read_csv("data/snp_change_data/snp_set_base_env7.csv")
-env8_base <- read_csv("data/snp_change_data/snp_set_base_env8.csv")
-env9_base <- read_csv("data/snp_change_data/snp_set_base_env9.csv")
+env1_base <- read_csv("data/snp_change_2/snp_set_base_env1.csv")
+env2_base <- read_csv("data/snp_change_2/snp_set_base_env2.csv")
+env3_base <- read_csv("data/snp_change_2/snp_set_base_env3.csv")
+env4_base <- read_csv("data/snp_change_2/snp_set_base_env4.csv")
+env5_base <- read_csv("data/snp_change_2/snp_set_base_env5.csv")
+env6_base <- read_csv("data/snp_change_2/snp_set_base_env6.csv")
+env7_base <- read_csv("data/snp_change_2/snp_set_base_env7.csv")
+env8_base <- read_csv("data/snp_change_2/snp_set_base_env8.csv")
+env9_base <- read_csv("data/snp_change_2/snp_set_base_env9.csv")
 
 
 ###################################################################################
@@ -445,25 +445,25 @@ freq_env8_B_T <- as.data.frame(t(freq_env8_B)) %>% rownames_to_column ("site_yea
 freq_env9_B_T <- as.data.frame(t(freq_env9_B)) %>% rownames_to_column ("site_year") %>% separate(site_year, c("Site","Year"))
 
 # Write out climate change correlated timeseries frequency table 
-write_csv(freq_env1_A_T, "data/snp_change_data/freqA_env1.csv")
-write_csv(freq_env2_A_T, "data/snp_change_data/freqA_env2.csv")
-write_csv(freq_env3_A_T, "data/snp_change_data/freqA_env3.csv")
-write_csv(freq_env4_A_T, "data/snp_change_data/freqA_env4.csv")
-write_csv(freq_env5_A_T, "data/snp_change_data/freqA_env5.csv")
-write_csv(freq_env6_A_T, "data/snp_change_data/freqA_env6.csv")
-write_csv(freq_env7_A_T, "data/snp_change_data/freqA_env7.csv")
-write_csv(freq_env8_A_T, "data/snp_change_data/freqA_env8.csv")
-write_csv(freq_env9_A_T, "data/snp_change_data/freqA_env9.csv")
+write_csv(freq_env1_A_T, "data/snp_change_2/freqA_env1.csv")
+write_csv(freq_env2_A_T, "data/snp_change_2/freqA_env2.csv")
+write_csv(freq_env3_A_T, "data/snp_change_2/freqA_env3.csv")
+write_csv(freq_env4_A_T, "data/snp_change_2/freqA_env4.csv")
+write_csv(freq_env5_A_T, "data/snp_change_2/freqA_env5.csv")
+write_csv(freq_env6_A_T, "data/snp_change_2/freqA_env6.csv")
+write_csv(freq_env7_A_T, "data/snp_change_2/freqA_env7.csv")
+write_csv(freq_env8_A_T, "data/snp_change_2/freqA_env8.csv")
+write_csv(freq_env9_A_T, "data/snp_change_2/freqA_env9.csv")
 
-write_csv(freq_env1_B_T, "data/snp_change_data/freqB_env1.csv")
-write_csv(freq_env2_B_T, "data/snp_change_data/freqB_env2.csv")
-write_csv(freq_env3_B_T, "data/snp_change_data/freqB_env3.csv")
-write_csv(freq_env4_B_T, "data/snp_change_data/freqB_env4.csv")
-write_csv(freq_env5_B_T, "data/snp_change_data/freqB_env5.csv")
-write_csv(freq_env6_B_T, "data/snp_change_data/freqB_env6.csv")
-write_csv(freq_env7_B_T, "data/snp_change_data/freqB_env7.csv")
-write_csv(freq_env8_B_T, "data/snp_change_data/freqB_env8.csv")
-write_csv(freq_env9_B_T, "data/snp_change_data/freqB_env9.csv")
+write_csv(freq_env1_B_T, "data/snp_change_2/freqB_env1.csv")
+write_csv(freq_env2_B_T, "data/snp_change_2/freqB_env2.csv")
+write_csv(freq_env3_B_T, "data/snp_change_2/freqB_env3.csv")
+write_csv(freq_env4_B_T, "data/snp_change_2/freqB_env4.csv")
+write_csv(freq_env5_B_T, "data/snp_change_2/freqB_env5.csv")
+write_csv(freq_env6_B_T, "data/snp_change_2/freqB_env6.csv")
+write_csv(freq_env7_B_T, "data/snp_change_2/freqB_env7.csv")
+write_csv(freq_env8_B_T, "data/snp_change_2/freqB_env8.csv")
+write_csv(freq_env9_B_T, "data/snp_change_2/freqB_env9.csv")
 
 
 

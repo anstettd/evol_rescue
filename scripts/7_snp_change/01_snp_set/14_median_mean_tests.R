@@ -102,6 +102,7 @@ colnames(emp_out) <- c("Site","Median","Median_Percentile","Median_p-value",
                        "Mean","Mean_Percentile","Mean_p-value")
 
 write_csv(emp_out, "Graphs/snp_change_2/mean_median_S_all.csv")
+write_csv(emp_out, "data/snp_change_2/mean_median_S_all.csv")
 
 ###################################################################################
 #Make Median and Mean histograms

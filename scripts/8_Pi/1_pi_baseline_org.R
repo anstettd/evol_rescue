@@ -9,8 +9,8 @@
 library(tidyverse)
 
 #Import SNPlist
-snp_set <- read_csv("data/genomic_data/strong_snp_set_clump.csv")
-snp_set_58 <- read_csv("data/genomic_data/strong_snp_set_clump_env58.csv")
+snp_set <- read_csv("data/genomic_data/strong_snp_set_full_clump.csv")
+snp_set_58 <- read_csv("data/genomic_data/strong_snp_set_full_clump_env58.csv")
 
 #Import 2.1 M loci
 loci_base<-read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.loci", 

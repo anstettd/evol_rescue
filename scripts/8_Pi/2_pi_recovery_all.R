@@ -236,7 +236,7 @@ ggplot(pi_pop_graph, aes(x=pi_all_snps, y=mean.lambda.recovery)) +
   geom_hline(yintercept = 1, linetype = "dotted", color = "black", size = 0.7) +
   scale_y_continuous(name="Mean Lambda after Drought")+
   #, limits=c(-0.3,2.5),breaks=seq(0,2.5,0.5))+
-  scale_x_continuous(name="Pi (Climate SNP)")+
+  scale_x_continuous(name="Pi (All SNPs)")+
   #, limits=c(0.2,0.35), breaks=seq(0.1,0.35,0.05)) +  
   scale_fill_manual(name = "Latitude (°N)",labels=round(pi_pop_graph$Latitude,1), values=as.character(pi_pop_graph$Lat.Color)) +
   theme_classic() + theme(

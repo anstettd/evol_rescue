@@ -411,8 +411,8 @@ colnames(windows_in) <- c("log10BF",
   
 windows_in
 
-write_csv(snps_in_win,"data/genomic_data/snps_in_win_bf.csv")
-write_csv(windows_in,"data/genomic_data/windows_in_bf.csv")
+#write_csv(snps_in_win,"data/genomic_data/snps_in_win_bf.csv")
+#write_csv(windows_in,"data/genomic_data/windows_in_bf.csv")
 
 
 #############################################################################################################
@@ -456,7 +456,8 @@ snp_set_all <- rbind(snp_set_env1,
 snp_set_env <- as.data.frame(unique(snp_set_all$chr_snp))
 colnames(snp_set_env) <- "chr_snp"
 
-
+snp_set_env58 <- unique(rbind(snp_set_env5,snp_set_env8))
+ 
 #Write out WZA BayPass SNP set
 
 ### These files are used in snp change script 1

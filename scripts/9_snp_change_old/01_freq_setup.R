@@ -23,6 +23,11 @@ snp_set_env7  <- read_csv("data/snp_change_data/strong_snp_set_env7.csv")
 snp_set_env8  <- read_csv("data/snp_change_data/strong_snp_set_env8.csv")
 snp_set_env9  <- read_csv("data/snp_change_data/strong_snp_set_env9.csv")
 
+snp_set_58 <-rbind(snp_set_env5,snp_set_env8)
+snp_set_58 <- unique(snp_set_58)
+
+
+
 
 #Import full snp table for timeseries
 pop_order_time<-read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/timeseries_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.pop_order", header=F, sep="\t")

@@ -4,7 +4,7 @@
 # This script recalculates trait evolution from Anstett et al. 2021 Evolution Letters
 # and then relates it to population dynamics and genomic metrics
 
-# Last updated 2025 03 12
+# Last updated 2025 05 10
 ##################################################
 
 

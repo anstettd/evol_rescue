@@ -3,7 +3,7 @@
 
 # This script visualizes density trends over time 
 # and relates them to genetic metrics
-# Last updated 2025 04 03
+# Last updated 2025 05 16
 ##################################################
 
 library(tidyverse)
@@ -208,17 +208,17 @@ ggplot(density_tall, aes(x=Year, y=RelDens, group=Class, color=as.factor(Latitud
 
 
 ### Summarizing indices of density trajectories
-site.vec <- unique(counts$SiteID)
+site.vec <- unique(density$Site)
 slopes.dens.drought <- c()
 slopes.dens.recovery <- c()
 curves.dens.linear <- c()
 curves.dens.quad <- c()
 
 for (i in 1:length(site.vec)) {
-  dat <- counts %>% filter(SiteID==site.vec[i])
-  mod1 <- lm(reldens ~ Year, data=subset(dat, Year<2016))
-  mod2 <- lm(reldens ~ Year, data=subset(dat, Year>2015))
-  mod3 <- lm(reldens ~ poly(Year,2), data=dat)
+  dat <- density %>% filter(Site==site.vec[i])
+  mod1 <- lm(RelDens_N_all ~ Year, data=subset(dat, Year<2016))
+  mod2 <- lm(RelDens_N_all ~ Year, data=subset(dat, Year>2015))
+  mod3 <- lm(RelDens_N_all ~ poly(Year,2), data=dat)
   slopes.dens.drought[i] <- coefficients(mod1)[[2]] #negative coeff = decline
   slopes.dens.recovery[i] <- coefficients(mod2)[[2]] #positive coeff = recovery
   curves.dens.quad[i] <- coefficients(mod3)[[3]] #positive coeff=convex (consistent with rescue) 
@@ -226,9 +226,9 @@ for (i in 1:length(site.vec)) {
 
 slopes.pop <- as.data.frame(cbind(site.vec, slopes.dens.drought, slopes.dens.recovery, curves.dens.quad))
 
-density_trends <- left_join(counts, slopes.pop, by=c("SiteID"="site.vec")) %>% 
-  distinct(SiteID, .keep_all=TRUE) %>% 
-  select(Site, SiteID, slopes.dens.drought, slopes.dens.recovery, curves.dens.quad)
+density_trends <- left_join(density, slopes.pop, by=c("Site"="site.vec")) %>% 
+  distinct(Site, .keep_all=TRUE) %>% 
+  select(Site, slopes.dens.drought, slopes.dens.recovery, curves.dens.quad)
 
 write_csv(density_trends, "data/demography data/density_trends.csv")
 
@@ -238,15 +238,18 @@ write_csv(density_trends, "data/demography data/density_trends.csv")
 demog_recovery <- read_csv("data/demography data/siteYear.lambda_responses_2010-2019.csv") %>% mutate(Site=gsub(" ", "", Site))
 
 # Import pi for demography populations
-pi_raw <- read_csv("data/genomic_data/raw_pi.csv") 
+pi_raw <- read_csv("data/genomic_data/raw_pi_clump.csv") 
 
 #Import selection data
-slope.summary <- read_csv("data/snp_change_data/mean_median_S.csv") %>% select(Site, Median, Mean)
+slope.summary <- read_csv("data/snp_change_2/mean_median_S_all.csv") %>% select(Site, Median, Mean)
 
 # Join data sets
 pi_pop <- left_join(demog_recovery, pi_raw, by=c("Paper_ID"="Site")) 
 geno_pop <- left_join(pi_pop, slope.summary, by=c("Paper_ID"="Site"))
 geno_pop <- left_join(geno_pop, density_trends, by="Site")
+geno_pop$slopes.dens.drought <- as.numeric(geno_pop$slopes.dens.drought)
+geno_pop$slopes.dens.recovery <- as.numeric(geno_pop$slopes.dens.recovery)
+geno_pop$curves.dens.quad <- as.numeric(geno_pop$curves.dens.quad)
 
 ## Visualize scatterplots
 

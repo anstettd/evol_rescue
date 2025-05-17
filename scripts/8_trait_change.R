@@ -4,7 +4,7 @@
 # This script recalculates trait evolution from Anstett et al. 2021 Evolution Letters
 # and then relates it to population dynamics and genomic metrics
 
-# Last updated 2025 05 10
+# Last updated 2025 05 16
 ##################################################
 
 
@@ -177,10 +177,10 @@ write_csv(trait_change, "data/trait_data/trait_slopes.csv")
 demog_recovery <- read_csv("data/demography data/siteYear.lambda_responses_2010-2019.csv") %>% mutate(Site=gsub(" ", "", Site))
 
 # Import genetic diversity (pi)
-pi_raw <- read_csv("data/genomic_data/raw_pi.csv") 
+pi_raw <- read_csv("data/genomic_data/raw_pi_clump.csv") 
 
 # Import genomic selection response
-slope.summary <- read_csv("data/snp_change_data/mean_median_S.csv") %>% select(Site, Median, Mean)
+slope.summary <- read_csv("data/snp_change_2/mean_median_S_all.csv") %>% select(Site, Median, Mean)
 
 # Import density trends 
 density_trends <- read_csv("data/demography data/density_trends.csv")

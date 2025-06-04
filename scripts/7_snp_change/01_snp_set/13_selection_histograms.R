@@ -108,7 +108,7 @@ histPop <- ggplot(env_histPop ,aes(x=S,y=obs,ymin=low,ymax=high))+
   theme_ci() + facet_wrap(.~Site) +
   geom_vline(data = mean_pop, aes(xintercept = mean), size=0.9, linetype="dashed",color="red")
 histPop 
-ggsave("Graphs/snp_change_2/01_selection_2.5_mean.pdf", histPop, width=12, height = 8, units = "in")
+#ggsave("Graphs/snp_change_2/01_selection_2.5_mean.pdf", histPop, width=12, height = 8, units = "in")
 
 
 # -1.25 to 1.25
@@ -122,7 +122,7 @@ histPop <- ggplot(env_histPop_25 ,aes(x=S,y=obs,ymin=low,ymax=high))+
   geom_vline(data = mean_pop, aes(xintercept = mean), size=1.2, linetype="dashed",color="red")
 
 histPop
-ggsave("Graphs/snp_change_2/02_selection_1.25_mean.pdf", histPop, width=12, height = 8, units = "in")
+#ggsave("Graphs/snp_change_2/02_selection_1.25_mean.pdf", histPop, width=12, height = 8, units = "in")
 
 
 ###################################################################################

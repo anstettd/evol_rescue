@@ -24,6 +24,9 @@ pi_raw <- read_csv("data/genomic_data/raw_pi_clump.csv")
 #Join data sets
 pi_pop <- left_join(demog_recovery, pi_raw, by=c("Paper_ID"="Site")) 
 
+
+###### PI OF CLIMATE SNP
+
 #Visualize scatter plot
 ggplot(pi_pop, aes(x=pi_snp_set, y=mean.lambda.recovery)) + geom_point()
 #looks like some big outliers - needs transformation &/or test for outliers
@@ -35,59 +38,107 @@ hist(log(pi_pop$mean.lambda.recovery+0.5)) #much better
 #Visualize scatter plot with log-transformed response
 ggplot(pi_pop, aes(x=pi_snp_set, y=log(mean.lambda.recovery+0.5))) + geom_point()
 
-mod <- lm(log(mean.lambda.recovery+0.5)~pi_snp_set,data=pi_pop)
-summary(mod)
-qqnorm(resid(mod))
-qqline(resid(mod))
+mod_pi_snp <- lm(log(mean.lambda.recovery+0.5)~pi_snp_set,data=pi_pop)
+summary(mod_pi_snp)
+Anova(mod_pi_snp,type="III")
+qqnorm(resid(mod_pi_snp))
+qqline(resid(mod_pi_snp))
 
 #Check for influential outliers
-inflm <- influence.measures(mod)
-summary(inflm) #observation 9 (Buck Meadows) is potentially an outlier according to cov.r
+inflm_pi_snp <- influence.measures(mod_pi_snp)
+summary(inflm_pi_snp) #observation 9 (Buck Meadows) is potentially an outlier according to cov.r
 
 #Cull the outlier population
 pi_pop_cull1 <- pi_pop %>% 
-  filter(row_number()!=row.names(summary(inflm)))  # remove the 9th row of data frame
+  filter(row_number()!=row.names(summary(inflm_pi_snp)))  # remove the 9th row of data frame
 
 # sensitivity test without influential outlier Buck Meadows
-mod.cull <- lm(log(mean.lambda.recovery+0.5)~pi_snp_set, data=pi_pop_cull1)
-summary(mod.cull)
-qqnorm(resid(mod.cull))
-qqline(resid(mod.cull))
+mod_pi_snp_cull <- lm(log(mean.lambda.recovery+0.5)~pi_snp_set, data=pi_pop_cull1)
+summary(mod_pi_snp_cull)
+Anova(mod_pi_snp_cull,type="III")
+qqnorm(resid(mod_pi_snp_cull))
+qqline(resid(mod_pi_snp_cull))
 
 #Cook's distance check for influential outliers after removing Buck
-inflm_cull1 <- influence.measures(mod.cull)
-summary(inflm_cull1) #2 more observations flagged by cov.r, 1 more observation flagged by df metrics
+inflm_pi_pop_cull1 <- influence.measures(mod_pi_snp_cull)
+summary(inflm_pi_pop_cull1) #2 more observations flagged by cov.r, 1 more observation flagged by df metrics
 #Cull more outlier populations...?? This seems highly questionable.
 
 #Robust regression instead
 library(MASS)
-rob.mod <- rlm(log(pi_pop$mean.lambda.recovery+0.5)~pi_snp_set,data=pi_pop)
-summary(rob.mod)
+rob.mod_pi_snp <- rlm(log(pi_pop$mean.lambda.recovery+0.5)~pi_snp_set,data=pi_pop)
+summary(rob.mod_pi_snp)
 # this yields a coefficient estimate & std error that is similar to the culled model
 # but no p-value or R2
 library(sfsmisc)
-f.robftest(rob.mod, var="pi_snp_set")
+f.robftest(rob.mod_pi_snp, var="pi_snp_set")
 
-###########################################################################################################
 
-# Graphs of lambda recovery vs genetic diversity
+###### GENOME-WIDE PI 
 
-#### All Data #### 
+#Visualize scatter plot
+ggplot(pi_pop, aes(x=pi_all_snps, y=mean.lambda.recovery)) + geom_point()
+#looks like some big outliers - needs transformation &/or test for outliers
 
+#Visualize scatter plot with log-transformed response
+ggplot(pi_pop, aes(x=pi_all_snps, y=log(mean.lambda.recovery+0.5))) + geom_point()
+mod_pi_all <- lm(log(mean.lambda.recovery+0.5)~pi_all_snps,data=pi_pop)
+summary(mod_pi_all)
+Anova(mod_pi_all,type="III")
+qqnorm(resid(mod_pi_all))
+qqline(resid(mod_pi_all))
+
+#Check for influential outliers
+inflm_pi_all <- influence.measures(mod_pi_all)
+summary(inflm_pi_all) #observation 5 (W Fork Mojave) is potentially an outlier according to cov.r; observation 10 (Carlon) is potentially an outlier according to covr and hat
+
+#Cull the outlier populations
+pi_pop_cull2 <- pi_pop %>% 
+  filter(row_number()!=row.names(summary(inflm_pi_all)))  # remove the 5th and 9th rows of data frame
+
+# sensitivity test without influential outliers WFMojave & Carlon
+mod_pi_all_cull <- lm(log(mean.lambda.recovery+0.5)~pi_all_snps, data=pi_pop_cull2)
+summary(mod_pi_all_cull)
+Anova(mod_pi_all_cull,type="III")
+qqnorm(resid(mod_pi_all_cull))
+qqline(resid(mod_pi_all_cull))
+
+#Cook's distance check for influential outliers after removing Buck
+inflm_pi_pop_cull2 <- influence.measures(mod_pi_all_cull)
+summary(inflm_pi_pop_cull2) #another observation flagged by all metrics
+#Cull another outlier populations...?? This seems highly questionable.
+
+#Robust regression instead
+library(MASS)
+rob.mod_pi_all <- rlm(log(pi_pop$mean.lambda.recovery+0.5)~pi_all_snps,data=pi_pop)
+summary(rob.mod_pi_all)
+# this yields a coefficient estimate & std error that is similar to the culled model
+# but no p-value or R2
+library(sfsmisc)
+f.robftest(rob.mod_pi_all, var="pi_all_snps")
+
+
+
+#####################################################################################
+
+### Graphs of lambda recovery vs genetic diversity
+
+## CLIMATE SNP
 pi_pop_graph <- drop_na(pi_pop)
-lm_snp_3 <- lm(mean.lambda.recovery~pi_snp_set,data=pi_pop_graph)
-summary(lm_snp_3)
-Anova(lm_snp_3,type="III")
-
 pi_pop_graph$Lat.Color<-as.factor(pi_pop_graph$Lat.Color)
 pi_pop_graph$Lat.Color<-factor(pi_pop_graph$Lat.Color,levels=pi_pop_graph$Lat.Color)
+pi_pop_graph_cull1 <- drop_na(pi_pop_cull1)
+pi_pop_graph_cull1$Lat.Color<-as.factor(pi_pop_graph_cull1$Lat.Color)
+pi_pop_graph_cull1$Lat.Color<-factor(pi_pop_graph_cull1$Lat.Color,levels=pi_pop_graph_cull1$Lat.Color)
 
-# pi snp set
-ggplot(pi_pop_graph, aes(x=pi_snp_set, y=mean.lambda.recovery)) +
-  geom_smooth(method=lm,color="black",size=1.8,fill="gray75")+
-  geom_point(aes(fill=pi_pop_graph$Lat.Color), shape=21, size =6)+
-  geom_hline(yintercept = 1, linetype = "dotted", color = "black", size = 0.7) +
-  scale_y_continuous(name="Mean Lambda after Drought")+
+#Depicting ordinary regression with and without outliers & robust regression
+ggplot(pi_pop_graph, aes(x=pi_snp_set, y=log(mean.lambda.recovery+0.5))) +
+  geom_smooth(method=lm,color="black", size=1.8, fill="gray75")+
+  geom_smooth(method=MASS::rlm, color="black", size=1.8, linetype="dotdash", fill="grey50") +
+  geom_smooth(data=pi_pop_graph_cull1, aes(x=pi_snp_set, y=log(mean.lambda.recovery+0.5)), method=lm, color="black", size=1.8, linetype="longdash", fill="grey35") +
+  geom_point(aes(fill=Lat.Color), shape=21, size =6)+
+  geom_hline(yintercept = 0, linetype = "dotted", color = "black", size = 0.7) +
+  scale_y_continuous(name="Mean Pop. Growth after Drought")+
   #, limits=c(-0.3,2.5),breaks=seq(0,2.5,0.5))+
   scale_x_continuous(name="Pi (Climate SNP)")+
   #, limits=c(0.2,0.35), breaks=seq(0.1,0.35,0.05)) +  
@@ -100,140 +151,26 @@ ggplot(pi_pop_graph, aes(x=pi_snp_set, y=mean.lambda.recovery)) +
     legend.title = element_text(size = 13, face = "bold"),
     legend.text = element_text(size = 14),  # Increase the size of the legend text
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
-    legend.key.height = unit(1.6, "lines") #Reduce height
-  )
-ggsave("Graphs/Demography_2/07_pi_demography_snpset.pdf",width=8, height = 6, units = "in")
-
-
-#global pi
-lm_all_3 <- lm(mean.lambda.recovery~pi_all_snps,data=pi_pop_graph)
-summary(lm_all_3)
-Anova(lm_all_3,type="III")
-
-pi_pop_graph$Lat.Color<-as.factor(pi_pop_graph$Lat.Color)
-pi_pop_graph$Lat.Color<-factor(pi_pop_graph$Lat.Color,levels=pi_pop_graph$Lat.Color)
-
-ggplot(pi_pop_graph, aes(x=pi_all_snps, y=mean.lambda.recovery)) +
-  geom_smooth(method=lm,color="black", lty="dashed", size=1.8, se=FALSE)+
-  geom_point(aes(fill=pi_pop_graph$Lat.Color), shape=21, size =6)+
-  geom_hline(yintercept = 1, linetype = "dotted", color = "black", size = 0.7) +
-  scale_y_continuous(name="Mean Lambda after Drought")+
-  #, limits=c(-0.3,2.5), breaks=seq(0,2.5,0.5))+
-  scale_x_continuous(name="Pi (Genome-Wide)")+#, breaks=c(0.04,0.045,0.05,0.055,0.06))+
-  scale_fill_manual(name = "Latitude (°N)",labels=round(pi_pop_graph$Latitude,1), values=as.character(pi_pop_graph$Lat.Color)) +
-  theme_classic() + theme(
-    axis.text.x = element_text(size=20, face="bold"),
-    axis.text.y = element_text(size=20,face="bold"),
-    axis.title.x = element_text(color="black", size=24, vjust = 0.5, face="bold"),
-    axis.title.y = element_text(color="black", size=24,vjust = 1.7, face="bold",hjust=0.5),
-    legend.title = element_text(size = 13, face = "bold"),
-    legend.text = element_text(size = 14),  # Increase the size of the legend text
-    legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
-    legend.key.height = unit(1.6, "lines") #Reduce hight
-  )
-
-ggsave("Graphs/Demography_2/09_pi_demography_global.pdf",width=8, height = 6, units = "in")
-
-
-
-
-#### All outlier removal #### 
-
-pi_pop_graph_cull9 <- drop_na(pi_pop_cull9)
-lm_snp_1 <- lm(mean.lambda.recovery~pi_snp_set,data=pi_pop_cull9)
-summary(lm_snp_1)
-Anova(lm_snp_1,type="III")
-
-pi_pop_graph_cull9$Lat.Color<-as.factor(pi_pop_graph_cull9$Lat.Color)
-pi_pop_graph_cull9$Lat.Color<-factor(pi_pop_graph_cull9$Lat.Color,levels=pi_pop_graph_cull9$Lat.Color)
-
-# pi snp set
-ggplot(pi_pop_graph_cull9, aes(x=pi_snp_set, y=mean.lambda.recovery)) +
-  geom_smooth(method=lm,color="black",size=1.8,fill="gray75")+
-  geom_point(aes(fill=pi_pop_graph_cull9$Lat.Color), shape=21, size =6)+
-  scale_y_continuous(name="Mean Lambda after Drought", limits=c(-0.3,2.5), breaks=seq(0,2.5,0.5))+
-  scale_x_continuous(name="Pi (Climate SNP)", limits=c(0.2,0.35), breaks=seq(0.1,0.35,0.05)) +  
-  scale_fill_manual(labels=round(pi_pop_graph_cull9$Latitude,1), 
-                    values=as.character(pi_pop_graph_cull9$Lat.Color)) +
-  theme_classic() + theme(
-    axis.text.x = element_text(size=20, face="bold"),
-    axis.text.y = element_text(size=20,face="bold"),
-    axis.title.x = element_text(color="black", size=24, vjust = 0.5, face="bold"),
-    axis.title.y = element_text(color="black", size=24,vjust = 1.7, face="bold",hjust=0.5),
-    legend.title = element_blank(),
-    legend.text = element_text(size = 14),  # Increase the size of the legend text
-    legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
-    legend.key.height = unit(1.6, "lines") #Reduce height
-  )
-ggsave("Graphs/Demography_2/10_pi_demography_snpset_cull9.pdf",width=8, height = 6, units = "in")
-
-
-
-
-#global pi
-lm_all_1 <- lm(mean.lambda.recovery~pi_all_snps,data=pi_pop_graph_cull9)
-summary(lm_all_1)
-Anova(lm_all_1,type="III")
-
-pi_pop_graph_cull9$Lat.Color<-as.factor(pi_pop_graph_cull9$Lat.Color)
-pi_pop_graph_cull9$Lat.Color<-factor(pi_pop_graph_cull9$Lat.Color,levels=pi_pop_graph_cull9$Lat.Color)
-
-ggplot(pi_pop_graph_cull9, aes(x=pi_all_snps, y=mean.lambda.recovery)) +
-  geom_smooth(method=lm,color="black", lty="dashed", size=1.8, se=FALSE)+
-  geom_point(aes(fill=pi_pop_graph_cull9$Lat.Color), shape=21, size =6)+
-  scale_y_continuous(name="Mean Lambda after Drought", limits=c(-0.3,2.5), breaks=seq(0,2.5,0.5))+
-  scale_x_continuous(name="Pi (Genome-Wide)")+#, breaks=c(0.04,0.045,0.05,0.055,0.06))+
-  scale_fill_manual(labels=round(pi_pop_graph_cull9$Latitude,1), 
-                    values=as.character(pi_pop_graph_cull9$Lat.Color)) +
-  theme_classic() + theme(
-    axis.text.x = element_text(size=20, face="bold"),
-    axis.text.y = element_text(size=20,face="bold"),
-    axis.title.x = element_text(color="black", size=24, vjust = 0.5, face="bold"),
-    axis.title.y = element_text(color="black", size=24,vjust = 1.7, face="bold",hjust=0.5),
-    legend.title = element_blank(),
-    legend.text = element_text(size = 14),  # Increase the size of the legend text
-    legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
-    legend.key.height = unit(1.6, "lines") #Reduce hight
-  )
-
-`ggsave("Graphs/Demography_2/12_pi_demography_global_cull9.pdf",width=8, height = 6, units = "in")
-
-
-
-# graphs with slopes with and without outliers overlain
-
-#climate pi, with and without outliers
-ggplot(pi_pop_graph, aes(x=pi_snp_set, y=mean.lambda.recovery)) +
-  geom_smooth(method=lm,color="black",size=1.8,fill="gray75")+
-  geom_smooth(data=pi_pop_graph_cull9, aes(x=pi_snp_set, y=mean.lambda.recovery), method=lm, color="black", linetype="dashed", fill="grey50") +
-  geom_point(aes(fill=pi_pop_graph$Lat.Color), shape=21, size =6)+
-  geom_hline(yintercept = 1, linetype = "dotted", color = "black", size = 0.7) +
-  scale_y_continuous(name="Mean Lambda after Drought")+
-  #, limits=c(-0.3,2.5),breaks=seq(0,2.5,0.5))+
-  scale_x_continuous(name="Pi (Climate SNP)")+
-  #, limits=c(0.2,0.35), breaks=seq(0.1,0.35,0.05)) +  
-  scale_fill_manual(name = "Latitude (°N)",labels=round(pi_pop_graph$Latitude,1), values=as.character(pi_pop_graph$Lat.Color)) +
-  theme_classic() + theme(
-    axis.text.x = element_text(size=20, face="bold"),
-    axis.text.y = element_text(size=20,face="bold"),
-    axis.title.x = element_text(color="black", size=24, vjust = 0.5, face="bold"),
-    axis.title.y = element_text(color="black", size=24,vjust = 1.7, face="bold",hjust=0.5),
-    legend.title = element_text(size = 13, face = "bold"),
-    legend.text = element_text(size = 14),  # Increase the size of the legend text
-    legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
-    legend.key.height = unit(1.6, "lines")) #Reduce height
+    legend.key.height = unit(1.6, "lines")) # Reduce height
 
 ggsave("Graphs/Demography_2/13_pi_demography_snpset_all.pdf",width=8, height = 6, units = "in")
 
-#global pi, with and without outliers
-ggplot(pi_pop_graph, aes(x=pi_all_snps, y=mean.lambda.recovery)) +
-  geom_smooth(method=lm,color="black",size=1.8,fill="gray75")+
-  geom_smooth(data=pi_pop_graph_cull4, aes(x=pi_all_snps, y=mean.lambda.recovery), method=lm, color="black", linetype="dashed", fill="grey50") +
-  geom_point(aes(fill=pi_pop_graph$Lat.Color), shape=21, size =6)+
-  geom_hline(yintercept = 1, linetype = "dotted", color = "black", size = 0.7) +
-  scale_y_continuous(name="Mean Lambda after Drought")+
+
+## GENOME SNP
+pi_pop_graph_cull2 <- drop_na(pi_pop_cull1)
+pi_pop_graph_cull2$Lat.Color<-as.factor(pi_pop_graph_cull2$Lat.Color)
+pi_pop_graph_cull2$Lat.Color<-factor(pi_pop_graph_cull2$Lat.Color,levels=pi_pop_graph_cull2$Lat.Color)
+
+#Depicting ordinary regression with and without outliers & robust regression
+ggplot(pi_pop_graph, aes(x=pi_all_snps, y=log(mean.lambda.recovery+0.5))) +
+  geom_smooth(method=lm,color="black", size=1.8, fill="gray75")+
+  geom_smooth(method=MASS::rlm, color="black", size=1.8, linetype="dotdash", fill="grey50") +
+  geom_smooth(data=pi_pop_graph_cull2, aes(x=pi_all_snps, y=log(mean.lambda.recovery+0.5)), method=lm, color="black", size=1.8, linetype="longdash", fill="grey35") +
+  geom_point(aes(fill=Lat.Color), shape=21, size =6)+
+  geom_hline(yintercept = 0, linetype = "dotted", color = "black", size = 0.7) +
+  scale_y_continuous(name="Mean Pop. Growth after Drought")+
   #, limits=c(-0.3,2.5),breaks=seq(0,2.5,0.5))+
-  scale_x_continuous(name="Pi (All SNPs)")+
+  scale_x_continuous(name="Pi (All SNP)")+
   #, limits=c(0.2,0.35), breaks=seq(0.1,0.35,0.05)) +  
   scale_fill_manual(name = "Latitude (°N)",labels=round(pi_pop_graph$Latitude,1), values=as.character(pi_pop_graph$Lat.Color)) +
   theme_classic() + theme(
@@ -244,7 +181,7 @@ ggplot(pi_pop_graph, aes(x=pi_all_snps, y=mean.lambda.recovery)) +
     legend.title = element_text(size = 13, face = "bold"),
     legend.text = element_text(size = 14),  # Increase the size of the legend text
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
-    legend.key.height = unit(1.6, "lines") #Reduce height
-  )
+    legend.key.height = unit(1.6, "lines")) # Reduce height
+
 ggsave("Graphs/Demography_2/15_pi_demography_global_all.pdf",width=8, height = 6, units = "in")
 

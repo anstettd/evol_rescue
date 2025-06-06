@@ -83,7 +83,7 @@ env_histPop <- rbind(env_p1,
                      env_p11)
 
 env_histPop_25 <- env_histPop %>% filter(S <= 1.25 & S>= -1.25) 
-env_histPop_185 <- env_histPop %>% filter(S <= 1.85 & S>= -1.85) 
+env_histPop_185 <- env_histPop %>% filter(S <= 1.55 & S>= -1.55) 
 
 
 site_unique <- env_histPop %>% select(Site,pop_lable) 
@@ -103,7 +103,7 @@ histPop <- ggplot(env_histPop_185 ,aes(x=S,y=obs,ymin=low,ymax=high))+
   #geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.06) +
   geom_vline(xintercept=0) +
   labs(x = "Strength of Selection", y = "Number of SNPs") +
-  scale_x_continuous(limits=c(-1.85,1.85))+ 
+  scale_x_continuous(limits=c(-1.55,1.55))+ 
   theme_ci() + facet_wrap(.~Site) +
   geom_vline(data = median_pop, aes(xintercept = median), size=0.9, linetype="dashed",color="red")
 histPop 

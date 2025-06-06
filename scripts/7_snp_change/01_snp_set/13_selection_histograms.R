@@ -82,8 +82,8 @@ env_histPop <- rbind(env_p1,
                      env_p10,
                      env_p11)
 
-env_histPop_25 <- env_histPop %>% filter(S <= 1.25 & S>= -1.25) 
-env_histPop_185 <- env_histPop %>% filter(S <= 1.55 & S>= -1.55) 
+env_histPop_155 <- env_histPop %>% filter(S <= 1.55 & S>= -1.55) 
+env_histPop_185 <- env_histPop %>% filter(S <= 1.85 & S>= -1.85) 
 
 
 site_unique <- env_histPop %>% select(Site,pop_lable) 
@@ -97,8 +97,8 @@ mean_pop <- left_join(mean_pop,site_unique, by="Site") %>% filter(Site!=12)
 ## Slope Histogram with Median
 ###################################################################################
 
-# -2.5 to 2.5
-histPop <- ggplot(env_histPop_185 ,aes(x=S,y=obs,ymin=low,ymax=high))+
+# -1.55 to 1.55 Best resolution 
+histPop <- ggplot(env_histPop_155 ,aes(x=S,y=obs,ymin=low,ymax=high))+
   geom_bar(colour = "black", stat = "identity", width = 0.1, fill = "pink")+ # was lightblue1
   #geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.06) +
   geom_vline(xintercept=0) +
@@ -107,21 +107,19 @@ histPop <- ggplot(env_histPop_185 ,aes(x=S,y=obs,ymin=low,ymax=high))+
   theme_ci() + facet_wrap(.~Site) +
   geom_vline(data = median_pop, aes(xintercept = median), size=0.9, linetype="dashed",color="red")
 histPop 
-ggsave("Graphs/snp_change_2/01_selection_1.85_median.pdf", histPop, width=12, height = 8, units = "in")
+ggsave("Graphs/snp_change_2/01_selection_1.55_median.pdf", histPop, width=12, height = 8, units = "in")
 
-
-# -1.25 to 1.25
-histPop <- ggplot(env_histPop_25 ,aes(x=S,y=obs,ymin=low,ymax=high))+
-  geom_bar(colour = "black", stat = "identity", width = 0.1, fill = "pink")+
+# -1.85 to 1.85 Has all points.
+histPop <- ggplot(env_histPop_185 ,aes(x=S,y=obs,ymin=low,ymax=high))+
+  geom_bar(colour = "black", stat = "identity", width = 0.1, fill = "pink")+ # was lightblue1
   #geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.06) +
   geom_vline(xintercept=0) +
   labs(x = "Strength of Selection", y = "Number of SNPs") +
-  #scale_y_continuous(limits=c(0,42),breaks=seq(0,40,by=10))+ 
-  theme_ci() + facet_wrap(.~Site)+
-  geom_vline(data = median_pop, aes(xintercept = median), size=1.2, linetype="dashed",color="red")
-
-histPop
-ggsave("Graphs/snp_change_2/02_selection_1.25_median.pdf", histPop, width=12, height = 8, units = "in")
+  #scale_x_continuous(limits=c(-1.85,1.85))+ 
+  theme_ci() + facet_wrap(.~Site) +
+  geom_vline(data = median_pop, aes(xintercept = median), size=0.9, linetype="dashed",color="red")
+histPop 
+#ggsave("Graphs/snp_change_2/01_selection_1.85_median.pdf", histPop, width=12, height = 8, units = "in")
 
 
 ###################################################################################

@@ -105,7 +105,7 @@ ggplot(pi_pop_graph, aes(x=pi_env58, y=mean.lambda.recovery)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
-ggsave("Graphs/Demography_2/08_pi_demography_snpset.pdf",width=8, height = 6, units = "in")
+#ggsave("Graphs/Demography_2/pi_demography_snpset.pdf",width=8, height = 6, units = "in")
 
 
 
@@ -137,7 +137,7 @@ ggplot(pi_pop_graph_cull4, aes(x=pi_env58, y=mean.lambda.recovery)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
-ggsave("Graphs/Demography_2/11_pi_demography_snpset_cull4.pdf",width=8, height = 6, units = "in")
+#ggsave("Graphs/Demography_2/pi_demography_snpset_cull4.pdf",width=8, height = 6, units = "in")
 
 
 
@@ -164,6 +164,6 @@ ggplot(pi_pop_graph, aes(x=pi_env58, y=mean.lambda.recovery)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
-ggsave("Graphs/Demography_2/14_pi_demography_snpset_all.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Demography_2/05_pi_demography_CMD_PPT.pdf",width=8, height = 6, units = "in")
 
 

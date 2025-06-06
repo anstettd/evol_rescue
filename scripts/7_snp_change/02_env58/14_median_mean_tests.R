@@ -136,7 +136,7 @@ histPop_mean <- ggplot(mean_rand,aes(x=mean))+
   geom_vline(data = mean_obs, aes(xintercept = mean), size=0.5, linetype="dashed",color="red")
 histPop_mean
 
-ggsave("Graphs/snp_change_2/04_rand_mean_58.pdf",width=12, height = 8, units = "in")
+#ggsave("Graphs/snp_change_2/04_rand_mean_58.pdf",width=12, height = 8, units = "in")
 
 
 

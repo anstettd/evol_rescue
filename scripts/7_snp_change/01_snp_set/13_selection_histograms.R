@@ -156,6 +156,58 @@ histPop
 ggsave("Graphs/snp_change_2/02_selection_1.25_median.pdf", histPop, width=12, height = 8, units = "in")
 
 
+###################################################################################
+## Individual Graphs Median
+###################################################################################
+
+env_histPop_1 <- env_histPop_25 %>% filter(Site==3 | Site==11)
+env_histPop_2 <- env_histPop_25 %>% filter(Site==2 | Site==3 | Site==11)
+env_histPop_3 <- env_histPop_25 %>% filter(Site==3)
+
+env_histPop_1$pop_lable <- as.factor(env_histPop_1$pop_lable) 
+env_histPop_1$pop_lable <- factor(env_histPop_1$pop_lable,levels = c("Site 3", "Site 11"))
+
+env_histPop_2$pop_lable <- as.factor(env_histPop_2$pop_lable) 
+env_histPop_2$pop_lable <- factor(env_histPop_2$pop_lable,levels = c("Site 2", "Site 3", "Site 11"))
+
+median_pop_filter_1<-median_pop %>% filter(Site==3 | Site==11)
+median_pop_filter_2<-median_pop %>% filter(Site==2 | Site==3 | Site==11)
+median_pop_filter_3<-median_pop %>% filter(Site==3 )
+
+#Site 3
+
+histPop1 <- ggplot(env_histPop_3 ,aes(x=S,y=obs,ymin=low,ymax=high))+
+  geom_bar(colour = "black", stat = "identity", width = 0.1, fill = "pink")+
+  #geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.06) +
+  geom_vline(xintercept=0) +
+  labs(x = "Strength of Selection", y = "Number of SNPs") +
+  scale_y_continuous(breaks=seq(0,100,by=25))+ 
+  theme_ci() + facet_wrap(.~pop_lable, ncol = 4) + theme(strip.text.x = element_text(size=0)) +
+  geom_vline(data = median_pop_filter_3, aes(xintercept = median), size=1.5,color="red")
+
+histPop1
+#Export 
+ggsave("Graphs/snp_change_2/02_s_pop_3.pdf",width=4, height = 3.5, units = "in")
+
+
+
+#Sites 3, 11
+histPop1 <- ggplot(env_histPop_1 ,aes(x=S,y=obs,ymin=low,ymax=high))+
+  geom_bar(colour = "black", stat = "identity", width = 0.1, fill = "pink")+
+  #geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.06) +
+  geom_vline(xintercept=0) +
+  labs(x = "Strength of Selection", y = "Number of SNPs") +
+  scale_y_continuous(breaks=seq(0,100,by=25))+ 
+  theme_ci() + facet_wrap(.~pop_lable, ncol = 4)+ theme(strip.text.x = element_text(size=0))+
+  geom_vline(data = median_pop_filter_1, aes(xintercept = median), size=0.8, linetype="dashed",color="red")
+
+histPop1
+#Export 
+ggsave("Graphs/snp_change_2/02_s_pop_3_11.pdf",width=10, height = 4, units = "in")
+
+
+
+
 
 
 

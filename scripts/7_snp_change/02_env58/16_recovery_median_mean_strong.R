@@ -90,7 +90,7 @@ ggplot(slope_pop_graph, aes(x=Median, y=mean.lambda.recovery)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
-ggsave("Graphs/Demography_2/04_median_slope_lambda.pdf",width=8, height = 6, units = "in")
+#ggsave("Graphs/Demography_2/median_slope_lambda.pdf",width=8, height = 6, units = "in")
 
 
 #### Outlier removal #### 
@@ -121,7 +121,7 @@ ggplot(slope_pop_graph_cull2, aes(x=Median, y=mean.lambda.recovery)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
-ggsave("Graphs/Demography_2/05_median_slope_lambda.pdf",width=8, height = 6, units = "in")
+#ggsave("Graphs/Demography_2/median_slope_lambda_cull.pdf",width=8, height = 6, units = "in")
 
 
 ## Overlay slopes with and without outlier removal
@@ -146,6 +146,6 @@ ggplot(slope_pop_graph, aes(x=Median, y=mean.lambda.recovery)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
-ggsave("Graphs/Demography_2/06_median_slope_lambda.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Demography_2/02_median_slope_lambda_CMD_PPT.pdf",width=8, height = 6, units = "in")
 
 

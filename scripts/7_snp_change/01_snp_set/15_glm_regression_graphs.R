@@ -36,25 +36,25 @@ theme(
 ############
 
 #Import timeseries frequencies
-freqA_env1 <- read_csv("data/snp_change_data/freqA_env1.csv")
-freqA_env2 <- read_csv("data/snp_change_data/freqA_env2.csv")
-freqA_env3 <- read_csv("data/snp_change_data/freqA_env3.csv")
-freqA_env4 <- read_csv("data/snp_change_data/freqA_env4.csv")
-freqA_env5 <- read_csv("data/snp_change_data/freqA_env5.csv")
-freqA_env6 <- read_csv("data/snp_change_data/freqA_env6.csv")
-freqA_env7 <- read_csv("data/snp_change_data/freqA_env7.csv")
-freqA_env8 <- read_csv("data/snp_change_data/freqA_env8.csv")
-freqA_env9 <- read_csv("data/snp_change_data/freqA_env9.csv")
+freqA_env1 <- read_csv("data/snp_change_2/freqA_env1.csv")
+freqA_env2 <- read_csv("data/snp_change_2/freqA_env2.csv")
+freqA_env3 <- read_csv("data/snp_change_2/freqA_env3.csv")
+freqA_env4 <- read_csv("data/snp_change_2/freqA_env4.csv")
+freqA_env5 <- read_csv("data/snp_change_2/freqA_env5.csv")
+freqA_env6 <- read_csv("data/snp_change_2/freqA_env6.csv")
+freqA_env7 <- read_csv("data/snp_change_2/freqA_env7.csv")
+freqA_env8 <- read_csv("data/snp_change_2/freqA_env8.csv")
+freqA_env9 <- read_csv("data/snp_change_2/freqA_env9.csv")
 
-freqB_env1 <- read_csv("data/snp_change_data/freqB_env1.csv")
-freqB_env2 <- read_csv("data/snp_change_data/freqB_env2.csv")
-freqB_env3 <- read_csv("data/snp_change_data/freqB_env3.csv")
-freqB_env4 <- read_csv("data/snp_change_data/freqB_env4.csv")
-freqB_env5 <- read_csv("data/snp_change_data/freqB_env5.csv")
-freqB_env6 <- read_csv("data/snp_change_data/freqB_env6.csv")
-freqB_env7 <- read_csv("data/snp_change_data/freqB_env7.csv")
-freqB_env8 <- read_csv("data/snp_change_data/freqB_env8.csv")
-freqB_env9 <- read_csv("data/snp_change_data/freqB_env9.csv")
+freqB_env1 <- read_csv("data/snp_change_2/freqB_env1.csv")
+freqB_env2 <- read_csv("data/snp_change_2/freqB_env2.csv")
+freqB_env3 <- read_csv("data/snp_change_2/freqB_env3.csv")
+freqB_env4 <- read_csv("data/snp_change_2/freqB_env4.csv")
+freqB_env5 <- read_csv("data/snp_change_2/freqB_env5.csv")
+freqB_env6 <- read_csv("data/snp_change_2/freqB_env6.csv")
+freqB_env7 <- read_csv("data/snp_change_2/freqB_env7.csv")
+freqB_env8 <- read_csv("data/snp_change_2/freqB_env8.csv")
+freqB_env9 <- read_csv("data/snp_change_2/freqB_env9.csv")
 
 
 
@@ -136,7 +136,7 @@ freq_table_all<-rbind(freq_table_1,
 
 
 #SE data
-env_all <- read_csv("data/snp_change_data/slope_obs_all_unique.csv")
+env_all <- read_csv("data/snp_change_2/slope_obs_all_unique.csv")
 colnames(env_all) <- c("Site","SNP_ID","Slope","SE","ENV","Type")
 #env_low <- env_all %>% filter(SE<5.5) 
 freq_table_all$Site <- as.numeric(freq_table_all$Site)
@@ -159,13 +159,54 @@ freq_table_Final$Site <- as.factor(freq_table_Final$Site)
 freq_table_Final$Site <- factor(freq_table_Final$Site, levels = c(1,2,3,4,5,6,7,8,9,10,11))
 
 
+
 ############################################################################################################
+
+#All Sites
+ggplot(data=freq_table_Final ,aes(Year,Binomial_A,group=SNP_ID)) + 
+  geom_line(stat="smooth",method = "glm", method.args = list(family = "binomial"), se = F, alpha=.14,cex=0.4,color="red") + 
+  labs(y="SNP Frequency",x="Year") +  facet_wrap(.~Site) + theme_spaghetti()
+ggsave("graphs/snp_change_2/05_spaghetii_obs.pdf",width=8, height = 7, units = "in")
+
+
+
+#scale_y_continuous(name="Mean Lambda after Drought", limits=c(-0.3,2.5), breaks=seq(0,2.5,0.5))+
+
+freq_env_3 <- freq_table_Final %>% filter(Site==3)
+ggplot(data=freq_env_3 ,aes(Year,Binomial_A,group=SNP_ID)) + 
+  geom_line(stat="smooth",method = "glm", method.args = list(family = "binomial"), se = F, alpha=.19,cex=0.4,color="red") + 
+  labs(y="SNP Frequency",x="Year") + theme_spaghetti()
+ggsave("graphs/snp_change_2/06_spaghetii_obs.pdf",width=4, height = 4, units = "in")
+
+
+freq_env_ver2 <- freq_table_Final %>% filter(Site==3 | Site==11)
+ggplot(data=freq_env_ver2 ,aes(Year,Binomial_A,group=SNP_ID)) + 
+  geom_line(stat="smooth",method = "glm", method.args = list(family = "binomial"), se = F, alpha=.19,cex=0.4,color="red") + 
+  labs(y="SNP Frequency",x="Year") +
+  scale_x_discrete(breaks=seq(2010,2016,2))+
+  facet_wrap(.~Site) + theme_spaghetti() +  
+  theme(strip.text.x = element_text(size=0),axis.title = element_text(size =18, face = "bold"),
+        axis.title.x = element_blank(), axis.text.x = element_text(size = 18, face = "bold"),
+        axis.text.y = element_text(size = 20, face = "bold"))
+ggsave("graphs/snp_change_2/06_3_11spaghetii_obs.pdf",width=8, height = 5, units = "in")
+
+
+
+
+############################################################################################################
+
+
+
+
+
+
+
 
 #All Sites
 ggplot(data=freq_table_Final ,aes(Year,Binomial_A,group=SNP_ID)) + 
   geom_line(stat="smooth",method = "glm", method.args = list(family = "binomial"), se = F, alpha=.09,cex=0.4,color="red") + 
   labs(y="SNP Frequency",x="Year") +  facet_wrap(.~Site) + theme_spaghetti()
-ggsave("graphs/snp_change/glm_reg_red/spaghetii_obs.pdf",width=8, height = 7, units = "in")
+ggsave("graphs/snp_change_/spaghetii_obs.pdf",width=8, height = 7, units = "in")
 
 
 

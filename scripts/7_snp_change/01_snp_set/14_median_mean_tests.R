@@ -136,7 +136,49 @@ histPop_mean <- ggplot(mean_rand,aes(x=mean))+
   geom_vline(data = mean_obs, aes(xintercept = mean), size=0.5, linetype="dashed",color="red")
 histPop_mean
 
-ggsave("Graphs/snp_change_2/04_rand_mean.pdf",width=12, height = 8, units = "in")
+#ggsave("Graphs/snp_change_2/04_rand_mean.pdf",width=12, height = 8, units = "in")
 
+
+
+
+###################################################################################
+#Site specific histograms Median
+###################################################################################
+
+
+#Site 3
+median_rand_pops <- median_rand %>% filter(Site == 3)
+median_obs_pops <- median_obs %>% filter(Site == 3)
+
+histPops <- ggplot(median_rand_pops,aes(x=median))+
+  geom_histogram(color="black",fill = "grey70")+
+  labs(x = "Mean Strength of Selection", y = "Permutations") +
+  geom_vline(xintercept=0) +
+  theme_ci() + facet_wrap(.~Site) +
+  geom_vline(data = median_obs_pops, aes(xintercept = median), size=1.5, color="red")+
+  scale_x_continuous(breaks=c(-0.05,0,0.05))+
+  theme(strip.text.x = element_text(size=0))
+histPops
+
+ggsave("Graphs/snp_change_2/03_mean_pop_3.pdf",width=4, height = 3.5, units = "in")
+
+
+#Site 3 and 11
+median_rand_pops <- median_rand %>% filter(Site == 3 | Site == 11)
+median_obs_pops <- median_obs %>% filter(Site == 3 | Site == 11)
+
+median_rand_pops$Site <- droplevels(median_rand_pops$Site) %>% na.omit()
+
+histPops <- ggplot(median_rand_pops,aes(x=median))+
+  geom_histogram(color="black",fill = "grey70")+
+  labs(x = "Strength of Selection", y = "Number of Permutations") +
+  geom_vline(xintercept=0) +
+  theme_ci() + facet_wrap(.~Site) +
+  geom_vline(data = median_obs_pops, aes(xintercept = median), size=1, linetype="dashed",color="red")+
+  scale_x_continuous(breaks=c(-0.05,0,0.05))+
+  theme(strip.text.x = element_text(size=0))
+histPops
+
+ggsave("Graphs/snp_change_2/03_median_pop_3_11.pdf",width=9, height = 3.5, units = "in")
 
 

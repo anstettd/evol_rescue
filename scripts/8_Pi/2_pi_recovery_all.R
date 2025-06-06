@@ -72,8 +72,10 @@ text(x=1:length(cooksd_cull4)+1, y=cooksd_cull4, labels=ifelse(cooksd_cull4>4*me
 
 
 ###########################################################################################################
-
 # Graphs of lambda recovery vs genetic diversity
+# Not overlain
+# Stats are included
+###########################################################################################################
 
 #### All Data #### 
 
@@ -105,7 +107,7 @@ ggplot(pi_pop_graph, aes(x=pi_snp_set, y=mean.lambda.recovery)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
-ggsave("Graphs/Demography_2/07_pi_demography_snpset.pdf",width=8, height = 6, units = "in")
+#ggsave("Graphs/Demography_2/pi_demography_snpset.pdf",width=8, height = 6, units = "in")
 
 
 #global pi
@@ -135,7 +137,7 @@ ggplot(pi_pop_graph, aes(x=pi_all_snps, y=mean.lambda.recovery)) +
     legend.key.height = unit(1.6, "lines") #Reduce hight
   )
 
-ggsave("Graphs/Demography_2/09_pi_demography_global.pdf",width=8, height = 6, units = "in")
+#ggsave("Graphs/Demography_2/pi_demography_global.pdf",width=8, height = 6, units = "in")
 
 
 
@@ -168,7 +170,7 @@ ggplot(pi_pop_graph_cull4, aes(x=pi_snp_set, y=mean.lambda.recovery)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
-ggsave("Graphs/Demography_2/10_pi_demography_snpset_cull4.pdf",width=8, height = 6, units = "in")
+#ggsave("Graphs/Demography_2/pi_demography_snpset_cull4.pdf",width=8, height = 6, units = "in")
 
 
 
@@ -199,11 +201,17 @@ ggplot(pi_pop_graph_cull4, aes(x=pi_all_snps, y=mean.lambda.recovery)) +
     legend.key.height = unit(1.6, "lines") #Reduce hight
   )
 
-ggsave("Graphs/Demography_2/12_pi_demography_global_cull4.pdf",width=8, height = 6, units = "in")
+#ggsave("Graphs/Demography_2/pi_demography_global_cull4.pdf",width=8, height = 6, units = "in")
 
+###########################################################################################################
+###########################################################################################################
+###########################################################################################################
+# Graphs with and without outliers overlain
+# Use for paper and presentations
+###########################################################################################################
+###########################################################################################################
+###########################################################################################################
 
-
-# graphs with slopes with and without outliers overlain
 
 #climate pi, with and without outliers
 ggplot(pi_pop_graph, aes(x=pi_snp_set, y=mean.lambda.recovery)) +
@@ -226,7 +234,7 @@ ggplot(pi_pop_graph, aes(x=pi_snp_set, y=mean.lambda.recovery)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
-ggsave("Graphs/Demography_2/13_pi_demography_snpset_all.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Demography_2/03_pi_demography_snpset_all.pdf",width=8, height = 6, units = "in")
 
 #global pi, with and without outliers
 ggplot(pi_pop_graph, aes(x=pi_all_snps, y=mean.lambda.recovery)) +
@@ -249,5 +257,5 @@ ggplot(pi_pop_graph, aes(x=pi_all_snps, y=mean.lambda.recovery)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
-ggsave("Graphs/Demography_2/15_pi_demography_global_all.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Demography_2/04_pi_demography_global_all.pdf",width=8, height = 6, units = "in")
 

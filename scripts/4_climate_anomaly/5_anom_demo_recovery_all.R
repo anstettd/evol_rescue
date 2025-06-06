@@ -2,7 +2,7 @@
 #### PROJECT: Evolutionary rescue of Mimulus cardinalis populations during extreme drought
 #### PURPOSE OF THIS SCRIPT: Correlate population recovery with climate
 #### AUTHOR: Daniel Anstett and Amy Angert
-#### DATE LAST MODIFIED: 20240628
+#### DATE LAST MODIFIED: 20250606
 ###################################################################################
 
 # Remove objects and clear workspace
@@ -15,7 +15,9 @@ library(Hmisc)
 library(RColorBrewer)
 
 #Import demography estimates + metadata
-demog_means <- read_csv("data/demography data/siteYear.lambda_responses_2010-2019.csv")
+demog_means <- read_csv("data/demography data/siteYear.lambda_responses_2010-2019.csv") %>% 
+  mutate(log.decline = log(mean.lambda.drought+0.5),
+         log.recovery = log(mean.lambda.recovery+0.5))
 
 #Import climate anomalies
 anoms <- read_csv("data/climate_data/climate_anomaly.csv") 
@@ -24,7 +26,7 @@ anoms <- read_csv("data/climate_data/climate_anomaly.csv")
 demo_pop <- left_join(demog_means, anoms, by=c("Site", "Latitude", "Paper_ID")) #necessary to specify this list because Mill Creek longitude is not the same between files, so anom values turn to NA if default joining by all shared columns  
   
 recovery.period <- demo_pop %>% 
-  dplyr::select(mean.lambda.recovery, 
+  dplyr::select(log.recovery, 
                 MAT_1517, 
                 MAP_1517, 
                 PAS_1517, 
@@ -39,7 +41,7 @@ recovery.period <- as.data.frame(recovery.period)
 recovery_clim_coeff <- data.frame()
 for (i in 2:9){
   recovery_clim_coeff[i-1,1] <- names(recovery.period[i])
-  lm.1 <- lm(mean.lambda.recovery~recovery.period[,i],data=recovery.period)
+  lm.1 <- lm(scale(log.recovery)~scale(recovery.period[,i]),data=recovery.period)
   #summary(lm.1)
   recovery_clim_coeff[i-1,2] <- summary(lm.1)$coefficients[2,1] #Slope
   recovery_clim_coeff[i-1,3] <- summary(lm.1)$coefficients[2,4] #P-value

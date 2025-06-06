@@ -26,7 +26,7 @@ pi_pop <- left_join(demog_recovery, pi_raw, by=c("Paper_ID"="Site"))
 
 #Visualize scatter plot
 ggplot(pi_pop, aes(x=pi_snp_set, y=mean.lambda.recovery)) + geom_point()
-# looks like some big outliers - needs transformation &/or test for outliers
+#looks like some big outliers - needs transformation &/or test for outliers
 
 #Distribution of response variable
 hist(pi_pop$mean.lambda.recovery) #long tail
@@ -37,103 +37,36 @@ ggplot(pi_pop, aes(x=pi_snp_set, y=log(mean.lambda.recovery+0.5))) + geom_point(
 
 mod <- lm(log(mean.lambda.recovery+0.5)~pi_snp_set,data=pi_pop)
 summary(mod)
+qqnorm(resid(mod))
+qqline(resid(mod))
 
-#Cook's distance check for influential outliers
-mod.check <- lm(log(mean.lambda.recovery+0.5)~pi_snp_set,data=pi_pop)
-cooksd_cull1 <- cooks.distance(mod.check)
-plot(cooksd_cull1, pch="*", cex=2, main="Influential Obs by Cooks distance")  # plot cook's distance
-abline(h = 4*mean(cooksd_cull1, na.rm=T), col="red")  # add cutoff line
-text(x=1:length(cooksd_cull1)+1, y=cooksd_cull1, labels=ifelse(cooksd_cull1>4*mean(cooksd_cull1, na.rm=T),names(cooksd_cull1),""), col="red")  # add labels
+#Check for influential outliers
+inflm <- influence.measures(mod)
+summary(inflm) #observation 9 (Buck Meadows) is potentially an outlier according to cov.r
 
 #Cull the outlier population
 pi_pop_cull1 <- pi_pop %>% 
-  filter(row_number()!=9) # remove influential outlier Buck Meadows (9th row of data frame, as labeled above)
+  filter(row_number()!=row.names(summary(inflm)))  # remove the 9th row of data frame
+
+# sensitivity test without influential outlier Buck Meadows
+mod.cull <- lm(log(mean.lambda.recovery+0.5)~pi_snp_set, data=pi_pop_cull1)
+summary(mod.cull)
+qqnorm(resid(mod.cull))
+qqline(resid(mod.cull))
 
 #Cook's distance check for influential outliers after removing Buck
-mod.check_cull1 <- lm(log(mean.lambda.recovery+0.5)~pi_snp_set,data=pi_pop_cull1)
-cooksd_cull1 <- cooks.distance(mod.check_cull1)
-plot(cooksd_cull1, pch="*", cex=2, main="Influential Obs by Cooks distance")  # plot cook's distance
-abline(h = 4*mean(cooksd_cull1, na.rm=T), col="red")  # add cutoff line
-text(x=1:length(cooksd_cull1)+1, y=cooksd_cull1, labels=ifelse(cooksd_cull1>4*mean(cooksd_cull1, na.rm=T),names(cooksd_cull1),""), col="red")  # add labels
+inflm_cull1 <- influence.measures(mod.cull)
+summary(inflm_cull1) #2 more observations flagged by cov.r, 1 more observation flagged by df metrics
+#Cull more outlier populations...?? This seems highly questionable.
 
-#Cull another outlier population
-pi_pop_cull2 <- pi_pop_cull1 %>% 
-  filter(row_number()!=9) # remove influential outlier Carlon (9th row of data frame, as labeled above)
-
-#Cook's distance check for influential outliers after removing Buck + Redwood
-mod.check_cull2 <- lm(log(mean.lambda.recovery+0.5)~pi_snp_set,data=pi_pop_cull2)
-cooksd_cull2 <- cooks.distance(mod.check_cull2)
-plot(cooksd_cull2, pch="*", cex=2, main="Influential Obs by Cooks distance")  # plot cook's distance
-abline(h = 4*mean(cooksd_cull2, na.rm=T), col="red")  # add cutoff line
-text(x=1:length(cooksd_cull2)+1, y=cooksd_cull2, labels=ifelse(cooksd_cull2>4*mean(cooksd_cull2, na.rm=T),names(cooksd_cull2),""), col="red")  # add labels
-
-#Cull one more outlier population
-pi_pop_cull3 <- pi_pop_cull2 %>% 
-  filter(row_number()!=7) # remove influential outlier Redwood
-
-#Cook's distance check for influential outliers after removing Buck + Redwood + Sweetwater + Carlon
-mod.check_cull3 <- lm(log(mean.lambda.recovery+0.5)~pi_snp_set,data=pi_pop_cull3)
-cooksd_cull3 <- cooks.distance(mod.check_cull3)
-plot(cooksd_cull3, pch="*", cex=2, main="Influential Obs by Cooks distance")  # plot cook's distance
-abline(h = 4*mean(cooksd_cull3, na.rm=T), col="red")  # add cutoff line
-text(x=1:length(cooksd_cull3)+1, y=cooksd_cull3, labels=ifelse(cooksd_cull3>4*mean(cooksd_cull3, na.rm=T),names(cooksd_cull3),""), col="red")  # add labels
-
-#Cull one more outlier population
-pi_pop_cull4 <- pi_pop_cull3 %>% 
-  filter(row_number()!=6) # remove influential outlier NF MF Tule
-
-#Cook's distance check for influential outliers after removing Buck + Redwood + Sweetwater + Carlon + NFTule + Whitewater
-mod.check_cull4 <- lm(log(mean.lambda.recovery+0.5)~pi_snp_set,data=pi_pop_cull4)
-cooksd_cull4 <- cooks.distance(mod.check_cull4)
-plot(cooksd_cull4, pch="*", cex=2, main="Influential Obs by Cooks distance")  # plot cook's distance
-abline(h = 4*mean(cooksd_cull4, na.rm=T), col="red")  # add cutoff line
-text(x=1:length(cooksd_cull4)+1, y=cooksd_cull4, labels=ifelse(cooksd_cull4>4*mean(cooksd_cull4, na.rm=T),names(cooksd_cull4),""), col="red")  # add labels
-
-#Cull one more outlier population
-pi_pop_cull5 <- pi_pop_cull4 %>% 
-  filter(row_number()!=4) # remove influential outlier Whitewater
-
-#Cook's distance check for influential outliers after removing Buck + Redwood + Sweetwater + Carlon + NFTule + Whitewater
-mod.check_cull5 <- lm(log(mean.lambda.recovery+0.5)~pi_snp_set,data=pi_pop_cull5)
-cooksd_cull5 <- cooks.distance(mod.check_cull5)
-plot(cooksd_cull5, pch="*", cex=2, main="Influential Obs by Cooks distance")  # plot cook's distance
-abline(h = 4*mean(cooksd_cull5, na.rm=T), col="red")  # add cutoff line
-text(x=1:length(cooksd_cull5)+1, y=cooksd_cull5, labels=ifelse(cooksd_cull5>4*mean(cooksd_cull5, na.rm=T),names(cooksd_cull5),""), col="red")  # add labels
-
-#Cull one more outlier population
-pi_pop_cull6 <- pi_pop_cull5 %>% 
-  filter(row_number()!=3) # remove influential outlier Sweetwater River
-
-#Cook's distance check for influential outliers after removing Buck + Redwood + Sweetwater + Carlon + NFTule + Whitewater + Rainbow
-mod.check_cull6 <- lm(mean.lambda.recovery~pi_snp_set,data=pi_pop_cull7)
-cooksd_cull7 <- cooks.distance(mod.check_cull7)
-plot(cooksd_cull7, pch="*", cex=2, main="Influential Obs by Cooks distance")  # plot cook's distance
-abline(h = 4*mean(cooksd_cull7, na.rm=T), col="red")  # add cutoff line
-text(x=1:length(cooksd_cull7)+1, y=cooksd_cull7, labels=ifelse(cooksd_cull7>4*mean(cooksd_cull7, na.rm=T),names(cooksd_cull7),""), col="red")  # add labels
-
-#Cull one more outlier population
-pi_pop_cull8 <- pi_pop_cull7 %>% 
-  filter(row_number()!=9) # remove influential outlier Rock Creek
-
-#Cook's distance check for influential outliers after removing Buck + Redwood + Sweetwater + Carlon + NFTule + Whitewater + Rainbow + Rock
-mod.check_cull8 <- lm(mean.lambda.recovery~pi_snp_set,data=pi_pop_cull8)
-cooksd_cull8 <- cooks.distance(mod.check_cull8)
-plot(cooksd_cull8, pch="*", cex=2, main="Influential Obs by Cooks distance")  # plot cook's distance
-abline(h = 4*mean(cooksd_cull8, na.rm=T), col="red")  # add cutoff line
-text(x=1:length(cooksd_cull8)+1, y=cooksd_cull8, labels=ifelse(cooksd_cull8>4*mean(cooksd_cull8, na.rm=T),names(cooksd_cull8),""), col="red")  # add labels
-
-#Cull one more outlier population
-pi_pop_cull9 <- pi_pop_cull8 %>% 
-  filter(row_number()!=2) # remove influential outlier Kitchen Creek
-
-#Cook's distance check for influential outliers after removing Buck + Redwood + Sweetwater + Carlon + NFTule + Whitewater + Rainbow + Rock + Kitchen
-mod.check_cull9 <- lm(mean.lambda.recovery~pi_snp_set,data=pi_pop_cull9)
-cooksd_cull9 <- cooks.distance(mod.check_cull9)
-plot(cooksd_cull9, pch="*", cex=2, main="Influential Obs by Cooks distance")  # plot cook's distance
-abline(h = 4*mean(cooksd_cull9, na.rm=T), col="red")  # add cutoff line
-text(x=1:length(cooksd_cull9)+1, y=cooksd_cull9, labels=ifelse(cooksd_cull9>4*mean(cooksd_cull9, na.rm=T),names(cooksd_cull9),""), col="red")  # add labels
-#no more influential outliers
-
+#Robust regression instead
+library(MASS)
+rob.mod <- rlm(log(pi_pop$mean.lambda.recovery+0.5)~pi_snp_set,data=pi_pop)
+summary(rob.mod)
+# this yields a coefficient estimate & std error that is similar to the culled model
+# but no p-value or R2
+library(sfsmisc)
+f.robftest(rob.mod, var="pi_snp_set")
 
 ###########################################################################################################
 

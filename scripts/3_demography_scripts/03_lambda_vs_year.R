@@ -1,7 +1,7 @@
 #### PROJECT: Evolutionary rescue of Mimulus cardinalis populations during extreme drought
-#### PURPOSE OF THIS SCRIPT: Calculate slopes of lambda versus year as a metric of the rate of demographic decline during drought
+#### PURPOSE OF THIS SCRIPT: Calculate metrics of the rate of demographic decline during drought and rate of recovery after drought
 #### AUTHOR: Amy Angert
-#### DATE LAST MODIFIED: 20250217
+#### DATE LAST MODIFIED: 20250606
 
 
 #*******************************************************************************

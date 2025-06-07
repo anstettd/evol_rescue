@@ -31,7 +31,7 @@ hist(demog_recovery$mean.r.drought)
 hist(demog_recovery$geomean.l.recovery)
 hist(demog_recovery$mean.r.recovery)
 
-cor.test(demog_recovery$geomean.l.drought, demog_recovery$geomean.l.recovery, method = 'spearman')
+#cor.test(demog_recovery$geomean.l.drought, demog_recovery$geomean.l.recovery, method = 'spearman')
 
 cor.test(demog_recovery$mean.r.drought, demog_recovery$mean.r.recovery, method = 'spearman')
 

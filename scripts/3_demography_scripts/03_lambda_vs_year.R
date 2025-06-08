@@ -28,7 +28,7 @@ for (i in 1:length(packages_needed)){
 #*******************************************************************************
 ### 1. Read in lambda estimates for each site and year
 #*******************************************************************************
-dat <- read.csv("data/demography data/siteYear.lambda_2010-2019.csv") %>% select(-Region, -RegionRank) %>% filter(Site!="Mill Creek")
+dat <- read.csv("data/demography data/siteYear.lambda_2010-2019.csv") %>% dplyr::select(-Region, -RegionRank) %>% filter(Site!="Mill Creek")
  
 # check distributions
 hist(dat$lambda) #extreme right skew
@@ -106,7 +106,7 @@ covar <- read_csv("data/genomic_data/pop_meta_data.csv") %>%
   dplyr::select(Site, Paper_ID, Latitude, Longitude, Lat.Color) %>% 
   unique()
 
-mean.lambda <- left_join(dat.mean.pre, dat.mean.drought) %>% left_join(dat.mean.recovery) %>% left_join(covar) # Join to slopes
+mean.lambda <- left_join(dat.mean.drought,dat.mean.pre) %>% left_join(dat.mean.recovery) %>% left_join(covar) # Join to slopes
 
 # Save to .csv file 
 write.csv(mean.lambda,"data/demography data/siteYear.lambda_responses_2010-2019.csv",row.names=FALSE)

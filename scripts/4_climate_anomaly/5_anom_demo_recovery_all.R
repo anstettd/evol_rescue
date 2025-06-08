@@ -2,7 +2,7 @@
 #### PROJECT: Evolutionary rescue of Mimulus cardinalis populations during extreme drought
 #### PURPOSE OF THIS SCRIPT: Correlate population recovery with climate
 #### AUTHOR: Daniel Anstett and Amy Angert
-#### DATE LAST MODIFIED: 20250606
+#### DATE LAST MODIFIED: 20250607
 ###################################################################################
 
 # Remove objects and clear workspace
@@ -13,11 +13,11 @@ library(tidyverse)
 library(GGally)
 library(Hmisc)
 library(RColorBrewer)
+library(MASS)
+library(sfsmisc)
 
 #Import demography estimates + metadata
-demog_means <- read_csv("data/demography data/siteYear.lambda_responses_2010-2019.csv") %>% 
-  mutate(log.decline = log(mean.lambda.drought+0.5),
-         log.recovery = log(mean.lambda.recovery+0.5))
+demog_means <- read_csv("data/demography data/siteYear.lambda_responses_2010-2019.csv")
 
 #Import climate anomalies
 anoms <- read_csv("data/climate_data/climate_anomaly.csv") 
@@ -26,7 +26,7 @@ anoms <- read_csv("data/climate_data/climate_anomaly.csv")
 demo_pop <- left_join(demog_means, anoms, by=c("Site", "Latitude", "Paper_ID")) #necessary to specify this list because Mill Creek longitude is not the same between files, so anom values turn to NA if default joining by all shared columns  
   
 recovery.period <- demo_pop %>% 
-  dplyr::select(log.recovery, 
+  dplyr::select(mean.r.recovery, 
                 MAT_1517, 
                 MAP_1517, 
                 PAS_1517, 
@@ -41,13 +41,18 @@ recovery.period <- as.data.frame(recovery.period)
 recovery_clim_coeff <- data.frame()
 for (i in 2:9){
   recovery_clim_coeff[i-1,1] <- names(recovery.period[i])
-  lm.1 <- lm(scale(log.recovery)~scale(recovery.period[,i]),data=recovery.period)
+  lm.1 <- lm(scale(mean.r.recovery)~scale(recovery.period[,i]),data=recovery.period)
+  rlm.1 <- rlm(scale(mean.r.recovery)~scale(recovery.period[,i]),data=recovery.period, maxit=500)
+  rlm.f <- f.robftest(rlm.1)
   #summary(lm.1)
-  recovery_clim_coeff[i-1,2] <- summary(lm.1)$coefficients[2,1] #Slope
-  recovery_clim_coeff[i-1,3] <- summary(lm.1)$coefficients[2,4] #P-value
-  recovery_clim_coeff[i-1,4] <- summary(lm.1)$adj.r.squared #R2
+  #summary(rlm.1)
+  recovery_clim_coeff[i-1,2] <- summary(lm.1)$coefficients[2,1] #OLS slope
+  recovery_clim_coeff[i-1,3] <- summary(lm.1)$coefficients[2,4] #OLS P-value
+  recovery_clim_coeff[i-1,4] <- summary(lm.1)$adj.r.squared #OLS R2
+  recovery_clim_coeff[i-1,5] <- rlm.1$coefficients[[2]] #robust slope
+  recovery_clim_coeff[i-1,6] <- rlm.f$p.value #robust P-value
 }
-names(recovery_clim_coeff) <- c("Var", "Slope", "P", "AdjR2")
+names(recovery_clim_coeff) <- c("Var", "OLS_Slope", "OLS_P", "OLS_AdjR2", "RR_Slope", "RR_P")
 
 write_csv(recovery_clim_coeff,"data/climate_data/recovery_clim_coeff_alldemo.csv") 
 
@@ -60,12 +65,13 @@ write_csv(recovery_clim_coeff,"data/climate_data/recovery_clim_coeff_alldemo.csv
 demo_pop$Lat.Color<-as.factor(demo_pop$Lat.Color)
 demo_pop$Lat.Color<-factor(demo_pop$Lat.Color,levels=demo_pop$Lat.Color)
 
-a <- ggplot(demo_pop, aes(x=PPT_wt_1517, y=mean.lambda.recovery)) +
-  geom_smooth(method=lm,color="black", lty="dashed", se=FALSE)+
+a <- ggplot(demo_pop, aes(x=MAP_1517, y=mean.r.recovery)) +
+  geom_smooth(method=lm,color="black",size=1.25,fill="gray71")+
+  geom_smooth(method=MASS::rlm,color="black",size=1.25,fill="gray40")+
   geom_point(aes(fill=demo_pop$Lat.Color), shape=21, size =6)+
   geom_hline(yintercept = 1, linetype = "dotted", color = "black", size = 0.7) +
   scale_y_continuous(name="Mean Lambda After Drought")+#, limits=c(0,2.5), breaks=seq(0,2.5,0.5))+
-  scale_x_continuous(name="Winter Precipitation Anomaly (2015-2017)")+
+  scale_x_continuous(name="Annual Precipitation Anomaly (2015-2017)")+
   #,breaks=c(0.04,0.045,0.05,0.055,0.06))+
   scale_fill_manual(name = "Latitude (°N)",labels=round(demo_pop$Latitude,1), values=as.character(demo_pop$Lat.Color)) +
   theme_classic() + theme(
@@ -79,7 +85,7 @@ a <- ggplot(demo_pop, aes(x=PPT_wt_1517, y=mean.lambda.recovery)) +
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
 a
-ggsave("Graphs/Climate/2_recovery_lambda_PPT_wt.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Climate/2_recovery_r_MAP.pdf",width=8, height = 6, units = "in")
 
 
 

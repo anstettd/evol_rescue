@@ -69,8 +69,8 @@ demo_pop$Lat.Color<-factor(demo_pop$Lat.Color,levels=demo_pop$Lat.Color)
 
 #Winter Precipitation Anomaly
 a <- ggplot(demo_pop, aes(x=PPT_wt_1214, y=mean.r.drought)) + 
-  geom_smooth(method=lm,color="black",size=1.25,fill="gray71")+
-  geom_smooth(method=MASS::rlm,color="black",size=1.25,fill="gray40")+
+  geom_smooth(method=lm,color="black",linetype="dashed",size=1.25,fill="gray75")+
+  geom_smooth(method=MASS::rlm,color="black",size=1.25,fill="gray50")+
   geom_point(aes(fill=Lat.Color), shape=21, size=6)+
   geom_hline(yintercept = 0, linetype = "dotted", color = "black", size = 0.7) +
   scale_y_continuous(name="Mean Pop. Growth During Drought")+
@@ -92,8 +92,8 @@ ggsave("Graphs/Climate/1_drought_lambda_PPT_wt.pdf",width=8, height = 6, units =
 
 #Summer Temperature Anomaly
 b <- ggplot(demo_pop, aes(x=Tave_sm_1214, y=mean.r.drought)) + 
-  geom_smooth(method=lm,color="black",size=1.25,fill="gray71")+
-  geom_smooth(method=MASS::rlm,color="black",size=1.25,fill="gray40")+
+  geom_smooth(method=lm,color="black",size=1.25,linetype="dashed", fill="gray75")+
+  geom_smooth(method=MASS::rlm,color="black",size=1.25, fill="gray50")+
   geom_point(aes(fill=Lat.Color), shape=21, size=6)+
   geom_hline(yintercept = 0, linetype = "dotted", color = "black", size = 0.7) +
   scale_y_continuous(name="Mean Pop. Growth During Drought")+
@@ -115,8 +115,8 @@ ggsave("Graphs/Climate/1_drought_lambda_Tave_sm.pdf",width=8, height = 6, units 
 
 #Climatic Moisture Deficit Anomaly
 c <- ggplot(demo_pop, aes(x=CMD_1214, y=mean.r.drought)) + 
-  geom_smooth(method=lm,color="black",size=1.25,fill="gray71")+
-  geom_smooth(method=MASS::rlm,color="black",size=1.25,fill="gray40")+
+  geom_smooth(method=lm,color="black",size=1.25,linetype="dashed",fill="gray75")+
+  geom_smooth(method=MASS::rlm,color="black",size=1.25,fill="gray50")+
   geom_point(aes(fill=Lat.Color), shape=21, size=6)+
   geom_hline(yintercept = 0, linetype = "dotted", color = "black", size = 0.7) +
   scale_y_continuous(name="Mean Pop. Growth During Drought")+

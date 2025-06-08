@@ -109,6 +109,7 @@ covar <- read_csv("data/genomic_data/pop_meta_data.csv") %>%
 
 mean.lambda <- left_join(dat.mean.drought,dat.mean.pre) %>% left_join(dat.mean.recovery) %>% left_join(covar) # Join to slopes
 
+####### TABLE S1 #########
 # Save to .csv file 
 write.csv(mean.lambda,"data/demography data/siteYear.lambda_responses_2010-2019.csv",row.names=FALSE)
 

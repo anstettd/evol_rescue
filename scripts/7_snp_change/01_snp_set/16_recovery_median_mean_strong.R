@@ -2,7 +2,7 @@
 #### PROJECT: Evolutionary rescue of Mimulus cardinalis populations during extreme drought
 #### PURPOSE OF THIS SCRIPT: Test whether lambda recovery is predicted by selection slopes
 #### AUTHOR: Daniel Anstett and Amy Angert
-#### DATE LAST MODIFIED: 20250606
+#### DATE LAST MODIFIED: 20250608
 ###################################################################################
 
 # Remove objects and clear workspace
@@ -25,9 +25,9 @@ slope_pop <- left_join(demo_pop, slope.summary, by=c("Paper_ID"="Site"))
 slope_pop <- drop_na(slope_pop)
 
 #Visualize scatter plot
-ggplot(slope_pop, aes(x=Median, y=log(mean.lambda.recovery+0.5))) + geom_point()
+ggplot(slope_pop, aes(x=Median, y=mean.r.recovery)) + geom_point()
 
-mod_S <- lm(log(mean.lambda.recovery+0.5)~Median,data=slope_pop)
+mod_S <- lm(mean.r.recovery~Median,data=slope_pop)
 summary(mod_S)
 Anova(mod_S,type="III")
 qqnorm(resid(mod_S))
@@ -35,14 +35,14 @@ qqline(resid(mod_S))
 
 #Check for influential outliers
 inflm_mod_S <- influence.measures(mod_S)
-summary(inflm_mod_S) # observation 4 (redwood) is potentially an outlier by most metrics. also 1 (sweetwater) by df and 7 (little jameson) by covr
+summary(inflm_mod_S) # observation 4 (redwood) is potentially an outlier by 2 metrics. also 1 (sweetwater) by df and 7 (little jameson) by covr
 
 #Cull 3 potential outliers
 slope_pop_cull1 <- slope_pop %>% 
   filter(Paper_ID!=4, Paper_ID!=1, Paper_ID!=7) 
 
 # sensitivity test without Redwood, Sweetwater, Jameson
-mod_S_cull <- lm(log(mean.lambda.recovery+0.5)~Median, data=slope_pop_cull1)
+mod_S_cull <- lm(mean.r.recovery~Median, data=slope_pop_cull1)
 summary(mod_S_cull)
 Anova(mod_S_cull,type="III")
 qqnorm(resid(mod_S_cull))
@@ -54,7 +54,7 @@ summary(inflm_mod_S_cull) # 3 more, this is inviable. switch to robust regressio
 
 #Robust regression instead
 library(MASS)
-rob.mod_S <- rlm(log(slope_pop$mean.lambda.recovery+0.5)~Median,data=slope_pop)
+rob.mod_S <- rlm(slope_pop$mean.r.recovery~Median,data=slope_pop)
 summary(rob.mod_S)
 # this yields a coefficient estimate & std error but no p-value or R2
 library(sfsmisc)
@@ -69,10 +69,10 @@ slope_pop$Lat.Color<-factor(slope_pop$Lat.Color,levels=slope_pop$Lat.Color)
 slope_pop_cull1$Lat.Color<-as.factor(slope_pop_cull1$Lat.Color)
 slope_pop_cull1$Lat.Color<-factor(slope_pop_cull1$Lat.Color,levels=slope_pop_cull1$Lat.Color)
 
-ggplot(slope_pop, aes(x=Median, y=log(mean.lambda.recovery+0.5))) + 
-  geom_smooth(method=lm,color="black", size=1.8, fill="gray75")+
-  geom_smooth(method=MASS::rlm, color="black", size=1.8, linetype="dotdash", fill="grey50") +
-  geom_smooth(data=slope_pop_cull1, aes(x=Median, y=log(mean.lambda.recovery+0.5)), method=lm, color="black", size=1.8, linetype="longdash", fill="grey35") +
+ggplot(slope_pop, aes(x=Median, y=mean.r.recovery)) + 
+  geom_smooth(method=lm,color="black", size=1.8, linetype="dashed", fill="gray75")+
+  geom_smooth(method=MASS::rlm, color="black", size=1.8, fill="grey50") +
+  #geom_smooth(data=slope_pop_cull1, aes(x=Median, y=log(mean.lambda.recovery+0.5)), method=lm, color="black", size=1.8, linetype="longdash", fill="grey35") +
   geom_point(aes(fill=Lat.Color), shape=21, size =6)+
   geom_hline(yintercept = 0, linetype = "dotted", color = "black", size = 0.7) +
   scale_y_continuous(name="Mean Pop. Growth after Drought")+#,breaks=c(0.5,1,1.5,2,2.5))+
@@ -90,6 +90,6 @@ ggplot(slope_pop, aes(x=Median, y=log(mean.lambda.recovery+0.5))) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
-ggsave("Graphs/Demography_2/01_median_slope_lambda.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Demography_2/01_median_slope_logr.pdf",width=8, height = 6, units = "in")
 
 

@@ -2,7 +2,7 @@
 #### PROJECT: Evolutionary rescue of Mimulus cardinalis populations during extreme drought
 #### PURPOSE OF THIS SCRIPT: Correlate pop decline with climate
 #### AUTHOR: Daniel Anstett and Amy Angert
-#### DATE LAST MODIFIED: 20250607
+#### DATE LAST MODIFIED: 20250608
 ###################################################################################
 
 # Remove objects and clear workspace
@@ -13,6 +13,8 @@ library(tidyverse)
 library(GGally)
 library(Hmisc)
 library(RColorBrewer)
+library(MASS)
+library(sfsmisc)
 
 #Import demography estimates (includes metadata)
 demog_means <- read_csv("data/demography data/siteYear.lambda_responses_2010-2019.csv") 
@@ -39,13 +41,18 @@ decline_clim_coeff <- data.frame()
 for (i in 2:9){
   decline_clim_coeff[i-1,1] <- names(drought.period[i])
   lm.1 <- lm(scale(mean.r.drought)~scale(drought.period[,i]),data=drought.period)
+  rlm.1 <- rlm(scale(mean.r.drought)~scale(drought.period[,i]),data=drought.period, maxit=500)
+  rlm.f <- f.robftest(rlm.1)
   #summary(lm.1)
+  #summary(rlm.1)
   decline_clim_coeff[i-1,2] <- summary(lm.1)$coefficients[2,1] #Slope
   decline_clim_coeff[i-1,3] <- summary(lm.1)$coefficients[2,4] #P-value
   decline_clim_coeff[i-1,4] <- summary(lm.1)$adj.r.squared #R2
+  decline_clim_coeff[i-1,5] <- rlm.1$coefficients[[2]] #robust slope
+  decline_clim_coeff[i-1,6] <- rlm.f$p.value #robust P-value
 }
 
-names(decline_clim_coeff) <- c("Var", "Slope", "P", "AdjR2")
+names(decline_clim_coeff) <- c("Var", "OLS_Slope", "OLS_P", "OLS_AdjR2", "RR_Slope", "RR_P")
 write_csv(decline_clim_coeff,"data/climate_data/decline_clim_coeff.csv") 
 
 

@@ -35,6 +35,10 @@ hist(demog_recovery$mean.r.recovery)
 
 cor.test(demog_recovery$mean.r.drought, demog_recovery$mean.r.recovery, method = 'spearman')
 
+demog_recovery_cull <- demog_recovery %>% filter(mean.r.drought>-2)
+cor.test(demog_recovery_cull$mean.r.drought, demog_recovery_cull$mean.r.recovery, method = 'spearman')
+# still not correlated after removing three populations that were extirpated
+
 demog_recovery$Lat.Color<-as.factor(demog_recovery$Lat.Color)
 demog_recovery$Lat.Color<-factor(demog_recovery$Lat.Color,levels=demog_recovery$Lat.Color)
 

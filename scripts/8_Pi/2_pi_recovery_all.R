@@ -28,17 +28,11 @@ pi_pop <- left_join(demog_recovery, pi_raw, by=c("Paper_ID"="Site"))
 ###### PI OF CLIMATE SNP
 
 #Visualize scatter plot
-ggplot(pi_pop, aes(x=pi_snp_set, y=mean.lambda.recovery)) + geom_point()
+ggplot(pi_pop, aes(x=pi_snp_set, y=mean.r.recovery)) + geom_point()
 #looks like some big outliers - needs transformation &/or test for outliers
 
-#Distribution of response variable
-hist(pi_pop$mean.lambda.recovery) #long tail
-hist(log(pi_pop$mean.lambda.recovery+0.5)) #much better
-
-#Visualize scatter plot with log-transformed response
-ggplot(pi_pop, aes(x=pi_snp_set, y=log(mean.lambda.recovery+0.5))) + geom_point()
-
-mod_pi_snp <- lm(log(mean.lambda.recovery+0.5)~pi_snp_set,data=pi_pop)
+#Ordinary least squares regression
+mod_pi_snp <- lm(mean.r.recovery~pi_snp_set,data=pi_pop)
 summary(mod_pi_snp)
 Anova(mod_pi_snp,type="III")
 qqnorm(resid(mod_pi_snp))
@@ -46,14 +40,14 @@ qqline(resid(mod_pi_snp))
 
 #Check for influential outliers
 inflm_pi_snp <- influence.measures(mod_pi_snp)
-summary(inflm_pi_snp) #observation 9 (Buck Meadows) is potentially an outlier according to cov.r
+summary(inflm_pi_snp) #observation 11 (Carlon) is potentially an outlier according to df
 
 #Cull the outlier population
 pi_pop_cull1 <- pi_pop %>% 
-  filter(row_number()!=row.names(summary(inflm_pi_snp)))  # remove the 9th row of data frame
+  filter(row_number()!=row.names(summary(inflm_pi_snp)))  # remove the 11th row of data frame
 
 # sensitivity test without influential outlier Buck Meadows
-mod_pi_snp_cull <- lm(log(mean.lambda.recovery+0.5)~pi_snp_set, data=pi_pop_cull1)
+mod_pi_snp_cull <- lm(mean.r.recovery~pi_snp_set, data=pi_pop_cull1)
 summary(mod_pi_snp_cull)
 Anova(mod_pi_snp_cull,type="III")
 qqnorm(resid(mod_pi_snp_cull))
@@ -61,12 +55,12 @@ qqline(resid(mod_pi_snp_cull))
 
 #Cook's distance check for influential outliers after removing Buck
 inflm_pi_pop_cull1 <- influence.measures(mod_pi_snp_cull)
-summary(inflm_pi_pop_cull1) #2 more observations flagged by cov.r, 1 more observation flagged by df metrics
+summary(inflm_pi_pop_cull1) #2 more observations flagged by cov.r
 #Cull more outlier populations...?? This seems highly questionable.
 
 #Robust regression instead
 library(MASS)
-rob.mod_pi_snp <- rlm(log(pi_pop$mean.lambda.recovery+0.5)~pi_snp_set,data=pi_pop)
+rob.mod_pi_snp <- rlm(pi_pop$mean.r.recovery~pi_snp_set,data=pi_pop)
 summary(rob.mod_pi_snp)
 # this yields a coefficient estimate & std error that is similar to the culled model
 # but no p-value or R2
@@ -77,12 +71,11 @@ f.robftest(rob.mod_pi_snp, var="pi_snp_set")
 ###### GENOME-WIDE PI 
 
 #Visualize scatter plot
-ggplot(pi_pop, aes(x=pi_all_snps, y=mean.lambda.recovery)) + geom_point()
+ggplot(pi_pop, aes(x=pi_all_snps, y=mean.r.recovery)) + geom_point()
 #looks like some big outliers - needs transformation &/or test for outliers
 
-#Visualize scatter plot with log-transformed response
-ggplot(pi_pop, aes(x=pi_all_snps, y=log(mean.lambda.recovery+0.5))) + geom_point()
-mod_pi_all <- lm(log(mean.lambda.recovery+0.5)~pi_all_snps,data=pi_pop)
+#Ordinary least squares regression
+mod_pi_all <- lm(mean.r.recovery~pi_all_snps,data=pi_pop)
 summary(mod_pi_all)
 Anova(mod_pi_all,type="III")
 qqnorm(resid(mod_pi_all))
@@ -90,11 +83,11 @@ qqline(resid(mod_pi_all))
 
 #Check for influential outliers
 inflm_pi_all <- influence.measures(mod_pi_all)
-summary(inflm_pi_all) #observation 5 (W Fork Mojave) is potentially an outlier according to cov.r; observation 10 (Carlon) is potentially an outlier according to covr and hat
+summary(inflm_pi_all) #observation 5 (W Fork Mojave) is potentially an outlier according to cov.r; observation 11 (Carlon) is potentially an outlier according to covr and hat
 
 #Cull the outlier populations
 pi_pop_cull2 <- pi_pop %>% 
-  filter(row_number()!=row.names(summary(inflm_pi_all)))  # remove the 5th and 9th rows of data frame
+  filter(row_number()!=row.names(summary(inflm_pi_all)))  # remove the 5th and 11th rows of data frame
 
 # sensitivity test without influential outliers WFMojave & Carlon
 mod_pi_all_cull <- lm(log(mean.lambda.recovery+0.5)~pi_all_snps, data=pi_pop_cull2)
@@ -110,7 +103,7 @@ summary(inflm_pi_pop_cull2) #another observation flagged by all metrics
 
 #Robust regression instead
 library(MASS)
-rob.mod_pi_all <- rlm(log(pi_pop$mean.lambda.recovery+0.5)~pi_all_snps,data=pi_pop)
+rob.mod_pi_all <- rlm(pi_pop$mean.r.recovery~pi_all_snps,data=pi_pop)
 summary(rob.mod_pi_all)
 # this yields a coefficient estimate & std error that is similar to the culled model
 # but no p-value or R2
@@ -127,15 +120,15 @@ f.robftest(rob.mod_pi_all, var="pi_all_snps")
 pi_pop_graph <- drop_na(pi_pop)
 pi_pop_graph$Lat.Color<-as.factor(pi_pop_graph$Lat.Color)
 pi_pop_graph$Lat.Color<-factor(pi_pop_graph$Lat.Color,levels=pi_pop_graph$Lat.Color)
-pi_pop_graph_cull1 <- drop_na(pi_pop_cull1)
-pi_pop_graph_cull1$Lat.Color<-as.factor(pi_pop_graph_cull1$Lat.Color)
-pi_pop_graph_cull1$Lat.Color<-factor(pi_pop_graph_cull1$Lat.Color,levels=pi_pop_graph_cull1$Lat.Color)
+#pi_pop_graph_cull1 <- drop_na(pi_pop_cull1)
+#pi_pop_graph_cull1$Lat.Color<-as.factor(pi_pop_graph_cull1$Lat.Color)
+#pi_pop_graph_cull1$Lat.Color<-factor(pi_pop_graph_cull1$Lat.Color,levels=pi_pop_graph_cull1$Lat.Color)
 
 #Depicting ordinary regression with and without outliers & robust regression
-ggplot(pi_pop_graph, aes(x=pi_snp_set, y=log(mean.lambda.recovery+0.5))) +
-  geom_smooth(method=lm,color="black", size=1.8, fill="gray75")+
-  geom_smooth(method=MASS::rlm, color="black", size=1.8, linetype="dotdash", fill="grey50") +
-  geom_smooth(data=pi_pop_graph_cull1, aes(x=pi_snp_set, y=log(mean.lambda.recovery+0.5)), method=lm, color="black", size=1.8, linetype="longdash", fill="grey35") +
+ggplot(pi_pop_graph, aes(x=pi_snp_set, y=mean.r.recovery)) +
+  geom_smooth(method=lm,color="black", size=1.8, linetype="dashed", fill="gray75")+
+  geom_smooth(method=MASS::rlm, color="black", size=1.8, fill="grey50") +
+  #geom_smooth(data=pi_pop_graph_cull1, aes(x=pi_snp_set, y=log(mean.lambda.recovery+0.5)), method=lm, color="black", size=1.8, linetype="longdash", fill="grey35") +
   geom_point(aes(fill=Lat.Color), shape=21, size =6)+
   geom_hline(yintercept = 0, linetype = "dotted", color = "black", size = 0.7) +
   scale_y_continuous(name="Mean Pop. Growth after Drought")+
@@ -157,15 +150,15 @@ ggsave("Graphs/Demography_2/13_pi_demography_snpset_all.pdf",width=8, height = 6
 
 
 ## GENOME SNP
-pi_pop_graph_cull2 <- drop_na(pi_pop_cull1)
-pi_pop_graph_cull2$Lat.Color<-as.factor(pi_pop_graph_cull2$Lat.Color)
-pi_pop_graph_cull2$Lat.Color<-factor(pi_pop_graph_cull2$Lat.Color,levels=pi_pop_graph_cull2$Lat.Color)
+#pi_pop_graph_cull2 <- drop_na(pi_pop_cull1)
+#pi_pop_graph_cull2$Lat.Color<-as.factor(pi_pop_graph_cull2$Lat.Color)
+#pi_pop_graph_cull2$Lat.Color<-factor(pi_pop_graph_cull2$Lat.Color,levels=pi_pop_graph_cull2$Lat.Color)
 
 #Depicting ordinary regression with and without outliers & robust regression
-ggplot(pi_pop_graph, aes(x=pi_all_snps, y=log(mean.lambda.recovery+0.5))) +
-  geom_smooth(method=lm,color="black", size=1.8, fill="gray75")+
-  geom_smooth(method=MASS::rlm, color="black", size=1.8, linetype="dotdash", fill="grey50") +
-  geom_smooth(data=pi_pop_graph_cull2, aes(x=pi_all_snps, y=log(mean.lambda.recovery+0.5)), method=lm, color="black", size=1.8, linetype="longdash", fill="grey35") +
+ggplot(pi_pop_graph, aes(x=pi_all_snps, y=mean.r.recovery)) +
+  geom_smooth(method=lm,color="black", size=1.8, linetype="dashed", fill="gray75")+
+  geom_smooth(method=MASS::rlm, color="black", size=1.8, fill="grey50") +
+  #geom_smooth(data=pi_pop_graph_cull2, aes(x=pi_all_snps, y=log(mean.lambda.recovery+0.5)), method=lm, color="black", size=1.8, linetype="longdash", fill="grey35") +
   geom_point(aes(fill=Lat.Color), shape=21, size =6)+
   geom_hline(yintercept = 0, linetype = "dotted", color = "black", size = 0.7) +
   scale_y_continuous(name="Mean Pop. Growth after Drought")+

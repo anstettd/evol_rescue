@@ -12,7 +12,7 @@
 rm(list = ls(all=TRUE))
 
 # Make vector of packages needed
-packages_needed <- c("lme4", "glmmTMB", "tidyverse")
+packages_needed <- c("lme4", "glmmTMB", "tidyverse", "Rage")
 
 # Install packages needed (if not already installed)
 for (i in 1:length(packages_needed)){
@@ -468,4 +468,5 @@ write.csv(site.info,"data/demography data/siteYear.lambda_2010-2019.csv",row.nam
 # Merge params and lambdas for supplementary table
 full.table <- left_join(site.info, params) %>% mutate_at(9:20, round, 2) %>% arrange(Latitude)
 write.csv(full.table,"data/demography data/siteYear.paramslambda_2010-2019.csv",row.names=FALSE)
+
 

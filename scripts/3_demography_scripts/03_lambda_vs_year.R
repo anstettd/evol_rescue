@@ -12,7 +12,7 @@
 rm(list = ls(all=TRUE))
 
 # Make vector of packages needed
-packages_needed <- c("tidyverse", "RColorBrewer")
+packages_needed <- c("tidyverse", "RColorBrewer", "FSA")
 
 # Install packages needed (if not already installed)
 for (i in 1:length(packages_needed)){
@@ -70,7 +70,9 @@ dat.mean.pre <- dat %>%
   filter(Year==2010|Year==2011) %>%
   na.omit() %>%
   dplyr::summarize(mean.r.pre = mean(r), #arithmetic mean of logs
-                   geomean.l.pre = exp(mean(log(lambda)))) #geometric mean of unlogged values
+                   geomean.l.pre = exp(mean(log(lambda))),#geometric mean of unlogged values
+                   sd.r.pre = sd(r),
+                   se.r.pre = se(r)) 
 hist(dat.mean.pre$mean.r.pre) # better 
 hist(dat.mean.pre$geomean.l.pre) #long right tail
 
@@ -84,7 +86,9 @@ dat.mean.drought <- dat %>%
   filter(Year==2012|Year==2013|Year==2014) %>% 
   na.omit() %>% 
   dplyr::summarize(mean.r.drought = mean(r), 
-                   geomean.l.drought = exp(mean(log(lambda)))) 
+                   geomean.l.drought = exp(mean(log(lambda))),
+                   sd.r.drought = sd(r),
+                   se.r.drought = se(r)) 
 hist(dat.mean.drought$mean.r.drought) #left-skewed
 hist(dat.mean.drought$geomean.l.drought) #better
 
@@ -98,7 +102,9 @@ dat.mean.recovery <- dat %>%
   filter(Year==2015|Year==2016|Year==2017) %>% 
   na.omit() %>% 
   dplyr::summarize(mean.r.recovery = mean(r), 
-            geomean.l.recovery = exp(mean(log(lambda))))
+            geomean.l.recovery = exp(mean(log(lambda))),
+            sd.r.recovery = sd(r),
+            se.r.recovery = se(r))
 hist(dat.mean.recovery$mean.r.recovery) #better
 hist(dat.mean.recovery$geomean.l.recovery) #right-skewed
 
@@ -115,74 +121,72 @@ write.csv(mean.lambda,"data/demography data/siteYear.lambda_responses_2010-2019.
 
 
 #*******************************************************************************
-### 4. Compare growth during different periods
+### 4. Compare population growth rates during different periods
 
 #*******************************************************************************
 
-
-logr_means <- mean.lambda %>% 
+r_means <- mean.lambda %>% 
   dplyr::select(Site,Paper_ID,Latitude,Longitude,Lat.Color,mean.r.pre,mean.r.drought,mean.r.recovery) %>%  
   arrange(Latitude)
 
 # pivot longer for plotting
-logr_means_long <- logr_means %>% pivot_longer(cols=mean.r.pre:mean.r.recovery, names_to="time", values_to="mean_r")
+r_means_long <- r_means %>% pivot_longer(cols=mean.r.pre:mean.r.recovery, names_to="time", values_to="mean_r")
 # set level orders to reflect time
 level_order_all = c("mean.r.pre", "mean.r.drought", "mean.r.recovery")
-ggplot(logr_means_long, aes(x=time,y=mean_r)) +
+ggplot(r_means_long, aes(x=time,y=mean_r)) +
   geom_point(aes(x=factor(time, level=level_order_all), fill=as.factor(Latitude)), shape=21, size=2) +
-  geom_line(aes(group=Latitude), color=logr_means_long$Lat.Color) +
-  scale_color_manual(values=unique(logr_means_long$Lat.Color), aesthetics = c("color", "fill")) +
-  geom_hline(yintercept=1) +
+  geom_line(aes(group=Latitude), color=r_means_long$Lat.Color) +
+  scale_color_manual(values=unique(r_means_long$Lat.Color), aesthetics = c("color", "fill")) +
+  geom_hline(yintercept=0) +
   scale_x_discrete(labels=c("pre", "drought", "recovery")) + 
   theme_classic()
 
 # pre to drought
-t.test(x=logr_means$mean.r.pre, y=logr_means$mean.r.drought, paired=TRUE)
+t.test(x=r_means$mean.r.pre, y=r_means$mean.r.drought, paired=TRUE)
 
-logr_means_long_early <- logr_means_long %>% filter(time!="mean.r.recovery") %>% droplevels()
+r_means_long_early <- r_means_long %>% filter(time!="mean.r.recovery") %>% droplevels()
 level_order_pre = c("mean.r.pre", "mean.r.drought")
-ggplot(logr_means_long_early, aes(x=time,y=mean_r)) +
+ggplot(r_means_long_early, aes(x=time,y=mean_r)) +
   geom_point(aes(x=factor(time, level=level_order_pre), fill=as.factor(Latitude)), shape=21, size=2) +
-  geom_line(aes(group=Latitude), color=logr_means_long_early$Lat.Color) +
-  scale_color_manual(values=unique(logr_means_long_early$Lat.Color), aesthetics = c("color", "fill")) +
-  geom_hline(yintercept=1) +
+  geom_line(aes(group=Latitude), color=r_means_long_early$Lat.Color) +
+  scale_color_manual(values=unique(r_means_long_early$Lat.Color), aesthetics = c("color", "fill")) +
+  geom_hline(yintercept=0) +
   theme_classic()
 
 # drought to recovery
-t.test(x=logr_means$mean.r.recovery, y=logr_means$mean.r.drought, paired=TRUE)
+t.test(x=r_means$mean.r.recovery, y=r_means$mean.r.drought, paired=TRUE)
 
-logr_means_long_late <- logr_means_long %>% filter(time!="mean.r.pre") %>% droplevels()
+r_means_long_late <- r_means_long %>% filter(time!="mean.r.pre") %>% droplevels()
 level_order_post = c("mean.r.drought", "mean.r.recovery")
-ggplot(logr_means_long_late, aes(x=time,y=mean_r)) +
+ggplot(r_means_long_late, aes(x=time,y=mean_r)) +
   geom_point(aes(x=factor(time, level=level_order_post), fill=as.factor(Latitude)), shape=21, size=2) +
-  geom_line(aes(group=Latitude), color=logr_means_long_late$Lat.Color) +
-  scale_color_manual(values=unique(logr_means_long_late$Lat.Color), aesthetics = c("color", "fill")) +
-  geom_hline(yintercept=1) +
+  geom_line(aes(group=Latitude), color=r_means_long_late$Lat.Color) +
+  scale_color_manual(values=unique(r_means_long_late$Lat.Color), aesthetics = c("color", "fill")) +
+  geom_hline(yintercept=0) +
   theme_classic()
 
 
 # sensitivity test: remove 3 extirpated populations
-logr_means_cull <- logr_means %>% filter(mean.r.recovery>-2.5)
+r_means_cull <- r_means %>% filter(mean.r.recovery>-2.5)
 
-t.test(x=logr_means_cull$mean.r.pre, y=logr_means_cull$mean.r.drought, paired=TRUE)
-t.test(x=logr_means_cull$mean.r.recovery, y=logr_means_cull$mean.r.drought, paired=TRUE)
+t.test(x=r_means_cull$mean.r.pre, y=r_means_cull$mean.r.drought, paired=TRUE)
+t.test(x=r_means_cull$mean.r.recovery, y=r_means_cull$mean.r.drought, paired=TRUE)
 
-logr_means_cull_long <- logr_means_cull %>% pivot_longer(cols=mean.r.pre:mean.r.recovery, names_to="time", values_to="mean_r")
+r_means_cull_long <- r_means_cull %>% pivot_longer(cols=mean.r.pre:mean.r.recovery, names_to="time", values_to="mean_r")
 
-logr_means_cull_long_early <- logr_means_cull_long %>% filter(time!="mean.r.recovery") %>% droplevels()
-logr_means_cull_long_late <- logr_means_cull_long %>% filter(time!="mean.r.pre") %>% droplevels()
+r_means_cull_long_early <- r_means_cull_long %>% filter(time!="mean.r.recovery") %>% droplevels()
+r_means_cull_long_late <- r_means_cull_long %>% filter(time!="mean.r.pre") %>% droplevels()
 
-
-ggplot(logr_means_cull_long_early, aes(x=time,y=mean_r)) +
+ggplot(r_means_cull_long_early, aes(x=time,y=mean_r)) +
   geom_point(aes(x=factor(time, level=level_order_pre), fill=as.factor(Latitude)), shape=21, size=2) +
-  geom_line(aes(group=Latitude), color=logr_means_cull_long_early$Lat.Color) +
-  scale_color_manual(values=unique(logr_means_cull_long_early$Lat.Color), aesthetics = c("color", "fill")) +
-  geom_hline(yintercept=1) +
+  geom_line(aes(group=Latitude), color=r_means_cull_long_early$Lat.Color) +
+  scale_color_manual(values=unique(r_means_cull_long_early$Lat.Color), aesthetics = c("color", "fill")) +
+  geom_hline(yintercept=0) +
   theme_classic()
 
-ggplot(logr_means_cull_long_late, aes(x=time,y=mean_r)) +
+ggplot(r_means_cull_long_late, aes(x=time,y=mean_r)) +
   geom_point(aes(x=factor(time, level=level_order_post), fill=as.factor(Latitude)), shape=21, size=2) +
-  geom_line(aes(group=Latitude), color=logr_means_cull_long_late$Lat.Color) +
-  scale_color_manual(values=unique(logr_means_cull_long_late$Lat.Color), aesthetics = c("color", "fill")) +
-  geom_hline(yintercept=1) +
+  geom_line(aes(group=Latitude), color=r_means_cull_long_late$Lat.Color) +
+  scale_color_manual(values=unique(r_means_cull_long_late$Lat.Color), aesthetics = c("color", "fill")) +
+  geom_hline(yintercept=0) +
   theme_classic()

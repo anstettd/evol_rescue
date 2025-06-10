@@ -313,7 +313,7 @@ write.csv(params,"data/demography data/vital_rate_coefficients.csv", row.names=F
     } # end loop to run IPMs and estimate lambdas for each site
      
     # make data frame of site, lambda, generation time
-    siteYear.lambda=data.frame(SiteYear,lambda,gen_time)
+    siteYear.lambda=data.frame(SiteYear,lambda,gentime)
     
 #*******************************************************************************
 ### 3. Merge site information with lambda estimates and save to .csv file

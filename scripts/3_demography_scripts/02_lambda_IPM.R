@@ -287,9 +287,10 @@ write.csv(params,"data/demography data/vital_rate_coefficients.csv", row.names=F
   # Remove site x year combinations without parameter estimates
   siteYear <- params$SiteYear
   
-  # Create empty vectors for lambda and site to be filled
+  # Create empty vectors for lambda and site and generation time to be filled
   lambda=c()
   SiteYear=character()
+  gentime=c()
   
   for (f in 1:length(siteYear)) {
     data1 = subset(data, SiteYear==siteYear[f])
@@ -300,18 +301,19 @@ write.csv(params,"data/demography data/vital_rate_coefficients.csv", row.names=F
     ### 2B. Create survival, growth, and fecundity functions and build IPM by running integral_projection_model.R script
     #*******************************************************************************
     
-    source("scripts/demography scripts/integral_projection_model.R")
+    source("scripts/3_demography_scripts/integral_projection_model.R")
     
     #*******************************************************************************
-    ### 2C. Obtain lambda estimate for site f
+    ### 2C. Obtain lambda and generation time estimates for site f
     #*******************************************************************************
     
     lambda[f] <- Re(eigen(K)$values[1])
+    gentime[f] <- gen_time(matU=P, matR=F)
     SiteYear[f]=as.character(siteYear[f])
     } # end loop to run IPMs and estimate lambdas for each site
-    
-    # make data frame of site and lambda
-    siteYear.lambda=data.frame(SiteYear,lambda)
+     
+    # make data frame of site, lambda, generation time
+    siteYear.lambda=data.frame(SiteYear,lambda,gen_time)
     
 #*******************************************************************************
 ### 3. Merge site information with lambda estimates and save to .csv file

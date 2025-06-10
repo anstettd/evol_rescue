@@ -12,7 +12,7 @@
 rm(list = ls(all=TRUE))
 
 # Make vector of packages needed
-packages_needed <- c("lme4", "glmmTMB", "tidyverse", "Rage")
+packages_needed <- c("lme4", "glmmTMB", "tidyverse", "Rage", "FSA")
 
 # Install packages needed (if not already installed)
 for (i in 1:length(packages_needed)){
@@ -471,4 +471,20 @@ write.csv(site.info,"data/demography data/siteYear.lambda_2010-2019.csv",row.nam
 full.table <- left_join(site.info, params) %>% mutate_at(9:20, round, 2) %>% arrange(Latitude)
 write.csv(full.table,"data/demography data/siteYear.paramslambda_2010-2019.csv",row.names=FALSE)
 
+# Summarize generation time 
+site.info$gentime[is.infinite(site.info$gentime)] <- NA #replace Inf with NA
+#across sites/latitude
+mean_gen_time_pop <- site.info %>% 
+  group_by(Site, Latitude) %>% 
+  summarize(mean_gen = mean(gentime, na.rm=TRUE),
+            sd_gen = sd(gentime, na.rm=TRUE),
+            se_gen = se(gentime, na.rm=TRUE),
+            med_gen = median(gentime, na.rm=TRUE))
+ggplot(mean_gen_time, aes(x=Latitude, y=mean_gen)) + geom_point()
+#species-level
+mean_gen_time_spp <- site.info %>% 
+  summarize(mean_gen = mean(gentime, na.rm=TRUE),
+            sd_gen = sd(gentime, na.rm=TRUE),
+            se_gen = se(gentime, na.rm=TRUE),
+            med_gen = median(gentime, na.rm=TRUE))
 

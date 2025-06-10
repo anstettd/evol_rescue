@@ -129,64 +129,13 @@ r_means <- mean.lambda %>%
   dplyr::select(Site,Paper_ID,Latitude,Longitude,Lat.Color,mean.r.pre,mean.r.drought,mean.r.recovery) %>%  
   arrange(Latitude)
 
-# pivot longer for plotting
-r_means_long <- r_means %>% pivot_longer(cols=mean.r.pre:mean.r.recovery, names_to="time", values_to="mean_r")
-# set level orders to reflect time
-level_order_all = c("mean.r.pre", "mean.r.drought", "mean.r.recovery")
-ggplot(r_means_long, aes(x=time,y=mean_r)) +
-  geom_point(aes(x=factor(time, level=level_order_all), fill=as.factor(Latitude)), shape=21, size=2) +
-  geom_line(aes(group=Latitude), color=r_means_long$Lat.Color) +
-  scale_color_manual(values=unique(r_means_long$Lat.Color), aesthetics = c("color", "fill")) +
-  geom_hline(yintercept=0) +
-  scale_x_discrete(labels=c("pre", "drought", "recovery")) + 
-  theme_classic()
-
 # pre to drought
 t.test(x=r_means$mean.r.pre, y=r_means$mean.r.drought, paired=TRUE)
-
-r_means_long_early <- r_means_long %>% filter(time!="mean.r.recovery") %>% droplevels()
-level_order_pre = c("mean.r.pre", "mean.r.drought")
-ggplot(r_means_long_early, aes(x=time,y=mean_r)) +
-  geom_point(aes(x=factor(time, level=level_order_pre), fill=as.factor(Latitude)), shape=21, size=2) +
-  geom_line(aes(group=Latitude), color=r_means_long_early$Lat.Color) +
-  scale_color_manual(values=unique(r_means_long_early$Lat.Color), aesthetics = c("color", "fill")) +
-  geom_hline(yintercept=0) +
-  theme_classic()
 
 # drought to recovery
 t.test(x=r_means$mean.r.recovery, y=r_means$mean.r.drought, paired=TRUE)
 
-r_means_long_late <- r_means_long %>% filter(time!="mean.r.pre") %>% droplevels()
-level_order_post = c("mean.r.drought", "mean.r.recovery")
-ggplot(r_means_long_late, aes(x=time,y=mean_r)) +
-  geom_point(aes(x=factor(time, level=level_order_post), fill=as.factor(Latitude)), shape=21, size=2) +
-  geom_line(aes(group=Latitude), color=r_means_long_late$Lat.Color) +
-  scale_color_manual(values=unique(r_means_long_late$Lat.Color), aesthetics = c("color", "fill")) +
-  geom_hline(yintercept=0) +
-  theme_classic()
-
-
 # sensitivity test: remove 3 extirpated populations
 r_means_cull <- r_means %>% filter(mean.r.recovery>-2.5)
-
 t.test(x=r_means_cull$mean.r.pre, y=r_means_cull$mean.r.drought, paired=TRUE)
 t.test(x=r_means_cull$mean.r.recovery, y=r_means_cull$mean.r.drought, paired=TRUE)
-
-r_means_cull_long <- r_means_cull %>% pivot_longer(cols=mean.r.pre:mean.r.recovery, names_to="time", values_to="mean_r")
-
-r_means_cull_long_early <- r_means_cull_long %>% filter(time!="mean.r.recovery") %>% droplevels()
-r_means_cull_long_late <- r_means_cull_long %>% filter(time!="mean.r.pre") %>% droplevels()
-
-ggplot(r_means_cull_long_early, aes(x=time,y=mean_r)) +
-  geom_point(aes(x=factor(time, level=level_order_pre), fill=as.factor(Latitude)), shape=21, size=2) +
-  geom_line(aes(group=Latitude), color=r_means_cull_long_early$Lat.Color) +
-  scale_color_manual(values=unique(r_means_cull_long_early$Lat.Color), aesthetics = c("color", "fill")) +
-  geom_hline(yintercept=0) +
-  theme_classic()
-
-ggplot(r_means_cull_long_late, aes(x=time,y=mean_r)) +
-  geom_point(aes(x=factor(time, level=level_order_post), fill=as.factor(Latitude)), shape=21, size=2) +
-  geom_line(aes(group=Latitude), color=r_means_cull_long_late$Lat.Color) +
-  scale_color_manual(values=unique(r_means_cull_long_late$Lat.Color), aesthetics = c("color", "fill")) +
-  geom_hline(yintercept=0) +
-  theme_classic()

@@ -98,10 +98,10 @@ r_long <- left_join(r_means_long, r_se_long) %>%
 level_order_all = c("pre", "drought", "recovery")
 
 # all three time periods (alternative Fig S1)
-dodge <- position_dodge(width=0.3)
+dodge <- position_dodge(width=0.2)
 ggplot(r_long, aes(x=factor(time, level=level_order_all), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
   geom_point(shape=21, size=3, position=dodge) +
-  geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
+  #geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
   geom_line(aes(colour=as.factor(Latitude)), position=dodge) +
   scale_color_manual(values=unique(r_long$Lat.Color), aesthetics=c("color", "fill")) +
   scale_y_continuous(name="Mean population growth rate")+ 
@@ -117,12 +117,14 @@ ggplot(r_long, aes(x=factor(time, level=level_order_all), y=mean_r, group=Latitu
     legend.title=element_blank())
 
 #Pre-drought to drought period
-r_means_long_early <- r_means_long %>% filter(time!="mean.r.recovery") %>% droplevels()
-level_order_pre = c("mean.r.pre", "mean.r.drought")
-ggplot(r_means_long_early, aes(x=time, y=mean_r)) +
-  geom_point(aes(x=factor(time, level=level_order_pre), fill=as.factor(Latitude)), shape=21, size=3) +
-  geom_line(aes(group=Latitude), color=r_means_long_early$Lat.Color) +
-  scale_color_manual(values=unique(r_means_long_early$Lat.Color), aesthetics=c("color", "fill")) +
+dodge <- position_dodge(width=0.2)
+r_long_early <- r_long %>% filter(time!="recovery") %>% droplevels()
+level_order_pre = c("pre", "drought")
+ggplot(r_long_early, aes(x=factor(time, level=level_order_pre), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
+  geom_point(shape=21, size=3, position=dodge) +
+  geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
+  geom_line(aes(colour=as.factor(Latitude)), position=dodge) +
+  scale_color_manual(values=unique(r_long_early$Lat.Color), aesthetics=c("color", "fill")) +
   scale_y_continuous(name="Mean population growth rate")+ 
   scale_x_discrete(name="Time Period", labels=c("Pre-drought", "Drought")) + 
   geom_hline(yintercept=0) +
@@ -136,14 +138,15 @@ ggplot(r_means_long_early, aes(x=time, y=mean_r)) +
     legend.title=element_blank())
 
 #Drought to recovery period
-r_means_long_late <- r_means_long %>% filter(time!="mean.r.pre") %>% droplevels()
-level_order_post = c("mean.r.drought", "mean.r.recovery")
-ggplot(r_means_long_late, aes(x=time, y=mean_r)) +
-  geom_point(aes(x=factor(time, level=level_order_post), fill=as.factor(Latitude)), shape=21, size=3) +
-  geom_line(aes(group=Latitude), color=r_means_long_late$Lat.Color) +
+r_long_late <- r_long %>% filter(time!="pre") %>% droplevels()
+level_order_post = c("drought", "recovery")
+ggplot(r_long_late, aes(x=factor(time, level=level_order_post), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
+  geom_point(shape=21, size=3, position=dodge) +
+  geom_line(aes(colour=as.factor(Latitude)), position=dodge) +
+  geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
   scale_y_continuous(name="Mean population growth rate")+ 
   scale_x_discrete(name="Time Period", labels=c("Drought", "Recovery")) + 
-  scale_color_manual(values=unique(r_means_long_late$Lat.Color), aesthetics=c("color", "fill")) +
+  scale_color_manual(values=unique(r_long_late$Lat.Color), aesthetics=c("color", "fill")) +
   geom_hline(yintercept=0) +
   theme_classic() + theme(
     axis.text.x = element_text(face="bold"),

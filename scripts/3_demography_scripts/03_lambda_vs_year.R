@@ -69,10 +69,10 @@ dat.mean.pre <- dat %>%
   group_by(Latitude, Site) %>%
   filter(Year==2010|Year==2011) %>%
   na.omit() %>%
-  dplyr::summarize(mean.r.pre = mean(r), #arithmetic mean of logs
-                   geomean.l.pre = exp(mean(log(lambda))),#geometric mean of unlogged values
-                   sd.r.pre = sd(r),
-                   se.r.pre = se(r)) 
+  dplyr::summarize(mean.r.pre = mean(r, na.rm=TRUE), #arithmetic mean of logs
+                   geomean.l.pre = exp(mean(log(lambda), na.rm=TRUE)),#geometric mean of unlogged values
+                   sd.r.pre = sd(r, na.rm=TRUE),
+                   se.r.pre = se(r, na.rm=TRUE)) 
 hist(dat.mean.pre$mean.r.pre) # better 
 hist(dat.mean.pre$geomean.l.pre) #long right tail
 
@@ -84,11 +84,10 @@ hist(dat.mean.pre$geomean.l.pre) #long right tail
 dat.mean.drought <- dat %>% 
   group_by(Latitude, Site) %>% 
   filter(Year==2012|Year==2013|Year==2014) %>% 
-  na.omit() %>% 
-  dplyr::summarize(mean.r.drought = mean(r), 
-                   geomean.l.drought = exp(mean(log(lambda))),
-                   sd.r.drought = sd(r),
-                   se.r.drought = se(r)) 
+  dplyr::summarize(mean.r.drought = mean(r, na.rm=TRUE), 
+                   geomean.l.drought = exp(mean(log(lambda), na.rm=TRUE)),
+                   sd.r.drought = sd(r, na.rm=TRUE),
+                   se.r.drought = se(r, na.rm=TRUE)) 
 hist(dat.mean.drought$mean.r.drought) #left-skewed
 hist(dat.mean.drought$geomean.l.drought) #better
 
@@ -100,11 +99,10 @@ hist(dat.mean.drought$geomean.l.drought) #better
 dat.mean.recovery <- dat %>% 
   group_by(Latitude, Site) %>% 
   filter(Year==2015|Year==2016|Year==2017) %>% 
-  na.omit() %>% 
-  dplyr::summarize(mean.r.recovery = mean(r), 
-            geomean.l.recovery = exp(mean(log(lambda))),
-            sd.r.recovery = sd(r),
-            se.r.recovery = se(r))
+  dplyr::summarize(mean.r.recovery = mean(r, na.rm=TRUE), 
+            geomean.l.recovery = exp(mean(log(lambda), na.rm=TRUE)),
+            sd.r.recovery = sd(r, na.rm=TRUE),
+            se.r.recovery = se(r, na.rm=TRUE))
 hist(dat.mean.recovery$mean.r.recovery) #better
 hist(dat.mean.recovery$geomean.l.recovery) #right-skewed
 

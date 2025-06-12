@@ -129,11 +129,15 @@ r_means <- mean.lambda %>%
 
 # pre to drought
 t.test(x=r_means$mean.r.pre, y=r_means$mean.r.drought, paired=TRUE)
+wilcox.test(x=r_means$mean.r.pre, y=r_means$mean.r.drought, paired=TRUE)
 
 # drought to recovery
 t.test(x=r_means$mean.r.recovery, y=r_means$mean.r.drought, paired=TRUE)
+wilcox.test(x=r_means$mean.r.recovery, y=r_means$mean.r.drought, paired=TRUE)
 
 # sensitivity test: remove 3 extirpated populations
 r_means_cull <- r_means %>% filter(mean.r.recovery>-2.5)
 t.test(x=r_means_cull$mean.r.pre, y=r_means_cull$mean.r.drought, paired=TRUE)
 t.test(x=r_means_cull$mean.r.recovery, y=r_means_cull$mean.r.drought, paired=TRUE)
+wilcox.test(x=r_means_cull$mean.r.pre, y=r_means_cull$mean.r.drought, paired=TRUE)
+wilcox.test(x=r_means_cull$mean.r.recovery, y=r_means_cull$mean.r.drought, paired=TRUE)

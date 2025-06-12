@@ -107,4 +107,28 @@ ggsave("Graphs/Climate/MAP_pop.pdf",width=6, height = 8, units = "in")
 
 
 
+# plot Year vs. Winter Precipitatio Anomaly
+PPTwtanom_plot<-ggplot() + 
+  geom_line(stat="smooth",data = anom, aes(y = PPT_wt.anom, x = Year, 
+                                                group=Latitude,col=factor(Paper_ID)), alpha=0.75,linewidth = 1.5,se=FALSE) + 
+  xlab("Year") + 
+  ylab("Winter Precipitation Anomaly") +
+  theme_classic()+
+  #scale_color_manual(values = lat_cols) +
+  scale_x_continuous(breaks=c(2010,2012,2014,2016,2018))+
+  scale_color_manual(values=as.character(wna2_year$Lat.Color)) 
+
+#scale_y_discrete(breaks=seq(2010,2016,2))
+
+PPTwtanom_plot<-PPTwtanom_plot + theme(legend.position = "none",
+                           axis.title.x=element_text(size=16,vjust = 0, face="bold",hjust=0.5),
+                           axis.text.x = element_text(size=14, face="bold", angle=0,hjust=0.5),
+                           axis.text.y = element_text(size=14,face="bold"),
+                           axis.title.y = element_text(size=16,vjust = 1, face="bold",hjust=0.5))#+
+#scale_x_discrete(labels=Site.label)
+PPTwtanom_plot
+
+
+
+
 

@@ -100,9 +100,9 @@ level_order_all = c("pre", "drought", "recovery")
 # all three time periods (alternative Fig S1)
 dodge <- position_dodge(width=0.2)
 ggplot(r_long, aes(x=factor(time, level=level_order_all), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
+  geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
   geom_point(shape=21, size=3, position=dodge) +
   #geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
-  geom_line(aes(colour=as.factor(Latitude)), position=dodge) +
   scale_color_manual(values=unique(r_long$Lat.Color), aesthetics=c("color", "fill")) +
   scale_y_continuous(name="Mean population growth rate")+ 
   scale_x_discrete(name="Time Period", labels=c("Pre-drought", "Drought", "Recovery")) + 
@@ -115,6 +115,7 @@ ggplot(r_long, aes(x=factor(time, level=level_order_all), y=mean_r, group=Latitu
     strip.background=element_blank(), 
     strip.text.x=element_blank(),
     legend.title=element_blank())
+ggsave("Graphs/Demography/01b_decline_recovery_rmeans.pdf",width=14, height = 8, units = "in")
 
 #Pre-drought to drought period
 dodge <- position_dodge(width=0.2)
@@ -123,7 +124,7 @@ level_order_pre = c("pre", "drought")
 ggplot(r_long_early, aes(x=factor(time, level=level_order_pre), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
   geom_point(shape=21, size=3, position=dodge) +
   geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
-  geom_line(aes(colour=as.factor(Latitude)), position=dodge) +
+  geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
   scale_color_manual(values=unique(r_long_early$Lat.Color), aesthetics=c("color", "fill")) +
   scale_y_continuous(name="Mean population growth rate")+ 
   scale_x_discrete(name="Time Period", labels=c("Pre-drought", "Drought")) + 
@@ -136,13 +137,14 @@ ggplot(r_long_early, aes(x=factor(time, level=level_order_pre), y=mean_r, group=
     strip.background=element_blank(), 
     strip.text.x=element_blank(),
     legend.title=element_blank())
+ggsave("Graphs/Demography/01c_decline.pdf",width=14, height = 8, units = "in")
 
 #Drought to recovery period
 r_long_late <- r_long %>% filter(time!="pre") %>% droplevels()
 level_order_post = c("drought", "recovery")
 ggplot(r_long_late, aes(x=factor(time, level=level_order_post), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
   geom_point(shape=21, size=3, position=dodge) +
-  geom_line(aes(colour=as.factor(Latitude)), position=dodge) +
+  geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
   geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
   scale_y_continuous(name="Mean population growth rate")+ 
   scale_x_discrete(name="Time Period", labels=c("Drought", "Recovery")) + 
@@ -156,47 +158,29 @@ ggplot(r_long_late, aes(x=factor(time, level=level_order_post), y=mean_r, group=
     strip.background = element_blank(), 
     strip.text.x = element_blank(),
     legend.title = element_blank())
+ggsave("Graphs/Demography/01d_recovery.pdf",width=14, height = 8, units = "in")
 
 
 # sensitivity test: remove 3 extirpated populations
-r_means_cull <- r_means %>% filter(mean.r.recovery>-2.5)
-r_means_cull_long <- r_means_cull %>% pivot_longer(cols=mean.r.pre:mean.r.recovery, names_to="time", values_to="mean_r")
-r_means_cull_long_early <- r_means_cull_long %>% filter(time!="mean.r.recovery") %>% droplevels()
-r_means_cull_long_late <- r_means_cull_long %>% filter(time!="mean.r.pre") %>% droplevels()
-
-ggplot(r_means_cull_long_early, aes(x=time, y=mean_r)) +
-  geom_point(aes(x=factor(time, level=level_order_pre), fill=as.factor(Latitude)), shape=21, size=2) +
-  geom_line(aes(group=Latitude), color=r_means_cull_long_early$Lat.Color) +
-  scale_y_continuous(name="Mean population growth rate")+ 
-  scale_color_manual(values=unique(r_means_cull_long_early$Lat.Color), aesthetics=c("color", "fill")) +
-  scale_x_discrete(name="Time Period", labels=c("Pre-Drought", "Drought")) + 
-  scale_color_manual(values=unique(r_means_long_late$Lat.Color), aesthetics=c("color", "fill")) +
-  geom_hline(yintercept=0) +
-  theme_classic() + theme(
-    axis.text.x=element_text(face="bold"),
-    axis.text.y=element_text(size=11, face="bold"),
-    axis.title.x=element_text(color="black", size=20, vjust=0.5, face="bold"),
-    axis.title.y=element_text(color="black", size=20, vjust=2, face="bold", hjust=0.5),
-    strip.background=element_blank(), 
-    strip.text.x=element_blank(),
-    legend.title = element_blank())
-
-ggplot(r_means_cull_long_late, aes(x=time, y=mean_r)) +
-  geom_point(aes(x=factor(time, level=level_order_post), fill=as.factor(Latitude)), shape=21, size=2) +
-  geom_line(aes(group=Latitude), color=r_means_cull_long_late$Lat.Color) +
-  scale_color_manual(values=unique(r_means_cull_long_late$Lat.Color), aesthetics=c("color", "fill")) +
+r_long_late_cull <- filter(r_long_late, mean_r>-2)
+ggplot(r_long_late_cull, aes(x=factor(time, level=level_order_post), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
+  geom_point(shape=21, size=3, position=dodge) +
+  geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
+  geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
   scale_y_continuous(name="Mean population growth rate")+ 
   scale_x_discrete(name="Time Period", labels=c("Drought", "Recovery")) + 
-  scale_color_manual(values=unique(r_means_long_late$Lat.Color), aesthetics=c("color", "fill")) +
+  scale_color_manual(values=unique(r_long_late_cull$Lat.Color), aesthetics=c("color", "fill")) +
   geom_hline(yintercept=0) +
   theme_classic() + theme(
-    axis.text.x=element_text(face="bold"),
-    axis.text.y=element_text(size=11,face="bold"),
-    axis.title.x=element_text(color="black", size=20, vjust=0.5, face="bold"),
-    axis.title.y=element_text(color="black", size=20,vjust=2, face="bold", hjust=0.5),
-    strip.background=element_blank(), 
-    strip.text.x=element_blank(),
-    legend.title=element_blank())
+    axis.text.x = element_text(face="bold"),
+    axis.text.y = element_text(size=11,face="bold"),
+    axis.title.x = element_text(color="black", size=20, vjust=0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=20, vjust=2, face="bold", hjust=0.5),
+    strip.background = element_blank(), 
+    strip.text.x = element_blank(),
+    legend.title = element_blank())
+ggsave("Graphs/Demography/01e_recovery_cull.pdf",width=14, height = 8, units = "in")
+
 
 
 #*******************************************************************************

@@ -222,7 +222,7 @@ r_means_norm_long <- r_means_norm %>%
 r_means_norm_long_drought <- r_means_norm_long %>% filter(time!="delta.r.recovery.norm") %>% droplevels()
 level_order_drought = c("rel.start", "delta.r.drought.norm")
 dodge <- position_dodge(width=0.2)
-ggplot(r_means_norm_long_drought, aes(x=factor(time, level=level_order_drought), y=mean_r_norm, group=Latitude, fill=as.factor(Latitude))) +
+c <- ggplot(r_means_norm_long_drought, aes(x=factor(time, level=level_order_drought), y=mean_r_norm, group=Latitude, fill=as.factor(Latitude))) +
   geom_point(shape=21, size=3, position=dodge) +
   #geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
   geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
@@ -242,7 +242,7 @@ ggplot(r_means_norm_long_drought, aes(x=factor(time, level=level_order_drought),
 r_means_norm_long_recovery <- r_means_norm_long %>% filter(time!="delta.r.drought.norm") %>% droplevels()
 level_order_drought = c("rel.start", "delta.r.recovery.norm")
 dodge <- position_dodge(width=0.2)
-ggplot(r_means_norm_long_recovery, aes(x=factor(time, level=level_order_drought), y=mean_r_norm, group=Latitude, fill=as.factor(Latitude))) +
+d <- ggplot(r_means_norm_long_recovery, aes(x=factor(time, level=level_order_drought), y=mean_r_norm, group=Latitude, fill=as.factor(Latitude))) +
   geom_point(shape=21, size=3, position=dodge) +
   #geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
   geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
@@ -259,3 +259,4 @@ ggplot(r_means_norm_long_recovery, aes(x=factor(time, level=level_order_drought)
     strip.text.x=element_blank(),
     legend.title=element_blank())
 
+plot_grid(a, b, c, d, nrow=2)

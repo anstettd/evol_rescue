@@ -121,7 +121,7 @@ ggsave("Graphs/Demography/01b_decline_recovery_rmeans.pdf",width=14, height = 8,
 dodge <- position_dodge(width=0.2)
 r_long_early <- r_long %>% filter(time!="recovery") %>% droplevels()
 level_order_pre = c("pre", "drought")
-ggplot(r_long_early, aes(x=factor(time, level=level_order_pre), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
+a <- ggplot(r_long_early, aes(x=factor(time, level=level_order_pre), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
   geom_point(shape=21, size=3, position=dodge) +
   geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
   geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
@@ -137,12 +137,12 @@ ggplot(r_long_early, aes(x=factor(time, level=level_order_pre), y=mean_r, group=
     strip.background=element_blank(), 
     strip.text.x=element_blank(),
     legend.title=element_blank())
-ggsave("Graphs/Demography/01c_decline.pdf",width=14, height = 8, units = "in")
+ggsave(a, "Graphs/Demography/01c_decline.pdf",width=14, height = 8, units = "in")
 
 #Drought to recovery period
 r_long_late <- r_long %>% filter(time!="pre") %>% droplevels()
 level_order_post = c("drought", "recovery")
-ggplot(r_long_late, aes(x=factor(time, level=level_order_post), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
+b <- ggplot(r_long_late, aes(x=factor(time, level=level_order_post), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
   geom_point(shape=21, size=3, position=dodge) +
   geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
   geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
@@ -206,4 +206,56 @@ plot_3
 ggsave("Graphs/Demography/sites/05_little_jamison.pdf",width=5, height=4, units="in")
 
 
+
+#*******************************************************************************
+### 4. Try expressing changes normalized to starting lambda per reviewer 2
+#*******************************************************************************
+
+r_means_norm <- r_means %>% 
+  mutate(delta.r.drought.norm = (mean.r.drought-mean.r.pre)/abs(mean.r.pre),
+         delta.r.recovery.norm = (mean.r.recovery-mean.r.drought)/abs(mean.r.drought),
+         rel.start = mean.r.pre/mean.r.pre)
+
+r_means_norm_long <- r_means_norm %>% 
+  pivot_longer(cols=delta.r.drought.norm:rel.start, names_to="time", values_to="mean_r_norm")
+
+r_means_norm_long_drought <- r_means_norm_long %>% filter(time!="delta.r.recovery.norm") %>% droplevels()
+level_order_drought = c("rel.start", "delta.r.drought.norm")
+dodge <- position_dodge(width=0.2)
+ggplot(r_means_norm_long_drought, aes(x=factor(time, level=level_order_drought), y=mean_r_norm, group=Latitude, fill=as.factor(Latitude))) +
+  geom_point(shape=21, size=3, position=dodge) +
+  #geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
+  geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
+  scale_color_manual(values=unique(r_means_norm_long_drought$Lat.Color), aesthetics=c("color", "fill")) +
+  scale_y_continuous(name="Normalized population growth rate")+ 
+  scale_x_discrete(name="Time Period", labels=c("Pre-drought", "Drought")) + 
+  geom_hline(yintercept=1) +
+  theme_classic() + theme(
+    axis.text.x = element_text(face="bold"),
+    axis.text.y = element_text(size=11, face="bold"),
+    axis.title.x = element_text(color="black", size=20, vjust=0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=20,vjust=2, face="bold", hjust=0.5),
+    strip.background=element_blank(), 
+    strip.text.x=element_blank(),
+    legend.title=element_blank())
+
+r_means_norm_long_recovery <- r_means_norm_long %>% filter(time!="delta.r.drought.norm") %>% droplevels()
+level_order_drought = c("rel.start", "delta.r.recovery.norm")
+dodge <- position_dodge(width=0.2)
+ggplot(r_means_norm_long_recovery, aes(x=factor(time, level=level_order_drought), y=mean_r_norm, group=Latitude, fill=as.factor(Latitude))) +
+  geom_point(shape=21, size=3, position=dodge) +
+  #geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
+  geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
+  scale_color_manual(values=unique(r_means_norm_long_recovery$Lat.Color), aesthetics=c("color", "fill")) +
+  scale_y_continuous(name="Normalized population growth rate")+ 
+  scale_x_discrete(name="Time Period", labels=c("Drought", "Recovery")) + 
+  geom_hline(yintercept=1) +
+  theme_classic() + theme(
+    axis.text.x = element_text(face="bold"),
+    axis.text.y = element_text(size=11, face="bold"),
+    axis.title.x = element_text(color="black", size=20, vjust=0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=20,vjust=2, face="bold", hjust=0.5),
+    strip.background=element_blank(), 
+    strip.text.x=element_blank(),
+    legend.title=element_blank())
 

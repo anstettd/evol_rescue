@@ -153,15 +153,16 @@ ggplot(density, aes(x=Year, y=Density_A_all, color=as.factor(Latitude))) +
   facet_wrap(~Latitude, scale="free") +
   theme_classic()
 
-# relative density of all plants
+##### relative density of all plants <-- USE THIS ONE 
 ggplot(density, aes(x=Year, y=RelDens_N_all, color=as.factor(Latitude))) +
   geom_point(alpha=0.3) +
   geom_smooth(method="lm", formula=y~poly(x,2)) +
   ggpubr::stat_regline_equation(formula=y~poly(x,2), label.x=2010, label.y=0.95, size=2.5) + 
   ylim(0,1) +
   ylab("Relative plant density") +
+  scale_x_discrete(breaks=c(2010, 2014, 2018), limits=c(2010:2018)) +
   scale_color_manual(values=color.list) +
-  facet_wrap(~Latitude, nrow=3, scale="free") +
+  facet_wrap(~Latitude, nrow=3) +
   theme_classic() +
   theme(strip.background = element_blank(), strip.text.x = element_blank(),
         legend.title = element_blank())

@@ -27,7 +27,7 @@ library(RColorBrewer)
 
 #Import demography estimates + metadata
 demog_means <- read_csv("data/demography data/siteYear.lambda_responses_2010-2019.csv") %>% 
-  select(Site,Paper_ID,Lat.Color)
+  dplyr::select(Site,Paper_ID,Lat.Color)
 
 
 #Import weather data
@@ -35,7 +35,7 @@ wna2 <- read_csv("data/climate_data/demo_weather_wateryear.csv")  %>% filter(Pap
 
 
 wna2 <- wna2 %>% #Selects MAT, MAP, CMD,
-  select(Site,Paper_ID,Latitude,Longitude,Year,MAT.weath=MAT,MAP.weath=MAP,CMD.weath=CMD) %>%  
+  dplyr::select(Site,Paper_ID,Latitude,Longitude,Year,MAT.weath=MAT,MAP.weath=MAP,CMD.weath=CMD) %>%  
   mutate(log.MAP.weath = log10(MAP.weath)) #Take log of MAP
 #separate(ID_Year1, into = c("Site", "Year"), sep = "_") #makes site/year variable
 wna2$Site <- as.factor(wna2$Site) ; wna2$Year <- as.numeric(wna2$Year) #define variables
@@ -46,18 +46,18 @@ anom <- read_csv("data/climate_data/climate_anomaly_yearly.csv") %>% filter(Pape
 #Make Lat.Site Variable
 wna2.site <- wna2 
 wna2.site$Latitude <- round(wna2.site$Latitude ,digit=2) 
-wna2.site <- wna2.site %>% unite(col=Lat.Site,c("Latitude","Site"),sep="_") %>% select(Lat.Site)
+wna2.site <- wna2.site %>% unite(col=Lat.Site,c("Latitude","Site"),sep="_") %>% dplyr::select(Lat.Site)
 wna2 <- cbind(wna2,wna2.site)
 anom.site <- anom 
 anom.site$Latitude <- round(anom.site$Latitude ,digit=2) 
-anom.site <- anom.site %>% unite(col=Lat.Site,c("Latitude","Site"),sep="_") %>% select(Lat.Site)
+anom.site <- anom.site %>% unite(col=Lat.Site,c("Latitude","Site"),sep="_") %>% dplyr::select(Lat.Site)
 anom <- cbind(anom,anom.site)
 
 #Import weather anomaly data
 seasonal <- read_csv("data/climate_data/climate_seasonal.csv") %>% filter(Paper_ID!=12)
 seasonal.site <- seasonal 
 seasonal.site$Latitude <- round(seasonal.site$Latitude ,digit=2) 
-seasonal.site <- seasonal.site %>% unite(col=Lat.Site,c("Latitude","Site"),sep="_") %>% select(Lat.Site)
+seasonal.site <- seasonal.site %>% unite(col=Lat.Site,c("Latitude","Site"),sep="_") %>% dplyr::select(Lat.Site)
 seasonal <- cbind(seasonal,seasonal.site)
 
 
@@ -107,7 +107,7 @@ ggsave("Graphs/Climate/MAP_pop.pdf",width=6, height = 8, units = "in")
 
 
 
-# plot Year vs. Winter Precipitatio Anomaly
+# plot Year vs. Winter Precipitation Anomaly
 PPTwtanom_plot<-ggplot() + 
   geom_line(stat="smooth",data = anom, aes(y = PPT_wt.anom, x = Year, 
                                                 group=Latitude,col=factor(Paper_ID)), alpha=0.75,linewidth = 1.5,se=FALSE) + 

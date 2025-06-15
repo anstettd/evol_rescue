@@ -126,7 +126,7 @@ a <- ggplot(r_long_early, aes(x=factor(time, level=level_order_pre), y=mean_r, g
   geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
   geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
   scale_color_manual(values=unique(r_long_early$Lat.Color), aesthetics=c("color", "fill")) +
-  scale_y_continuous(name="Mean population growth rate")+ 
+  scale_y_continuous(name="Mean r")+ 
   scale_x_discrete(name="Time Period", labels=c("Pre-drought", "Drought")) + 
   geom_hline(yintercept=0) +
   theme_classic() + theme(
@@ -146,7 +146,7 @@ b <- ggplot(r_long_late, aes(x=factor(time, level=level_order_post), y=mean_r, g
   geom_point(shape=21, size=3, position=dodge) +
   geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
   geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
-  scale_y_continuous(name="Mean population growth rate")+ 
+  scale_y_continuous(name="Mean r")+ 
   scale_x_discrete(name="Time Period", labels=c("Drought", "Recovery")) + 
   scale_color_manual(values=unique(r_long_late$Lat.Color), aesthetics=c("color", "fill")) +
   geom_hline(yintercept=0) +
@@ -167,7 +167,7 @@ ggplot(r_long_late_cull, aes(x=factor(time, level=level_order_post), y=mean_r, g
   geom_point(shape=21, size=3, position=dodge) +
   geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
   geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
-  scale_y_continuous(name="Mean population growth rate")+ 
+  scale_y_continuous(name="Mean r")+ 
   scale_x_discrete(name="Time Period", labels=c("Drought", "Recovery")) + 
   scale_color_manual(values=unique(r_long_late_cull$Lat.Color), aesthetics=c("color", "fill")) +
   geom_hline(yintercept=0) +
@@ -227,7 +227,7 @@ c <- ggplot(r_means_norm_long_drought, aes(x=factor(time, level=level_order_drou
   #geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
   geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
   scale_color_manual(values=unique(r_means_norm_long_drought$Lat.Color), aesthetics=c("color", "fill")) +
-  scale_y_continuous(name="Normalized population growth rate")+ 
+  scale_y_continuous(name="Normalized r")+ 
   scale_x_discrete(name="Time Period", labels=c("Pre-drought", "Drought")) + 
   geom_hline(yintercept=1) +
   theme_classic() + theme(
@@ -247,7 +247,7 @@ d <- ggplot(r_means_norm_long_recovery, aes(x=factor(time, level=level_order_dro
   #geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
   geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
   scale_color_manual(values=unique(r_means_norm_long_recovery$Lat.Color), aesthetics=c("color", "fill")) +
-  scale_y_continuous(name="Normalized population growth rate")+ 
+  scale_y_continuous(name="Normalized r")+ 
   scale_x_discrete(name="Time Period", labels=c("Drought", "Recovery")) + 
   geom_hline(yintercept=1) +
   theme_classic() + theme(

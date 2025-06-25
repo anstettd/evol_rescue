@@ -52,7 +52,7 @@ dat_decline <- dat %>% filter(Year<2015)
 ### 1. Visualize estimates over time for all sites (Fig S1)
 #*******************************************************************************
 
-#Decline & Recovery
+#Decline & Recovery (Old Figure S1)
 ggplot(dat, aes(x=Year, y=r)) +
   geom_point(data=filter(dat, Year<2012), col="grey") +
   geom_point(data=filter(dat, between(Year,2012,2014)), col="red") +
@@ -97,7 +97,7 @@ r_long <- left_join(r_means_long, r_se_long) %>%
 # set level orders to reflect time
 level_order_all = c("pre", "drought", "recovery")
 
-# all three time periods (alternative Fig S1)
+# all three time periods (alternative Fig S1, option 1)
 dodge <- position_dodge(width=0.2)
 ggplot(r_long, aes(x=factor(time, level=level_order_all), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
   geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
@@ -184,10 +184,10 @@ ggsave("Graphs/Demography/01e_recovery_cull.pdf",width=14, height = 8, units = "
 
 
 #*******************************************************************************
-### 3. Visualize decline over time for exemplar site (Fig 1D)
+### 3. Visualize decline over time for exemplar site (Old Fig 1D)
 #*******************************************************************************
 
-#Little Jamison
+#Little Jamison 
 dat_little <- dat %>% 
   filter(Site=="Little Jameson Creek") %>% 
   filter(Year<2015)
@@ -222,6 +222,8 @@ r_means_norm_long <- r_means_norm %>%
 r_means_norm_long_drought <- r_means_norm_long %>% filter(time!="delta.r.recovery.norm") %>% droplevels()
 level_order_drought = c("rel.start", "delta.r.drought.norm")
 dodge <- position_dodge(width=0.2)
+
+#normalized decline during drought (new Fig 1D)
 c <- ggplot(r_means_norm_long_drought, aes(x=factor(time, level=level_order_drought), y=mean_r_norm, group=Latitude, fill=as.factor(Latitude))) +
   geom_point(shape=21, size=3, position=dodge) +
   #geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
@@ -238,6 +240,7 @@ c <- ggplot(r_means_norm_long_drought, aes(x=factor(time, level=level_order_drou
     strip.background=element_blank(), 
     strip.text.x=element_blank(),
     legend.title=element_blank())
+ggsave("Graphs/Demography/r_drought_norm.pdf",width=5, height=4, units="in")
 
 r_means_norm_long_recovery <- r_means_norm_long %>% filter(time!="delta.r.drought.norm") %>% droplevels()
 level_order_drought = c("rel.start", "delta.r.recovery.norm")
@@ -259,4 +262,6 @@ d <- ggplot(r_means_norm_long_recovery, aes(x=factor(time, level=level_order_dro
     strip.text.x=element_blank(),
     legend.title=element_blank())
 
+# New Fig S1, option 2
 plot_grid(a, b, c, d, nrow=2)
+ggsave("Graphs/Demography/r_means_4panel.pdf",width=5, height=4, units="in")

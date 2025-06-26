@@ -1,11 +1,13 @@
 ##################################################
-# Trait change over time
+### Phenotypic trait change over time
 
 # This script recalculates trait evolution from Anstett et al. 2021 Evolution Letters and then relates it to genomic metrics of selection on climate-associated SNP
 
-# Goal is to see if trait evolution towards drought escape versus drought avoidance can help clarify why some populations have selection against heat/drought-associated alleles (negative S) and some populations have selection for heat/drought-associated alleles (positive S)
+# Anstett et al. 2021 (a) focused on regional groups of populations rather than population-specific trends and (b) did not centre and scale variables. Here we need population-specific metrics of trait change, in standardized units that allow us to compare and combine across traits.
 
-# Last updated 2025 06 24
+# Goal is to see if trait evolution towards drought escape versus drought avoidance can help clarify why some populations have selection against heat/drought-associated alleles (negative S) while some populations have selection for heat/drought-associated alleles (positive S)
+
+# Last updated 2025 06 25
 ##################################################
 
 
@@ -23,7 +25,7 @@ library(sfsmisc)
 
 
 ###################################################################################
-#Import main trait dataset from resurrection common garden in greenhouse
+# Import main trait dataset from resurrection common garden in greenhouse
 y5 <- read_csv("data/trait_data/traits_anstett2021.csv") %>% 
   mutate(SLA_scaled = scale(SLA, center=T, scale=T),
          FT_scaled = scale(Experiment_Date, center=T, scale=T),
@@ -33,7 +35,7 @@ y5 <- read_csv("data/trait_data/traits_anstett2021.csv") %>%
          Year_scaled = scale(Year, center=T, scale=T),
          SiteName = gsub(" ", "", Site.Name))
 
-#Set factors
+# Set factors
 y5$Block <- as.factor(y5$Block) ; y5$Family <- as.factor(y5$Family) # prep factors
 
 # Set up vectors with treatment and regional information
@@ -43,8 +45,12 @@ order.row<-1
 slope.reg<-matrix(nrow=length(treatment.v)*length(site.v)*5, ncol=5)
 
 ###################################################################################
+
+
 ###################################################################################
-#Get slopes of SLA Vs Year for each population in each treatment
+### Fit models to get slopes of change over time for each population in each treatment
+
+# Get slopes of SLA Vs Year for each population in each treatment
 hist(y5$SLA_scaled)
 
 fullmod.SLA <- lmer(SLA_scaled ~ SiteName*Year_scaled*Drought + (1|Family) + (1|Block),
@@ -66,7 +72,7 @@ for (i in 1:length(treatment.v)){
   }
 }
 
-#Get slopes of Date of FLowering Vs Year for each population in each treatment
+# Get slopes of Date of FLowering Vs Year for each population in each treatment
 hist(y5$FT_scaled)
 
 fullmod.FT <- lmer(FT_scaled ~ SiteName*Year_scaled*Drought + (1|Family) + (1|Block),
@@ -159,27 +165,32 @@ colnames(trait_change)=c("Trait", "Site", "Treatment", "Slope", "SE_slope")
 trait_change$Slope=as.numeric(trait_change$Slope)
 trait_change$SE_slope=as.numeric(trait_change$SE_slope)
 
+###################################################################################
 
+###################################################################################
 ### Make Cumulative Indices of total trait change towards drought avoidance vs drought escape
-# for all traits except flowering time and water content, positive slopes indicate evolution towards drought escape
-# for flowering time and water content, negative slope indicates evolution towards drought escape
-# so, for index of total trait change, flowering time and water content slopes are subtracted so that bigger values mean greater evolution towards drought escape across all measured traits
 
-trait_change <- trait_change %>% select(-SE_slope) %>% 
+# For all traits except flowering time and water content, positive slopes indicate evolution towards drought escape
+# For flowering time and water content, negative slope indicates evolution towards drought escape
+# So, for index of total trait change, flowering time and water content slopes are subtracted so that bigger values mean greater evolution towards drought escape across all measured traits
+
+trait_change <- trait_change %>% dplyr::select(-SE_slope) %>% 
   pivot_wider(names_from = c(Trait, Treatment), values_from=Slope) %>% 
   mutate(trait.change.all.dry = SLA_D - FT_D + SC_D + A_D - WC_D,
          trait.change.all.wet = SLA_W - FT_W + SC_W + A_W - WC_W,
-         trait.change.best.dry = SLA_D - FT_D,
-         trait.change.best.wet = SLA_W - FT_W,
-         trait.change.all = trait.change.all.dry + trait.change.all.wet,
-         trait.change.best = trait.change.best.dry + trait.change.best.wet)
+         trait.change.all = trait.change.all.dry + trait.change.all.wet)
 write_csv(trait_change, "data/trait_data/trait_slopes.csv")
 
-# Read in demography data (includes metadata)
+###################################################################################
+
+###################################################################################
+### Merge trait slopes with population metadata and genomic selection data
+
+# Read in demography data (because includes population metadata)
 demog_recovery <- read_csv("data/demography data/siteYear.lambda_responses_2010-2019.csv") %>% mutate(Site=gsub(" ", "", Site))
 
 # Import genomic selection response
-slope.summary <- read_csv("data/snp_change_2/mean_median_S_all.csv") %>% select(Site, Median, Mean)
+slope.summary <- read_csv("data/snp_change_2/mean_median_S_all.csv") %>% dplyr::select(Site, Median, Mean)
 
 # Join data sets
 geno_pop <- left_join(demog_recovery, slope.summary, by=c("Paper_ID"="Site"))
@@ -188,10 +199,12 @@ trait_geno_pop <- left_join(geno_pop, trait_change, by=c("Site"="Site"))
 
 color.list <- trait_geno_pop$Lat.Color
 
+###################################################################################
 
-### GENOMIC SELECTION - TRAIT EVOLUTION
+###################################################################################
+### GENOMIC SELECTION - CUMULATIVE TRAIT EVOLUTION
 
-# Median S ~ all trait evolution (both treatments)
+# Median S ~ cumulative trait evolution (across both treatments)
 ggplot(data=trait_geno_pop, aes(x=Median, y=trait.change.all, color=as.character(Latitude))) +
   geom_point(size=3) +
   geom_smooth(method="lm", color="black", linetype="dashed", fill="grey75") +
@@ -203,27 +216,11 @@ ggplot(data=trait_geno_pop, aes(x=Median, y=trait.change.all, color=as.character
   theme(legend.title = element_blank())
 
 mod<-lm(trait.change.all ~ Median, data=trait_geno_pop)
-summary(mod)
+summary(mod) #NS
 rob.mod <- rlm(trait.change.all ~ Median, data=trait_geno_pop)
-f.robftest(rob.mod, var="Median")
+f.robftest(rob.mod, var="Median") #NS
 
-# Median S ~ best trait evolution (both treatments)
-ggplot(data=trait_geno_pop, aes(x=Median, y=trait.change.best, color=as.character(Latitude))) +
-  geom_point(size=3) +
-  geom_smooth(method="lm", color="black", linetype="dashed", fill="grey75") +
-  geom_smooth(method=MASS::rlm, color="black", fill="grey50") +
-  ylab("Rate of evolution towards drought escape") +
-  xlab("Median S (climate loci)") + 
-  scale_color_manual(values=color.list) +
-  theme_classic() +
-  theme(legend.title = element_blank())
-
-mod<-lm(trait.change.best ~ Median, data=trait_geno_pop)
-summary(mod)
-rob.mod <- rlm(trait.change.best ~ Median, data=trait_geno_pop)
-f.robftest(rob.mod, var="Median")
-
-# Median S ~ all trait evolution (dry treatment)
+# Median S ~ cumulative trait evolution (within dry treatment)
 ggplot(data=trait_geno_pop, aes(x=Median, y=trait.change.all.dry, color=as.character(Latitude))) +
   geom_point(size=3) +
   geom_smooth(method="lm", color="black", linetype="dashed", fill="grey75") +
@@ -234,11 +231,11 @@ ggplot(data=trait_geno_pop, aes(x=Median, y=trait.change.all.dry, color=as.chara
   theme_classic() +
   theme(legend.title = element_blank())
 
-summary(lm(trait.change.all.dry ~ Median, data=trait_geno_pop)) 
+summary(lm(trait.change.all.dry ~ Median, data=trait_geno_pop)) #NS
 rob.mod <- rlm(trait.change.all.dry ~ Median, data=trait_geno_pop)
-f.robftest(rob.mod, var="Median")
+f.robftest(rob.mod, var="Median") #+
 
-# Median S ~ all trait evolution (wet treatment)
+# Median S ~ cumulative trait evolution (within wet treatment)
 ggplot(data=trait_geno_pop, aes(x=Median, y=trait.change.all.wet, color=as.character(Latitude))) +
   geom_point(size=3) +
   geom_smooth(method="lm", color="black", linetype="dashed", fill="grey75") +
@@ -249,81 +246,168 @@ ggplot(data=trait_geno_pop, aes(x=Median, y=trait.change.all.wet, color=as.chara
   theme_classic() +
   theme(legend.title = element_blank())
 
+summary(lm(trait.change.all.wet ~ Median, data=trait_geno_pop)) #NS
+rob.mod <- rlm(trait.change.all.wet ~ Median, data=trait_geno_pop)
+f.robftest(rob.mod, var="Median") #NS
 
-# Median S ~ best trait evolution (dry treatment)
-ggplot(data=trait_geno_pop, aes(x=Median, y=trait.change.best.dry, color=as.character(Latitude))) +
-  geom_point(size=3) +
-  geom_smooth(method="lm", color="black", linetype="dashed", fill="grey75") +
-  geom_smooth(method=MASS::rlm, color="black", fill="grey50") +
-  ylab("Rate of evolution towards drought escape (dry treatment") +
-  xlab("Median S (climate loci)") + 
-  scale_color_manual(values=color.list) +
-  theme_classic() +
-  theme(legend.title = element_blank())
+### Conclusion from trait index analyses: weak trend for negative S to be more consistent with escape and positive S to be more consistent with avoidance within dry treatment, but only if influence of Oregon Creek is minimized (and Oregon Creek is one of the 3 populations with significantly negative S)
 
-summary(lm(trait.change.best.dry ~ Median, data=trait_geno_pop)) 
-rob.mod <- rlm(trait.change.best.dry ~ Median, data=trait_geno_pop)
-f.robftest(rob.mod, var="Median")
-
-# Median S ~ best trait evolution (wet treatment)
-ggplot(data=trait_geno_pop, aes(x=Median, y=trait.change.best.wet, color=as.character(Latitude))) +
-  geom_point(size=3) +
-  geom_smooth(method="lm", color="black", linetype="dashed", fill="grey75") +
-  geom_smooth(method=MASS::rlm, color="black", fill="grey50") +
-  ylab("Rate of evolution towards drought escape (wet treatment") +
-  xlab("Median S (climate loci)") + 
-  scale_color_manual(values=color.list) +
-  theme_classic() +
-  theme(legend.title = element_blank())
+###################################################################################
 
 
+###################################################################################
+### Focus on populations whose genomic selection was significantly different from null: explore bins of populations with negative vs positive slopes (ignoring the mushy middle)
 
-
-
-#pops whose slopes went significantly positive: 3, 4, 11
-#pops whose slopes went significantly negative: 6, 7, 8
-#pops in the middle whose distributions are not distinguishable from 0: 1, 2, 5, 9, 10
-#instead of regression, look for mean differences in traits between pops(3,4,11) vs pops(6,7,8)
+# Pops whose slopes went significantly positive: 3, 4, 11
+# Pops whose slopes went significantly negative: 6, 7, 8
+# Pops in the middle whose distributions are not distinguishable from 0: 1, 2, 5, 9, 10
+# Instead of regression, look for mean differences in traits between pops(3,4,11) vs pops(6,7,8)
 
 trait_geno_pop_cull <- trait_geno_pop %>% 
   dplyr::filter(Paper_ID==3|Paper_ID==4|Paper_ID==11|Paper_ID==6|Paper_ID==7|Paper_ID==8) %>% 
   droplevels() %>% 
   mutate(Sgroup = ifelse(Median>0, "positive S", "negative S"))
 
-# All traits, both environments
+# Cumulative rate of change in traits, both environments
 ggplot(data=trait_geno_pop_cull, aes(x=Sgroup, y=trait.change.all)) +
   geom_boxplot() +
-  geom_point(col=trait_geno_pop_cull$Lat.Color, size=3)
+  geom_point(col=trait_geno_pop_cull$Lat.Color, size=3) #NS
 
-# Best traits, both environments
-ggplot(data=trait_geno_pop_cull, aes(x=Sgroup, y=trait.change.best)) +
-  geom_boxplot() +
-  geom_point(col=trait_geno_pop_cull$Lat.Color, size=3)
-t.test(trait_geno_pop_cull$trait.change.best[trait_geno_pop_cull$Sgroup=="negative S"],trait_geno_pop_cull$trait.change.best[trait_geno_pop_cull$Sgroup=="positive S"])
-
-# All traits, wet treatment
+# Cumulative rate of change in traits, wet treatment
 ggplot(data=trait_geno_pop_cull, aes(x=Sgroup, y=trait.change.all.wet)) +
   geom_boxplot() +
   geom_point(col=trait_geno_pop_cull$Lat.Color, size=3)
-t.test(trait_geno_pop_cull$trait.change.all.wet[trait_geno_pop_cull$Sgroup=="negative S"],trait_geno_pop_cull$trait.change.all.wet[trait_geno_pop_cull$Sgroup=="positive S"])
+t.test(trait_geno_pop_cull$trait.change.all.wet[trait_geno_pop_cull$Sgroup=="negative S"],trait_geno_pop_cull$trait.change.all.wet[trait_geno_pop_cull$Sgroup=="positive S"]) #NS
 
-# Best traits, wet treatment
-ggplot(data=trait_geno_pop_cull, aes(x=Sgroup, y=trait.change.best.wet)) +
-  geom_boxplot() +
-  geom_point(col=trait_geno_pop_cull$Lat.Color, size=3)
-
-# All traits, dry treatment
+# Cumulative rate of change in traits, dry treatment
 ggplot(data=trait_geno_pop_cull, aes(x=Sgroup, y=trait.change.all.dry)) +
   geom_boxplot() +
   geom_point(col=trait_geno_pop_cull$Lat.Color, size=3)
 t.test(trait_geno_pop_cull$trait.change.all.dry[trait_geno_pop_cull$Sgroup=="negative S"],trait_geno_pop_cull$trait.change.all.dry[trait_geno_pop_cull$Sgroup=="positive S"])
 
-# Best traits, dry treatment
-ggplot(data=trait_geno_pop_cull, aes(x=Sgroup, y=trait.change.best.dry)) +
-  geom_boxplot() +
-  geom_point(col=trait_geno_pop_cull$Lat.Color, size=3) 
-  
+### Conclusion from binned analyses: no support for relationship between S bin and cumulative trait change, but this test has VERY low power
 
-summary(manova(cbind(SLA_D, FT_D, A_D, SC_D, WC_D) ~ Median, data=trait_geno_pop))
-summary(manova(cbind(SLA_W, FT_W, A_W, SC_W, WC_W) ~ Median, data=trait_geno_pop))
+###################################################################################
+
+###################################################################################
+### Cumulative indices assume that we know how traits should cluster into syndromes, but Haley's work shows that traits can change in complicated ways that don't map neatly onto simple escape-avoid dichotomy
+
+# Use multiple regression to test whether trait change can collectively predict selection response, allowing each trait to have its own direction of contribution
+
+mod.dry <- lm(Median ~ SLA_D + FT_D + A_D + SC_D + WC_D, dat=trait_geno_pop)
+summary(mod.dry) #positive effect of increased carbon assimilation, negative effect of increased stomatal conductance (traits that we were forcing to go in same direction on simple escape-avoid continuum)
+plot(mod.dry)
+rob.mod.dry <- rlm(Median ~ SLA_D + FT_D + A_D + SC_D + WC_D, dat=trait_geno_pop, maxit=100)
+f.robftest(rob.mod.dry, var="SLA_D")
+f.robftest(rob.mod.dry, var="FT_D")
+f.robftest(rob.mod.dry, var="A_D") #*
+f.robftest(rob.mod.dry, var="SC_D") #**
+f.robftest(rob.mod.dry, var="WC_D")
+
+# This is way too many variables for such a small dataset, though. Try coherent subsets?
+
+mod.dry.anat <- lm(Median ~ SLA_D + WC_D, dat=trait_geno_pop)
+summary(mod.dry.anat) #NS  
+rob.mod.dry.anat <- rlm(Median ~ SLA_D + WC_D, dat=trait_geno_pop)
+f.robftest(rob.mod.dry.anat, var="SLA_D") #NS
+f.robftest(rob.mod.dry.anat, var="WC_D") #NS
+
+mod.dry.gasx <- lm(Median ~ A_D + SC_D, dat=trait_geno_pop)
+summary(mod.dry.gasx) #positive effects of evolution towards greater carbon assimilation, decreased stomatal conductance
+rob.mod.dry.gasx <- rlm(Median ~ A_D + SC_D, dat=trait_geno_pop)
+f.robftest(rob.mod.dry.gasx, var="A_D") #*
+f.robftest(rob.mod.dry.gasx, var="SC_D") #***
+
+mod.dry.phen <- lm(Median ~ FT_D, dat=trait_geno_pop)
+summary(mod.dry.phen) #NS
+rob.mod.dry.phen <- rlm(Median ~ FT_D, dat=trait_geno_pop)
+f.robftest(rob.mod.dry.phen, var="FT_D") #NS
+
+mod.wet <- lm(Median ~ SLA_W + FT_W + A_W + SC_W + WC_W, dat=trait_geno_pop)
+summary(mod.wet) #positive effects of change towards increased SLA, earlier FT, greater carbon assimilation, and higher leaf water content on direction of selection
+plot(mod.wet)
+rob.mod.wet <- rlm(Median ~ SLA_W + FT_W + A_W + SC_W + WC_W, dat=trait_geno_pop, maxit=100)
+f.robftest(rob.mod.wet, var="SLA_W") #****
+f.robftest(rob.mod.wet, var="FT_W") #****
+f.robftest(rob.mod.wet, var="A_W") #****
+f.robftest(rob.mod.wet, var="SC_W") #****
+f.robftest(rob.mod.wet, var="WC_W") #****
+
+# Again, though, too many variables for the data set; try subsets
+mod.wet.anat <- lm(Median ~ SLA_W + WC_W, dat=trait_geno_pop)
+summary(mod.wet.anat) #NS  
+rob.mod.wet.anat <- rlm(Median ~ SLA_W + WC_W, dat=trait_geno_pop)
+f.robftest(rob.mod.wet.anat, var="SLA_W") #NS
+f.robftest(rob.mod.wet.anat, var="WC_W") #NS
+
+mod.wet.gasx <- lm(Median ~ A_W + SC_W, dat=trait_geno_pop)
+summary(mod.wet.gasx) #NS
+rob.mod.wet.gasx <- rlm(Median ~ A_W + SC_W, dat=trait_geno_pop)
+f.robftest(rob.mod.wet.gasx, var="A_W") #NS
+f.robftest(rob.mod.wet.gasx, var="SC_W") #NS
+
+mod.wet.phen <- lm(Median ~ FT_W, dat=trait_geno_pop)
+summary(mod.wet.phen) #NS
+rob.mod.wet.phen <- rlm(Median ~ FT_W, dat=trait_geno_pop)
+f.robftest(rob.mod.wet.phen, var="FT_W") #NS
+
+### Conclusion from multiple regression analyses: within dry treatment, evolution of gas exchange can explain some differences in genomic selection. Results for wet treatment are spurious in an overdetermined model.
+
+###################################################################################
+
+
+###################################################################################
+### MANOVA because arguably this is a more sensible direction to test things (genotype to phenotype)...but cannot support this many variables with such a small dataset
+man.dry <- manova(cbind(SLA_D, FT_D, A_D, SC_D, WC_D) ~ Median, data=trait_geno_pop)
+summary(man.dry) #*
+
+man.wet <- manova(cbind(SLA_W, FT_W, A_W, SC_W, WC_W) ~ Median, data=trait_geno_pop)
+summary(man.wet) #NS
+
+### Conclusion from MANOVA analyses: not sure this is robust but still indicating suppport for effect of evolution in dry treatment.
+
+###################################################################################
+
+
+###################################################################################
+### Collapse rates of trait evolution into multivariate PC axes?
+
+# Both treatments PCA
+pc.traits <- princomp(~SLA_D+SLA_W+FT_D+FT_W+A_D+A_W+SC_D+SC_W+WC_D+WC_W, data=trait_geno_pop, cor=TRUE, na.action=na.exclude)
+summary(pc.traits) #PC1&2 only get to 65% variance explained
+pc.traits$loadings
+biplot(pc.traits) #dry and wet plasticity in rates of change and relationships among different traits
+pc.traits$scores
+trait_geno_pop <- cbind(trait_geno_pop, pc.traits$scores)
+
+mod.pc <- lm(Median ~ Comp.1+Comp.2, data=trait_geno_pop)
+summary(mod.pc) #NS
+
+# Dry treatment PCA
+pc.traits.dry <- princomp(~SLA_D+FT_D+A_D+SC_D+WC_D, data=trait_geno_pop, cor=TRUE, na.action=na.exclude)
+summary(pc.traits.dry) #PC1&2 get to 83% variance explained
+pc.traits.dry$loadings
+biplot(pc.traits.dry) #SLA and WC basically give the same info (in bivariate space of first 2 PC axes), other traits not coupled quite as fully as simple avoid-escape dichotomy would suggest
+pc.traits.dry$scores
+colnames(pc.traits.dry$scores) = paste(colnames(pc.traits.dry$scores), ".dry", sep="")
+trait_geno_pop <- cbind(trait_geno_pop, pc.traits.dry$scores)
+
+mod.pc.dry <- lm(Median ~ Comp.1.dry+Comp.2.dry, data=trait_geno_pop)
+summary(mod.pc.dry) #NS
+
+# Wet treatment PCA
+pc.traits.wet <- princomp(~SLA_W+FT_W+A_W+SC_W+WC_W, data=trait_geno_pop, cor=TRUE, na.action=na.exclude)
+summary(pc.traits.wet) #PC!&2 get to 80% variance explained
+pc.traits.wet$loadings
+biplot(pc.traits.wet) #SLA and WC basically give the same info (in bivariate space of first 2 PC axes), other traits not coupled quite as fully as simple avoid-escape dichotomy would suggest
+pc.traits.wet$scores
+colnames(pc.traits.wet$scores) = paste(colnames(pc.traits.wet$scores), ".wet", sep="")
+trait_geno_pop <- cbind(trait_geno_pop, pc.traits.wet$scores)
+
+mod.pc.wet <- lm(Median ~ Comp.1.wet+Comp.2.wet, data=trait_geno_pop)
+summary(mod.pc.wet) #NS
+
+### Conclusion from PCA analyses: This attempt at distillation is not helping to produce easily interpretable biological axes. Abandon.
+
+###################################################################################
 

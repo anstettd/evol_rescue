@@ -215,6 +215,7 @@ r_means_norm <- r_means %>%
   mutate(delta.r.drought.norm = (mean.r.drought-mean.r.pre)/abs(mean.r.pre),
          delta.r.recovery.norm = (mean.r.recovery-mean.r.drought)/abs(mean.r.drought),
          rel.start = mean.r.pre/mean.r.pre)
+write_csv(r_means_norm, "data/demography data/site_r_means.csv")
 
 r_means_norm_long <- r_means_norm %>% 
   pivot_longer(cols=delta.r.drought.norm:rel.start, names_to="time", values_to="mean_r_norm")

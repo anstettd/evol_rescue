@@ -7,7 +7,7 @@
 
 # Goal is to see if trait evolution towards drought escape versus drought avoidance can help clarify why some populations have selection against heat/drought-associated alleles (negative S) while some populations have selection for heat/drought-associated alleles (positive S)
 
-# Last updated 2025 06 25
+# Last updated 2025 06 29
 ##################################################
 
 
@@ -380,7 +380,7 @@ f.robftest(rob.mod.wet.phen, var="FT_W") #NS
 
 # Visualize partial effects in gas exchange model
 pred_df_A <- predict_response(mod.dry.gasx, terms=c("A_D","SC_D"), margin="mean_reference")
-ggplot(filter(pred_df_A, group==-0.07), aes(x=x, y=predicted)) + #, colour=group
+pred_A_plot <- ggplot(filter(pred_df_A, group==-0.07), aes(x=x, y=predicted)) + #, colour=group
   geom_ribbon(aes(x=x, ymin=conf.low, ymax=conf.high), fill="grey75") + #, group=group, colour=group
   stat_smooth(method="lm", color="black") +
   xlab("Evolution of photosynthetic rate") + 
@@ -388,7 +388,7 @@ ggplot(filter(pred_df_A, group==-0.07), aes(x=x, y=predicted)) + #, colour=group
   theme_classic()
 
 pred_df_B <- predict_response(mod.dry.gasx, terms=c("SC_D","A_D"), margin="mean_reference")
-ggplot(filter(pred_df_B, group==0.01), aes(x=x, y=predicted)) + #, colour=group
+pred_B_plot <- ggplot(filter(pred_df_B, group==0.01), aes(x=x, y=predicted)) + #, colour=group
   geom_ribbon(aes(x=x, ymin=conf.low, ymax=conf.high), fill="grey75") + #, group=group, colour=group
   stat_smooth(method="lm", color="black") +
   xlab("Evolution of stomatal conductance") + 
@@ -396,7 +396,8 @@ ggplot(filter(pred_df_B, group==0.01), aes(x=x, y=predicted)) + #, colour=group
   theme_classic()
 
 # Supplemental Figure Sx
-(pred_df_A, pred_df_B)
+plot_grid(pred_A_plot, pred_B_plot)
+ggsave("Graphs/Traits_Selection.pdf")
 
 ###################################################################################
 

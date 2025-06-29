@@ -69,6 +69,18 @@ ggplot(dat, aes(x=Year, y=r)) +
 
 ggsave("Graphs/Demography/01_decline_recovery.pdf",width=14, height = 8, units = "in")
 
+# Alternative depiction in same style as climate-year graphs
+r_spag_plot<-ggplot() + 
+  geom_line(stat="smooth",data=dat, aes(y=r, x=Year, group=Latitude, col=as.factor(Latitude)), alpha=0.75, linewidth = 1.5, se=FALSE) + 
+  xlab("Year") + 
+  ylab("Mean Population Growth rate") +
+  geom_hline(yintercept=0) +
+  theme_classic() +
+  scale_x_continuous(breaks=c(2010,2012,2014,2016,2018))+
+  scale_color_manual(values=rev(unique(dat$Lat.Color))) 
+r_spag_plot
+ggsave("Graphs/Demography/01_decline_recovery_spaghetti.pdf",width=6, height = 8, units = "in")
+
 #*******************************************************************************
 ### 2. Visualize mean estimates over each period for all sites
 #*******************************************************************************

@@ -7,7 +7,7 @@
 
 # Goal is to see if trait evolution towards drought escape versus drought avoidance can help clarify why some populations have selection against heat/drought-associated alleles (negative S) while some populations have selection for heat/drought-associated alleles (positive S)
 
-# Last updated 2025 06 25
+# Last updated 2025 06 29
 ##################################################
 
 
@@ -21,6 +21,7 @@ library(visreg)
 library(RColorBrewer)
 library(MASS)
 library(sfsmisc)
+library(ggeffects)
 ###################################################################################
 
 
@@ -32,6 +33,7 @@ y5 <- read_csv("data/trait_data/traits_anstett2021.csv") %>%
          WC_scaled = scale(Water_Content, center=T, scale=T),
          SC_scaled = scale(Stomatal_Conductance, center=T, scale=T),
          A_scaled = scale(Assimilation, center=T, scale=T),
+         WUE_scaled = scale(Assimilation/Stomatal_Conductance, center=T, scale=T),
          Year_scaled = scale(Year, center=T, scale=T),
          SiteName = gsub(" ", "", Site.Name))
 
@@ -42,7 +44,7 @@ y5$Block <- as.factor(y5$Block) ; y5$Family <- as.factor(y5$Family) # prep facto
 treatment.v<-c("W", "D")
 site.v<-c("SweetwaterRiver", "WestForkMojaveRiver", "RedwoodCreek", "NorthForkMiddleForkTule", "RockCreek", "O'NeilCreek", "DeepCreek", "LittleJamesonCreek", "OregonCreek", "Wawona", "DeerCreek")
 order.row<-1
-slope.reg<-matrix(nrow=length(treatment.v)*length(site.v)*5, ncol=5)
+slope.reg<-matrix(nrow=length(treatment.v)*length(site.v)*6, ncol=5)
 
 ###################################################################################
 
@@ -159,6 +161,29 @@ for (i in 1:length(treatment.v)){
     order.row<-order.row+1
   }
 }
+
+#Get slopes of Water Use Efficiency Vs Year for each population in each treatment
+hist(y5$WUE_scaled)
+
+fullmod.wue <- lmer(WUE_scaled ~ SiteName*Year_scaled*Drought  + (1|Family) + (1|Block),
+                   control=lmerControl(optimizer = "bobyqa", optCtrl=list(maxfun=100000)), data=y5)
+
+for (i in 1:length(treatment.v)){
+  vis_wue<-visreg(fullmod.wue, xvar="Year_scaled", by="SiteName", cond=list(Drought=treatment.v[i]))
+  Res_wue<-vis_wue$res
+  for (j in 1:length(site.v)){
+    Ref_wue_filter<-Res_wue %>% filter(SiteName==site.v[j])
+    lm_wue<-lm(visregRes~Year_scaled, data=Ref_wue_filter)
+    summary_wue<-summary(lm_wue)
+    slope.reg[order.row,1]<-"WUE"
+    slope.reg[order.row,2]<-site.v[j]
+    slope.reg[order.row,3]<-treatment.v[i]
+    slope.reg[order.row,4]<-summary_wue$coefficients[2,1]
+    slope.reg[order.row,5]<-summary_wue$coefficients[2,2]
+    order.row<-order.row+1
+  }
+}
+
 
 trait_change <- as.data.frame(slope.reg)
 colnames(trait_change)=c("Trait", "Site", "Treatment", "Slope", "SE_slope")
@@ -351,7 +376,28 @@ summary(mod.wet.phen) #NS
 rob.mod.wet.phen <- rlm(Median ~ FT_W, dat=trait_geno_pop)
 f.robftest(rob.mod.wet.phen, var="FT_W") #NS
 
-### Conclusion from multiple regression analyses: within dry treatment, evolution of gas exchange can explain some differences in genomic selection. Results for wet treatment are spurious in an overdetermined model.
+### Conclusion from multiple regression analyses: within dry treatment, evolution of gas exchange can explain some differences in genomic selection. Specifically, positive S is associated with evolution towards increased photosynthesis and decreased stomatal conductance (sounds adaptive) and negative S is associated with evolution towards decreased photosynthesis and increased conductance (sounds maladaptive). Results for wet treatment are spurious in an overdetermined model.
+
+# Visualize partial effects in gas exchange model
+pred_df_A <- predict_response(mod.dry.gasx, terms=c("A_D","SC_D"), margin="mean_reference")
+pred_A_plot <- ggplot(filter(pred_df_A, group==-0.07), aes(x=x, y=predicted)) + #, colour=group
+  geom_ribbon(aes(x=x, ymin=conf.low, ymax=conf.high), fill="grey75") + #, group=group, colour=group
+  stat_smooth(method="lm", color="black") +
+  xlab("Evolution of photosynthetic rate") + 
+  ylab("Predicted Median S") +
+  theme_classic()
+
+pred_df_B <- predict_response(mod.dry.gasx, terms=c("SC_D","A_D"), margin="mean_reference")
+pred_B_plot <- ggplot(filter(pred_df_B, group==0.01), aes(x=x, y=predicted)) + #, colour=group
+  geom_ribbon(aes(x=x, ymin=conf.low, ymax=conf.high), fill="grey75") + #, group=group, colour=group
+  stat_smooth(method="lm", color="black") +
+  xlab("Evolution of stomatal conductance") + 
+  ylab("Predicted Median S") +
+  theme_classic()
+
+# Supplemental Figure Sx
+plot_grid(pred_A_plot, pred_B_plot)
+ggsave("Graphs/Traits_Selection.pdf")
 
 ###################################################################################
 
@@ -364,7 +410,7 @@ summary(man.dry) #*
 man.wet <- manova(cbind(SLA_W, FT_W, A_W, SC_W, WC_W) ~ Median, data=trait_geno_pop)
 summary(man.wet) #NS
 
-### Conclusion from MANOVA analyses: not sure this is robust but still indicating suppport for effect of evolution in dry treatment.
+### Conclusion from MANOVA analyses: not sure this is robust but still indicating support for effect of evolution in dry treatment.
 
 ###################################################################################
 
@@ -397,7 +443,7 @@ summary(mod.pc.dry) #NS
 
 # Wet treatment PCA
 pc.traits.wet <- princomp(~SLA_W+FT_W+A_W+SC_W+WC_W, data=trait_geno_pop, cor=TRUE, na.action=na.exclude)
-summary(pc.traits.wet) #PC!&2 get to 80% variance explained
+summary(pc.traits.wet) #PC1&2 get to 80% variance explained
 pc.traits.wet$loadings
 biplot(pc.traits.wet) #SLA and WC basically give the same info (in bivariate space of first 2 PC axes), other traits not coupled quite as fully as simple avoid-escape dichotomy would suggest
 pc.traits.wet$scores

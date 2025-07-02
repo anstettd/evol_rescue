@@ -2,6 +2,7 @@
 ## Make LD thinned SNP set
 ## Author Daniel Anstett
 ## For All ENV & for CMD + Winter Precipitation
+## For use in Response to Selection
 ## 
 ## Last Modified April 25, 2025
 #############################################################################################################

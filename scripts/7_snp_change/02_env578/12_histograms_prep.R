@@ -75,7 +75,7 @@ get_ci <- function(df){
 
 #HistPop unique SNP ascorss all env
 #Updated for binomial data
-obs_env_unique <- read_csv("data/snp_change_2/slope_obs_all_unique_env58.csv") %>% filter(SE<5) 
+obs_env_unique <- read_csv("data/snp_change_2/slope_obs_all_unique_env578.csv") %>% filter(SE<5) 
 
 #median_pop <- obs_env_unique %>% group_by(Site) %>% summarise(median = median(Slope, na.rm = TRUE))
 
@@ -84,7 +84,7 @@ obs_env_unique <- read_csv("data/snp_change_2/slope_obs_all_unique_env58.csv") %
 
 ###################################################################################
 #Permuted Data
-rand_env_unique <- read_csv("~/Dropbox/z_Documents/aLarge_files/M_gen/rand_slope_histPop_strong_50_50_clump_58.csv") %>%
+rand_env_unique <- read_csv("~/Dropbox/z_Documents/aLarge_files/M_gen/rand_slope_histPop_strong_50_50_clump_578.csv") %>%
   filter(Slope <= 2.5 & Slope>= -2.5)  
 
 ###############################################################################################
@@ -106,7 +106,7 @@ obs_ci_env_unique <- cbind(obs_table_env_unique,rand_table_env_unique)
 
 
 #Export
-write_csv(obs_ci_env_unique, "data/snp_change_2/obs_ci_env_unique_58.csv")
+write_csv(obs_ci_env_unique, "data/snp_change_2/obs_ci_env_unique_578.csv")
 
 
 

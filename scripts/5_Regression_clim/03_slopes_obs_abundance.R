@@ -141,6 +141,7 @@ slope_env8 <- glm_obs(freqA_env8,freqB_env8,"PPT_wt")
 slope_env9 <- glm_obs(freqA_env9,freqB_env9,"PPT_sm")
 
 slope_env_58 <- rbind(slope_env5,
+                      slope_env7,
                        slope_env8)
 
 slope_env_all <- rbind(slope_env1,
@@ -180,7 +181,7 @@ write_csv(slope_env6, "data/snp_change_2/slope_obs_env6.csv")
 write_csv(slope_env7, "data/snp_change_2/slope_obs_env7.csv")
 write_csv(slope_env8, "data/snp_change_2/slope_obs_env8.csv")
 write_csv(slope_env9, "data/snp_change_2/slope_obs_env9.csv")
-write_csv(slope_env_unique_58, "data/snp_change_2/slope_obs_all_unique_env58.csv")
+write_csv(slope_env_unique_58, "data/snp_change_2/slope_obs_all_unique_env578.csv")
 write_csv(slope_env_all_unique, "data/snp_change_2/slope_obs_all_unique.csv")
 
 

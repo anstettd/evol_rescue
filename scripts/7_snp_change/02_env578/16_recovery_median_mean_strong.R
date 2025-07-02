@@ -18,7 +18,7 @@ library(RColorBrewer)
 demo_pop <- read_csv("data/demography data/siteYear.lambda_responses_2010-2019.csv")
 
 #Import selection data
-slope.summary <- read_csv("data/snp_change_2/mean_median_S_env58.csv") %>% select(Site, Median, Mean)
+slope.summary <- read_csv("data/snp_change_2/mean_median_S_env578.csv") %>% select(Site, Median, Mean)
 
 #Join frames
 slope_pop <- left_join(demo_pop, slope.summary, by=c("Paper_ID"="Site"))
@@ -146,6 +146,6 @@ ggplot(slope_pop_graph, aes(x=Median, y=mean.lambda.recovery)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
-ggsave("Graphs/Demography_2/02_median_slope_lambda_CMD_PPT.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Demography_2/02_median_slope_lambda_CMD_Tave_PPT.pdf",width=8, height = 6, units = "in")
 
 

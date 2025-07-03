@@ -122,7 +122,7 @@ histPop <- ggplot(env_histPop ,aes(x=S,y=obs,ymin=low,ymax=high))+
   theme_ci() + facet_wrap(.~Site) +
   geom_vline(data = median_pop, aes(xintercept = median), size=0.9, linetype="dashed",color="red")
 histPop 
-ggsave("Graphs/snp_change_2/01_selection_2.5_median_578.pdf", histPop, width=12, height = 8, units = "in")
+#ggsave("Graphs/snp_change_2/01_selection_2.5_median_578.pdf", histPop, width=12, height = 8, units = "in")
 
 
 # -1.25 to 1.25

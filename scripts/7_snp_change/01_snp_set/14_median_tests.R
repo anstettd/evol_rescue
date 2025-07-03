@@ -27,9 +27,9 @@ library(tidyverse)
 ###################################################################################
 #HistPop unique SNP ascorss all env
 #Updated for binomial data
-obs_env_unique <- read_csv("data/snp_change_2/slope_obs_all_unique_env578.csv") %>% 
+obs_env_unique <- read_csv("data/snp_change_2/slope_obs_all_unique.csv") %>% 
   filter(SE<5) %>% mutate(abs_slope = abs(Slope)) %>% filter(Site!=12)
-rand_env_unique <- read_csv("~/Dropbox/z_Documents/aLarge_files/M_gen/rand_slope_histPop_strong_50_50_clump_578.csv") %>% filter(Site!=12)
+rand_env_unique <- read_csv("~/Dropbox/z_Documents/aLarge_files/M_gen/rand_slope_histPop_strong_50_50_clump.csv") %>% filter(Site!=12)
 
 ##Get slope median
 median_obs <- obs_env_unique %>% group_by(Site) %>% summarise(median = median(Slope, na.rm = TRUE))
@@ -69,10 +69,12 @@ for (i in 1:11){
   wilcox.out[i,4] <- wilcox.test(obs_test$Slope, mu = 0)$p.value
 }
 
-colnames(wilcox.out) <- c("Site","Median","Mean","p-value")
+colnames(wilcox.out) <- c("Site","Wilcoxon_Median","Wilcoxon_Mean","Wilcoxon_p_value")
 
 
-write_csv(wilcox.out, "Graphs/snp_change_2/wilcox_S_env578.csv")
+#write_csv(wilcox.out, "Graphs/snp_change_2/wilcox_S_all.csv")
+
+
 
 
 ###################################################################################
@@ -98,11 +100,14 @@ emp_out[i,7] <- 1 - emp_out[i,6]
 
 }
 
-colnames(emp_out) <- c("Site","Median","Median_Percentile","Median_p-value",
-                       "Mean","Mean_Percentile","Mean_p-value")
+colnames(emp_out) <- c("Site","Median","Median_Percentile","Median_p_value",
+                       "Mean","Mean_Percentile","Mean_p_value") 
 
-write_csv(emp_out, "Graphs/snp_change_2/mean_median_S_env578.csv")
-write_csv(emp_out, "data/snp_change_2/mean_median_S_env578.csv")
+#write_csv(emp_out, "Graphs/snp_change_2/mean_median_S_all.csv")
+#write_csv(emp_out, "data/snp_change_2/mean_median_S_all.csv")
+
+tableS4_578<-left_join(emp_out,wilcox.out, by="Site") %>% select(Site,Median,Wilcoxon_p_value,Median_Percentile,Median_p_value)
+write_csv(tableS4_578, "Graphs/snp_change_2/tableS4.csv")
 
 ###################################################################################
 #Make Median and Mean histograms
@@ -123,7 +128,7 @@ histPop <- ggplot(median_rand,aes(x=median))+
 geom_vline(data = median_obs, aes(xintercept = median), size=0.5, linetype="dashed",color="red")
 histPop 
 
-ggsave("Graphs/snp_change_2/03_rand_median_578.pdf",width=12, height = 8, units = "in")
+ggsave("Graphs/snp_change_2/03_rand_median.pdf",width=12, height = 8, units = "in")
 
 
 
@@ -136,7 +141,49 @@ histPop_mean <- ggplot(mean_rand,aes(x=mean))+
   geom_vline(data = mean_obs, aes(xintercept = mean), size=0.5, linetype="dashed",color="red")
 histPop_mean
 
-#ggsave("Graphs/snp_change_2/04_rand_mean_578.pdf",width=12, height = 8, units = "in")
+#ggsave("Graphs/snp_change_2/04_rand_mean.pdf",width=12, height = 8, units = "in")
 
+
+
+
+###################################################################################
+#Site specific histograms Median
+###################################################################################
+
+
+#Site 3
+median_rand_pops <- median_rand %>% filter(Site == 3)
+median_obs_pops <- median_obs %>% filter(Site == 3)
+
+histPops <- ggplot(median_rand_pops,aes(x=median))+
+  geom_histogram(color="black",fill = "grey70")+
+  labs(x = "Mean Strength of Selection", y = "Permutations") +
+  geom_vline(xintercept=0) +
+  theme_ci() + facet_wrap(.~Site) +
+  geom_vline(data = median_obs_pops, aes(xintercept = median), size=1.5, color="red")+
+  scale_x_continuous(breaks=c(-0.05,0,0.05))+
+  theme(strip.text.x = element_text(size=0))
+histPops
+
+ggsave("Graphs/snp_change_2/03_mean_pop_3.pdf",width=4, height = 3.5, units = "in")
+
+
+#Site 3 and 11
+median_rand_pops <- median_rand %>% filter(Site == 3 | Site == 11)
+median_obs_pops <- median_obs %>% filter(Site == 3 | Site == 11)
+
+median_rand_pops$Site <- droplevels(median_rand_pops$Site) %>% na.omit()
+
+histPops <- ggplot(median_rand_pops,aes(x=median))+
+  geom_histogram(color="black",fill = "grey70")+
+  labs(x = "Strength of Selection", y = "Number of Permutations") +
+  geom_vline(xintercept=0) +
+  theme_ci() + facet_wrap(.~Site) +
+  geom_vline(data = median_obs_pops, aes(xintercept = median), size=1, linetype="dashed",color="red")+
+  scale_x_continuous(breaks=c(-0.05,0,0.05))+
+  theme(strip.text.x = element_text(size=0))
+histPops
+
+ggsave("Graphs/snp_change_2/03_median_pop_3_11.pdf",width=9, height = 3.5, units = "in")
 
 

@@ -22,6 +22,7 @@ slope.summary <- read_csv("data/snp_change_2/mean_median_S_all.csv") %>% dplyr::
 
 #Join frames
 slope_pop <- left_join(demo_pop, slope.summary, by=c("Paper_ID"="Site"))
+slope_pop <- slope_pop %>% dplyr::select(Latitude,Site,Paper_ID,Lat.Color,mean.r.recovery,Median)
 slope_pop <- drop_na(slope_pop)
 
 #Visualize scatter plot

@@ -10,7 +10,7 @@ library(tidyverse)
 
 #Import SNPlist
 snp_set <- read_csv("data/genomic_data/strong_snp_set_full_clump.csv")
-snp_set_58 <- read_csv("data/genomic_data/strong_snp_set_full_clump_env58.csv")
+snp_set_578 <- read_csv("data/genomic_data/strong_snp_set_full_clump_env578.csv")
 
 #Import 2.1 M loci
 loci_base<-read.table("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/baseline_filtered_variants.QUAL20_MQ40_AN80_MAF0.03_DP1SD.Baypass_table.loci", 
@@ -33,16 +33,16 @@ for (i in 1:55){
   pop_temp <- pop_temp %>% unite(chr_snp,"Chromosome","SNP",sep="_")
   pop_filter <-pop_temp %>% filter (chr_snp %in% as.character(loci_united$chr_snp))
   snp_set <-pop_filter %>% filter (chr_snp %in% as.character(snp_set$chr_snp))
-  snp_set_58 <-pop_filter %>% filter (chr_snp %in% as.character(snp_set_58$chr_snp))
+  snp_set_578 <-pop_filter %>% filter (chr_snp %in% as.character(snp_set_578$chr_snp))
   
   pi_df[i,2] <- mean(as.numeric(snp_set$PI))
-  pi_df[i,3] <- mean(as.numeric(snp_set_58$PI))
+  pi_df[i,3] <- mean(as.numeric(snp_set_578$PI))
   pi_df[i,4] <- mean(as.numeric(pop_filter$PI))
   rm(pop_temp)
   print(i)
 }
 
-colnames(pi_df) <- c("Site","pi_snp_set", "pi_env58","pi_all_snps")
+colnames(pi_df) <- c("Site","pi_snp_set", "pi_env578","pi_all_snps")
 
 
 write_csv(pi_df, "data/genomic_data/baseline_pi_clump.csv")

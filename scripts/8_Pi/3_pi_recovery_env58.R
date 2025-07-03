@@ -25,11 +25,11 @@ pi_raw <- read_csv("data/genomic_data/raw_pi_clump.csv")
 pi_pop <- left_join(demog_recovery, pi_raw, by=c("Paper_ID"="Site")) 
 
 #Visualize scatter plot
-ggplot(pi_pop, aes(x=pi_env58, y=mean.lambda.recovery)) + geom_point()
+ggplot(pi_pop, aes(x=pi_env578, y=mean.r.recovery)) + geom_point()
 # looks like some extreme outliers - needs test
 
 #Cook's distance check for influential outliers
-mod.check <- lm(mean.lambda.recovery~pi_env58,data=pi_pop)
+mod.check <- lm(mean.r.recovery~pi_env578,data=pi_pop)
 cooksd_cull1 <- cooks.distance(mod.check)
 plot(cooksd_cull1, pch="*", cex=2, main="Influential Obs by Cooks distance")  # plot cook's distance
 abline(h = 4*mean(cooksd_cull1, na.rm=T), col="red")  # add cutoff line
@@ -40,7 +40,7 @@ pi_pop_cull2 <- pi_pop %>%
   filter(Paper_ID!=27) # remove influential outlier Buck Meadows
 
 #Cook's distance check for influential outliers after removing Buck
-mod.check_cull2 <- lm(mean.lambda.recovery~pi_env58,data=pi_pop_cull2)
+mod.check_cull2 <- lm(mean.r.recovery~pi_env578,data=pi_pop_cull2)
 cooksd_cull2 <- cooks.distance(mod.check_cull2)
 plot(cooksd_cull2, pch="*", cex=2, main="Influential Obs by Cooks distance")  # plot cook's distance
 abline(h = 4*mean(cooksd_cull2, na.rm=T), col="red")  # add cutoff line
@@ -51,7 +51,7 @@ pi_pop_cull3 <- pi_pop_cull2 %>%
   filter(Paper_ID!=4) # remove influential outlier Redwood
 
 #Cook's distance check for influential outliers after removing Buck + Redwood
-mod.check_cull3 <- lm(mean.lambda.recovery~pi_env58,data=pi_pop_cull3)
+mod.check_cull3 <- lm(mean.r.recovery~pi_env578,data=pi_pop_cull3)
 cooksd_cull3 <- cooks.distance(mod.check_cull3)
 plot(cooksd_cull3, pch="*", cex=2, main="Influential Obs by Cooks distance")  # plot cook's distance
 abline(h = 4*mean(cooksd_cull3, na.rm=T), col="red")  # add cutoff line
@@ -62,7 +62,7 @@ pi_pop_cull4 <- pi_pop_cull3 %>%
   filter(Paper_ID!=1) # remove influential outlier Sweetwater R
 
 #Cook's distance check for influential outliers after removing Buck + Redwood + Sweetwater
-mod.check_cull4 <- lm(mean.lambda.recovery~pi_env58,data=pi_pop_cull4)
+mod.check_cull4 <- lm(mean.r.recovery~pi_env578,data=pi_pop_cull4)
 cooksd_cull4 <- cooks.distance(mod.check_cull4)
 plot(cooksd_cull4, pch="*", cex=2, main="Influential Obs by Cooks distance")  # plot cook's distance
 abline(h = 4*mean(cooksd_cull4, na.rm=T), col="red")  # add cutoff line
@@ -78,7 +78,7 @@ text(x=1:length(cooksd_cull4)+1, y=cooksd_cull4, labels=ifelse(cooksd_cull4>4*me
 #### All Data #### 
 
 pi_pop_graph <- drop_na(pi_pop)
-lm_snp_3 <- lm(mean.lambda.recovery~pi_env58,data=pi_pop_graph)
+lm_snp_3 <- lm(mean.r.recovery~pi_env578,data=pi_pop_graph)
 summary(lm_snp_3)
 Anova(lm_snp_3,type="III")
 
@@ -86,11 +86,11 @@ pi_pop_graph$Lat.Color<-as.factor(pi_pop_graph$Lat.Color)
 pi_pop_graph$Lat.Color<-factor(pi_pop_graph$Lat.Color,levels=pi_pop_graph$Lat.Color)
 
 # pi snp set CMD & PPT_wt 
-ggplot(pi_pop_graph, aes(x=pi_env58, y=mean.lambda.recovery)) +
+ggplot(pi_pop_graph, aes(x=pi_env578, y=mean.r.recovery)) +
   geom_smooth(method=lm,color="black",size=1.8,fill="gray75")+
   geom_point(aes(fill=pi_pop_graph$Lat.Color), shape=21, size =6)+
   geom_hline(yintercept = 1, linetype = "dotted", color = "black", size = 0.7) +
-  scale_y_continuous(name="Mean Lambda after Drought")+
+  scale_y_continuous(name="Mean Pop. Growth after Drought")+
   #, limits=c(-0.3,2.5),breaks=seq(0,2.5,0.5))+
   scale_x_continuous(name="Pi (CMD & PPT_wt SNP)")+
   #, limits=c(0.2,0.35), breaks=seq(0.1,0.35,0.05)) +  
@@ -112,7 +112,7 @@ ggplot(pi_pop_graph, aes(x=pi_env58, y=mean.lambda.recovery)) +
 #### All outlier removal  ####
 
 pi_pop_graph_cull4 <- drop_na(pi_pop_cull4)
-lm_snp_1 <- lm(mean.lambda.recovery~pi_env58,data=pi_pop_cull4)
+lm_snp_1 <- lm(mean.r.recovery~pi_env578,data=pi_pop_cull4)
 summary(lm_snp_1)
 Anova(lm_snp_1,type="III")
 
@@ -120,10 +120,10 @@ pi_pop_graph_cull4$Lat.Color<-as.factor(pi_pop_graph_cull4$Lat.Color)
 pi_pop_graph_cull4$Lat.Color<-factor(pi_pop_graph_cull4$Lat.Color,levels=pi_pop_graph_cull4$Lat.Color)
 
 # pi snp set
-ggplot(pi_pop_graph_cull4, aes(x=pi_env58, y=mean.lambda.recovery)) +
+ggplot(pi_pop_graph_cull4, aes(x=pi_env578, y=mean.r.recovery)) +
   geom_smooth(method=lm,color="black",size=1.8,fill="gray75")+
   geom_point(aes(fill=pi_pop_graph_cull4$Lat.Color), shape=21, size =6)+
-  scale_y_continuous(name="Mean Lambda after Drought", limits=c(-0.3,2.5), breaks=seq(0,2.5,0.5))+
+  scale_y_continuous(name="Mean Pop. Growth after Drought", limits=c(-0.3,2.5), breaks=seq(0,2.5,0.5))+
   scale_x_continuous(name="Pi (CMD & PPT_wt SNP)", limits=c(0.2,0.35), breaks=seq(0.1,0.35,0.05)) +  
   scale_fill_manual(labels=round(pi_pop_graph_cull4$Latitude,1), 
                     values=as.character(pi_pop_graph_cull4$Lat.Color)) +
@@ -144,12 +144,12 @@ ggplot(pi_pop_graph_cull4, aes(x=pi_env58, y=mean.lambda.recovery)) +
 # graphs with slopes with and without outliers overlain CMD & PPT_wt 
 
 #climate pi, with and without outliers
-ggplot(pi_pop_graph, aes(x=pi_env58, y=mean.lambda.recovery)) +
+ggplot(pi_pop_graph, aes(x=pi_env578, y=mean.r.recovery)) +
   geom_smooth(method=lm,color="black",size=1.8,fill="gray75")+
-  geom_smooth(data=pi_pop_graph_cull4, aes(x=pi_env58, y=mean.lambda.recovery), method=lm, color="black", linetype="dashed", fill="grey50") +
+  geom_smooth(data=pi_pop_graph_cull4, aes(x=pi_env578, y=mean.r.recovery), method=lm, color="black", linetype="dashed", fill="grey50") +
   geom_point(aes(fill=pi_pop_graph$Lat.Color), shape=21, size =6)+
   geom_hline(yintercept = 1, linetype = "dotted", color = "black", size = 0.7) +
-  scale_y_continuous(name="Mean Lambda after Drought")+
+  scale_y_continuous(name="Mean Pop. Growth after Drought")+
   #, limits=c(-0.3,2.5),breaks=seq(0,2.5,0.5))+
   scale_x_continuous(name="Pi (CMD & PPT_wt SNP)")+
   #, limits=c(0.2,0.35), breaks=seq(0.1,0.35,0.05)) +  
@@ -164,6 +164,6 @@ ggplot(pi_pop_graph, aes(x=pi_env58, y=mean.lambda.recovery)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
-ggsave("Graphs/Demography_2/05_pi_demography_CMD_PPT.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Demography_2/05_pi_demography_CMD_PPT_Tave.pdf",width=8, height = 6, units = "in")
 
 

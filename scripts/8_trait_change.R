@@ -319,7 +319,9 @@ t.test(trait_geno_pop_cull$trait.change.all.dry[trait_geno_pop_cull$Sgroup=="neg
 
 # Use multiple regression to test whether trait change can collectively predict selection response, allowing each trait to have its own direction of contribution
 
-mod.dry <- lm(Median ~ SLA_D + FT_D + A_D + SC_D + WC_D, dat=trait_geno_pop)
+trait_geno_pop_na <- trait_geno_pop %>% drop_na(SLA_D) %>% dplyr::select(Median, SLA_D, FT_D, A_D, SC_D, WC_D)
+
+mod.dry <- lm(Median ~ SLA_D + FT_D + A_D + SC_D + WC_D, dat=trait_geno_pop_na, na.action=na.fail)
 summary(mod.dry) #positive effect of increased carbon assimilation, negative effect of increased stomatal conductance (traits that we were forcing to go in same direction on simple escape-avoid continuum)
 plot(mod.dry)
 rob.mod.dry <- rlm(Median ~ SLA_D + FT_D + A_D + SC_D + WC_D, dat=trait_geno_pop, maxit=100)
@@ -377,6 +379,10 @@ rob.mod.wet.phen <- rlm(Median ~ FT_W, dat=trait_geno_pop)
 f.robftest(rob.mod.wet.phen, var="FT_W") #NS
 
 ### Conclusion from multiple regression analyses: within dry treatment, evolution of gas exchange can explain some differences in genomic selection. Specifically, positive S is associated with evolution towards increased photosynthesis and decreased stomatal conductance (sounds adaptive) and negative S is associated with evolution towards decreased photosynthesis and increased conductance (sounds maladaptive). Results for wet treatment are spurious in an overdetermined model.
+
+# Alternative route for exploring multiple regression: dredge on all subsets?
+library(MuMIn)
+dd <- dredge (mod.dry, evaluate=TRUE, m.lim=c(1, 2))
 
 # Visualize partial effects in gas exchange model
 pred_df_A <- predict_response(mod.dry.gasx, terms=c("A_D","SC_D"), margin="mean_reference")

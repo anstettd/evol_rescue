@@ -166,7 +166,7 @@ freq_table_Final$Site <- factor(freq_table_Final$Site, levels = c(1,2,3,4,5,6,7,
 ggplot(data=freq_table_Final ,aes(Year,Binomial_A,group=SNP_ID)) + 
   geom_line(stat="smooth",method = "glm", method.args = list(family = "binomial"), se = F, alpha=.14,cex=0.4,color="red") + 
   labs(y="SNP Frequency",x="Year") +  facet_wrap(.~Site) + theme_spaghetti()
-ggsave("graphs/snp_change_2/05_spaghetii_obs.pdf",width=8, height = 7, units = "in")
+ggsave("Graphs/snp_change_2/05_spaghetii_obs.pdf",width=8, height = 7, units = "in")
 
 
 
@@ -176,7 +176,7 @@ freq_env_3 <- freq_table_Final %>% filter(Site==3)
 ggplot(data=freq_env_3 ,aes(Year,Binomial_A,group=SNP_ID)) + 
   geom_line(stat="smooth",method = "glm", method.args = list(family = "binomial"), se = F, alpha=.19,cex=0.4,color="red") + 
   labs(y="SNP Frequency",x="Year") + theme_spaghetti()
-ggsave("graphs/snp_change_2/06_spaghetii_obs.pdf",width=4, height = 4, units = "in")
+ggsave("Graphs/snp_change_2/06_spaghetii_obs.pdf",width=4, height = 4, units = "in")
 
 
 freq_env_ver2 <- freq_table_Final %>% filter(Site==3 | Site==11)

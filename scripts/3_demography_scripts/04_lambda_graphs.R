@@ -277,4 +277,4 @@ d <- ggplot(r_means_norm_long_recovery, aes(x=factor(time, level=level_order_dro
 
 # New Fig S1, option 2
 plot_grid(a, b, c, d, nrow=2)
-ggsave("Graphs/Demography/r_means_4panel.pdf",width=5, height=4, units="in")
+ggsave("Graphs/Demography/r_means_4panel.pdf",width=10, height=8, units="in")

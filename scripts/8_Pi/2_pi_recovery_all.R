@@ -90,7 +90,7 @@ pi_pop_cull2 <- pi_pop %>%
   filter(row_number()!=row.names(summary(inflm_pi_all)))  # remove the 5th and 11th rows of data frame
 
 # sensitivity test without influential outliers WFMojave & Carlon
-mod_pi_all_cull <- lm(log(mean.lambda.recovery+0.5)~pi_all_snps, data=pi_pop_cull2)
+mod_pi_all_cull <- lm(log(mean.r.recovery+0.5)~pi_all_snps, data=pi_pop_cull2)
 summary(mod_pi_all_cull)
 Anova(mod_pi_all_cull,type="III")
 qqnorm(resid(mod_pi_all_cull))

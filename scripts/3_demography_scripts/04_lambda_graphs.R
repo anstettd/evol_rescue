@@ -149,7 +149,7 @@ a <- ggplot(r_long_early, aes(x=factor(time, level=level_order_pre), y=mean_r, g
     strip.background=element_blank(), 
     strip.text.x=element_blank(),
     legend.title=element_blank())
-ggsave(a, "Graphs/Demography/01c_decline.pdf",width=14, height = 8, units = "in")
+ggsave("Graphs/Demography/01c_decline.pdf",a, width=14, height = 8, units = "in")
 
 #Drought to recovery period
 r_long_late <- r_long %>% filter(time!="pre") %>% droplevels()

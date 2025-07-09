@@ -170,7 +170,7 @@ b <- ggplot(r_long_late, aes(x=factor(time, level=level_order_post), y=mean_r, g
     strip.background = element_blank(), 
     strip.text.x = element_blank(),
     legend.title = element_blank())
-ggsave("Graphs/Demography/01d_recovery.pdf",width=14, height = 8, units = "in")
+ggsave("Graphs/Demography/01d_recovery.pdf",b, width=14, height = 8, units = "in")
 
 
 # sensitivity test: remove 3 extirpated populations

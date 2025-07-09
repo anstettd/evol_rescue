@@ -321,6 +321,9 @@ t.test(trait_geno_pop_cull$trait.change.all.dry[trait_geno_pop_cull$Sgroup=="neg
 
 trait_geno_pop_na <- trait_geno_pop %>% drop_na(SLA_D) %>% dplyr::select(Median, SLA_D, FT_D, A_D, SC_D, WC_D)
 
+#Export file
+write_csv(trait_geno_pop_na,"data/trait_data/trait_pop.csv")
+
 mod.dry <- lm(Median ~ SLA_D + FT_D + A_D + SC_D + WC_D, dat=trait_geno_pop_na, na.action=na.fail)
 summary(mod.dry) #positive effect of increased carbon assimilation, negative effect of increased stomatal conductance (traits that we were forcing to go in same direction on simple escape-avoid continuum)
 plot(mod.dry)

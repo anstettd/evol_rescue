@@ -79,7 +79,7 @@ wna2_year$Paper_ID<-factor(wna2_year$Paper_ID,levels=c("55","57","11","9","8","7
 
 
 wna2_year$Paper_ID<-as.factor(wna2_year$Paper_ID) 
-wna2_year$Paper_ID<-factor(wna2_year$Paper_ID,levels=wna2_year$Paper_ID)
+#wna2_year$Paper_ID<-factor(wna2_year$Paper_ID,levels=wna2_year$Paper_ID)
 
 
 # plot Year vs. MAP
@@ -102,7 +102,7 @@ MAP_plot<-MAP_plot + theme(legend.position = "none",
                            axis.title.y = element_text(size=16,vjust = 1, face="bold",hjust=0.5))#+
 #scale_x_discrete(labels=Site.label)
 MAP_plot
-ggsave("Graphs/Climate/MAP_pop.pdf",width=6, height = 8, units = "in")
+ggsave("Graphs/Climate/MAP_test_pop.pdf",width=6, height = 8, units = "in")
 
 
 
@@ -127,6 +127,7 @@ PPTwtanom_plot<-PPTwtanom_plot + theme(legend.position = "none",
                            axis.title.y = element_text(size=16,vjust = 1, face="bold",hjust=0.5))#+
 #scale_x_discrete(labels=Site.label)
 PPTwtanom_plot
+ggsave("Graphs/Climate/PPTwtanom_plot.pdf",width=6, height = 8, units = "in")
 
 
 

@@ -43,6 +43,7 @@ strong_snp_set_clump_raw <- rbind(clump_env1,
 #Get Unique SNP
 strong_snp_set_clump <- as.data.frame(unique(strong_snp_set_clump_raw$chr_snp))  %>%
   rename(chr_snp = `unique(strong_snp_set_clump_raw$chr_snp)`) %>% arrange(chr_snp)
+dim(strong_snp_set_clump) # 341 unique SNPs after PLINK for climate-associated SNP set reduced to only have SNPs with a monotonic increase.
 
 #Merge all 9 env
 env58_snp_set_clump_raw <- rbind(clump_env5,clump_env7,clump_env8)
@@ -50,6 +51,8 @@ env58_snp_set_clump_raw <- rbind(clump_env5,clump_env7,clump_env8)
 #Get Unique SNP
 env58_snp_set_clump <- as.data.frame(unique(env58_snp_set_clump_raw$chr_snp))  %>%
   rename(chr_snp = `unique(env58_snp_set_clump_raw$chr_snp)`) %>% arrange(chr_snp)
+dim(env58_snp_set_clump) #159 unique SNPs after PLINK for SNPs highly assocaited in three climate variables (CMD, Tave_sm, PPT_wt)
+#for climate-associated SNP set reduced to only have SNPs with a monotonic increase.
 
 #Write out joined sets
 write_csv(strong_snp_set_clump,"data/genomic_data/strong_snp_set_full_clump.csv")

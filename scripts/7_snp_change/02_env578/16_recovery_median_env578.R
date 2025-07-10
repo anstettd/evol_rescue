@@ -30,7 +30,7 @@ ggplot(slope_pop, aes(x=Median, y=mean.r.recovery)) + geom_point()
 
 mod_S <- lm(mean.r.recovery~Median,data=slope_pop)
 summary(mod_S)
-Anova(mod_S,type="III")
+Anova(mod_S,type="III") #P=0.0006, R2=0.76
 qqnorm(resid(mod_S))
 qqline(resid(mod_S))
 

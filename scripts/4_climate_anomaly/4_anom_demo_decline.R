@@ -76,7 +76,10 @@ a <- ggplot(demo_pop, aes(x=PPT_wt_1214, y=mean.r.drought)) +
   scale_y_continuous(name="Mean Pop. Growth During Drought")+
   scale_x_continuous(name="Winter Precipitation Anomaly (2012-2014)")+
   #,breaks=c(0.04,0.045,0.05,0.055,0.06))+
-  scale_fill_manual(labels=round(demo_pop$Latitude,1), values=as.character(demo_pop$Lat.Color)) +
+  #scale_fill_manual(labels=round(demo_pop$Latitude,1), 
+   #                 values=as.character(demo_pop$Lat.Color)) +
+  scale_fill_manual(name = "Latitude (°N)",labels=round(demo_pop$Latitude,1), 
+                    values=as.character(demo_pop$Lat.Color)) +
   theme_classic() + theme(
     axis.text.x = element_text(size=20, face="bold"),
     axis.text.y = element_text(size=20,face="bold"),

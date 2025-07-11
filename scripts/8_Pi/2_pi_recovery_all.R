@@ -16,7 +16,6 @@ library(cowplot)
 library(MASS)
 library(sfsmisc)
 
-
 #Import demography data (includes metadata)
 demog_recovery <- read_csv("data/demography data/siteYear.lambda_responses_2010-2019.csv")
 
@@ -133,59 +132,4 @@ ggplot(pi_pop_graph, aes(x=pi_all_snps, y=mean.r.recovery)) +
 ggsave("Graphs/Demography_2/07_pi_demography_global_all.pdf",width=8, height = 6, units = "in")
 
 
-
-
-
-
-
-
-
-
-#Check for influential outliers
-inflm_pi_snp <- influence.measures(mod_pi_snp)
-summary(inflm_pi_snp) #observation 11 (Carlon) is potentially an outlier according to df
-
-#Cull the outlier population
-pi_pop_cull1 <- pi_pop %>% 
-  filter(row_number()!=row.names(summary(inflm_pi_snp)))  # remove the 11th row of data frame
-
-# sensitivity test without influential outlier Buck Meadows
-mod_pi_snp_cull <- lm(mean.r.recovery~pi_snp_set, data=pi_pop_cull1)
-summary(mod_pi_snp_cull)
-Anova(mod_pi_snp_cull,type="III")
-qqnorm(resid(mod_pi_snp_cull))
-qqline(resid(mod_pi_snp_cull))
-
-#Cook's distance check for influential outliers after removing Buck
-inflm_pi_pop_cull1 <- influence.measures(mod_pi_snp_cull)
-summary(inflm_pi_pop_cull1) #2 more observations flagged by cov.r
-#Cull more outlier populations...?? This seems highly questionable.
-
-
-
-
-
-
-
-
-
-#Check for influential outliers
-inflm_pi_all <- influence.measures(mod_pi_all)
-summary(inflm_pi_all) #observation 5 (W Fork Mojave) is potentially an outlier according to cov.r; observation 11 (Carlon) is potentially an outlier according to covr and hat
-
-#Cull the outlier populations
-pi_pop_cull2 <- pi_pop %>% 
-  filter(row_number()!=row.names(summary(inflm_pi_all)))  # remove the 5th and 11th rows of data frame
-
-# sensitivity test without influential outliers WFMojave & Carlon
-mod_pi_all_cull <- lm(log(mean.r.recovery+0.5)~pi_all_snps, data=pi_pop_cull2)
-summary(mod_pi_all_cull)
-Anova(mod_pi_all_cull,type="III")
-qqnorm(resid(mod_pi_all_cull))
-qqline(resid(mod_pi_all_cull))
-
-#Cook's distance check for influential outliers after removing Buck
-inflm_pi_pop_cull2 <- influence.measures(mod_pi_all_cull)
-summary(inflm_pi_pop_cull2) #another observation flagged by all metrics
-#Cull another outlier populations...?? This seems highly questionable.
 

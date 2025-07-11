@@ -13,6 +13,8 @@ library(tidyverse)
 library(car)
 library(ggrepel)
 library(RColorBrewer)
+library(MASS)
+library(sfsmisc)
 
 #Import demography data + metadata
 demo_pop <- read_csv("data/demography data/siteYear.lambda_responses_2010-2019.csv")
@@ -29,46 +31,21 @@ slope_pop <- drop_na(slope_pop)
 ggplot(slope_pop, aes(x=Median, y=mean.r.recovery)) + geom_point()
 
 mod_S <- lm(mean.r.recovery~Median,data=slope_pop)
-summary(mod_S)
+summary(mod_S) # P = 0.011, R2 = 0.52
 Anova(mod_S,type="III")
 qqnorm(resid(mod_S))
 qqline(resid(mod_S))
 
-#Check for influential outliers
-inflm_mod_S <- influence.measures(mod_S)
-summary(inflm_mod_S) # observation 4 (redwood) is potentially an outlier by 2 metrics. also 1 (sweetwater) by df and 7 (little jameson) by covr
-
-#Cull 3 potential outliers
-slope_pop_cull1 <- slope_pop %>% 
-  filter(Paper_ID!=4, Paper_ID!=1, Paper_ID!=7) 
-
-# sensitivity test without Redwood, Sweetwater, Jameson
-mod_S_cull <- lm(mean.r.recovery~Median, data=slope_pop_cull1)
-summary(mod_S_cull)
-Anova(mod_S_cull,type="III")
-qqnorm(resid(mod_S_cull))
-qqline(resid(mod_S_cull))
-
-# Check again for outliers
-inflm_mod_S_cull <- influence.measures(mod_S_cull)
-summary(inflm_mod_S_cull) # 3 more, this is inviable. switch to robust regression
-
 #Robust regression instead
-library(MASS)
 rob.mod_S <- rlm(slope_pop$mean.r.recovery~Median,data=slope_pop)
-summary(rob.mod_S)
-# this yields a coefficient estimate & std error but no p-value or R2
-library(sfsmisc)
-f.robftest(rob.mod_S, var="Median")
+summary(rob.mod_S) 
+f.robftest(rob.mod_S, var="Median") #p-value = 0.01238
 
 
 ######################################################################################### Graphs of lambda recovery vs median selection slope 
 
 slope_pop$Lat.Color<-as.factor(slope_pop$Lat.Color)
 slope_pop$Lat.Color<-factor(slope_pop$Lat.Color,levels=slope_pop$Lat.Color)
-
-slope_pop_cull1$Lat.Color<-as.factor(slope_pop_cull1$Lat.Color)
-slope_pop_cull1$Lat.Color<-factor(slope_pop_cull1$Lat.Color,levels=slope_pop_cull1$Lat.Color)
 
 ggplot(slope_pop, aes(x=Median, y=mean.r.recovery)) + 
   geom_smooth(method=lm,color="black", size=1.8, linetype="dashed", fill="gray75")+
@@ -92,5 +69,8 @@ ggplot(slope_pop, aes(x=Median, y=mean.r.recovery)) +
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
 ggsave("Graphs/Demography_2/01_median_slope_logr.pdf",width=8, height = 6, units = "in")
+
+
+
 
 

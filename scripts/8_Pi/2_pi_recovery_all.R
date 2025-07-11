@@ -13,6 +13,8 @@ library(tidyverse)
 library(car)
 library(ggrepel)
 library(cowplot)
+library(MASS)
+library(sfsmisc)
 
 
 #Import demography data (includes metadata)
@@ -24,12 +26,13 @@ pi_raw <- read_csv("data/genomic_data/raw_pi_clump.csv")
 #Join data sets
 pi_pop <- left_join(demog_recovery, pi_raw, by=c("Paper_ID"="Site")) 
 
-
+###################################################################################
 ###### PI OF CLIMATE SNP
 
 #Visualize scatter plot
 ggplot(pi_pop, aes(x=pi_snp_set, y=mean.r.recovery)) + geom_point()
-#looks like some big outliers - needs transformation &/or test for outliers
+pi_pop_graph <- pi_pop %>% dplyr::select(Site,Latitude,Lat.Color,mean.r.recovery,pi_snp_set,pi_all_snps)
+pi_pop_graph <- drop_na(pi_pop_graph)
 
 #Ordinary least squares regression
 mod_pi_snp <- lm(mean.r.recovery~pi_snp_set,data=pi_pop)
@@ -38,33 +41,9 @@ Anova(mod_pi_snp,type="III")
 qqnorm(resid(mod_pi_snp))
 qqline(resid(mod_pi_snp))
 
-#Check for influential outliers
-inflm_pi_snp <- influence.measures(mod_pi_snp)
-summary(inflm_pi_snp) #observation 11 (Carlon) is potentially an outlier according to df
-
-#Cull the outlier population
-pi_pop_cull1 <- pi_pop %>% 
-  filter(row_number()!=row.names(summary(inflm_pi_snp)))  # remove the 11th row of data frame
-
-# sensitivity test without influential outlier Buck Meadows
-mod_pi_snp_cull <- lm(mean.r.recovery~pi_snp_set, data=pi_pop_cull1)
-summary(mod_pi_snp_cull)
-Anova(mod_pi_snp_cull,type="III")
-qqnorm(resid(mod_pi_snp_cull))
-qqline(resid(mod_pi_snp_cull))
-
-#Cook's distance check for influential outliers after removing Buck
-inflm_pi_pop_cull1 <- influence.measures(mod_pi_snp_cull)
-summary(inflm_pi_pop_cull1) #2 more observations flagged by cov.r
-#Cull more outlier populations...?? This seems highly questionable.
-
 #Robust regression instead
-library(MASS)
 rob.mod_pi_snp <- rlm(pi_pop$mean.r.recovery~pi_snp_set,data=pi_pop)
 summary(rob.mod_pi_snp)
-# this yields a coefficient estimate & std error that is similar to the culled model
-# but no p-value or R2
-library(sfsmisc)
 f.robftest(rob.mod_pi_snp, var="pi_snp_set")
 
 
@@ -72,7 +51,6 @@ f.robftest(rob.mod_pi_snp, var="pi_snp_set")
 
 #Visualize scatter plot
 ggplot(pi_pop, aes(x=pi_all_snps, y=mean.r.recovery)) + geom_point()
-#looks like some big outliers - needs transformation &/or test for outliers
 
 #Ordinary least squares regression
 mod_pi_all <- lm(mean.r.recovery~pi_all_snps,data=pi_pop)
@@ -81,33 +59,9 @@ Anova(mod_pi_all,type="III")
 qqnorm(resid(mod_pi_all))
 qqline(resid(mod_pi_all))
 
-#Check for influential outliers
-inflm_pi_all <- influence.measures(mod_pi_all)
-summary(inflm_pi_all) #observation 5 (W Fork Mojave) is potentially an outlier according to cov.r; observation 11 (Carlon) is potentially an outlier according to covr and hat
-
-#Cull the outlier populations
-pi_pop_cull2 <- pi_pop %>% 
-  filter(row_number()!=row.names(summary(inflm_pi_all)))  # remove the 5th and 11th rows of data frame
-
-# sensitivity test without influential outliers WFMojave & Carlon
-mod_pi_all_cull <- lm(log(mean.r.recovery+0.5)~pi_all_snps, data=pi_pop_cull2)
-summary(mod_pi_all_cull)
-Anova(mod_pi_all_cull,type="III")
-qqnorm(resid(mod_pi_all_cull))
-qqline(resid(mod_pi_all_cull))
-
-#Cook's distance check for influential outliers after removing Buck
-inflm_pi_pop_cull2 <- influence.measures(mod_pi_all_cull)
-summary(inflm_pi_pop_cull2) #another observation flagged by all metrics
-#Cull another outlier populations...?? This seems highly questionable.
-
 #Robust regression instead
-library(MASS)
 rob.mod_pi_all <- rlm(pi_pop$mean.r.recovery~pi_all_snps,data=pi_pop)
 summary(rob.mod_pi_all)
-# this yields a coefficient estimate & std error that is similar to the culled model
-# but no p-value or R2
-library(sfsmisc)
 f.robftest(rob.mod_pi_all, var="pi_all_snps")
 
 
@@ -117,7 +71,7 @@ f.robftest(rob.mod_pi_all, var="pi_all_snps")
 ### Graphs of lambda recovery vs genetic diversity
 
 ## CLIMATE SNP
-pi_pop_graph <- drop_na(pi_pop)
+#pi_pop_graph <- pi_pop #drop_na(pi_pop)
 pi_pop_graph$Lat.Color<-as.factor(pi_pop_graph$Lat.Color)
 pi_pop_graph$Lat.Color<-factor(pi_pop_graph$Lat.Color,levels=pi_pop_graph$Lat.Color)
 #pi_pop_graph_cull1 <- drop_na(pi_pop_cull1)
@@ -146,7 +100,7 @@ ggplot(pi_pop_graph, aes(x=pi_snp_set, y=mean.r.recovery)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines")) # Reduce height
 
-ggsave("Graphs/Demography_2/13_pi_demography_snpset_all.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Demography_2/06_pi_demography_snpset_all.pdf",width=8, height = 6, units = "in")
 
 
 ## GENOME SNP
@@ -176,5 +130,62 @@ ggplot(pi_pop_graph, aes(x=pi_all_snps, y=mean.r.recovery)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines")) # Reduce height
 
-ggsave("Graphs/Demography_2/15_pi_demography_global_all.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Demography_2/07_pi_demography_global_all.pdf",width=8, height = 6, units = "in")
+
+
+
+
+
+
+
+
+
+
+#Check for influential outliers
+inflm_pi_snp <- influence.measures(mod_pi_snp)
+summary(inflm_pi_snp) #observation 11 (Carlon) is potentially an outlier according to df
+
+#Cull the outlier population
+pi_pop_cull1 <- pi_pop %>% 
+  filter(row_number()!=row.names(summary(inflm_pi_snp)))  # remove the 11th row of data frame
+
+# sensitivity test without influential outlier Buck Meadows
+mod_pi_snp_cull <- lm(mean.r.recovery~pi_snp_set, data=pi_pop_cull1)
+summary(mod_pi_snp_cull)
+Anova(mod_pi_snp_cull,type="III")
+qqnorm(resid(mod_pi_snp_cull))
+qqline(resid(mod_pi_snp_cull))
+
+#Cook's distance check for influential outliers after removing Buck
+inflm_pi_pop_cull1 <- influence.measures(mod_pi_snp_cull)
+summary(inflm_pi_pop_cull1) #2 more observations flagged by cov.r
+#Cull more outlier populations...?? This seems highly questionable.
+
+
+
+
+
+
+
+
+
+#Check for influential outliers
+inflm_pi_all <- influence.measures(mod_pi_all)
+summary(inflm_pi_all) #observation 5 (W Fork Mojave) is potentially an outlier according to cov.r; observation 11 (Carlon) is potentially an outlier according to covr and hat
+
+#Cull the outlier populations
+pi_pop_cull2 <- pi_pop %>% 
+  filter(row_number()!=row.names(summary(inflm_pi_all)))  # remove the 5th and 11th rows of data frame
+
+# sensitivity test without influential outliers WFMojave & Carlon
+mod_pi_all_cull <- lm(log(mean.r.recovery+0.5)~pi_all_snps, data=pi_pop_cull2)
+summary(mod_pi_all_cull)
+Anova(mod_pi_all_cull,type="III")
+qqnorm(resid(mod_pi_all_cull))
+qqline(resid(mod_pi_all_cull))
+
+#Cook's distance check for influential outliers after removing Buck
+inflm_pi_pop_cull2 <- influence.measures(mod_pi_all_cull)
+summary(inflm_pi_pop_cull2) #another observation flagged by all metrics
+#Cull another outlier populations...?? This seems highly questionable.
 

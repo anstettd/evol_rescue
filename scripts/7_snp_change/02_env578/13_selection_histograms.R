@@ -102,7 +102,7 @@ histPop <- ggplot(env_histPop_155 ,aes(x=S,y=obs,ymin=low,ymax=high))+
   geom_bar(colour = "black", stat = "identity", width = 0.1, fill = "pink")+ # was lightblue1
   #geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.06) +
   geom_vline(xintercept=0) +
-  labs(x = "Strength of Selection", y = "Number of SNPs") +
+  labs(x = "Response to Selection", y = "Number of SNPs") +
   scale_x_continuous(limits=c(-1.55,1.55))+ 
   theme_ci() + facet_wrap(.~Site) +
   geom_vline(data = median_pop, aes(xintercept = median), size=0.9, linetype="dashed",color="red")
@@ -117,7 +117,7 @@ histPop <- ggplot(env_histPop ,aes(x=S,y=obs,ymin=low,ymax=high))+
   geom_bar(colour = "black", stat = "identity", width = 0.1, fill = "pink")+ # was lightblue1
   #geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.06) +
   geom_vline(xintercept=0) +
-  labs(x = "Strength of Selection", y = "Number of SNPs") +
+  labs(x = "Response to Selection", y = "Number of SNPs") +
   #scale_y_continuous(limits=c(0,40))+ 
   theme_ci() + facet_wrap(.~Site) +
   geom_vline(data = median_pop, aes(xintercept = median), size=0.9, linetype="dashed",color="red")
@@ -130,7 +130,7 @@ histPop <- ggplot(env_histPop_25 ,aes(x=S,y=obs,ymin=low,ymax=high))+
   geom_bar(colour = "black", stat = "identity", width = 0.1, fill = "pink")+
   #geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.06) +
   geom_vline(xintercept=0) +
-  labs(x = "Strength of Selection", y = "Number of SNPs") +
+  labs(x = "Response to Selection", y = "Number of SNPs") +
   #scale_y_continuous(limits=c(0,125),breaks=seq(0,125,by=25))+ 
   theme_ci() + facet_wrap(.~Site)+
   geom_vline(data = median_pop, aes(xintercept = median), size=1.2, linetype="dashed",color="red")

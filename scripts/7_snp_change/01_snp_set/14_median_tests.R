@@ -122,26 +122,13 @@ mean_rand$Site <- factor(mean_rand$Site, levels = c(1,2,3,4,5,6,7,8,9,10,11))
 #Median 
 histPop <- ggplot(median_rand,aes(x=median))+
   geom_histogram(color="black",fill = "grey70")+
-  labs(x = "Strength of Selection", y = "Number of Permutations") +
+  labs(x = "Response to Selection", y = "Number of Permutations") +
   geom_vline(xintercept=0) +
   theme_ci() + facet_wrap(.~Site) +
 geom_vline(data = median_obs, aes(xintercept = median), size=0.5, linetype="dashed",color="red")
 histPop 
 
 ggsave("Graphs/snp_change_2/03_rand_median.pdf",width=12, height = 8, units = "in")
-
-
-
-#Mean
-histPop_mean <- ggplot(mean_rand,aes(x=mean))+
-  geom_histogram(color="black",fill = "grey70")+
-  labs(x = "Strength of Selection", y = "Number of Permutations") +
-  geom_vline(xintercept=0) +
-  theme_ci() + facet_wrap(.~Site) +
-  geom_vline(data = mean_obs, aes(xintercept = mean), size=0.5, linetype="dashed",color="red")
-histPop_mean
-
-#ggsave("Graphs/snp_change_2/04_rand_mean.pdf",width=12, height = 8, units = "in")
 
 
 
@@ -157,7 +144,7 @@ median_obs_pops <- median_obs %>% filter(Site == 3)
 
 histPops <- ggplot(median_rand_pops,aes(x=median))+
   geom_histogram(color="black",fill = "grey70")+
-  labs(x = "Mean Strength of Selection", y = "Permutations") +
+  labs(x = "Response to Selection", y = "Permutations") +
   geom_vline(xintercept=0) +
   theme_ci() + facet_wrap(.~Site) +
   geom_vline(data = median_obs_pops, aes(xintercept = median), size=1.5, color="red")+
@@ -176,7 +163,7 @@ median_rand_pops$Site <- droplevels(median_rand_pops$Site) %>% na.omit()
 
 histPops <- ggplot(median_rand_pops,aes(x=median))+
   geom_histogram(color="black",fill = "grey70")+
-  labs(x = "Strength of Selection", y = "Number of Permutations") +
+  labs(x = "Response to Selection", y = "Number of Permutations") +
   geom_vline(xintercept=0) +
   theme_ci() + facet_wrap(.~Site) +
   geom_vline(data = median_obs_pops, aes(xintercept = median), size=1, linetype="dashed",color="red")+

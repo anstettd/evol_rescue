@@ -10,112 +10,75 @@
 
 library(tidyverse)
 
+#Note .clumped files from PLINK will need to be turned into .csv files. Use text editor and copy into excel, then save as .csv
 #Import the plink clump LD thinned SNP set per env
-highS_p01<-read_csv("data/genomic_data/highS_p01.csv", col_names = T) %>% arrange(SNP) %>% 
-  select(SNP) %>% rename(chr_snp = SNP) 
-highS_p02<-read_csv("data/genomic_data/highS_p02.csv", col_names = T) %>% arrange(SNP) %>% 
-  select(SNP) %>% rename(chr_snp = SNP) 
-highS_p03<-read_csv("data/genomic_data/highS_p03.csv", col_names = T) %>% arrange(SNP) %>% 
-  select(SNP) %>% rename(chr_snp = SNP) 
-highS_p04<-read_csv("data/genomic_data/highS_p04.csv", col_names = T) %>% arrange(SNP) %>% 
-  select(SNP) %>% rename(chr_snp = SNP) 
-highS_p05<-read_csv("data/genomic_data/highS_p05.csv", col_names = T) %>% arrange(SNP) %>% 
-  select(SNP) %>% rename(chr_snp = SNP) 
-highS_p06<-read_csv("data/genomic_data/highS_p06.csv", col_names = T) %>% arrange(SNP) %>% 
-  select(SNP) %>% rename(chr_snp = SNP) 
-highS_p07<-read_csv("data/genomic_data/highS_p07.csv", col_names = T) %>% arrange(SNP) %>% 
-  select(SNP) %>% rename(chr_snp = SNP) 
-highS_p08<-read_csv("data/genomic_data/highS_p08.csv", col_names = T) %>% arrange(SNP) %>% 
-  select(SNP) %>% rename(chr_snp = SNP) 
-highS_p09<-read_csv("data/genomic_data/highS_p09.csv", col_names = T) %>% arrange(SNP) %>% 
-  select(SNP) %>% rename(chr_snp = SNP) 
-highS_p10<-read_csv("data/genomic_data/highS_p10.csv", col_names = T) %>% arrange(SNP) %>% 
-  select(SNP) %>% rename(chr_snp = SNP) 
-highS_p11<-read_csv("data/genomic_data/highS_p11.csv", col_names = T) %>% arrange(SNP) %>% 
-  select(SNP) %>% rename(chr_snp = SNP) 
+highS_p01<-read_csv("data/genomic_data/highS_p01.clumped.csv", col_names = T) %>% arrange(SNP) %>% 
+  select(SNP,P) %>% rename(snp_ID = SNP) 
+highS_p02<-read_csv("data/genomic_data/highS_p02.clumped.csv", col_names = T) %>% arrange(SNP) %>% 
+  select(SNP,P) %>% rename(snp_ID = SNP) 
+highS_p03<-read_csv("data/genomic_data/highS_p03.clumped.csv", col_names = T) %>% arrange(SNP) %>% 
+  select(SNP,P) %>% rename(snp_ID = SNP) 
+highS_p04<-read_csv("data/genomic_data/highS_p04.clumped.csv", col_names = T) %>% arrange(SNP) %>% 
+  select(SNP,P) %>% rename(snp_ID = SNP) 
+highS_p05<-read_csv("data/genomic_data/highS_p05.clumped.csv", col_names = T) %>% arrange(SNP) %>% 
+  select(SNP,P) %>% rename(snp_ID = SNP) 
+highS_p06<-read_csv("data/genomic_data/highS_p06.clumped.csv", col_names = T) %>% arrange(SNP) %>% 
+  select(SNP,P) %>% rename(snp_ID = SNP) 
+highS_p07<-read_csv("data/genomic_data/highS_p07.clumped.csv", col_names = T) %>% arrange(SNP) %>% 
+  select(SNP,P) %>% rename(snp_ID = SNP) 
+highS_p08<-read_csv("data/genomic_data/highS_p08.clumped.csv", col_names = T) %>% arrange(SNP) %>% 
+  select(SNP,P) %>% rename(snp_ID = SNP) 
+highS_p09<-read_csv("data/genomic_data/highS_p09.clumped.csv", col_names = T) %>% arrange(SNP) %>% 
+  select(SNP,P) %>% rename(snp_ID = SNP) 
+highS_p10<-read_csv("data/genomic_data/highS_p10.clumped.csv", col_names = T) %>% arrange(SNP) %>% 
+  select(SNP,P) %>% rename(snp_ID = SNP) 
+highS_p11<-read_csv("data/genomic_data/highS_p11.clumped.csv", col_names = T) %>% arrange(SNP) %>% 
+  select(SNP,P) %>% rename(snp_ID = SNP) 
 
 #Import data frame with highS
 #Import
 snp_all <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/snp_all.csv") %>% filter(SE<5)
 
 #Split into data for each pop
-p1_215 <- snp_all %>% filter(Site==1) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 2000)
-p2_215 <- snp_all %>% filter(Site == 2) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 2000)
-p3_215 <- snp_all %>% filter(Site == 3) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 2000)
-p4_215 <- snp_all %>% filter(Site == 4) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 2000)
-p5_215 <- snp_all %>% filter(Site == 5) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 2000)
-p6_215 <- snp_all %>% filter(Site == 6) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 2000)
-p7_215 <- snp_all %>% filter(Site == 7) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 2000)
-p8_215 <- snp_all %>% filter(Site == 8) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 2000)
-p9_215 <- snp_all %>% filter(Site == 9) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 2000)
-p10_215 <- snp_all %>% filter(Site == 10) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 2000)
-p11_215 <- snp_all %>% filter(Site == 11) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 2000)
+p01 <- snp_all %>% filter(Site==1) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 2000)
+p02 <- snp_all %>% filter(Site == 2) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 2000)
+p03 <- snp_all %>% filter(Site == 3) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 2000)
+p04 <- snp_all %>% filter(Site == 4) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 2000)
+p05 <- snp_all %>% filter(Site == 5) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 2000)
+p06 <- snp_all %>% filter(Site == 6) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 2000)
+p07 <- snp_all %>% filter(Site == 7) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 2000)
+p08 <- snp_all %>% filter(Site == 8) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 2000)
+p09 <- snp_all %>% filter(Site == 9) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 2000)
+p10 <- snp_all %>% filter(Site == 10) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 2000)
+p11 <- snp_all %>% filter(Site == 11) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 2000)
 rm(snp_all)
 
-#%>% slice_head(n = 215)
-
-
-
 #Get top 215 SNPs per pop
-p1_215 <- p01 %>% left_join(highS_p01,p1_215, by=c(snp_ID=)) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 215)
-p2_215 <- p02 %>% 
-p3_215 <- p03 %>% 
-p4_215 <- p04 %>% 
-p5_215 <- p05 %>% 
-p6_215 <- p06 %>% 
-p7_215 <- p07 %>% 
-p8_215 <- p08 %>% 
-p9_215 <- p09 %>% 
-p10_215 <- p10 %>% 
-p11_215 <- p11 %>% 
+p01_215 <- left_join(highS_p01, p01, by = "snp_ID") %>% arrange(desc(Slope_abs)) %>% slice_head(n = 215)
+p02_215 <- left_join(highS_p02, p02, by = "snp_ID") %>% arrange(desc(Slope_abs)) %>% slice_head(n = 215)
+p03_215 <- left_join(highS_p03, p03, by = "snp_ID") %>% arrange(desc(Slope_abs)) %>% slice_head(n = 215)
+p04_215 <- left_join(highS_p04, p04, by = "snp_ID") %>% arrange(desc(Slope_abs)) %>% slice_head(n = 215)
+p05_215 <- left_join(highS_p05, p05, by = "snp_ID") %>% arrange(desc(Slope_abs)) %>% slice_head(n = 215)
+p06_215 <- left_join(highS_p06, p06, by = "snp_ID") %>% arrange(desc(Slope_abs)) %>% slice_head(n = 215)
+p07_215 <- left_join(highS_p07, p07, by = "snp_ID") %>% arrange(desc(Slope_abs)) %>% slice_head(n = 215)
+p08_215 <- left_join(highS_p08, p08, by = "snp_ID") %>% arrange(desc(Slope_abs)) %>% slice_head(n = 215)
+p09_215 <- left_join(highS_p09, p09, by = "snp_ID") %>% arrange(desc(Slope_abs)) %>% slice_head(n = 215)
+p10_215 <- left_join(highS_p10, p10, by = "snp_ID") %>% arrange(desc(Slope_abs)) %>% slice_head(n = 215)
+p11_215 <- left_join(highS_p11, p11, by = "snp_ID") %>% arrange(desc(Slope_abs)) %>% slice_head(n = 215)
 
-highS_p01 <- highS_p01 %>% filter()
+#Write out snp sets for each population
+write_csv(p01_215, "data/genomic_data/p01_215.csv")
+write_csv(p02_215, "data/genomic_data/p02_215.csv")
+write_csv(p03_215, "data/genomic_data/p03_215.csv")
+write_csv(p04_215, "data/genomic_data/p04_215.csv")
+write_csv(p05_215, "data/genomic_data/p05_215.csv")
+write_csv(p06_215, "data/genomic_data/p06_215.csv")
+write_csv(p07_215, "data/genomic_data/p07_215.csv")
+write_csv(p08_215, "data/genomic_data/p08_215.csv")
+write_csv(p09_215, "data/genomic_data/p09_215.csv")
+write_csv(p10_215, "data/genomic_data/p10_215.csv")
+write_csv(p11_215, "data/genomic_data/p11_215.csv")
 
-
-
-
-
-
-
-#Merge all 9 env
-strong_snp_set_clump_raw <- rbind(clump_env1,
-                              clump_env2,
-                              clump_env3,
-                              clump_env4,
-                              clump_env5,
-                              clump_env6,
-                              clump_env7,
-                              clump_env8,
-                              clump_env9)
-#Get Unique SNP
-strong_snp_set_clump <- as.data.frame(unique(strong_snp_set_clump_raw$chr_snp))  %>%
-  rename(chr_snp = `unique(strong_snp_set_clump_raw$chr_snp)`) %>% arrange(chr_snp)
-dim(strong_snp_set_clump) # 105 unique SNPs after PLINK for climate-associated SNP set reduced to only have SNPs with a monotonic increase.
-
-#Merge all 9 env
-env58_snp_set_clump_raw <- rbind(clump_env5,clump_env7,clump_env8)
-dim(env58_snp_set_clump_raw) 
-
-#Get Unique SNP
-env58_snp_set_clump <- as.data.frame(unique(env58_snp_set_clump_raw$chr_snp))  %>%
-  rename(chr_snp = `unique(env58_snp_set_clump_raw$chr_snp)`) %>% arrange(chr_snp)
-dim(env58_snp_set_clump) #103 unique SNPs after PLINK for SNPs highly assocaited in three climate variables (CMD, Tave_sm, PPT_wt)
-#for climate-associated SNP set reduced to only have SNPs with a monotonic increase.
-
-#Write out joined sets Not currently in use
-#write_csv(strong_snp_set_clump,"data/genomic_data/strong_snp_set_clump.csv")
-#write_csv(env58_snp_set_clump,"data/genomic_data/strong_snp_set_clump_env578.csv")
-
-#Write out snp sets for individual env variables
-write_csv(clump_env1,"data/genomic_data/strong_snp_set_clump_env1.csv")
-write_csv(clump_env2,"data/genomic_data/strong_snp_set_clump_env2.csv")
-write_csv(clump_env3,"data/genomic_data/strong_snp_set_clump_env3.csv")
-write_csv(clump_env4,"data/genomic_data/strong_snp_set_clump_env4.csv")
-write_csv(clump_env5,"data/genomic_data/strong_snp_set_clump_env5.csv")
-write_csv(clump_env6,"data/genomic_data/strong_snp_set_clump_env6.csv")
-write_csv(clump_env7,"data/genomic_data/strong_snp_set_clump_env7.csv")
-write_csv(clump_env8,"data/genomic_data/strong_snp_set_clump_env8.csv")
-write_csv(clump_env9,"data/genomic_data/strong_snp_set_clump_env9.csv")
 
 
 

@@ -10,6 +10,7 @@
 
 library(tidyverse)
 
+#Note .clumped files from PLINK will need to be turned into .csv files. Use text editor and copy into excel, then save as .csv
 #Import the plink clump LD thinned SNP set per env
 clump_env1<-read_csv("data/genomic_data/baseline_full_env1_clumped.csv", col_names = T) %>% arrange(SNP) %>% 
   select(SNP) %>% rename(chr_snp = SNP) 

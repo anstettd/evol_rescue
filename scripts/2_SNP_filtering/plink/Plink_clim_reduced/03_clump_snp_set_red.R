@@ -10,6 +10,7 @@
 
 library(tidyverse)
 
+#Note .clumped files from PLINK will need to be turned into .csv files. Use text editor and copy into excel, then save as .csv
 #Import the plink clump LD thinned SNP set per env
 clump_env1<-read_csv("data/genomic_data/baseline_env1_clumped.csv", col_names = T) %>% arrange(SNP) %>% 
   select(SNP) %>% rename(chr_snp = SNP) 
@@ -55,8 +56,8 @@ env58_snp_set_clump <- as.data.frame(unique(env58_snp_set_clump_raw$chr_snp))  %
 dim(env58_snp_set_clump) #103 unique SNPs after PLINK for SNPs highly assocaited in three climate variables (CMD, Tave_sm, PPT_wt)
 #for climate-associated SNP set reduced to only have SNPs with a monotonic increase.
 
-#Write out joined sets Not currently in use
-#write_csv(strong_snp_set_clump,"data/genomic_data/strong_snp_set_clump.csv")
+#Write out joined sets 
+write_csv(strong_snp_set_clump,"data/genomic_data/strong_snp_set_clump.csv")
 #write_csv(env58_snp_set_clump,"data/genomic_data/strong_snp_set_clump_env578.csv")
 
 #Write out snp sets for individual env variables

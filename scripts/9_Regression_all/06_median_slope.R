@@ -23,56 +23,39 @@ theme_ci <- function(){
 library(tidyverse)
 library(car)
 
-#Import
-snp_all <- read_csv("/Users/daniel_anstett/Dropbox/z_Documents/aLarge_files/M_gen/snp_all.csv") %>% filter(SE<5) %>% filter(Site!=12)
-
-#Get top 212 SNPs per pop
-p1_212 <- snp_all %>% filter(Site==1) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 212)
-p2_212 <- snp_all %>% filter(Site == 2) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 212)
-p3_212 <- snp_all %>% filter(Site == 3) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 212)
-p4_212 <- snp_all %>% filter(Site == 4) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 212)
-p5_212 <- snp_all %>% filter(Site == 5) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 212)
-p6_212 <- snp_all %>% filter(Site == 6) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 212)
-p7_212 <- snp_all %>% filter(Site == 7) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 212)
-p8_212 <- snp_all %>% filter(Site == 8) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 212)
-p9_212 <- snp_all %>% filter(Site == 9) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 212)
-p10_212 <- snp_all %>% filter(Site == 10) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 212)
-p11_212 <- snp_all %>% filter(Site == 11) %>% arrange(desc(Slope_abs)) %>% slice_head(n = 212)
+#Import top plink clumped 215 SNPs per pop
+p1_215 <- read_csv("data/genomic_data/p01_215.csv")
+p2_215 <- read_csv("data/genomic_data/p02_215.csv")
+p3_215 <- read_csv("data/genomic_data/p03_215.csv")
+p4_215 <- read_csv("data/genomic_data/p04_215.csv")
+p5_215 <- read_csv("data/genomic_data/p05_215.csv")
+p6_215 <- read_csv("data/genomic_data/p06_215.csv")
+p7_215 <- read_csv("data/genomic_data/p07_215.csv")
+p8_215 <- read_csv("data/genomic_data/p08_215.csv")
+p9_215 <- read_csv("data/genomic_data/p09_215.csv")
+p10_215 <- read_csv("data/genomic_data/p10_215.csv")
+p11_215 <- read_csv("data/genomic_data/p11_215.csv")
 
 
-all_212 <- rbind(p1_212,
-                 p2_212,
-                 p3_212,
-                 p4_212,
-                 p5_212,
-                 p6_212,
-                 p7_212,
-                 p8_212,
-                 p9_212,
-                 p10_212,
-                 p11_212)
+all_215 <- rbind(p1_215,
+                 p2_215,
+                 p3_215,
+                 p4_215,
+                 p5_215,
+                 p6_215,
+                 p7_215,
+                 p8_215,
+                 p9_215,
+                 p10_215,
+                 p11_215)
 
 
 
 ##Get median S for each pop
-snp_all_median <- all_212 %>% group_by(Site) %>% summarise(median = median(Slope_abs, na.rm = TRUE))
+snp_all_median <- all_215 %>% group_by(Site) %>% summarise(median = median(Slope_abs, na.rm = TRUE))
 
 snp_all_median$Site <- as.factor(snp_all_median$Site)
 snp_all_median$Site <- factor(snp_all_median$Site, levels = c(1,2,3,4,5,6,7,8,9,10,11))
-
-#Median 
-histPop <- ggplot(all_212,aes(x=Slope_abs))+
-  geom_histogram(color="black",fill = "grey70")+
-  labs(x = "Response to Selection", y = "Count") +
-  #geom_vline(xintercept=0) +
-  theme_ci() + facet_wrap(.~Site) +
-  geom_vline(data = snp_all_median, aes(xintercept = median), size=0.5, linetype="dashed",color="red")
-histPop 
-
-ggsave("Graphs/Regression_all/median_high_S.pdf",width=12, height = 8, units = "in")
-
-###################################################################################
-#High S Median vs demograph
 
 #Import demography data + metadata
 demo_pop <- read_csv("data/demography data/siteYear.lambda_responses_2010-2019.csv")
@@ -84,11 +67,40 @@ slope_pop <- left_join(demo_pop, snp_all_median, by=c("Paper_ID"= "Site"))
 slope_pop <- slope_pop %>% dplyr::select(Latitude,Site,Paper_ID,Lat.Color,mean.r.recovery,median)
 slope_pop <- drop_na(slope_pop)
 
+slope_pop$Lat.Color<-as.factor(slope_pop$Lat.Color)
+slope_pop$Lat.Color<-factor(slope_pop$Lat.Color,levels=slope_pop$Lat.Color)
+
+###################################################################################
+#Median and S histogram
+histPop <- ggplot(all_215,aes(x=Slope_abs))+
+  geom_histogram(color="black",fill = "grey70")+
+  labs(x = "Response to Selection", y = "Count") +
+  #geom_vline(xintercept=0) +
+  theme_ci() + facet_wrap(.~Site) +
+  geom_vline(data = snp_all_median, aes(xintercept = median), size=0.5, linetype="dashed",color="red")
+histPop 
+
+ggsave("Graphs/Regression_all/median_high_S.pdf",width=12, height = 8, units = "in")
+
+
+#Medians
+ggplot(slope_pop, aes(x = Paper_ID, y = median)) +
+  geom_point(aes(fill=Lat.Color), shape=21, size =3)+
+  coord_flip() +
+  scale_y_continuous(expand = c(0, 0), limits = c(1.5, 3.5)) +
+  scale_fill_manual(name = "Latitude (°N)",labels=round(slope_pop$Latitude,1),
+                    values=as.character(slope_pop$Lat.Color)) +
+  theme_classic() +
+  labs(x = "Site", y = "Median value", title = "Median per Site")
+
+
+###################################################################################
+#High S Median vs demograph
 #Visualize scatter plot
 ggplot(slope_pop, aes(x=median, y=mean.r.recovery)) + geom_point()
 
 mod_S <- lm(mean.r.recovery~median,data=slope_pop)
-summary(mod_S)
+summary(mod_S) #P= 0.88, R2= -0.12
 Anova(mod_S,type="III")
 qqnorm(resid(mod_S))
 qqline(resid(mod_S))
@@ -99,13 +111,10 @@ rob.mod_S <- rlm(slope_pop$mean.r.recovery~median,data=slope_pop)
 summary(rob.mod_S)
 # this yields a coefficient estimate & std error but no p-value or R2
 library(sfsmisc)
-f.robftest(rob.mod_S, var="median")
+f.robftest(rob.mod_S, var="median") #p= 0.9757
 
 
-###################################################################################
-slope_pop$Lat.Color<-as.factor(slope_pop$Lat.Color)
-slope_pop$Lat.Color<-factor(slope_pop$Lat.Color,levels=slope_pop$Lat.Color)
-
+# High S Median vs demography plot
 ggplot(slope_pop, aes(x=median, y=mean.r.recovery)) + 
   geom_smooth(method=lm,color="black", size=1.8, linetype="dashed", fill="gray75")+
   geom_smooth(method=MASS::rlm, color="black", size=1.8, fill="grey50") +

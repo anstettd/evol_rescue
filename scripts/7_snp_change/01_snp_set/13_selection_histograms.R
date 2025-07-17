@@ -42,7 +42,6 @@ mean_pop <- obs_env_unique %>% group_by(Site) %>% summarise(mean = mean(Slope, n
 
 #Isolate each pop and lable
 env_p1 <- env_obs_ci_unique %>% select(S,p1,p1_low,p1_up) %>% mutate(Site=1,pop_lable="Site 1")
-#env_p12 <- env_obs_ci_unique %>% select(S,p12,p1_low,p12_up) %>% mutate(Site=12,pop_lable="B Site 12")
 env_p2 <- env_obs_ci_unique %>% select(S,p2,p1_low,p2_up) %>% mutate(Site=2,pop_lable="Site 2")
 env_p3 <- env_obs_ci_unique %>% select(S,p3,p1_low,p3_up) %>% mutate(Site=3,pop_lable="Site 3")
 env_p4 <- env_obs_ci_unique %>% select(S,p4,p1_low,p4_up) %>% mutate(Site=4,pop_lable="Site 4")
@@ -66,11 +65,9 @@ colnames(env_p8) = c("S","obs","low","high","Site","pop_lable")
 colnames(env_p9) = c("S","obs","low","high","Site","pop_lable")
 colnames(env_p10) = c("S","obs","low","high","Site","pop_lable")
 colnames(env_p11) = c("S","obs","low","high","Site","pop_lable")
-#colnames(env_p12) = c("S","obs","low","high","Site","pop_lable")
 
 #Bind long dataset
 env_histPop <- rbind(env_p1,
-                     #env_p12,
                      env_p2,
                      env_p3,
                      env_p4,
@@ -102,7 +99,7 @@ histPop <- ggplot(env_histPop_155 ,aes(x=S,y=obs,ymin=low,ymax=high))+
   geom_bar(colour = "black", stat = "identity", width = 0.1, fill = "pink")+ # was lightblue1
   #geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.06) +
   geom_vline(xintercept=0) +
-  labs(x = "Strength of Selection", y = "Number of SNPs") +
+  labs(x = "Reponse to Selection", y = "Number of SNPs") +
   scale_x_continuous(limits=c(-1.55,1.55))+ 
   theme_ci() + facet_wrap(.~Site) +
   geom_vline(data = median_pop, aes(xintercept = median), size=0.9, linetype="dashed",color="red")
@@ -114,7 +111,7 @@ histPop <- ggplot(env_histPop_185 ,aes(x=S,y=obs,ymin=low,ymax=high))+
   geom_bar(colour = "black", stat = "identity", width = 0.1, fill = "pink")+ # was lightblue1
   #geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.06) +
   geom_vline(xintercept=0) +
-  labs(x = "Strength of Selection", y = "Number of SNPs") +
+  labs(x = "Reponse to Selection", y = "Number of SNPs") +
   #scale_x_continuous(limits=c(-1.85,1.85))+ 
   theme_ci() + facet_wrap(.~Site) +
   geom_vline(data = median_pop, aes(xintercept = median), size=0.9, linetype="dashed",color="red")
@@ -126,9 +123,9 @@ histPop
 ## Individual Graphs Median
 ###################################################################################
 
-env_histPop_1 <- env_histPop_25 %>% filter(Site==3 | Site==11)
-env_histPop_2 <- env_histPop_25 %>% filter(Site==2 | Site==3 | Site==11)
-env_histPop_3 <- env_histPop_25 %>% filter(Site==3)
+env_histPop_1 <- env_histPop_155 %>% filter(Site==3 | Site==11)
+env_histPop_2 <- env_histPop_155 %>% filter(Site==2 | Site==3 | Site==11)
+env_histPop_3 <- env_histPop_155 %>% filter(Site==3)
 
 env_histPop_1$pop_lable <- as.factor(env_histPop_1$pop_lable) 
 env_histPop_1$pop_lable <- factor(env_histPop_1$pop_lable,levels = c("Site 3", "Site 11"))
@@ -146,7 +143,7 @@ histPop1 <- ggplot(env_histPop_3 ,aes(x=S,y=obs,ymin=low,ymax=high))+
   geom_bar(colour = "black", stat = "identity", width = 0.1, fill = "pink")+
   #geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.06) +
   geom_vline(xintercept=0) +
-  labs(x = "Strength of Selection", y = "Number of SNPs") +
+  labs(x = "Reponse to Selection", y = "Number of SNPs") +
   scale_y_continuous(breaks=seq(0,100,by=25))+ 
   theme_ci() + facet_wrap(.~pop_lable, ncol = 4) + theme(strip.text.x = element_text(size=0)) +
   geom_vline(data = median_pop_filter_3, aes(xintercept = median), size=1.5,color="red")
@@ -162,7 +159,7 @@ histPop1 <- ggplot(env_histPop_1 ,aes(x=S,y=obs,ymin=low,ymax=high))+
   geom_bar(colour = "black", stat = "identity", width = 0.1, fill = "pink")+
   #geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.06) +
   geom_vline(xintercept=0) +
-  labs(x = "Strength of Selection", y = "Number of SNPs") +
+  labs(x = "Reponse to Selection", y = "Number of SNPs") +
   scale_y_continuous(breaks=seq(0,100,by=25))+ 
   theme_ci() + facet_wrap(.~pop_lable, ncol = 4)+ theme(strip.text.x = element_text(size=0))+
   geom_vline(data = median_pop_filter_1, aes(xintercept = median), size=0.8, linetype="dashed",color="red")

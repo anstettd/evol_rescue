@@ -53,30 +53,41 @@ abundance_p10 <- p10_2000 %>% left_join(loci_snp, by = c("snp_ID" = "chr_snp"))
 abundance_p11 <- p11_2000 %>% left_join(loci_snp, by = c("snp_ID" = "chr_snp"))
 
 #Calc empirical p-value based on BF rank of all SNP
-abundance_p01 <- abundance_p01 %>% mutate(Empirical_p = 1 - rank(abundance_p01$Slope_abs) / length(abundance_p01$Slope_abs))
-abundance_p02 <- abundance_p02 %>% mutate(Empirical_p = 1 - rank(abundance_p02$Slope_abs) / length(abundance_p02$Slope_abs))
-abundance_p03 <- abundance_p03 %>% mutate(Empirical_p = 1 - rank(abundance_p03$Slope_abs) / length(abundance_p03$Slope_abs))
-abundance_p04 <- abundance_p04 %>% mutate(Empirical_p = 1 - rank(abundance_p04$Slope_abs) / length(abundance_p04$Slope_abs))
-abundance_p05 <- abundance_p05 %>% mutate(Empirical_p = 1 - rank(abundance_p05$Slope_abs) / length(abundance_p05$Slope_abs))
-abundance_p06 <- abundance_p06 %>% mutate(Empirical_p = 1 - rank(abundance_p06$Slope_abs) / length(abundance_p06$Slope_abs))
-abundance_p07 <- abundance_p07 %>% mutate(Empirical_p = 1 - rank(abundance_p07$Slope_abs) / length(abundance_p07$Slope_abs))
-abundance_p08 <- abundance_p08 %>% mutate(Empirical_p = 1 - rank(abundance_p08$Slope_abs) / length(abundance_p08$Slope_abs))
-abundance_p09 <- abundance_p09 %>% mutate(Empirical_p = 1 - rank(abundance_p09$Slope_abs) / length(abundance_p09$Slope_abs))
-abundance_p10 <- abundance_p10 %>% mutate(Empirical_p = 1 - rank(abundance_p10$Slope_abs) / length(abundance_p10$Slope_abs))
-abundance_p11 <- abundance_p11 %>% mutate(Empirical_p = 1 - rank(abundance_p11$Slope_abs) / length(abundance_p11$Slope_abs))
+abundance_p01 <- abundance_p01 %>% mutate(empirical_p = 1 - rank(abundance_p01$Slope_abs) / length(abundance_p01$Slope_abs))%>%
+  relocate(empirical_p, .after = 7)
+abundance_p02 <- abundance_p02 %>% mutate(empirical_p = 1 - rank(abundance_p02$Slope_abs) / length(abundance_p02$Slope_abs))%>%
+  relocate(empirical_p, .after = 7)
+abundance_p03 <- abundance_p03 %>% mutate(empirical_p = 1 - rank(abundance_p03$Slope_abs) / length(abundance_p03$Slope_abs))%>%
+  relocate(empirical_p, .after = 7)
+abundance_p04 <- abundance_p04 %>% mutate(empirical_p = 1 - rank(abundance_p04$Slope_abs) / length(abundance_p04$Slope_abs))%>%
+  relocate(empirical_p, .after = 7)
+abundance_p05 <- abundance_p05 %>% mutate(empirical_p = 1 - rank(abundance_p05$Slope_abs) / length(abundance_p05$Slope_abs))%>%
+  relocate(empirical_p, .after = 7)
+abundance_p06 <- abundance_p06 %>% mutate(empirical_p = 1 - rank(abundance_p06$Slope_abs) / length(abundance_p06$Slope_abs))%>%
+  relocate(empirical_p, .after = 7)
+abundance_p07 <- abundance_p07 %>% mutate(empirical_p = 1 - rank(abundance_p07$Slope_abs) / length(abundance_p07$Slope_abs))%>%
+  relocate(empirical_p, .after = 7)
+abundance_p08 <- abundance_p08 %>% mutate(empirical_p = 1 - rank(abundance_p08$Slope_abs) / length(abundance_p08$Slope_abs))%>%
+  relocate(empirical_p, .after = 7)
+abundance_p09 <- abundance_p09 %>% mutate(empirical_p = 1 - rank(abundance_p09$Slope_abs) / length(abundance_p09$Slope_abs))%>%
+  relocate(empirical_p, .after = 7)
+abundance_p10 <- abundance_p10 %>% mutate(empirical_p = 1 - rank(abundance_p10$Slope_abs) / length(abundance_p10$Slope_abs))%>%
+  relocate(empirical_p, .after = 7)
+abundance_p11 <- abundance_p11 %>% mutate(empirical_p = 1 - rank(abundance_p11$Slope_abs) / length(abundance_p11$Slope_abs))%>%
+  relocate(empirical_p, .after = 7)
 
 #Export as table delimited file
-write_tsv(abundance_p01, "data/genomic_data/plink_input_p01.tsv")
-write_tsv(abundance_p02, "data/genomic_data/plink_input_p02.tsv")
-write_tsv(abundance_p03, "data/genomic_data/plink_input_p03.tsv")
-write_tsv(abundance_p04, "data/genomic_data/plink_input_p04.tsv")
-write_tsv(abundance_p05, "data/genomic_data/plink_input_p05.tsv")
-write_tsv(abundance_p06, "data/genomic_data/plink_input_p06.tsv")
-write_tsv(abundance_p07, "data/genomic_data/plink_input_p07.tsv")
-write_tsv(abundance_p08, "data/genomic_data/plink_input_p08.tsv")
-write_tsv(abundance_p09, "data/genomic_data/plink_input_p09.tsv")
-write_tsv(abundance_p10, "data/genomic_data/plink_input_p10.tsv")
-write_tsv(abundance_p11, "data/genomic_data/plink_input_p11.tsv")
+write_tsv(abundance_p01, "data/genomic_data/plink_input_highS_p01.tsv")
+write_tsv(abundance_p02, "data/genomic_data/plink_input_highS_p02.tsv")
+write_tsv(abundance_p03, "data/genomic_data/plink_input_highS_p03.tsv")
+write_tsv(abundance_p04, "data/genomic_data/plink_input_highS_p04.tsv")
+write_tsv(abundance_p05, "data/genomic_data/plink_input_highS_p05.tsv")
+write_tsv(abundance_p06, "data/genomic_data/plink_input_highS_p06.tsv")
+write_tsv(abundance_p07, "data/genomic_data/plink_input_highS_p07.tsv")
+write_tsv(abundance_p08, "data/genomic_data/plink_input_highS_p08.tsv")
+write_tsv(abundance_p09, "data/genomic_data/plink_input_highS_p09.tsv")
+write_tsv(abundance_p10, "data/genomic_data/plink_input_highS_p10.tsv")
+write_tsv(abundance_p11, "data/genomic_data/plink_input_highS_p11.tsv")
 
 
 
@@ -84,19 +95,6 @@ write_tsv(abundance_p11, "data/genomic_data/plink_input_p11.tsv")
 
 
 
-
-
-write_csv(snp_set_abundance_p01, "data/genomic_data/snp_set_abundance_p01.csv")
-write_csv(snp_set_abundance_p02, "data/genomic_data/snp_set_abundance_p02.csv")
-write_csv(snp_set_abundance_p03, "data/genomic_data/snp_set_abundance_p03.csv")
-write_csv(snp_set_abundance_p04, "data/genomic_data/snp_set_abundance_p04.csv")
-write_csv(snp_set_abundance_p05, "data/genomic_data/snp_set_abundance_p05.csv")
-write_csv(snp_set_abundance_p06, "data/genomic_data/snp_set_abundance_p06.csv")
-write_csv(snp_set_abundance_p07, "data/genomic_data/snp_set_abundance_p07.csv")
-write_csv(snp_set_abundance_p08, "data/genomic_data/snp_set_abundance_p08.csv")
-write_csv(snp_set_abundance_p09, "data/genomic_data/snp_set_abundance_p09.csv")
-write_csv(snp_set_abundance_p10, "data/genomic_data/snp_set_abundance_p10.csv")
-write_csv(snp_set_abundance_p11, "data/genomic_data/snp_set_abundance_p11.csv")
 
 
 

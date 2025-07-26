@@ -123,6 +123,13 @@ density <- left_join(density, pop_meta) %>% drop_na(Lat.Color) %>% arrange(Latit
 unique(density$Site)
 
 
+mean_plot_area <- density %>% 
+  group_by(Site) %>% 
+  summarize(mean_max_area_all = mean(max_area_all, na.rm=TRUE))
+mean(mean_plot_area$mean_max_area_all)
+min(mean_plot_area$mean_max_area_all)
+max(mean_plot_area$mean_max_area_all)
+
 ### Graphs of density trends over time
 color.list = unique(density$Lat.Color)
 

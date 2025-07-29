@@ -111,33 +111,54 @@ level_order_all = c("pre", "drought", "recovery")
 
 # all three time periods (alternative Fig S1, option 1)
 dodge <- position_dodge(width=0.2)
+
+
+colours_in<-r_long %>% 
+  dplyr::select(Latitude, Lat.Color) 
+
+colours_in_to_plot<-unique(colours_in) #%>% filter(Lat.Color=="#FDB567") #remove this population because it doesn't have drought r value
+
+#r_long_test<-r_long %>% filter(Lat.Color=="#FDB567")
 ggplot(r_long, aes(x=factor(time, level=level_order_all), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
   geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
   geom_point(shape=21, size=3, position=dodge) +
   #geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
-  scale_color_manual(values=unique(r_long$Lat.Color), aesthetics=c("color", "fill")) +
+  scale_color_manual(values=colours_in_to_plot$Lat.Color, 
+                     labels=round(colours_in_to_plot$Latitude,1),aesthetics=c("color", "fill")) +
+  #scale_color_manual(values=unique(r_long$Lat.Color), aesthetics=c("color", "fill")) +
   scale_y_continuous(name="Mean population growth rate")+ 
   scale_x_discrete(name="Time Period", labels=c("Pre-drought", "Drought", "Recovery")) + 
   geom_hline(yintercept=0) +
   theme_classic() + theme(
-    axis.text.x=element_text(face="bold"),
-    axis.text.y=element_text(size=11,face="bold"),
+    axis.text.x=element_text(size=16,face="bold"),
+    axis.text.y=element_text(size=16,face="bold"),
     axis.title.x=element_text(color="black", size=20, vjust=0.5, face="bold"),
     axis.title.y=element_text(color="black", size=20,vjust=2, face="bold", hjust=0.5),
     strip.background=element_blank(), 
     strip.text.x=element_blank(),
-    legend.title=element_blank())
-ggsave("Graphs/Demography/01b_decline_recovery_rmeans.pdf",width=14, height = 8, units = "in")
+    legend.text = element_text(size = 14),
+    legend.key.size = unit(1.5, "lines"), 
+    legend.title=element_blank())+
+  guides(color = guide_legend(override.aes = list(linetype = 0)))
+ggsave("Graphs/Demography/01b_decline_recovery_rmeans.pdf",width=8, height = 6.5, units = "in")
 
 #Pre-drought to drought period
 dodge <- position_dodge(width=0.2)
 r_long_early <- r_long %>% filter(time!="recovery") %>% droplevels()
 level_order_pre = c("pre", "drought")
+
+colours_in<-r_long_early %>% 
+  dplyr::select(Latitude, Lat.Color) 
+
+colours_in_to_plot<-unique(colours_in) #%>% filter(Lat.Color!="#FDB567") #remove this population because it doesn't have drought r value
+
+
 a <- ggplot(r_long_early, aes(x=factor(time, level=level_order_pre), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
   geom_point(shape=21, size=3, position=dodge) +
   geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
   geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
-  scale_color_manual(values=unique(r_long_early$Lat.Color), aesthetics=c("color", "fill")) +
+  scale_color_manual(values=colours_in_to_plot$Lat.Color, 
+                     labels=round(colours_in_to_plot$Latitude,1),aesthetics=c("color", "fill")) +
   scale_y_continuous(name="Mean r")+ 
   scale_x_discrete(name="Time Period", labels=c("Pre-drought", "Drought")) + 
   geom_hline(yintercept=0) +
@@ -148,19 +169,28 @@ a <- ggplot(r_long_early, aes(x=factor(time, level=level_order_pre), y=mean_r, g
     axis.title.y = element_text(color="black", size=20,vjust=2, face="bold", hjust=0.5),
     strip.background=element_blank(), 
     strip.text.x=element_blank(),
-    legend.title=element_blank())
+    legend.title=element_blank())+
+  guides(color = guide_legend(override.aes = list(linetype = 0))) 
 ggsave("Graphs/Demography/01c_decline.pdf",a, width=14, height = 8, units = "in")
 
 #Drought to recovery period
 r_long_late <- r_long %>% filter(time!="pre") %>% droplevels()
 level_order_post = c("drought", "recovery")
+
+colours_in<-r_long_late %>% 
+  dplyr::select(Latitude, Lat.Color) 
+
+colours_in_to_plot<-unique(colours_in) #%>% filter(Lat.Color!="#FDB567") #remove this population because it doesn't have drought r value
+
+
 b <- ggplot(r_long_late, aes(x=factor(time, level=level_order_post), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
   geom_point(shape=21, size=3, position=dodge) +
   geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
   geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
   scale_y_continuous(name="Mean r")+ 
   scale_x_discrete(name="Time Period", labels=c("Drought", "Recovery")) + 
-  scale_color_manual(values=unique(r_long_late$Lat.Color), aesthetics=c("color", "fill")) +
+  scale_color_manual(values=colours_in_to_plot$Lat.Color, 
+                     labels=round(colours_in_to_plot$Latitude,1),aesthetics=c("color", "fill")) +
   geom_hline(yintercept=0) +
   theme_classic() + theme(
     axis.text.x = element_text(face="bold"),
@@ -169,19 +199,29 @@ b <- ggplot(r_long_late, aes(x=factor(time, level=level_order_post), y=mean_r, g
     axis.title.y = element_text(color="black", size=20, vjust=2, face="bold", hjust=0.5),
     strip.background = element_blank(), 
     strip.text.x = element_blank(),
-    legend.title = element_blank())
+    legend.title = element_blank())+
+  guides(color = guide_legend(override.aes = list(linetype = 0)))
 ggsave("Graphs/Demography/01d_recovery.pdf",b, width=14, height = 8, units = "in")
 
 
 # sensitivity test: remove 3 extirpated populations
 r_long_late_cull <- filter(r_long_late, mean_r>-2)
+
+colours_in<-r_long_late_cull %>% 
+  dplyr::select(Latitude, Lat.Color) 
+
+colours_in_to_plot<-unique(colours_in) #%>% filter(Lat.Color!="#FDB567") #remove this population because it doesn't have drought r value
+
+
+
 ggplot(r_long_late_cull, aes(x=factor(time, level=level_order_post), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
   geom_point(shape=21, size=3, position=dodge) +
   geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
   geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
   scale_y_continuous(name="Mean r")+ 
   scale_x_discrete(name="Time Period", labels=c("Drought", "Recovery")) + 
-  scale_color_manual(values=unique(r_long_late_cull$Lat.Color), aesthetics=c("color", "fill")) +
+  scale_color_manual(values=colours_in_to_plot$Lat.Color, 
+                     labels=round(colours_in_to_plot$Latitude,1),aesthetics=c("color", "fill")) +
   geom_hline(yintercept=0) +
   theme_classic() + theme(
     axis.text.x = element_text(face="bold"),
@@ -190,7 +230,8 @@ ggplot(r_long_late_cull, aes(x=factor(time, level=level_order_post), y=mean_r, g
     axis.title.y = element_text(color="black", size=20, vjust=2, face="bold", hjust=0.5),
     strip.background = element_blank(), 
     strip.text.x = element_blank(),
-    legend.title = element_blank())
+    legend.title = element_blank()) +
+  guides(color = guide_legend(override.aes = list(linetype = 0)))
 ggsave("Graphs/Demography/01e_recovery_cull.pdf",width=14, height = 8, units = "in")
 
 
@@ -236,12 +277,18 @@ r_means_norm_long_drought <- r_means_norm_long %>% filter(time!="delta.r.recover
 level_order_drought = c("rel.start", "delta.r.drought.norm")
 dodge <- position_dodge(width=0.2)
 
+colours_in<-r_means_norm_long_drought %>% 
+  dplyr::select(Latitude, Lat.Color) 
+
+colours_in_to_plot<-unique(colours_in) #%>% filter(Lat.Color!="#FDB567") #remove this population because it doesn't have drought r value
+
 #normalized decline during drought (new Fig 1D)
 c <- ggplot(r_means_norm_long_drought, aes(x=factor(time, level=level_order_drought), y=mean_r_norm, group=Latitude, fill=as.factor(Latitude))) +
   geom_point(shape=21, size=3, position=dodge) +
   #geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
   geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
-  scale_color_manual(values=unique(r_means_norm_long_drought$Lat.Color), aesthetics=c("color", "fill")) +
+  scale_color_manual(values=colours_in_to_plot$Lat.Color, 
+                     labels=round(colours_in_to_plot$Latitude,1),aesthetics=c("color", "fill")) +
   scale_y_continuous(name="Normalized r")+ 
   scale_x_discrete(name="Time Period", labels=c("Pre-drought", "Drought")) + 
   geom_hline(yintercept=1) +
@@ -252,17 +299,30 @@ c <- ggplot(r_means_norm_long_drought, aes(x=factor(time, level=level_order_drou
     axis.title.y = element_text(color="black", size=20,vjust=2, face="bold", hjust=0.5),
     strip.background=element_blank(), 
     strip.text.x=element_blank(),
-    legend.title=element_blank())
+    legend.title=element_blank())+
+  guides(color = guide_legend(override.aes = list(linetype = 0)))
 ggsave("Graphs/Demography/r_drought_norm.pdf",width=5, height=4, units="in")
+
+
+#############################################################################################################
 
 r_means_norm_long_recovery <- r_means_norm_long %>% filter(time!="delta.r.drought.norm") %>% droplevels()
 level_order_drought = c("rel.start", "delta.r.recovery.norm")
 dodge <- position_dodge(width=0.2)
+
+colours_in<-r_means_norm_long_recovery %>% 
+  dplyr::select(Latitude, Lat.Color) 
+
+colours_in_to_plot<-unique(colours_in) #%>% filter(Lat.Color!="#FDB567") #remove this population because it doesn't have drought r value
+
 d <- ggplot(r_means_norm_long_recovery, aes(x=factor(time, level=level_order_drought), y=mean_r_norm, group=Latitude, fill=as.factor(Latitude))) +
   geom_point(shape=21, size=3, position=dodge) +
   #geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
   geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
-  scale_color_manual(values=unique(r_means_norm_long_recovery$Lat.Color), aesthetics=c("color", "fill")) +
+  scale_color_manual(values=colours_in_to_plot$Lat.Color, 
+                     labels=round(colours_in_to_plot$Latitude,1),aesthetics=c("color", "fill")) +
+  #scale_fill_manual(name = "Latitude (°N)",labels=round(r_means_norm_long_recovery$Latitude,1),
+  #                  values=as.character(r_means_norm_long_recovery$Lat.Color)) +
   scale_y_continuous(name="Normalized r")+ 
   scale_x_discrete(name="Time Period", labels=c("Drought", "Recovery")) + 
   geom_hline(yintercept=1) +
@@ -273,8 +333,10 @@ d <- ggplot(r_means_norm_long_recovery, aes(x=factor(time, level=level_order_dro
     axis.title.y = element_text(color="black", size=20,vjust=2, face="bold", hjust=0.5),
     strip.background=element_blank(), 
     strip.text.x=element_blank(),
-    legend.title=element_blank())
+    legend.title=element_blank())+
+  guides(color = guide_legend(override.aes = list(linetype = 0)))
+d
 
 # New Fig S1, option 2
-plot_grid(a, b, c, d, nrow=2)
-ggsave("Graphs/Demography/r_means_4panel.pdf",width=10, height=8, units="in")
+plot_grid(a, b, c, d, labels = c("A", "B", "C", "D"), label_size = 16,nrow=2)
+ggsave("Graphs/Demography/r_means_4panel.pdf",width=10, height=10, units="in")

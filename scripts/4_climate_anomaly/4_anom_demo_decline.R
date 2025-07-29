@@ -91,7 +91,7 @@ a <- ggplot(demo_pop, aes(x=PPT_wt_1214, y=mean.r.drought)) +
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
 a
-ggsave("Graphs/Climate/1_drought_lambda_PPT_wt.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Climate/1_drought_lambda_PPT_wt.pdf",width=8, height = 7, units = "in")
 
 #Summer Temperature Anomaly
 b <- ggplot(demo_pop, aes(x=Tave_sm_1214, y=mean.r.drought)) + 

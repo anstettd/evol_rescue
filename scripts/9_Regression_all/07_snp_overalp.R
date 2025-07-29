@@ -39,5 +39,26 @@ common_snps_p09 <- intersect(strong_snp_set_clump$chr_snp, p9_215$snp_ID)
 common_snps_p10 <- intersect(strong_snp_set_clump$chr_snp, p10_215$snp_ID)
 common_snps_p11 <- intersect(strong_snp_set_clump$chr_snp, p11_215$snp_ID)
 
+#Bind all SNPs
+all_215 <- rbind(p1_215,
+                 p2_215,
+                 p3_215,
+                 p4_215,
+                 p5_215,
+                 p6_215,
+                 p7_215,
+                 p8_215,
+                 p9_215,
+                 p10_215,
+                 p11_215)
+
+#Get site overlap per SNP
+snp_site_counts <- all_215 %>%
+  group_by(snp_ID) %>%
+  summarise(Site_Count = n_distinct(Site)) %>%
+  arrange(desc(Site_Count)) # all but 2 SNPs are unique SNPs suggesting they are involved in local adaptation and not range-wide climate adaptation
+
+
+
 
 

@@ -7,7 +7,7 @@
 
 # Goal is to see if trait evolution towards drought escape versus drought avoidance can help clarify why some populations have selection against heat/drought-associated alleles (negative S) while some populations have selection for heat/drought-associated alleles (positive S)
 
-# Last updated 2025 06 29
+# Last updated 2025 07 29
 ##################################################
 
 
@@ -192,21 +192,6 @@ trait_change$SE_slope=as.numeric(trait_change$SE_slope)
 
 ###################################################################################
 
-###################################################################################
-### Make Cumulative Indices of total trait change towards drought avoidance vs drought escape
-
-# For all traits except flowering time and water content, positive slopes indicate evolution towards drought escape
-# For flowering time and water content, negative slope indicates evolution towards drought escape
-# So, for index of total trait change, flowering time and water content slopes are subtracted so that bigger values mean greater evolution towards drought escape across all measured traits
-
-trait_change <- trait_change %>% dplyr::select(-SE_slope) %>% 
-  pivot_wider(names_from = c(Trait, Treatment), values_from=Slope) %>% 
-  mutate(trait.change.all.dry = SLA_D - FT_D + SC_D + A_D - WC_D,
-         trait.change.all.wet = SLA_W - FT_W + SC_W + A_W - WC_W,
-         trait.change.all = trait.change.all.dry + trait.change.all.wet)
-write_csv(trait_change, "data/trait_data/trait_slopes.csv")
-
-###################################################################################
 
 ###################################################################################
 ### Merge trait slopes with population metadata and genomic selection data

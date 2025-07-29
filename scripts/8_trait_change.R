@@ -269,45 +269,4 @@ ggsave("Graphs/Traits_Selection.pdf")
 
 
 
-###################################################################################
-### Collapse rates of trait evolution into multivariate PC axes?
-
-# Both treatments PCA
-pc.traits <- princomp(~SLA_D+SLA_W+FT_D+FT_W+A_D+A_W+SC_D+SC_W+WC_D+WC_W, data=trait_geno_pop, cor=TRUE, na.action=na.exclude)
-summary(pc.traits) #PC1&2 only get to 65% variance explained
-pc.traits$loadings
-biplot(pc.traits) #dry and wet plasticity in rates of change and relationships among different traits
-pc.traits$scores
-trait_geno_pop <- cbind(trait_geno_pop, pc.traits$scores)
-
-mod.pc <- lm(Median ~ Comp.1+Comp.2, data=trait_geno_pop)
-summary(mod.pc) #NS
-
-# Dry treatment PCA
-pc.traits.dry <- princomp(~SLA_D+FT_D+A_D+SC_D+WC_D, data=trait_geno_pop, cor=TRUE, na.action=na.exclude)
-summary(pc.traits.dry) #PC1&2 get to 83% variance explained
-pc.traits.dry$loadings
-biplot(pc.traits.dry) #SLA and WC basically give the same info (in bivariate space of first 2 PC axes), other traits not coupled quite as fully as simple avoid-escape dichotomy would suggest
-pc.traits.dry$scores
-colnames(pc.traits.dry$scores) = paste(colnames(pc.traits.dry$scores), ".dry", sep="")
-trait_geno_pop <- cbind(trait_geno_pop, pc.traits.dry$scores)
-
-mod.pc.dry <- lm(Median ~ Comp.1.dry+Comp.2.dry, data=trait_geno_pop)
-summary(mod.pc.dry) #NS
-
-# Wet treatment PCA
-pc.traits.wet <- princomp(~SLA_W+FT_W+A_W+SC_W+WC_W, data=trait_geno_pop, cor=TRUE, na.action=na.exclude)
-summary(pc.traits.wet) #PC1&2 get to 80% variance explained
-pc.traits.wet$loadings
-biplot(pc.traits.wet) #SLA and WC basically give the same info (in bivariate space of first 2 PC axes), other traits not coupled quite as fully as simple avoid-escape dichotomy would suggest
-pc.traits.wet$scores
-colnames(pc.traits.wet$scores) = paste(colnames(pc.traits.wet$scores), ".wet", sep="")
-trait_geno_pop <- cbind(trait_geno_pop, pc.traits.wet$scores)
-
-mod.pc.wet <- lm(Median ~ Comp.1.wet+Comp.2.wet, data=trait_geno_pop)
-summary(mod.pc.wet) #NS
-
-### Conclusion from PCA analyses: This attempt at distillation is not helping to produce easily interpretable biological axes. Abandon.
-
-###################################################################################
 

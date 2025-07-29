@@ -5,7 +5,7 @@
 
 # Anstett et al. 2021 (a) focused on regional groups of populations rather than population-specific trends and (b) did not centre and scale variables. Here we need population-specific metrics of trait change, in standardized units that allow us to compare and combine across traits.
 
-# Goal is to see if trait evolution towards drought escape versus drought avoidance can help clarify why some populations have selection against heat/drought-associated alleles (negative S) while some populations have selection for heat/drought-associated alleles (positive S)
+# Goal is to test if different directions of trait evolution (e.g. towards drought escape versus drought avoidance) can help clarify why some populations have selection against heat/drought-associated alleles (negative S) while some populations have selection for heat/drought-associated alleles (positive S)
 
 # Last updated 2025 07 29
 ##################################################
@@ -207,6 +207,11 @@ geno_pop <- left_join(demog_recovery, slope.summary, by=c("Paper_ID"="Site"))
 
 trait_geno_pop <- left_join(geno_pop, trait_change, by=c("Site"="Site"))
 
+trait_geno_pop_na <- trait_geno_pop %>% drop_na(SLA_D) %>% dplyr::select(Median, SLA_D, FT_D, A_D, SC_D, WC_D)
+
+#Export file
+write_csv(trait_geno_pop_na,"data/trait_data/trait_pop.csv")
+
 color.list <- trait_geno_pop$Lat.Color
 
 ###################################################################################
@@ -219,23 +224,21 @@ color.list <- trait_geno_pop$Lat.Color
 
 # Focus on trait expression in dry treatment (the relevant selective environment)
 
-trait_geno_pop_na <- trait_geno_pop %>% drop_na(SLA_D) %>% dplyr::select(Median, SLA_D, FT_D, A_D, SC_D, WC_D)
-
-#Export file
-write_csv(trait_geno_pop_na,"data/trait_data/trait_pop.csv")
-
+# Anatomical traits: specific leaf area and leaf water content
 mod.dry.anat <- lm(Median ~ SLA_D + WC_D, dat=trait_geno_pop)
 summary(mod.dry.anat) #NS  
 rob.mod.dry.anat <- rlm(Median ~ SLA_D + WC_D, dat=trait_geno_pop)
 f.robftest(rob.mod.dry.anat, var="SLA_D") #NS
 f.robftest(rob.mod.dry.anat, var="WC_D") #NS
 
+# Gas exchange traits: photosynthetic carbon assimilation and stomatal conductance
 mod.dry.gasx <- lm(Median ~ A_D + SC_D, dat=trait_geno_pop)
 summary(mod.dry.gasx) #positive effects of evolution towards greater carbon assimilation, decreased stomatal conductance
 rob.mod.dry.gasx <- rlm(Median ~ A_D + SC_D, dat=trait_geno_pop)
 f.robftest(rob.mod.dry.gasx, var="A_D") #*
 f.robftest(rob.mod.dry.gasx, var="SC_D") #***
 
+# Phenological trait: flowering time
 mod.dry.phen <- lm(Median ~ FT_D, dat=trait_geno_pop)
 summary(mod.dry.phen) #NS
 rob.mod.dry.phen <- rlm(Median ~ FT_D, dat=trait_geno_pop)
@@ -266,7 +269,4 @@ plot_grid(pred_A_plot, pred_B_plot)
 ggsave("Graphs/Traits_Selection.pdf")
 
 ###################################################################################
-
-
-
 

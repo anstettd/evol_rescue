@@ -268,18 +268,6 @@ ggsave("Graphs/Traits_Selection.pdf")
 ###################################################################################
 
 
-###################################################################################
-### MANOVA because arguably this is a more sensible direction to test things (genotype to phenotype)...but cannot support this many variables with such a small dataset
-man.dry <- manova(cbind(SLA_D, FT_D, A_D, SC_D, WC_D) ~ Median, data=trait_geno_pop)
-summary(man.dry) #*
-
-man.wet <- manova(cbind(SLA_W, FT_W, A_W, SC_W, WC_W) ~ Median, data=trait_geno_pop)
-summary(man.wet) #NS
-
-### Conclusion from MANOVA analyses: not sure this is robust but still indicating support for effect of evolution in dry treatment.
-
-###################################################################################
-
 
 ###################################################################################
 ### Collapse rates of trait evolution into multivariate PC axes?

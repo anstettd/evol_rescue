@@ -213,26 +213,15 @@ color.list <- trait_geno_pop$Lat.Color
 
 
 ###################################################################################
-### Cumulative indices assume that we know how traits should cluster into syndromes, but Haley's work shows that traits can change in complicated ways that don't map neatly onto simple escape-avoid dichotomy
+### Use multiple regression to test whether trait change can  predict selection response
 
-# Use multiple regression to test whether trait change can collectively predict selection response, allowing each trait to have its own direction of contribution
+# We don't have a large enough dataset to include all 5 variables at once. Instead do subsets grouped by function.
 
 trait_geno_pop_na <- trait_geno_pop %>% drop_na(SLA_D) %>% dplyr::select(Median, SLA_D, FT_D, A_D, SC_D, WC_D)
 
 #Export file
 write_csv(trait_geno_pop_na,"data/trait_data/trait_pop.csv")
 
-mod.dry <- lm(Median ~ SLA_D + FT_D + A_D + SC_D + WC_D, dat=trait_geno_pop_na, na.action=na.fail)
-summary(mod.dry) #positive effect of increased carbon assimilation, negative effect of increased stomatal conductance (traits that we were forcing to go in same direction on simple escape-avoid continuum)
-plot(mod.dry)
-rob.mod.dry <- rlm(Median ~ SLA_D + FT_D + A_D + SC_D + WC_D, dat=trait_geno_pop, maxit=100)
-f.robftest(rob.mod.dry, var="SLA_D")
-f.robftest(rob.mod.dry, var="FT_D")
-f.robftest(rob.mod.dry, var="A_D") #*
-f.robftest(rob.mod.dry, var="SC_D") #**
-f.robftest(rob.mod.dry, var="WC_D")
-
-# This is way too many variables for such a small dataset, though. Try coherent subsets?
 
 mod.dry.anat <- lm(Median ~ SLA_D + WC_D, dat=trait_geno_pop)
 summary(mod.dry.anat) #NS  
@@ -251,17 +240,7 @@ summary(mod.dry.phen) #NS
 rob.mod.dry.phen <- rlm(Median ~ FT_D, dat=trait_geno_pop)
 f.robftest(rob.mod.dry.phen, var="FT_D") #NS
 
-mod.wet <- lm(Median ~ SLA_W + FT_W + A_W + SC_W + WC_W, dat=trait_geno_pop)
-summary(mod.wet) #positive effects of change towards increased SLA, earlier FT, greater carbon assimilation, and higher leaf water content on direction of selection
-plot(mod.wet)
-rob.mod.wet <- rlm(Median ~ SLA_W + FT_W + A_W + SC_W + WC_W, dat=trait_geno_pop, maxit=100)
-f.robftest(rob.mod.wet, var="SLA_W") #****
-f.robftest(rob.mod.wet, var="FT_W") #****
-f.robftest(rob.mod.wet, var="A_W") #****
-f.robftest(rob.mod.wet, var="SC_W") #****
-f.robftest(rob.mod.wet, var="WC_W") #****
 
-# Again, though, too many variables for the data set; try subsets
 mod.wet.anat <- lm(Median ~ SLA_W + WC_W, dat=trait_geno_pop)
 summary(mod.wet.anat) #NS  
 rob.mod.wet.anat <- rlm(Median ~ SLA_W + WC_W, dat=trait_geno_pop)

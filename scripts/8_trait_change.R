@@ -217,11 +217,12 @@ color.list <- trait_geno_pop$Lat.Color
 
 # We don't have a large enough dataset to include all 5 variables at once. Instead do subsets grouped by function.
 
+# Focus on trait expression in dry treatment (the relevant selective environment)
+
 trait_geno_pop_na <- trait_geno_pop %>% drop_na(SLA_D) %>% dplyr::select(Median, SLA_D, FT_D, A_D, SC_D, WC_D)
 
 #Export file
 write_csv(trait_geno_pop_na,"data/trait_data/trait_pop.csv")
-
 
 mod.dry.anat <- lm(Median ~ SLA_D + WC_D, dat=trait_geno_pop)
 summary(mod.dry.anat) #NS  
@@ -239,24 +240,6 @@ mod.dry.phen <- lm(Median ~ FT_D, dat=trait_geno_pop)
 summary(mod.dry.phen) #NS
 rob.mod.dry.phen <- rlm(Median ~ FT_D, dat=trait_geno_pop)
 f.robftest(rob.mod.dry.phen, var="FT_D") #NS
-
-
-mod.wet.anat <- lm(Median ~ SLA_W + WC_W, dat=trait_geno_pop)
-summary(mod.wet.anat) #NS  
-rob.mod.wet.anat <- rlm(Median ~ SLA_W + WC_W, dat=trait_geno_pop)
-f.robftest(rob.mod.wet.anat, var="SLA_W") #NS
-f.robftest(rob.mod.wet.anat, var="WC_W") #NS
-
-mod.wet.gasx <- lm(Median ~ A_W + SC_W, dat=trait_geno_pop)
-summary(mod.wet.gasx) #NS
-rob.mod.wet.gasx <- rlm(Median ~ A_W + SC_W, dat=trait_geno_pop)
-f.robftest(rob.mod.wet.gasx, var="A_W") #NS
-f.robftest(rob.mod.wet.gasx, var="SC_W") #NS
-
-mod.wet.phen <- lm(Median ~ FT_W, dat=trait_geno_pop)
-summary(mod.wet.phen) #NS
-rob.mod.wet.phen <- rlm(Median ~ FT_W, dat=trait_geno_pop)
-f.robftest(rob.mod.wet.phen, var="FT_W") #NS
 
 ### Conclusion from multiple regression analyses: within dry treatment, evolution of gas exchange can explain some differences in genomic selection. Specifically, positive S is associated with evolution towards increased photosynthesis and decreased stomatal conductance (sounds adaptive) and negative S is associated with evolution towards decreased photosynthesis and increased conductance (sounds maladaptive). Results for wet treatment are spurious in an overdetermined model.
 

@@ -205,7 +205,9 @@ slope.summary <- read_csv("data/snp_change_2/mean_median_S_all.csv") %>% dplyr::
 # Join data sets
 geno_pop <- left_join(demog_recovery, slope.summary, by=c("Paper_ID"="Site"))
 
-trait_geno_pop <- left_join(geno_pop, trait_change, by=c("Site"="Site"))
+trait_geno_pop <- left_join(geno_pop, trait_change, by=c("Site"="Site")) %>% 
+  dplyr::select(-SE_slope) %>% 
+  pivot_wider(names_from = c(Trait, Treatment), values_from=Slope)
 
 trait_geno_pop_na <- trait_geno_pop %>% drop_na(SLA_D) %>% dplyr::select(Median, SLA_D, FT_D, A_D, SC_D, WC_D)
 

@@ -213,40 +213,6 @@ color.list <- trait_geno_pop$Lat.Color
 
 
 ###################################################################################
-### Focus on populations whose genomic selection was significantly different from null: explore bins of populations with negative vs positive slopes (ignoring the mushy middle)
-
-# Pops whose slopes went significantly positive: 3, 4, 11
-# Pops whose slopes went significantly negative: 6, 7, 8
-# Pops in the middle whose distributions are not distinguishable from 0: 1, 2, 5, 9, 10
-# Instead of regression, look for mean differences in traits between pops(3,4,11) vs pops(6,7,8)
-
-trait_geno_pop_cull <- trait_geno_pop %>% 
-  dplyr::filter(Paper_ID==3|Paper_ID==4|Paper_ID==11|Paper_ID==6|Paper_ID==7|Paper_ID==8) %>% 
-  droplevels() %>% 
-  mutate(Sgroup = ifelse(Median>0, "positive S", "negative S"))
-
-# Cumulative rate of change in traits, both environments
-ggplot(data=trait_geno_pop_cull, aes(x=Sgroup, y=trait.change.all)) +
-  geom_boxplot() +
-  geom_point(col=trait_geno_pop_cull$Lat.Color, size=3) #NS
-
-# Cumulative rate of change in traits, wet treatment
-ggplot(data=trait_geno_pop_cull, aes(x=Sgroup, y=trait.change.all.wet)) +
-  geom_boxplot() +
-  geom_point(col=trait_geno_pop_cull$Lat.Color, size=3)
-t.test(trait_geno_pop_cull$trait.change.all.wet[trait_geno_pop_cull$Sgroup=="negative S"],trait_geno_pop_cull$trait.change.all.wet[trait_geno_pop_cull$Sgroup=="positive S"]) #NS
-
-# Cumulative rate of change in traits, dry treatment
-ggplot(data=trait_geno_pop_cull, aes(x=Sgroup, y=trait.change.all.dry)) +
-  geom_boxplot() +
-  geom_point(col=trait_geno_pop_cull$Lat.Color, size=3)
-t.test(trait_geno_pop_cull$trait.change.all.dry[trait_geno_pop_cull$Sgroup=="negative S"],trait_geno_pop_cull$trait.change.all.dry[trait_geno_pop_cull$Sgroup=="positive S"])
-
-### Conclusion from binned analyses: no support for relationship between S bin and cumulative trait change, but this test has VERY low power
-
-###################################################################################
-
-###################################################################################
 ### Cumulative indices assume that we know how traits should cluster into syndromes, but Haley's work shows that traits can change in complicated ways that don't map neatly onto simple escape-avoid dichotomy
 
 # Use multiple regression to test whether trait change can collectively predict selection response, allowing each trait to have its own direction of contribution

@@ -211,59 +211,6 @@ color.list <- trait_geno_pop$Lat.Color
 
 ###################################################################################
 
-###################################################################################
-### GENOMIC SELECTION - CUMULATIVE TRAIT EVOLUTION
-
-# Median S ~ cumulative trait evolution (across both treatments)
-ggplot(data=trait_geno_pop, aes(x=Median, y=trait.change.all, color=as.character(Latitude))) +
-  geom_point(size=3) +
-  geom_smooth(method="lm", color="black", linetype="dashed", fill="grey75") +
-  geom_smooth(method=MASS::rlm, color="black", fill="grey50") +
-  ylab("Rate of evolution towards drought escape") +
-  xlab("Median S (climate loci)") + 
-  scale_color_manual(values=color.list) +
-  theme_classic() +
-  theme(legend.title = element_blank())
-
-mod<-lm(trait.change.all ~ Median, data=trait_geno_pop)
-summary(mod) #NS
-rob.mod <- rlm(trait.change.all ~ Median, data=trait_geno_pop)
-f.robftest(rob.mod, var="Median") #NS
-
-# Median S ~ cumulative trait evolution (within dry treatment)
-ggplot(data=trait_geno_pop, aes(x=Median, y=trait.change.all.dry, color=as.character(Latitude))) +
-  geom_point(size=3) +
-  geom_smooth(method="lm", color="black", linetype="dashed", fill="grey75") +
-  geom_smooth(method=MASS::rlm, color="black", fill="grey50") +
-  ylab("Rate of evolution towards drought escape (dry treatment") +
-  xlab("Median S (climate loci)") + 
-  scale_color_manual(values=color.list) +
-  theme_classic() +
-  theme(legend.title = element_blank())
-
-summary(lm(trait.change.all.dry ~ Median, data=trait_geno_pop)) #NS
-rob.mod <- rlm(trait.change.all.dry ~ Median, data=trait_geno_pop)
-f.robftest(rob.mod, var="Median") #+
-
-# Median S ~ cumulative trait evolution (within wet treatment)
-ggplot(data=trait_geno_pop, aes(x=Median, y=trait.change.all.wet, color=as.character(Latitude))) +
-  geom_point(size=3) +
-  geom_smooth(method="lm", color="black", linetype="dashed", fill="grey75") +
-  geom_smooth(method=MASS::rlm, color="black", fill="grey50") +
-  ylab("Rate of evolution towards drought escape (wet treatment") +
-  xlab("Median S (climate loci)") + 
-  scale_color_manual(values=color.list) +
-  theme_classic() +
-  theme(legend.title = element_blank())
-
-summary(lm(trait.change.all.wet ~ Median, data=trait_geno_pop)) #NS
-rob.mod <- rlm(trait.change.all.wet ~ Median, data=trait_geno_pop)
-f.robftest(rob.mod, var="Median") #NS
-
-### Conclusion from trait index analyses: weak trend for negative S to be more consistent with escape and positive S to be more consistent with avoidance within dry treatment, but only if influence of Oregon Creek is minimized (and Oregon Creek is one of the 3 populations with significantly negative S)
-
-###################################################################################
-
 
 ###################################################################################
 ### Focus on populations whose genomic selection was significantly different from null: explore bins of populations with negative vs positive slopes (ignoring the mushy middle)

@@ -15,7 +15,7 @@ library(Hmisc)
 library(RColorBrewer)
 library(MASS)
 library(sfsmisc)
-
+library(plotly)
 #Import demography estimates (includes metadata)
 demog_means <- read_csv("data/demography data/siteYear.lambda_responses_2010-2019.csv") 
 
@@ -90,7 +90,7 @@ a <- ggplot(demo_pop, aes(x=PPT_wt_1214, y=mean.r.drought)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
-a
+ggplotly(a)
 ggsave("Graphs/Climate/1_drought_lambda_PPT_wt.pdf",width=8, height = 7, units = "in")
 
 #Summer Temperature Anomaly

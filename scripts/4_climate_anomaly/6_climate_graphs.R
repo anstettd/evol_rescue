@@ -84,6 +84,7 @@ wna2_year$Paper_ID<-as.factor(wna2_year$Paper_ID)
 
 
 # plot Year vs. MAP
+color_vector <- setNames(wna2_year$Lat.Color, wna2_year$Paper_ID)
 MAP_plot<-ggplot() + 
   geom_line(stat="smooth",data = wna2_year, aes(y = MAP.weath, x = Year, 
                                                 group=Latitude,col=factor(Paper_ID)), alpha=0.75,linewidth = 1.5,se=FALSE) + 
@@ -92,41 +93,36 @@ MAP_plot<-ggplot() +
   theme_classic()+
   #scale_color_manual(values = lat_cols) +
   scale_x_continuous(breaks=c(2010,2012,2014,2016,2018))+
-  scale_color_manual(values=as.character(wna2_year$Lat.Color)) 
-
-#scale_y_discrete(breaks=seq(2010,2016,2))
+  scale_color_manual(values=color_vector)
 
 MAP_plot<-MAP_plot + theme(legend.position = "none",
                            axis.title.x=element_text(size=16,vjust = 0, face="bold",hjust=0.5),
                            axis.text.x = element_text(size=14, face="bold", angle=0,hjust=0.5),
                            axis.text.y = element_text(size=14,face="bold"),
                            axis.title.y = element_text(size=16,vjust = 1, face="bold",hjust=0.5))#+
-#scale_x_discrete(labels=Site.label)
 MAP_plot
 ggsave("Graphs/Climate/MAP_test_pop.pdf",width=6, height = 8, units = "in")
 
 
 
-anom_test<-anom %>% filter(Paper_ID==17)
+
 # plot Year vs. Winter Precipitation Anomaly
-PPTwtanom_plot<-ggplotly(ggplot() + 
-  geom_line(stat="smooth",data = anom, aes(y = PPT_wt.anom, x = Year, colour=Paper_ID),
-            alpha=0.75,linewidth = 1.5,se=FALSE) + 
+color_vector <- setNames(anom$Lat.Color, anom$Paper_ID)
+PPTwtanom_plot<-ggplot() + 
+  geom_line(stat="smooth",data = anom, aes(y = PPT_wt.anom, x = Year,
+            group=Latitude,col=factor(Paper_ID)), alpha=0.75,linewidth = 1.5,se=FALSE) + 
   xlab("Year") + 
   ylab("Winter Precipitation Anomaly") +
   theme_classic()+
   #scale_color_manual(values = lat_cols) +
-  scale_x_continuous(breaks=c(2010,2012,2014,2016,2018)))#+
-  #scale_color_manual(values=as.character(anom$Lat.Color)))
-
-#scale_y_discrete(breaks=seq(2010,2016,2))
+  scale_x_continuous(breaks=c(2010,2012,2014,2016,2018))+
+  scale_color_manual(values=color_vector)
 
 PPTwtanom_plot<-PPTwtanom_plot + theme(legend.position = "none",
                            axis.title.x=element_text(size=16,vjust = 0, face="bold",hjust=0.5),
                            axis.text.x = element_text(size=14, face="bold", angle=0,hjust=0.5),
                            axis.text.y = element_text(size=14,face="bold"),
                            axis.title.y = element_text(size=16,vjust = 1, face="bold",hjust=0.5))#+
-#scale_x_discrete(labels=Site.label)
 ggplotly(PPTwtanom_plot)
 ggsave("Graphs/Climate/PPTwtanom_plot.pdf",width=6, height = 8, units = "in")
 

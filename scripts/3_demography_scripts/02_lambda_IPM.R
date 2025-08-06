@@ -473,14 +473,21 @@ write.csv(full.table,"data/demography data/siteYear.paramslambda_2010-2019.csv",
 
 # Summarize generation time 
 site.info$gentime[is.infinite(site.info$gentime)] <- NA #replace Inf with NA
-#across sites/latitude
+
+#by population
 mean_gen_time_pop <- site.info %>% 
   group_by(Site, Latitude) %>% 
   summarize(mean_gen = mean(gentime, na.rm=TRUE),
             sd_gen = sd(gentime, na.rm=TRUE),
             se_gen = se(gentime, na.rm=TRUE),
             med_gen = median(gentime, na.rm=TRUE))
-ggplot(mean_gen_time, aes(x=Latitude, y=mean_gen)) + geom_point()
+ggplot(mean_gen_time_pop, aes(x=Latitude, y=mean_gen)) + 
+  geom_point() + 
+  geom_smooth(method="lm", color="black") + 
+  theme_classic()
+gen.time.mod <- lm(mean_gen ~ Latitude, data=mean_gen_time_pop)
+summary(gen.time.mod)
+
 #species-level
 mean_gen_time_spp <- site.info %>% 
   summarize(mean_gen = mean(gentime, na.rm=TRUE),

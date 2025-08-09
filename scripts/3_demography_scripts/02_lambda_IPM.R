@@ -308,7 +308,7 @@ write.csv(params,"data/demography data/vital_rate_coefficients.csv", row.names=F
     #*******************************************************************************
     
     lambda[f] <- Re(eigen(K)$values[1])
-    gentime[f] <- gen_time(matU=P, matR=F)
+    gentime[f] <- gen_time(matU=P, matR=F, method="cohort")
     SiteYear[f]=as.character(siteYear[f])
     } # end loop to run IPMs and estimate lambdas for each site
      

@@ -36,8 +36,8 @@ max(slope_counts$"0–0.2")
 min(slope_counts$"0.2–0.5")
 max(slope_counts$"0.2–0.5")
 
-min(slope_counts$"0.5")
-max(slope_counts$"0.5")
+min(slope_counts$">0.5")
+max(slope_counts$">0.5")
 
 
 

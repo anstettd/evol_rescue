@@ -251,6 +251,8 @@ f.robftest(rob.mod.dry.phen, var="FT_D") #NS
 
 # Visualize partial effects in gas exchange model
 pred_df_A <- predict_response(mod.dry.gasx, terms=c("A_D","SC_D"), margin="mean_reference")
+plot(pred_df_A, show_data=TRUE)
+
 pred_A_plot <- ggplot(filter(pred_df_A, group==-0.07), aes(x=x, y=predicted)) + #, colour=group
   geom_ribbon(aes(x=x, ymin=conf.low, ymax=conf.high), fill="grey75") + #, group=group, colour=group
   stat_smooth(method="lm", color="black") +
@@ -259,6 +261,8 @@ pred_A_plot <- ggplot(filter(pred_df_A, group==-0.07), aes(x=x, y=predicted)) + 
   theme_classic()
 
 pred_df_B <- predict_response(mod.dry.gasx, terms=c("SC_D","A_D"), margin="mean_reference")
+plot(pred_df_B, show_data=TRUE)
+
 pred_B_plot <- ggplot(filter(pred_df_B, group==0.01), aes(x=x, y=predicted)) + #, colour=group
   geom_ribbon(aes(x=x, ymin=conf.low, ymax=conf.high), fill="grey75") + #, group=group, colour=group
   stat_smooth(method="lm", color="black") +

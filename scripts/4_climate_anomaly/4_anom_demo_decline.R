@@ -93,7 +93,7 @@ a <- ggplot(demo_pop, aes(x=PPT_wt_1214, y=mean.r.drought)) +
   )
 #ggplotly(a)
 a
-ggsave("Graphs/Climate/1_drought_lambda_PPT_wt.pdf",width=8, height = 7, units = "in")
+
 
 
 #Winter Precipitation Anomaly - Change from latitude to pop code
@@ -123,9 +123,8 @@ a <- ggplot(demo_pop, aes(x=PPT_wt_1214, y=mean.r.drought)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
-#ggplotly(a)
 a
-
+ggsave("Graphs/Climate/1_drought_lambda_PPT_wt.pdf",width=8, height = 7, units = "in")
 
 
 

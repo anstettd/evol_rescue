@@ -27,7 +27,7 @@ pi_pop <- left_join(demog_recovery, pi_raw, by=c("Paper_ID"="Site"))
 
 #Visualize scatter plot
 ggplot(pi_pop, aes(x=pi_env578, y=mean.r.recovery)) + geom_point()
-pi_pop_graph <- pi_pop %>% dplyr::select(Site,Latitude,Lat.Color,mean.r.recovery,pi_env578)
+pi_pop_graph <- pi_pop %>% dplyr::select(Site,Paper_ID,Latitude,Lat.Color,mean.r.recovery,pi_env578)
 pi_pop_graph <- drop_na(pi_pop_graph)
 lm_snp_3 <- lm(mean.r.recovery~pi_env578,data=pi_pop_graph)
 summary(lm_snp_3)
@@ -62,7 +62,9 @@ ggplot(pi_pop_graph, aes(x=pi_env578, y=mean.r.recovery)) +
   #, limits=c(-0.3,2.5),breaks=seq(0,2.5,0.5))+
   scale_x_continuous(name="Pi (CMD + Tave_sm + PPT_wt SNP)")+
   #, limits=c(0.2,0.35), breaks=seq(0.1,0.35,0.05)) +  
-  scale_fill_manual(name = "Latitude (°N)",labels=round(pi_pop_graph$Latitude,1), values=as.character(pi_pop_graph$Lat.Color)) +
+  #scale_fill_manual(name = "Latitude (°N)",labels=round(pi_pop_graph$Latitude,1), values=as.character(pi_pop_graph$Lat.Color)) +
+  scale_fill_manual(values=as.character(pi_pop_graph$Lat.Color), 
+                    labels = unique(pi_pop_graph$Paper_ID) ) +
   theme_classic() + theme(
     axis.text.x = element_text(size=20, face="bold"),
     axis.text.y = element_text(size=20,face="bold"),
@@ -71,7 +73,9 @@ ggplot(pi_pop_graph, aes(x=pi_env578, y=mean.r.recovery)) +
     legend.title = element_text(size = 13, face = "bold"),
     legend.text = element_text(size = 14),  # Increase the size of the legend text
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
-    legend.key.height = unit(1.6, "lines")) # Reduce height
+    legend.key.height = unit(1.6, "lines"))+ # Reduce height
+  guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
+         fill  = guide_legend(reverse = TRUE))
 ggsave("Graphs/Demography_2/05_pi_demography_CMD_PPT_Tave.pdf",width=8, height = 6, units = "in")
 
 

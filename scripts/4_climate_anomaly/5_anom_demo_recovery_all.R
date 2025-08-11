@@ -70,10 +70,14 @@ a <- ggplot(demo_pop, aes(x=MAP_1517, y=mean.r.recovery)) +
   geom_smooth(method=MASS::rlm,color="black",size=1.25,fill="gray40")+
   geom_point(aes(fill=demo_pop$Lat.Color), shape=21, size =6)+
   geom_hline(yintercept = 1, linetype = "dotted", color = "black", size = 0.7) +
-  scale_y_continuous(name="Mean Pop. Growth after Drougth")+#, limits=c(0,2.5), breaks=seq(0,2.5,0.5))+
+  scale_y_continuous(name="Mean Pop. Growth after Drought")+#, limits=c(0,2.5), breaks=seq(0,2.5,0.5))+
   scale_x_continuous(name="Annual Precipitation Anomaly (2015-2017)")+
   #,breaks=c(0.04,0.045,0.05,0.055,0.06))+
-  scale_fill_manual(name = "Latitude (°N)",labels=round(demo_pop$Latitude,1), values=as.character(demo_pop$Lat.Color)) +
+  #scale_fill_manual(name = "Latitude (°N)",labels=round(demo_pop$Latitude,1), values=as.character(demo_pop$Lat.Color)) +
+  scale_fill_manual(values=as.character(demo_pop$Lat.Color), 
+                    labels = unique(demo_pop$Paper_ID) ) +
+#  scale_color_manual(values=demo_pop$Lat.Color, 
+#                     labels = unique(demo_pop$Paper_ID )) +
   theme_classic() + theme(
     axis.text.x = element_text(size=20, face="bold"),
     axis.text.y = element_text(size=20,face="bold"),
@@ -83,7 +87,9 @@ a <- ggplot(demo_pop, aes(x=MAP_1517, y=mean.r.recovery)) +
     legend.text = element_text(size = 14),  # Increase the size of the legend text
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
-  )
+  )+
+  guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
+         fill  = guide_legend(reverse = TRUE))
 a
 ggsave("Graphs/Climate/2_recovery_r_MAP.pdf",width=8, height = 6, units = "in")
 

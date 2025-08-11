@@ -56,18 +56,22 @@ ggplot(slope_pop, aes(x=Median, y=mean.r.recovery)) +
   scale_y_continuous(name="Mean Pop. Growth after Drought")+#,breaks=c(0.5,1,1.5,2,2.5))+
   scale_x_continuous(name="Median Response to Selection")+#,breaks=c(-0.1,0,0.1,0.2))+
   #,breaks=c(0.025,0.03,0.035,0.04,0.045))+
-  scale_fill_manual(name = "Latitude (°N)",labels=round(slope_pop$Latitude,1),
-                    values=as.character(slope_pop$Lat.Color)) +
+  #scale_fill_manual(name = "Latitude (°N)",labels=round(slope_pop$Latitude,1),
+  #                  values=as.character(slope_pop$Lat.Color)) +
+  scale_fill_manual(values=as.character(slope_pop$Lat.Color), 
+                    labels = unique(slope_pop$Paper_ID) ) +
   theme_classic() + theme(
     axis.text.x = element_text(size=20, face="bold"),
     axis.text.y = element_text(size=20,face="bold"),
     axis.title.x = element_text(color="black", size=24, vjust = 0.5, face="bold"),
     axis.title.y = element_text(color="black", size=24,vjust = 1.7, face="bold",hjust=0.5),
-    legend.title = element_text(size = 13, face = "bold"),
+    legend.title = element_blank(),
     legend.text = element_text(size = 14),  # Increase the size of the legend text
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
-  )
+  )+
+  guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
+         fill  = guide_legend(reverse = TRUE))
 ggsave("Graphs/Demography_2/01_median_slope_logr.pdf",width=8, height = 6, units = "in")
 
 

@@ -123,10 +123,12 @@ ggplot(r_long, aes(x=factor(time, level=level_order_all), y=mean_r, group=Latitu
   geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
   geom_point(shape=21, size=3, position=dodge) +
   #geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
+  scale_fill_manual(values=colours_in_to_plot$Lat.Color, 
+                     labels = unique(r_long$Paper_ID) ) +
   scale_color_manual(values=colours_in_to_plot$Lat.Color, 
-                     labels=round(colours_in_to_plot$Latitude,1),aesthetics=c("color", "fill")) +
+                    labels = unique(r_long$Paper_ID )) +
   #scale_color_manual(values=unique(r_long$Lat.Color), aesthetics=c("color", "fill")) +
-  scale_y_continuous(name="Mean population growth rate")+ 
+  scale_y_continuous(name="Mean Population Growth Rate")+ 
   scale_x_discrete(name="Time Period", labels=c("Pre-drought", "Drought", "Recovery")) + 
   geom_hline(yintercept=0) +
   theme_classic() + theme(
@@ -137,9 +139,11 @@ ggplot(r_long, aes(x=factor(time, level=level_order_all), y=mean_r, group=Latitu
     strip.background=element_blank(), 
     strip.text.x=element_blank(),
     legend.text = element_text(size = 14),
-    legend.key.size = unit(1.5, "lines"), 
+    legend.key.size = unit(2, "lines"),
+    legend.key.height = unit(1.6, "lines"), #Reduce height
     legend.title=element_blank())+
-  guides(color = guide_legend(override.aes = list(linetype = 0)))
+  guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
+    fill  = guide_legend(reverse = TRUE))
 ggsave("Graphs/Demography/01b_decline_recovery_rmeans.pdf",width=8, height = 6.5, units = "in")
 
 #Pre-drought to drought period

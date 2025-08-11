@@ -80,6 +80,39 @@ a <- ggplot(demo_pop, aes(x=PPT_wt_1214, y=mean.r.drought)) +
    #                 values=as.character(demo_pop$Lat.Color)) +
   scale_fill_manual(name = "Latitude (°N)",labels=round(demo_pop$Latitude,1), 
                     values=as.character(demo_pop$Lat.Color)) +
+  guides(fill = guide_legend(reverse = TRUE)) +
+  theme_classic() + theme(
+    axis.text.x = element_text(size=20, face="bold"),
+    axis.text.y = element_text(size=20,face="bold"),
+    axis.title.x = element_text(color="black", size=22, vjust = 0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=24,vjust = 1.7, face="bold",hjust=0.5),
+    #legend.title = element_blank(),
+    legend.text = element_text(size = 14),  # Increase the size of the legend text
+    legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
+    legend.key.height = unit(1.6, "lines") #Reduce height
+  )
+#ggplotly(a)
+a
+ggsave("Graphs/Climate/1_drought_lambda_PPT_wt.pdf",width=8, height = 7, units = "in")
+
+
+#Winter Precipitation Anomaly - Change from latitude to pop code
+a <- ggplot(demo_pop, aes(x=PPT_wt_1214, y=mean.r.drought)) + 
+  geom_smooth(method=lm,color="black",linetype="dashed",size=1.25,fill="gray75")+
+  geom_smooth(method=MASS::rlm,color="black",size=1.25,fill="gray50")+
+  geom_point(aes(fill=Lat.Color), shape=21, size=6)+
+  geom_hline(yintercept = 0, linetype = "dotted", color = "black", size = 0.7) +
+  scale_y_continuous(name="Mean Pop. Growth During Drought")+
+  scale_x_continuous(name="Winter Precipitation Anomaly (2012-2014)")+
+  #,breaks=c(0.04,0.045,0.05,0.055,0.06))+
+  #scale_fill_manual(labels=round(demo_pop$Latitude,1), 
+  #                 values=as.character(demo_pop$Lat.Color)) +
+  scale_fill_manual(
+    name = "Latitude (°N)",
+    values = as.character(demo_pop$Lat.Color),  # colors in order
+    labels = demo_pop$Paper_ID                   # labels replacing latitude
+  )+
+  guides(fill = guide_legend(reverse = TRUE)) +
   theme_classic() + theme(
     axis.text.x = element_text(size=20, face="bold"),
     axis.text.y = element_text(size=20,face="bold"),
@@ -90,8 +123,11 @@ a <- ggplot(demo_pop, aes(x=PPT_wt_1214, y=mean.r.drought)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
-ggplotly(a)
-ggsave("Graphs/Climate/1_drought_lambda_PPT_wt.pdf",width=8, height = 7, units = "in")
+#ggplotly(a)
+a
+
+
+
 
 #Summer Temperature Anomaly
 b <- ggplot(demo_pop, aes(x=Tave_sm_1214, y=mean.r.drought)) + 

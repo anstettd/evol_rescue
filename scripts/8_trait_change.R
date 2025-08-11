@@ -248,31 +248,98 @@ f.robftest(rob.mod.dry.phen, var="FT_D") #NS
 
 ### Conclusion from multiple regression analyses: within dry treatment, evolution of gas exchange can explain some differences in genomic selection. Specifically, positive S is associated with evolution towards increased photosynthesis and decreased stomatal conductance (sounds adaptive) and negative S is associated with evolution towards decreased photosynthesis and increased conductance (seems maladaptive). 
 
-
+###################################################################################
 # Visualize partial effects in gas exchange model
+###################################################################################
+#Evolution of Photosynthetic Rate
+
 pred_df_A <- predict_response(mod.dry.gasx, terms=c("A_D","SC_D"), margin="mean_reference")
 plot(pred_df_A, show_data=TRUE)
 
+raw_points <- attr(pred_df_A, "rawdata")
+#Raw plot
+pred_df_A$group <- factor(pred_df_A$group)
+raw_points$group <- factor(raw_points$group, levels = levels(pred_df_A$group))
+
+#Plot different levels of other variable
+pred_A_gg <-ggplot(pred_df_A, aes(x = x, y = predicted, color = group,fill = group)) + 
+  geom_line(size = 1) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, group = group), alpha = 0.1, color = NA) +
+  geom_point(data = raw_points, aes(x = x, y = response), shape=21, color = "black", fill="black", size=1.5,inherit.aes = FALSE) +
+  xlab("Evolution of Photosynthetic Rate") + 
+  ylab("Predicted Median S") +
+  theme_classic()+ theme(
+    axis.text.x = element_text(size=16, face="bold"),
+    axis.text.y = element_text(size=18,face="bold"),
+    axis.title.x = element_text(color="black", size=16, vjust = 0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=18,vjust = 1.7, face="bold",hjust=0.5),
+    legend.title = element_blank(),
+    legend.position = "none"
+  )
+
+
+#Single regression plot
 pred_A_plot <- ggplot(filter(pred_df_A, group==-0.07), aes(x=x, y=predicted)) + #, colour=group
   geom_ribbon(aes(x=x, ymin=conf.low, ymax=conf.high), fill="grey75") + #, group=group, colour=group
   stat_smooth(method="lm", color="black") +
-  xlab("Evolution of photosynthetic rate") + 
+  xlab("Evolution of Photosynthetic Rate") + 
   ylab("Predicted Median S") +
   theme_classic()
+###################################################################################
+##Evolution of Stomatal Conductance
 
+#Raw plot
 pred_df_B <- predict_response(mod.dry.gasx, terms=c("SC_D","A_D"), margin="mean_reference")
 plot(pred_df_B, show_data=TRUE)
 
+raw_points <- attr(pred_df_B, "rawdata")
+#Raw plot
+pred_df_B$group <- factor(pred_df_B$group)
+raw_points$group <- factor(raw_points$group, levels = levels(pred_df_B$group))
+
+#Plot different levels of other variable
+pred_B_gg <-ggplot(pred_df_B, aes(x = x, y = predicted, color = group,fill = group)) + 
+  geom_line(size = 1) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, group = group), alpha = 0.1, color = NA) +
+  geom_point(data = raw_points, aes(x = x, y = response), shape=21, color = "black", fill="black", size=1.5,inherit.aes = FALSE) +
+  xlab("Evolution of Stomatal Conductance") + 
+  ylab("Predicted Median S") +
+  theme_classic()+ theme(
+    axis.text.x = element_text(size=16, face="bold"),
+    axis.text.y = element_text(size=18,face="bold"),
+    axis.title.x = element_text(color="black", size=16, vjust = 0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=18,vjust = 1.7, face="bold",hjust=0.5),
+    legend.title = element_blank(),
+    legend.position = "none"
+  )
+pred_B_gg
+
+#Single regression plot
 pred_B_plot <- ggplot(filter(pred_df_B, group==0.01), aes(x=x, y=predicted)) + #, colour=group
   geom_ribbon(aes(x=x, ymin=conf.low, ymax=conf.high), fill="grey75") + #, group=group, colour=group
   stat_smooth(method="lm", color="black") +
-  xlab("Evolution of stomatal conductance") + 
+  xlab("Evolution of Stomatal Conductance") + 
   ylab("Predicted Median S") +
   theme_classic()
 
 # Supplemental Figure Sx
+plot_grid(pred_A_gg, pred_B_gg)
+ggsave("Graphs/Traits/gas_selection_gg.pdf", width=10, height = 5, units = "in")
+
+#Combined Single regression plot
 plot_grid(pred_A_plot, pred_B_plot)
-ggsave("Graphs/Traits_Selection.pdf")
+ggsave("Graphs/Traits/Traits_Selection.pdf")
 
 ###################################################################################
+
+
+
+
+
+
+
+
+
+
+
 

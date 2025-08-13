@@ -158,24 +158,30 @@ colours_in_to_plot<-unique(colours_in) #%>% filter(Lat.Color!="#FDB567") #remove
 
 
 a <- ggplot(r_long_early, aes(x=factor(time, level=level_order_pre), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
-  geom_point(shape=21, size=3, position=dodge) +
+  geom_point(shape=21, size=4, position=dodge) +
   geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
   geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
+  #scale_color_manual(values=colours_in_to_plot$Lat.Color, 
+  #                   labels=round(colours_in_to_plot$Latitude,1),aesthetics=c("color", "fill")) +
+  scale_fill_manual(values=colours_in_to_plot$Lat.Color, 
+                    labels = unique(r_long_early$Paper_ID) ) +
   scale_color_manual(values=colours_in_to_plot$Lat.Color, 
-                     labels=round(colours_in_to_plot$Latitude,1),aesthetics=c("color", "fill")) +
-  scale_y_continuous(name="Mean r")+ 
+                     labels = unique(r_long_early$Paper_ID )) +
+  scale_y_continuous(name="Mean Population Growth Rate")+ 
   scale_x_discrete(name="Time Period", labels=c("Pre-drought", "Drought")) + 
   geom_hline(yintercept=0) +
   theme_classic() + theme(
-    axis.text.x = element_text(face="bold"),
-    axis.text.y = element_text(size=11, face="bold"),
-    axis.title.x = element_text(color="black", size=20, vjust=0.5, face="bold"),
-    axis.title.y = element_text(color="black", size=20,vjust=2, face="bold", hjust=0.5),
+    axis.text.x = element_text(size=16, face="bold"),
+    axis.text.y = element_text(size=16, face="bold"),
+    axis.title.x = element_text(color="black", size=24, vjust=0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=24,vjust=2, face="bold", hjust=0.5),
     strip.background=element_blank(), 
     strip.text.x=element_blank(),
     legend.title=element_blank())+
-  guides(color = guide_legend(override.aes = list(linetype = 0))) 
-ggsave("Graphs/Demography/01c_decline.pdf",a, width=14, height = 8, units = "in")
+    guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
+       fill  = guide_legend(reverse = TRUE))
+a
+ggsave("Graphs/Demography/01c_decline.pdf",a, width=6, height = 8, units = "in")
 
 #Drought to recovery period
 r_long_late <- r_long %>% filter(time!="pre") %>% droplevels()
@@ -188,24 +194,28 @@ colours_in_to_plot<-unique(colours_in) #%>% filter(Lat.Color!="#FDB567") #remove
 
 
 b <- ggplot(r_long_late, aes(x=factor(time, level=level_order_post), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
-  geom_point(shape=21, size=3, position=dodge) +
+  geom_point(shape=21, size=4, position=dodge) +
   geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
   geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
-  scale_y_continuous(name="Mean r")+ 
+  scale_y_continuous(name="Mean Population Growth Rate")+ 
   scale_x_discrete(name="Time Period", labels=c("Drought", "Recovery")) + 
+  scale_fill_manual(values=colours_in_to_plot$Lat.Color, 
+                    labels = unique(r_long_early$Paper_ID) ) +
   scale_color_manual(values=colours_in_to_plot$Lat.Color, 
-                     labels=round(colours_in_to_plot$Latitude,1),aesthetics=c("color", "fill")) +
+                     labels = unique(r_long_early$Paper_ID )) +
   geom_hline(yintercept=0) +
   theme_classic() + theme(
-    axis.text.x = element_text(face="bold"),
-    axis.text.y = element_text(size=11,face="bold"),
-    axis.title.x = element_text(color="black", size=20, vjust=0.5, face="bold"),
-    axis.title.y = element_text(color="black", size=20, vjust=2, face="bold", hjust=0.5),
+    axis.text.x = element_text(size=16, face="bold"),
+    axis.text.y = element_text(size=16,face="bold"),
+    axis.title.x = element_text(color="black", size=24, vjust=0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=24, vjust=2, face="bold", hjust=0.5),
     strip.background = element_blank(), 
     strip.text.x = element_blank(),
     legend.title = element_blank())+
-  guides(color = guide_legend(override.aes = list(linetype = 0)))
-ggsave("Graphs/Demography/01d_recovery.pdf",b, width=14, height = 8, units = "in")
+  guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
+         fill  = guide_legend(reverse = TRUE))
+b
+ggsave("Graphs/Demography/01d_recovery.pdf",b, width=6, height = 8, units = "in")
 
 
 # sensitivity test: remove 3 extirpated populations
@@ -291,8 +301,10 @@ c <- ggplot(r_means_norm_long_drought, aes(x=factor(time, level=level_order_drou
   geom_point(shape=21, size=3, position=dodge) +
   #geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
   geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
+  scale_fill_manual(values=colours_in_to_plot$Lat.Color, 
+                    labels = unique(r_means_norm_long_drought$Paper_ID) ) +
   scale_color_manual(values=colours_in_to_plot$Lat.Color, 
-                     labels=round(colours_in_to_plot$Latitude,1),aesthetics=c("color", "fill")) +
+                     labels = unique(r_means_norm_long_drought$Paper_ID )) +
   scale_y_continuous(name="Normalized r")+ 
   scale_x_discrete(name="Time Period", labels=c("Pre-drought", "Drought")) + 
   geom_hline(yintercept=1) +
@@ -304,7 +316,9 @@ c <- ggplot(r_means_norm_long_drought, aes(x=factor(time, level=level_order_drou
     strip.background=element_blank(), 
     strip.text.x=element_blank(),
     legend.title=element_blank())+
-  guides(color = guide_legend(override.aes = list(linetype = 0)))
+  guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
+         fill  = guide_legend(reverse = TRUE))
+c
 ggsave("Graphs/Demography/r_drought_norm.pdf",width=5, height=4, units="in")
 
 
@@ -323,8 +337,10 @@ d <- ggplot(r_means_norm_long_recovery, aes(x=factor(time, level=level_order_dro
   geom_point(shape=21, size=3, position=dodge) +
   #geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
   geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
+  scale_fill_manual(values=colours_in_to_plot$Lat.Color, 
+                    labels = unique(r_means_norm_long_recovery$Paper_ID) ) +
   scale_color_manual(values=colours_in_to_plot$Lat.Color, 
-                     labels=round(colours_in_to_plot$Latitude,1),aesthetics=c("color", "fill")) +
+                     labels = unique(r_means_norm_long_recovery$Paper_ID )) +
   #scale_fill_manual(name = "Latitude (°N)",labels=round(r_means_norm_long_recovery$Latitude,1),
   #                  values=as.character(r_means_norm_long_recovery$Lat.Color)) +
   scale_y_continuous(name="Normalized r")+ 
@@ -338,7 +354,8 @@ d <- ggplot(r_means_norm_long_recovery, aes(x=factor(time, level=level_order_dro
     strip.background=element_blank(), 
     strip.text.x=element_blank(),
     legend.title=element_blank())+
-  guides(color = guide_legend(override.aes = list(linetype = 0)))
+  guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
+         fill  = guide_legend(reverse = TRUE))
 d
 
 # New Fig S1, option 2

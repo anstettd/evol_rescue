@@ -49,16 +49,23 @@ ggplot(demog_recovery, aes(x=mean.r.drought, y=mean.r.recovery)) +
   geom_vline(xintercept = 0, linetype = "dotted", color = "black", size = 0.7) +
   scale_y_continuous(name="Mean Pop. Growth after Drought")+
   scale_x_continuous(name="Mean Pop. Growth during Drought")+
-  scale_fill_manual(name = "Latitude (°N)",labels=round(demog_recovery$Latitude,1), values=as.character(demog_recovery$Lat.Color)) +
+  #scale_fill_manual(name = "Latitude (°N)",labels=round(demog_recovery$Latitude,1), values=as.character(demog_recovery$Lat.Color)) +
+  scale_fill_manual(values=as.character(demog_recovery$Lat.Color), 
+                    labels = unique(demog_recovery$Paper_ID) ) +
   theme_classic() + theme(
     axis.text.x = element_text(size=20, face="bold"),
     axis.text.y = element_text(size=20,face="bold"),
     axis.title.x = element_text(color="black", size=24, vjust = 0.5, face="bold"),
     axis.title.y = element_text(color="black", size=24,vjust = 1.7, face="bold",hjust=0.5),
-    legend.title = element_text(size = 14, face = "bold"),
+    #legend.title = element_text(size = 14, face = "bold"),
+    legend.title = element_blank(),
     legend.text = element_text(size = 14),  # Increase the size of the legend text
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
-    legend.key.height = unit(1.6, "lines") #Reduce ehight
+    legend.key.height = unit(1.6, "lines") #Reduce height
+  ) +
+  guides(
+    color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
+    fill  = guide_legend(reverse = TRUE)
   )
 
 ggsave("Graphs/Demography/decline_vs_recovery.pdf",width=8, height = 8, units = "in")

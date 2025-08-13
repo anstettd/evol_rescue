@@ -70,8 +70,8 @@ seasonal <- cbind(seasonal,seasonal.site)
 #*******************************************************************************
 
 #Make populations appear in latitudinal order, filter year range
-wna2_year<-wna2 %>% mutate(Site.Lat=paste(Latitude,Paper_ID,sep="_")) %>% filter(Paper_ID!=12) #%>%
-#filter(Year<2016) 
+wna2_year<-wna2 %>% mutate(Site.Lat=paste(Latitude,Paper_ID,sep="_")) %>% filter(Paper_ID!=12) %>%
+filter(Year<2016) 
 wna2_year<-left_join(wna2_year,demog_means,by="Paper_ID")
 
 wna2_year$Paper_ID<-as.factor(wna2_year$Paper_ID) 
@@ -83,6 +83,7 @@ wna2_year$Paper_ID<-as.factor(wna2_year$Paper_ID)
 #wna2_year$Paper_ID<-factor(wna2_year$Paper_ID,levels=wna2_year$Paper_ID)
 
 
+
 # plot Year vs. MAP
 color_vector <- setNames(wna2_year$Lat.Color, wna2_year$Paper_ID)
 MAP_plot<-ggplot() + 
@@ -92,14 +93,14 @@ MAP_plot<-ggplot() +
   ylab("Mean Annual Precipitation") +
   theme_classic()+
   #scale_color_manual(values = lat_cols) +
-  scale_x_continuous(breaks=c(2010,2012,2014,2016,2018))+
+  scale_x_continuous(breaks=c(2010,2012,2014))+
   scale_color_manual(values=color_vector)
 
 MAP_plot<-MAP_plot + theme(legend.position = "none",
-                           axis.title.x=element_text(size=16,vjust = 0, face="bold",hjust=0.5),
-                           axis.text.x = element_text(size=14, face="bold", angle=0,hjust=0.5),
-                           axis.text.y = element_text(size=14,face="bold"),
-                           axis.title.y = element_text(size=16,vjust = 1, face="bold",hjust=0.5))#+
+                           axis.title.x=element_text(size=24,vjust = 0, face="bold",hjust=0.5),
+                           axis.text.x = element_text(size=16, face="bold", angle=0,hjust=0.5),
+                           axis.text.y = element_text(size=16,face="bold"),
+                           axis.title.y = element_text(size=24,vjust = 1, face="bold",hjust=0.5))#+
 MAP_plot
 ggsave("Graphs/Climate/MAP_test_pop.pdf",width=6, height = 8, units = "in")
 
@@ -123,7 +124,7 @@ PPTwtanom_plot<-PPTwtanom_plot + theme(legend.position = "none",
                            axis.text.x = element_text(size=14, face="bold", angle=0,hjust=0.5),
                            axis.text.y = element_text(size=14,face="bold"),
                            axis.title.y = element_text(size=16,vjust = 1, face="bold",hjust=0.5))#+
-ggplotly(PPTwtanom_plot)
+PPTwtanom_plot
 ggsave("Graphs/Climate/PPTwtanom_plot.pdf",width=6, height = 8, units = "in")
 
 

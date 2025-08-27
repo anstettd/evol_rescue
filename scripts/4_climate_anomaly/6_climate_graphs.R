@@ -60,6 +60,9 @@ seasonal.site <- seasonal
 seasonal.site$Latitude <- round(seasonal.site$Latitude ,digit=2) 
 seasonal.site <- seasonal.site %>% unite(col=Lat.Site,c("Latitude","Site"),sep="_") %>% dplyr::select(Lat.Site)
 seasonal <- cbind(seasonal,seasonal.site)
+seasonal <- left_join(seasonal,demog_means,by="Paper_ID") %>% filter(Year<2016)
+
+
 
 
 
@@ -90,7 +93,7 @@ MAP_plot<-ggplot() +
   geom_line(stat="smooth",data = wna2_year, aes(y = MAP.weath, x = Year, 
                                                 group=Latitude,col=factor(Paper_ID)), alpha=0.75,linewidth = 1.5,se=FALSE) + 
   xlab("Year") + 
-  ylab("Mean Annual Precipitation") +
+  ylab("Mean Annual Precipitation (mm)") +
   theme_classic()+
   #scale_color_manual(values = lat_cols) +
   scale_x_continuous(breaks=c(2010,2012,2014))+
@@ -126,6 +129,35 @@ PPTwtanom_plot<-PPTwtanom_plot + theme(legend.position = "none",
                            axis.title.y = element_text(size=16,vjust = 1, face="bold",hjust=0.5))#+
 PPTwtanom_plot
 ggsave("Graphs/Climate/PPTwtanom_plot.pdf",width=6, height = 8, units = "in")
+
+
+
+# plot Year vs. Winter Precipitation 
+color_vector <- setNames(seasonal$Lat.Color, seasonal$Paper_ID)
+PPTwtseasonal_plot<-ggplot() + 
+  geom_line(stat="smooth",data = seasonal, aes(y = PPT_wt, x = Year,
+                                           group=Latitude,col=factor(Paper_ID)), alpha=0.75,linewidth = 1.5,se=FALSE) + 
+  xlab("Year") + 
+  ylab("Winter Precipitation (mm)") +
+  theme_classic()+
+  #scale_color_manual(values = lat_cols) +
+  scale_x_continuous(breaks=c(2010,2012,2014,2016,2018))+
+  scale_color_manual(values=color_vector)
+
+PPTwtseasonal_plot<-PPTwtseasonal_plot + theme(legend.position = "none",
+                                       axis.title.x=element_text(size=24,vjust = 0, face="bold",hjust=0.5),
+                                       axis.text.x = element_text(size=16, face="bold", angle=0,hjust=0.5),
+                                       axis.text.y = element_text(size=16,face="bold"),
+                                       axis.title.y = element_text(size=24,vjust = 1, face="bold",hjust=0.5))#+
+PPTwtseasonal_plot
+ggsave("Graphs/Climate/PPTwt_plot.pdf",width=6, height = 8, units = "in")
+
+
+
+
+
+
+
 
 
 

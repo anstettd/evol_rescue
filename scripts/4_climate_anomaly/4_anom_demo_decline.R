@@ -114,7 +114,7 @@ a <- ggplot(demo_pop, aes(x=PPT_wt_1214, y=mean.r.drought)) +
   )+
   guides(fill = guide_legend(reverse = TRUE)) +
   theme_classic() + theme(
-    axis.text.x = element_text(size=20, face="bold"),
+    axis.text.x = element_text(size=24, face="bold"),
     axis.text.y = element_text(size=20,face="bold"),
     axis.title.x = element_text(color="black", size=22, vjust = 0.5, face="bold"),
     axis.title.y = element_text(color="black", size=24,vjust = 1.7, face="bold",hjust=0.5),

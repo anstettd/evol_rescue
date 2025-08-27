@@ -81,7 +81,7 @@ a <- ggplot(demo_pop, aes(x=MAP_1517, y=mean.r.recovery)) +
   theme_classic() + theme(
     axis.text.x = element_text(size=20, face="bold"),
     axis.text.y = element_text(size=20,face="bold"),
-    axis.title.x = element_text(color="black", size=21, vjust = 0.5, face="bold"),
+    axis.title.x = element_text(color="black", size=22, vjust = 0.5, face="bold"),
     axis.title.y = element_text(color="black", size=24,vjust = 1.7, face="bold",hjust=0.5),
     legend.title = element_blank(),
     legend.text = element_text(size = 14),  # Increase the size of the legend text

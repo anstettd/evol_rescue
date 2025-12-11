@@ -2,7 +2,7 @@
 ## Daniel Anstett
 ## Maps showing 19 demography populations
 ## 
-## Last Modified January 22, 2020
+## Last Modified 2025 12 11
 ###################################################################################
 # Remove objects and clear workspace
 rm(list = ls(all=TRUE))

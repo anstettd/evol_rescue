@@ -231,7 +231,7 @@ ggsave("Graphs/Demography/01e_recovery_cull.pdf",width=14, height = 8, units = "
 
 
 #*******************************************************************************
-### 4. Try expressing changes normalized to starting lambda per reviewer 2
+### 3. Expressing changes normalized to starting lambda per reviewer 2
 #*******************************************************************************
 
 r_means_norm <- r_means %>% 
@@ -297,7 +297,7 @@ U_mod_norm_quad <- lm(mean_r_norm ~ poly(time_num,2), data=r_means_norm_long)
 summary(U_mod_quad)
 AIC(U_mod_norm_lin, U_mod_norm_quad)
 
-#normalized decline during drought (new Fig 1D)
+#normalized decline during drought (new Fig S1D)
 c <- ggplot(r_means_norm_long_drought, aes(x=factor(time, level=level_order_drought), y=mean_r_norm, group=Latitude, fill=as.factor(Latitude))) +
   geom_point(shape=21, size=3, position=dodge) +
   #geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +

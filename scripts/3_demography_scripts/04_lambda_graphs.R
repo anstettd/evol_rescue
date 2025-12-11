@@ -230,31 +230,6 @@ ggplot(r_long_late_cull, aes(x=factor(time, level=level_order_post), y=mean_r, g
 ggsave("Graphs/Demography/01e_recovery_cull.pdf",width=14, height = 8, units = "in")
 
 
-
-#*******************************************************************************
-### 3. Visualize decline over time for exemplar site (Old Fig 1D)
-#*******************************************************************************
-
-#Little Jamison 
-dat_little <- dat %>% 
-  filter(Site=="Little Jameson Creek") %>% 
-  filter(Year<2015)
-plot_3 <- ggplot(dat_little, aes(x=Year, y=r)) + 
-  geom_point(size=4,shape=21,fill="#9BD7A4") +
-  scale_y_continuous(name="r") + 
-  scale_x_continuous(name="") +
-  geom_hline(yintercept=0, linetype="dotted",size=0.8) + 
-  theme_classic() + 
-  theme(
-    axis.text.x=element_text(size=18,face="bold"),
-    axis.text.y=element_text(size=18,face="bold"),
-    axis.title.x=element_text(color="black", size=20, vjust=0.5, face="bold"),
-    axis.title.y=element_text(color="black", size=22, vjust=2, face="bold", hjust=0.5))
-plot_3
-ggsave("Graphs/Demography/sites/05_little_jamison.pdf",width=5, height=4, units="in")
-
-
-
 #*******************************************************************************
 ### 4. Try expressing changes normalized to starting lambda per reviewer 2
 #*******************************************************************************

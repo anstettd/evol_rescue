@@ -1,7 +1,7 @@
 #### PROJECT: Mimulus cardinalis evolutionary rescue
 #### PURPOSE: Plot maps for M. cardinalis study population locations and nucleotide diversity (pi)
 #### AUTHOR: Seema Sheth 
-#### DATE LAST MODIFIED: 20240906
+#### DATE LAST MODIFIED: 20241211
 
 
 ###################################################################################
@@ -70,11 +70,11 @@ card_map_focal_pops = ggplot(data=world,fill="lightgrey",col="black",size=0.3) +
 card_map_focal_pops
 
 # save genomics sampling map 
-save_plot(filename = "Graphs/Maps/base_time_map.png",
+save_plot(filename = "Graphs/Maps/base_time_map_2B.png",
           plot = card_map_focal_pops,
           bg = "transparent", 
           base_width = 4, base_height = 8)
-save_plot(filename = "Graphs/Maps/base_time_map.pdf",
+save_plot(filename = "Graphs/Maps/base_time_map_2B.pdf",
           plot = card_map_focal_pops,
           bg = "transparent", 
           base_width = 4, base_height = 8)

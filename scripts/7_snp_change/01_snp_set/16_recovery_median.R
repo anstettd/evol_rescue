@@ -52,7 +52,7 @@ ggplot(slope_pop, aes(x=Median, y=mean.r.recovery)) +
   geom_smooth(method=MASS::rlm, color="black", size=1.8, fill="grey50") +
   geom_point(aes(fill=Lat.Color), shape=21, size =6)+
   geom_hline(yintercept = 0, linetype = "dotted", color = "black", size = 0.7) +
-  scale_y_continuous(name="Mean Pop. Growth after Drought")+#,breaks=c(0.5,1,1.5,2,2.5))+
+  scale_y_continuous(name="Mean Pop. Growth after Drought", limits=c(-5,3),breaks=seq(-4,2,2))+
   scale_x_continuous(name="Median Response to Selection")+#,breaks=c(-0.1,0,0.1,0.2))+
   scale_fill_manual(values=as.character(slope_pop$Lat.Color), 
                     labels = unique(slope_pop$Paper_ID) ) +
@@ -68,7 +68,7 @@ ggplot(slope_pop, aes(x=Median, y=mean.r.recovery)) +
   )+
   guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
          fill  = guide_legend(reverse = TRUE))
-ggsave("Graphs/Demography_Genomics/01_median_slope_logr.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Demography_Genomics/01_median_slope_logr_3C.pdf",width=8, height = 6, units = "in")
 
 
 

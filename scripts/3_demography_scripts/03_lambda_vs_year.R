@@ -1,7 +1,7 @@
 #### PROJECT: Evolutionary rescue of Mimulus cardinalis populations during extreme drought
 #### PURPOSE OF THIS SCRIPT: Calculate metrics of the rate of demographic decline during drought and rate of recovery after drought
 #### AUTHOR: Amy Angert
-#### DATE LAST MODIFIED: 20250608
+#### DATE LAST MODIFIED: 20251211
 
 
 #*******************************************************************************
@@ -34,7 +34,7 @@ dat <- read.csv("data/demography data/siteYear.lambda_2010-2019.csv") %>% dplyr:
 hist(dat$lambda) #extreme right skew
 hist(log(dat$lambda)) #much better
 
-# express as population growth as intrinsic rate of increase (log lambda)
+# express population growth as intrinsic rate of increase (log lambda)
 dat <- dat %>% mutate(r = log(lambda+0.01)) #adding small value lambdas of 0 don't turn to NA
 
 #*******************************************************************************
@@ -70,11 +70,9 @@ dat.mean.pre <- dat %>%
   filter(Year==2010|Year==2011) %>%
   na.omit() %>%
   dplyr::summarize(mean.r.pre = mean(r, na.rm=TRUE), #arithmetic mean of logs
-                   geomean.l.pre = exp(mean(log(lambda), na.rm=TRUE)),#geometric mean of unlogged values
                    sd.r.pre = sd(r, na.rm=TRUE),
                    se.r.pre = se(r, na.rm=TRUE)) 
 hist(dat.mean.pre$mean.r.pre) # better 
-hist(dat.mean.pre$geomean.l.pre) #long right tail
 
 #*******************************************************************************
 ### 3B. Calculate mean lambda DURING CORE DROUGHT for each site 
@@ -85,11 +83,9 @@ dat.mean.drought <- dat %>%
   group_by(Latitude, Site) %>% 
   filter(Year==2012|Year==2013|Year==2014) %>% 
   dplyr::summarize(mean.r.drought = mean(r, na.rm=TRUE), 
-                   geomean.l.drought = exp(mean(log(lambda), na.rm=TRUE)),
                    sd.r.drought = sd(r, na.rm=TRUE),
                    se.r.drought = se(r, na.rm=TRUE)) 
 hist(dat.mean.drought$mean.r.drought) #left-skewed
-hist(dat.mean.drought$geomean.l.drought) #better
 
 #*******************************************************************************
 ### 3C. Calculate mean lambda DURING POST-DROUGHT for each site
@@ -100,11 +96,9 @@ dat.mean.recovery <- dat %>%
   group_by(Latitude, Site) %>% 
   filter(Year==2015|Year==2016|Year==2017) %>% 
   dplyr::summarize(mean.r.recovery = mean(r, na.rm=TRUE), 
-            geomean.l.recovery = exp(mean(log(lambda), na.rm=TRUE)),
             sd.r.recovery = sd(r, na.rm=TRUE),
             se.r.recovery = se(r, na.rm=TRUE))
 hist(dat.mean.recovery$mean.r.recovery) #better
-hist(dat.mean.recovery$geomean.l.recovery) #right-skewed
 
 # Add Latitude and other covariates back in
 covar <- read_csv("data/genomic_data/pop_meta_data.csv") %>% 

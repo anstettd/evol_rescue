@@ -87,16 +87,16 @@ wna2_year$Paper_ID<-as.factor(wna2_year$Paper_ID)
 
 
 
-# plot Year vs. MAP
+# Plot Year vs. MAP (not used in manuscript)
 color_vector <- setNames(wna2_year$Lat.Color, wna2_year$Paper_ID)
 MAP_plot<-ggplot() + 
-  geom_line(stat="smooth",data = wna2_year, aes(y = MAP.weath, x = Year, 
-                                                group=Latitude,col=factor(Paper_ID)), alpha=0.75,linewidth = 1.5,se=FALSE) + 
+  geom_line(data = wna2_year, aes(y = MAP.weath, x = Year, 
+                                                group=Latitude,col=factor(Paper_ID)), alpha=0.75,linewidth = 1.5) + 
   xlab("Year") + 
   ylab("Mean Annual Precipitation (mm)") +
   theme_classic()+
   #scale_color_manual(values = lat_cols) +
-  scale_x_continuous(breaks=c(2010,2012,2014))+
+  scale_x_continuous(breaks=c(2010,2011,2012,2013,2014,2015))+
   scale_color_manual(values=color_vector)
 
 MAP_plot<-MAP_plot + theme(legend.position = "none",
@@ -105,21 +105,38 @@ MAP_plot<-MAP_plot + theme(legend.position = "none",
                            axis.text.y = element_text(size=16,face="bold"),
                            axis.title.y = element_text(size=24,vjust = 1, face="bold",hjust=0.5))#+
 MAP_plot
-ggsave("Graphs/Climate/MAP_test_pop.pdf",width=6, height = 8, units = "in")
+ggsave("Graphs/Climate/MAP_year_pop.pdf",width=6, height = 8, units = "in")
 
 
+# Plot Year vs. Winter Precipitation (FIGURE 1C)
+color_vector <- setNames(seasonal$Lat.Color, seasonal$Paper_ID)
+PPTwtseasonal_plot<-ggplot() + 
+  geom_line(data = seasonal, aes(y = PPT_wt, x = Year,
+                                               group=Latitude,col=factor(Paper_ID)), alpha=0.75,linewidth = 1.5) + 
+  xlab("Year") + 
+  ylab("Winter Precipitation (mm)") +
+  theme_classic()+
+  #scale_color_manual(values = lat_cols) +
+  scale_x_continuous(breaks=c(2010,2011,2012,2013,2014,2015))+
+  scale_color_manual(values=color_vector)
 
+PPTwtseasonal_plot<-PPTwtseasonal_plot + theme(legend.position = "none",
+                                               axis.title.x=element_text(size=24,vjust = 0, face="bold",hjust=0.5),
+                                               axis.text.x = element_text(size=16, face="bold", angle=0,hjust=0.5),
+                                               axis.text.y = element_text(size=16,face="bold"),
+                                               axis.title.y = element_text(size=24,vjust = 1, face="bold",hjust=0.5))#+
+PPTwtseasonal_plot
+ggsave("Graphs/Climate/PPTwt_year_plot_1C.pdf",width=6, height = 8, units = "in")
 
-# plot Year vs. Winter Precipitation Anomaly
+# Plot Year vs. Winter Precipitation Anomaly (FIGURE S2)
 color_vector <- setNames(anom$Lat.Color, anom$Paper_ID)
 PPTwtanom_plot<-ggplot() + 
-  geom_line(stat="smooth",data = anom, aes(y = PPT_wt.anom, x = Year,
-            group=Latitude,col=factor(Paper_ID)), alpha=0.75,linewidth = 1.5,se=FALSE) + 
+  geom_line(data = anom, aes(y = PPT_wt.anom, x = Year,
+            group=Latitude,col=factor(Paper_ID)), alpha=0.75,linewidth = 1.5) + 
   xlab("Year") + 
   ylab("Winter Precipitation Anomaly") +
   theme_classic()+
-  #scale_color_manual(values = lat_cols) +
-  scale_x_continuous(breaks=c(2010,2012,2014,2016,2018))+
+  scale_x_continuous(breaks=c(2010,2011,2012,2013,2014,2015,2016,2017,2018))+
   scale_color_manual(values=color_vector)
 
 PPTwtanom_plot<-PPTwtanom_plot + theme(legend.position = "none",
@@ -128,29 +145,10 @@ PPTwtanom_plot<-PPTwtanom_plot + theme(legend.position = "none",
                            axis.text.y = element_text(size=14,face="bold"),
                            axis.title.y = element_text(size=16,vjust = 1, face="bold",hjust=0.5))#+
 PPTwtanom_plot
-ggsave("Graphs/Climate/PPTwtanom_plot.pdf",width=6, height = 8, units = "in")
+ggsave("Graphs/Climate/PPTwtanom_year_plot_S2.pdf",width=6, height = 8, units = "in")
 
 
 
-# plot Year vs. Winter Precipitation 
-color_vector <- setNames(seasonal$Lat.Color, seasonal$Paper_ID)
-PPTwtseasonal_plot<-ggplot() + 
-  geom_line(stat="smooth",data = seasonal, aes(y = PPT_wt, x = Year,
-                                           group=Latitude,col=factor(Paper_ID)), alpha=0.75,linewidth = 1.5,se=FALSE) + 
-  xlab("Year") + 
-  ylab("Winter Precipitation (mm)") +
-  theme_classic()+
-  #scale_color_manual(values = lat_cols) +
-  scale_x_continuous(breaks=c(2010,2012,2014,2016,2018))+
-  scale_color_manual(values=color_vector)
-
-PPTwtseasonal_plot<-PPTwtseasonal_plot + theme(legend.position = "none",
-                                       axis.title.x=element_text(size=24,vjust = 0, face="bold",hjust=0.5),
-                                       axis.text.x = element_text(size=16, face="bold", angle=0,hjust=0.5),
-                                       axis.text.y = element_text(size=16,face="bold"),
-                                       axis.title.y = element_text(size=24,vjust = 1, face="bold",hjust=0.5))#+
-PPTwtseasonal_plot
-ggsave("Graphs/Climate/PPTwt_plot.pdf",width=6, height = 8, units = "in")
 
 
 

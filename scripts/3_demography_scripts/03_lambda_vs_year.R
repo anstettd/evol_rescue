@@ -113,3 +113,12 @@ t.test(x=r_means_cull$mean.r.pre, y=r_means_cull$mean.r.drought, paired=TRUE)
 t.test(x=r_means_cull$mean.r.recovery, y=r_means_cull$mean.r.drought, paired=TRUE)
 wilcox.test(x=r_means_cull$mean.r.pre, y=r_means_cull$mean.r.drought, paired=TRUE)
 wilcox.test(x=r_means_cull$mean.r.recovery, y=r_means_cull$mean.r.drought, paired=TRUE)
+
+
+# Statistics for U-shape
+r_long <- r_long %>% mutate(time_num = ifelse(time=="pre", 1, ifelse(time=="drought", 2, 3)))
+
+U_mod_raw_lin <- lm(mean_r ~ time_num, data=r_long)
+U_mod_raw_quad <- lm(mean_r ~ poly(time_num,2), data=r_long)
+AIC(U_mod_raw_lin, U_mod_raw_quad)
+

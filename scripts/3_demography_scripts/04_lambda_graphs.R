@@ -64,7 +64,7 @@ colours_in_to_plot<-unique(colours_in) #%>% filter(Lat.Color=="#FDB567") #remove
 ### 2. Visualize mean estimates over each period for all sites
 #*******************************************************************************
 
-# All three time periods on same graph (Fig S1, option 1), unfaceted
+# All three time periods on same graph, raw values, unfaceted
 ggplot(r_long, aes(x=factor(time, level=level_order_all), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
   #facet_wrap(~Latitude, scale="free") +
   geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
@@ -91,9 +91,9 @@ ggplot(r_long, aes(x=factor(time, level=level_order_all), y=mean_r, group=Latitu
     legend.title=element_blank())+
   guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
     fill  = guide_legend(reverse = TRUE))
-ggsave("Graphs/Demography/rmeans_decline_recovery_unfaceted.pdf",width=8, height = 6.5, units = "in")
+ggsave("Graphs/Demography/rmeans_raw_decline_recovery_unfaceted.pdf",width=8, height = 6.5, units = "in")
 
-# All three time periods on same graph (Fig S1, option 1), faceted by population
+# All three time periods on same graph, raw values, faceted by population
 ggplot(r_long, aes(x=factor(time, level=level_order_all), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
   facet_wrap(~Latitude, scale="free") +
   geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
@@ -120,17 +120,10 @@ ggplot(r_long, aes(x=factor(time, level=level_order_all), y=mean_r, group=Latitu
     legend.title=element_blank())+
   guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
          fill  = guide_legend(reverse = TRUE))
-ggsave("Graphs/Demography/rmeans_decline_recovery_faceted.pdf",width=8, height = 6.5, units = "in")
-
-# Statistics for U-shape
-r_long <- r_long %>% mutate(time_num = ifelse(time=="pre", 1, ifelse(time=="drought", 2, 3)))
-
-U_mod_raw_lin <- lm(mean_r ~ time_num, data=r_long)
-U_mod_raw_quad <- lm(mean_r ~ poly(time_num,2), data=r_long)
-AIC(U_mod_raw_lin, U_mod_raw_quad)
+ggsave("Graphs/Demography/rmeans_raw_decline_recovery_faceted.pdf",width=8, height = 6.5, units = "in")
 
 
-# Pre-drought to drought period only (FIGURE 1D)
+# Pre-drought to drought period only, raw values, unfaceted (FIGURE 1D)
 dodge <- position_dodge(width=0.2)
 r_long_early <- r_long %>% filter(time!="recovery") %>% droplevels()
 level_order_pre = c("pre", "drought")
@@ -165,9 +158,9 @@ a <- ggplot(r_long_early, aes(x=factor(time, level=level_order_pre), y=mean_r, g
     guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
        fill  = guide_legend(reverse = TRUE))
 a
-ggsave("Graphs/Demography/rmeans_decline_1D.pdf",a, width=6, height = 8, units = "in")
+ggsave("Graphs/Demography/rmeans_raw_decline_1D.pdf",a, width=6, height = 8, units = "in")
 
-# Drought to recovery period only (FIGURE 3B)
+# Drought to recovery period only, raw values, unfaceted (FIGURE 3B)
 r_long_late <- r_long %>% filter(time!="pre") %>% droplevels()
 level_order_post = c("drought", "recovery")
 
@@ -198,17 +191,17 @@ b <- ggplot(r_long_late, aes(x=factor(time, level=level_order_post), y=mean_r, g
   guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
          fill  = guide_legend(reverse = TRUE))
 b
-ggsave("Graphs/Demography/rmeans_recovery_3B.pdf",b, width=6, height = 8, units = "in")
+ggsave("Graphs/Demography/rmeans_raw_recovery_3B.pdf",b, width=6, height = 8, units = "in")
 
 
 #*******************************************************************************
-### 3. Expressing changes normalized to starting lambda per reviewer 2
+### 3. Expressing changes normalized to starting lambdas
 #*******************************************************************************
 
 r_means_norm <- r_means %>% 
   mutate(delta.r.drought.norm = (mean.r.drought-mean.r.pre)/abs(mean.r.pre),
-#         delta.r.recovery.norm = (mean.r.recovery-mean.r.drought)/abs(mean.r.drought),
-         delta.r.recovery.norm = (mean.r.recovery-mean.r.drought)/abs(mean.r.pre),
+         delta.r.recovery.norm = (mean.r.recovery-mean.r.drought)/abs(mean.r.drought), #this normalizes recovery values to where they started during drought
+         delta.r.recovery.norm2 = (mean.r.recovery-mean.r.drought)/abs(mean.r.pre), #this normalizes recovery values to pre-drought values
          rel.start = mean.r.pre/mean.r.pre)
 write_csv(r_means_norm, "data/demography data/site_r_means.csv")
 
@@ -230,10 +223,10 @@ colours_in<-r_means_norm_long_drought %>%
 
 colours_in_to_plot<-unique(colours_in) #%>% filter(Lat.Color!="#FDB567") #remove this population because it doesn't have drought r value
 
-level_order_all = c("rel.start", "delta.r.drought.norm", "delta.r.recovery.norm")
+level_order_all = c("rel.start", "delta.r.drought.norm2", "delta.r.recovery.norm")
 dodge <- position_dodge(width=0.2)
 
-# normalized trajectories (all relative to starting lambda pre-drought) = attempt at normalized U-shape
+# Normalized trajectories (all relative to starting lambda pre-drought) 
 e <- ggplot(filter(r_means_norm_long, Site!="South Fork Middle Fork Tule"), aes(x=factor(time, level=level_order_all), y=mean_r_norm, group=Latitude, fill=as.factor(Latitude))) +
   facet_wrap(~Latitude, scale="free")+
   geom_point(shape=21, size=3, position=dodge) +

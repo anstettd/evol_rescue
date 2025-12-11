@@ -39,7 +39,7 @@ dat <- dat %>% mutate(r = log(lambda+0.01)) #adding small value lambdas of 0 don
 
 
 #*******************************************************************************
-### 3A. Calculate geometric mean population growth rate BEFORE DROUGHT for each site
+### 2A. Calculate geometric mean population growth rate BEFORE DROUGHT for each site
 # Before drought = 2010-11, 2011-12 transitions
 #*******************************************************************************
 
@@ -53,7 +53,7 @@ dat.mean.pre <- dat %>%
 hist(dat.mean.pre$mean.r.pre) # better 
 
 #*******************************************************************************
-### 3B. Calculate mean lambda DURING CORE DROUGHT for each site 
+### 2B. Calculate mean lambda DURING CORE DROUGHT for each site 
 # Core drought = 2012-13, 2013-14, 2014-15 transitions
 #*******************************************************************************
 
@@ -66,7 +66,7 @@ dat.mean.drought <- dat %>%
 hist(dat.mean.drought$mean.r.drought) #left-skewed
 
 #*******************************************************************************
-### 3C. Calculate mean lambda DURING POST-DROUGHT for each site
+### 2C. Calculate mean lambda DURING POST-DROUGHT for each site
 # Post drought = 2015-16, 2016-17, 2017-18 transitions
 #*******************************************************************************
 
@@ -91,7 +91,7 @@ write.csv(mean.lambda,"data/demography data/siteYear.lambda_responses_2010-2019.
 
 
 #*******************************************************************************
-### 4. Compare population growth rates during different periods
+### 3. Compare population growth rates during different periods
 
 #*******************************************************************************
 

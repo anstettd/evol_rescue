@@ -69,26 +69,20 @@ f.robftest(rob.mod_pi_all, var="pi_all_snps") #p=0.8606
 
 ### Graphs of lambda recovery vs genetic diversity
 
-## CLIMATE SNP
-#pi_pop_graph <- pi_pop #drop_na(pi_pop)
+## CLIMATE SNP (FIG 3D)
 pi_pop_graph$Lat.Color<-as.factor(pi_pop_graph$Lat.Color)
 pi_pop_graph$Lat.Color<-factor(pi_pop_graph$Lat.Color,levels=pi_pop_graph$Lat.Color)
-#pi_pop_graph_cull1 <- drop_na(pi_pop_cull1)
-#pi_pop_graph_cull1$Lat.Color<-as.factor(pi_pop_graph_cull1$Lat.Color)
-#pi_pop_graph_cull1$Lat.Color<-factor(pi_pop_graph_cull1$Lat.Color,levels=pi_pop_graph_cull1$Lat.Color)
 
-#Depicting ordinary regression with and without outliers & robust regression
+#Depicting ordinary regression with and without robust regression
 ggplot(pi_pop_graph, aes(x=pi_snp_set, y=mean.r.recovery)) +
   geom_smooth(method=lm,color="black", size=1.8, linetype="dashed", fill="gray75")+
   geom_smooth(method=MASS::rlm, color="black", size=1.8, fill="grey50") +
-  #geom_smooth(data=pi_pop_graph_cull1, aes(x=pi_snp_set, y=log(mean.lambda.recovery+0.5)), method=lm, color="black", size=1.8, linetype="longdash", fill="grey35") +
   geom_point(aes(fill=Lat.Color), shape=21, size =6)+
   geom_hline(yintercept = 0, linetype = "dotted", color = "black", size = 0.7) +
   scale_y_continuous(name="Mean Pop. Growth after Drought")+
   #, limits=c(-0.3,2.5),breaks=seq(0,2.5,0.5))+
   scale_x_continuous(name="Pi (Climate SNP)")+
   #, limits=c(0.2,0.35), breaks=seq(0.1,0.35,0.05)) +  
-  #scale_fill_manual(name = "Latitude (°N)",labels=round(pi_pop_graph$Latitude,1), values=as.character(pi_pop_graph$Lat.Color)) +
   scale_fill_manual(values=as.character(pi_pop_graph$Lat.Color), 
                     labels = unique(pi_pop_graph$Paper_ID) ) +
   theme_classic() + theme(
@@ -106,23 +100,18 @@ ggplot(pi_pop_graph, aes(x=pi_snp_set, y=mean.r.recovery)) +
 ggsave("Graphs/Demography_2/06_pi_demography_snpset_all.pdf",width=8, height = 6, units = "in")
 
 
-## GENOME SNP
-#pi_pop_graph_cull2 <- drop_na(pi_pop_cull1)
-#pi_pop_graph_cull2$Lat.Color<-as.factor(pi_pop_graph_cull2$Lat.Color)
-#pi_pop_graph_cull2$Lat.Color<-factor(pi_pop_graph_cull2$Lat.Color,levels=pi_pop_graph_cull2$Lat.Color)
+## GENOME SNP (FIG 3E)
 
-#Depicting ordinary regression with and without outliers & robust regression
+#Depicting ordinary regression with and without robust regression
 ggplot(pi_pop_graph, aes(x=pi_all_snps, y=mean.r.recovery)) +
   geom_smooth(method=lm,color="black", size=1.8, linetype="dashed", fill="gray75")+
   geom_smooth(method=MASS::rlm, color="black", size=1.8, fill="grey50") +
-  #geom_smooth(data=pi_pop_graph_cull2, aes(x=pi_all_snps, y=log(mean.lambda.recovery+0.5)), method=lm, color="black", size=1.8, linetype="longdash", fill="grey35") +
   geom_point(aes(fill=Lat.Color), shape=21, size =6)+
   geom_hline(yintercept = 0, linetype = "dotted", color = "black", size = 0.7) +
   scale_y_continuous(name="Mean Pop. Growth after Drought")+
   #, limits=c(-0.3,2.5),breaks=seq(0,2.5,0.5))+
   scale_x_continuous(name="Pi (All SNP)")+
   #, limits=c(0.2,0.35), breaks=seq(0.1,0.35,0.05)) +  
-  #scale_fill_manual(name = "Latitude (°N)",labels=round(pi_pop_graph$Latitude,1), values=as.character(pi_pop_graph$Lat.Color)) +
   scale_fill_manual(values=as.character(pi_pop_graph$Lat.Color), 
                     labels = unique(pi_pop_graph$Paper_ID) ) +
   theme_classic() + theme(
@@ -137,6 +126,4 @@ ggplot(pi_pop_graph, aes(x=pi_all_snps, y=mean.r.recovery)) +
   guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
          fill  = guide_legend(reverse = TRUE))
 ggsave("Graphs/Demography_2/07_pi_demography_global_all.pdf",width=8, height = 6, units = "in")
-
-
 

@@ -200,8 +200,7 @@ ggsave("Graphs/Demography/rmeans_raw_recovery_3B.pdf",b, width=6, height = 8, un
 
 r_means_norm <- r_means %>% 
   mutate(delta.r.drought.norm = (mean.r.drought-mean.r.pre)/abs(mean.r.pre),
-         delta.r.recovery.norm = (mean.r.recovery-mean.r.drought)/abs(mean.r.drought), #this normalizes recovery values to where they started during drought
-         delta.r.recovery.norm2 = (mean.r.recovery-mean.r.drought)/abs(mean.r.pre), #this normalizes recovery values to pre-drought values
+         delta.r.recovery.norm = (mean.r.recovery-mean.r.drought)/abs(mean.r.drought), 
          rel.start = mean.r.pre/mean.r.pre)
 write_csv(r_means_norm, "data/demography data/site_r_means.csv")
 
@@ -223,11 +222,36 @@ colours_in<-r_means_norm_long_drought %>%
 
 colours_in_to_plot<-unique(colours_in) #%>% filter(Lat.Color!="#FDB567") #remove this population because it doesn't have drought r value
 
-level_order_all = c("rel.start", "delta.r.drought.norm2", "delta.r.recovery.norm")
+level_order_all = c("rel.start", "delta.r.drought.norm", "delta.r.recovery.norm")
 dodge <- position_dodge(width=0.2)
 
-# Normalized trajectories (all relative to starting lambda pre-drought) 
-e <- ggplot(filter(r_means_norm_long, Site!="South Fork Middle Fork Tule"), aes(x=factor(time, level=level_order_all), y=mean_r_norm, group=Latitude, fill=as.factor(Latitude))) +
+# Normalized trajectories (all relative to starting lambda pre-drought), unfaceted  
+c <- ggplot(filter(r_means_norm_long, Site!="South Fork Middle Fork Tule"), aes(x=factor(time, level=level_order_all), y=mean_r_norm, group=Latitude, fill=as.factor(Latitude))) +
+  geom_point(shape=21, size=3, position=dodge) +
+  #geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
+  geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
+  scale_fill_manual(values=colours_in_to_plot$Lat.Color, 
+                    labels = unique(r_means_norm_long$Paper_ID) ) +
+  scale_color_manual(values=colours_in_to_plot$Lat.Color, 
+                     labels = unique(r_means_norm_long$Paper_ID )) +
+  scale_y_continuous(name="Normalized r")+ 
+  scale_x_discrete(name="Time Period", labels=c("Pre", "Drght", "Recov")) + 
+  geom_hline(yintercept=1) +
+  theme_classic() + theme(
+    axis.text.x = element_text(face="bold"),
+    axis.text.y = element_text(size=11, face="bold"),
+    axis.title.x = element_text(color="black", size=20, vjust=0.5, face="bold"),
+    axis.title.y = element_text(color="black", size=20,vjust=2, face="bold", hjust=0.5),
+    strip.background=element_blank(), 
+    strip.text.x=element_blank(),
+    legend.title=element_blank())+
+  guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
+         fill  = guide_legend(reverse = TRUE))
+c
+ggsave("Graphs/Demography/rmeans_norm_decline_recovery_unfaceted.pdf",width=5, height=4, units="in")
+
+# Normalized trajectories (all relative to starting lambda pre-drought), faceted by population 
+c <- ggplot(filter(r_means_norm_long, Site!="South Fork Middle Fork Tule"), aes(x=factor(time, level=level_order_all), y=mean_r_norm, group=Latitude, fill=as.factor(Latitude))) +
   facet_wrap(~Latitude, scale="free")+
   geom_point(shape=21, size=3, position=dodge) +
   #geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
@@ -249,80 +273,8 @@ e <- ggplot(filter(r_means_norm_long, Site!="South Fork Middle Fork Tule"), aes(
     legend.title=element_blank())+
   guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
          fill  = guide_legend(reverse = TRUE))
-e
-ggsave("Graphs/Demography/r_U_norm_faceted.pdf",width=5, height=4, units="in")
-
-r_means_norm_long <- r_means_norm_long %>% 
-  mutate(time_num = ifelse(time=="delta.r.drought.norm", 2, ifelse(time=="delta.r.recovery.norm", 3, 1)))
-
-U_mod_norm_lin <- lm(mean_r_norm ~ time_num, data=r_means_norm_long)
-summary(U_mod_lin)
-U_mod_norm_quad <- lm(mean_r_norm ~ poly(time_num,2), data=r_means_norm_long)
-summary(U_mod_quad)
-AIC(U_mod_norm_lin, U_mod_norm_quad)
-
-#normalized decline during drought (new Fig S1D)
-c <- ggplot(r_means_norm_long_drought, aes(x=factor(time, level=level_order_drought), y=mean_r_norm, group=Latitude, fill=as.factor(Latitude))) +
-  geom_point(shape=21, size=3, position=dodge) +
-  #geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
-  geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
-  scale_fill_manual(values=colours_in_to_plot$Lat.Color, 
-                    labels = unique(r_means_norm_long_drought$Paper_ID) ) +
-  scale_color_manual(values=colours_in_to_plot$Lat.Color, 
-                     labels = unique(r_means_norm_long_drought$Paper_ID )) +
-  scale_y_continuous(name="Normalized r")+ 
-  scale_x_discrete(name="Time Period", labels=c("Pre-drought", "Drought")) + 
-  geom_hline(yintercept=1) +
-  theme_classic() + theme(
-    axis.text.x = element_text(face="bold"),
-    axis.text.y = element_text(size=11, face="bold"),
-    axis.title.x = element_text(color="black", size=20, vjust=0.5, face="bold"),
-    axis.title.y = element_text(color="black", size=20,vjust=2, face="bold", hjust=0.5),
-    strip.background=element_blank(), 
-    strip.text.x=element_blank(),
-    legend.title=element_blank())+
-  guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
-         fill  = guide_legend(reverse = TRUE))
 c
-ggsave("Graphs/Demography/r_drought_norm.pdf",width=5, height=4, units="in")
+ggsave("Graphs/Demography/rmeans_norm_decline_recovery_faceted.pdf",width=5, height=4, units="in")
 
 
-#############################################################################################################
 
-r_means_norm_long_recovery <- r_means_norm_long %>% filter(time!="delta.r.drought.norm") %>% droplevels()
-level_order_drought = c("rel.start", "delta.r.recovery.norm")
-dodge <- position_dodge(width=0.2)
-
-colours_in<-r_means_norm_long_recovery %>% 
-  dplyr::select(Latitude, Lat.Color) 
-
-colours_in_to_plot<-unique(colours_in) #%>% filter(Lat.Color!="#FDB567") #remove this population because it doesn't have drought r value
-
-d <- ggplot(r_means_norm_long_recovery, aes(x=factor(time, level=level_order_drought), y=mean_r_norm, group=Latitude, fill=as.factor(Latitude))) +
-  geom_point(shape=21, size=3, position=dodge) +
-  #geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
-  geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
-  scale_fill_manual(values=colours_in_to_plot$Lat.Color, 
-                    labels = unique(r_means_norm_long_recovery$Paper_ID) ) +
-  scale_color_manual(values=colours_in_to_plot$Lat.Color, 
-                     labels = unique(r_means_norm_long_recovery$Paper_ID )) +
-  #scale_fill_manual(name = "Latitude (°N)",labels=round(r_means_norm_long_recovery$Latitude,1),
-  #                  values=as.character(r_means_norm_long_recovery$Lat.Color)) +
-  scale_y_continuous(name="Normalized r")+ 
-  scale_x_discrete(name="Time Period", labels=c("Drought", "Recovery")) + 
-  geom_hline(yintercept=1) +
-  theme_classic() + theme(
-    axis.text.x = element_text(face="bold"),
-    axis.text.y = element_text(size=11, face="bold"),
-    axis.title.x = element_text(color="black", size=20, vjust=0.5, face="bold"),
-    axis.title.y = element_text(color="black", size=20,vjust=2, face="bold", hjust=0.5),
-    strip.background=element_blank(), 
-    strip.text.x=element_blank(),
-    legend.title=element_blank())+
-  guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
-         fill  = guide_legend(reverse = TRUE))
-d
-
-# New Fig S1, option 2
-plot_grid(a, b, c, d, labels = c("A", "B", "C", "D"), label_size = 16,nrow=2)
-ggsave("Graphs/Demography/r_means_4panel.pdf",width=10, height=10, units="in")

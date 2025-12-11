@@ -198,7 +198,7 @@ ggsave("Graphs/Demography/rmeans_raw_recovery_3B.pdf",b, width=6, height = 8, un
 
 r_means_norm <- r_means %>% 
   mutate(delta.r.drought.norm = (mean.r.drought-mean.r.pre)/abs(mean.r.pre),
-         delta.r.recovery.norm = (mean.r.recovery-mean.r.drought)/abs(mean.r.drought), 
+         delta.r.recovery.norm = (mean.r.recovery-mean.r.pre)/abs(mean.r.pre), 
          rel.start = mean.r.pre/mean.r.pre)
 write_csv(r_means_norm, "data/demography data/site_r_means.csv")
 

@@ -116,19 +116,35 @@ wilcox.test(x=r_means_cull$mean.r.recovery, y=r_means_cull$mean.r.drought, paire
 
 
 # Statistics for U-shape
-# raw values
-r_long <- r_long %>% mutate(time_num = ifelse(time=="pre", 1, ifelse(time=="drought", 2, 3)))
 
-U_mod_raw_lin <- lm(mean_r ~ time_num, data=r_long)
-U_mod_raw_quad <- lm(mean_r ~ poly(time_num,2), data=r_long)
+# raw population growth values
+
+# create long frame
+r_means_long <- r_means %>% 
+  pivot_longer(cols=mean.r.pre:mean.r.recovery, names_to="time", values_to="mean_r")
+r_means_long$time <- gsub("mean.r.", "", r_means_long$time)
+
+# make time numeric for regression
+r_means_long <- r_means_long %>% mutate(time_num=ifelse(time=="pre",1,ifelse(time=="drought",2,3)))
+
+U_mod_raw_lin <- lm(mean_r ~ time_num, data=r_means_long)
+U_mod_raw_quad <- lm(mean_r ~ poly(time_num,2), data=r_means_long)
 AIC(U_mod_raw_lin, U_mod_raw_quad)
 
-#normalized values
+# normalized values
+r_means_norm <- r_means %>% 
+  mutate(delta.r.drought.norm = (mean.r.drought-mean.r.pre)/abs(mean.r.pre),
+         delta.r.recovery.norm = (mean.r.recovery-mean.r.pre)/abs(mean.r.pre), 
+         rel.start = mean.r.pre/mean.r.pre)
+
+r_means_norm_long <- r_means_norm %>% 
+  pivot_longer(cols=delta.r.drought.norm:rel.start, names_to="time", values_to="mean_r_norm")
+
 r_means_norm_long <- r_means_norm_long %>% 
   mutate(time_num = ifelse(time=="delta.r.drought.norm", 2, ifelse(time=="delta.r.recovery.norm", 3, 1)))
 
 U_mod_norm_lin <- lm(mean_r_norm ~ time_num, data=r_means_norm_long)
-summary(U_mod_lin)
+summary(U_mod_norm_lin)
 U_mod_norm_quad <- lm(mean_r_norm ~ poly(time_num,2), data=r_means_norm_long)
-summary(U_mod_quad)
+summary(U_mod_norm_quad)
 AIC(U_mod_norm_lin, U_mod_norm_quad)

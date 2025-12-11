@@ -165,7 +165,7 @@ a <- ggplot(r_long_early, aes(x=factor(time, level=level_order_pre), y=mean_r, g
     guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
        fill  = guide_legend(reverse = TRUE))
 a
-ggsave("Graphs/Demography/01c_decline.pdf",a, width=6, height = 8, units = "in")
+ggsave("Graphs/Demography/rmeans_decline.pdf",a, width=6, height = 8, units = "in")
 
 # Drought to recovery period only
 r_long_late <- r_long %>% filter(time!="pre") %>% droplevels()
@@ -198,36 +198,7 @@ b <- ggplot(r_long_late, aes(x=factor(time, level=level_order_post), y=mean_r, g
   guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
          fill  = guide_legend(reverse = TRUE))
 b
-ggsave("Graphs/Demography/01d_recovery.pdf",b, width=6, height = 8, units = "in")
-
-
-# Sensitivity test: remove 3 extirpated populations
-r_long_late_cull <- filter(r_long_late, mean_r>-2)
-
-colours_in<-r_long_late_cull %>% 
-  dplyr::select(Latitude, Lat.Color) 
-
-colours_in_to_plot<-unique(colours_in) #%>% filter(Lat.Color!="#FDB567") #remove this population because it doesn't have drought r value
-
-ggplot(r_long_late_cull, aes(x=factor(time, level=level_order_post), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
-  geom_point(shape=21, size=3, position=dodge) +
-  geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
-  geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
-  scale_y_continuous(name="Mean r")+ 
-  scale_x_discrete(name="Time Period", labels=c("Drought", "Recovery")) + 
-  scale_color_manual(values=colours_in_to_plot$Lat.Color, 
-                     labels=round(colours_in_to_plot$Latitude,1),aesthetics=c("color", "fill")) +
-  geom_hline(yintercept=0) +
-  theme_classic() + theme(
-    axis.text.x = element_text(face="bold"),
-    axis.text.y = element_text(size=11,face="bold"),
-    axis.title.x = element_text(color="black", size=20, vjust=0.5, face="bold"),
-    axis.title.y = element_text(color="black", size=20, vjust=2, face="bold", hjust=0.5),
-    strip.background = element_blank(), 
-    strip.text.x = element_blank(),
-    legend.title = element_blank()) +
-  guides(color = guide_legend(override.aes = list(linetype = 0)))
-ggsave("Graphs/Demography/01e_recovery_cull.pdf",width=14, height = 8, units = "in")
+ggsave("Graphs/Demography/rmeans_recovery.pdf",b, width=6, height = 8, units = "in")
 
 
 #*******************************************************************************

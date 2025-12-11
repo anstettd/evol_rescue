@@ -26,33 +26,8 @@ for (i in 1:length(packages_needed)){
 
 
 #*******************************************************************************
-### 1. Read in lambda estimates for each site and year 
+### 1. Read in lambda estimates for each time period 
 #*******************************************************************************
-dat <- read.csv("data/demography data/siteYear.lambda_2010-2019.csv") %>% 
-  mutate(Site.Name=paste(Latitude, Site, sep="_")) %>% 
-  mutate(r = log(lambda+0.01)) %>%  #add small value so lambdas=0 doesn't turn to NA)
-  filter(Year!=2018) %>% 
-  filter(Site!="Mill Creek")
-
-# add color ramp column
-color <- read_csv("data/genomic_data/pop_meta_data.csv") %>% 
-  dplyr::select(Site, Lat.Color) %>% 
-  unique()
-
-dat <- left_join(dat, color)
-
-dat_pre <- dat %>% filter(Year<2012)
-dat_drought <- dat %>% filter(between(Year,2012,2014))
-dat_recovery <- dat %>% filter(between(Year,2015,2017))
-dat_post <- dat %>% filter(Year>2017)
-dat_decline <- dat %>% filter(Year<2015)
-
-
-
-#*******************************************************************************
-### 2. Visualize mean estimates over each period for all sites
-#*******************************************************************************
-
 r_means <- read.csv("data/demography data/siteYear.lambda_responses_2010-2019.csv") %>% 
   dplyr::select(Site,Paper_ID,Latitude,Longitude,Lat.Color,mean.r.pre,mean.r.drought,mean.r.recovery) %>%  
   arrange(Latitude)
@@ -77,16 +52,19 @@ r_long <- left_join(r_means_long, r_se_long) %>%
 # set level orders to reflect time
 level_order_all = c("pre", "drought", "recovery")
 
-# all three time periods (alternative Fig S1, option 1)
 dodge <- position_dodge(width=0.2)
-
 
 colours_in<-r_long %>% 
   dplyr::select(Latitude, Lat.Color) 
 
 colours_in_to_plot<-unique(colours_in) #%>% filter(Lat.Color=="#FDB567") #remove this population because it doesn't have drought r value
 
-#r_long_test<-r_long %>% filter(Lat.Color=="#FDB567")
+
+#*******************************************************************************
+### 2. Visualize mean estimates over each period for all sites
+#*******************************************************************************
+
+# all three time periods (alternative Fig S1, option 1)
 ggplot(r_long, aes(x=factor(time, level=level_order_all), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
   facet_wrap(~Latitude, scale="free") +
   geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +

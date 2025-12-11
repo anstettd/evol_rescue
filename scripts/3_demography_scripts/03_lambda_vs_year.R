@@ -37,28 +37,6 @@ hist(log(dat$lambda)) #much better
 # express population growth as intrinsic rate of increase (log lambda)
 dat <- dat %>% mutate(r = log(lambda+0.01)) #adding small value lambdas of 0 don't turn to NA
 
-#*******************************************************************************
-### 2. Visualize estimates over time for each site
-#*******************************************************************************
-
-ggplot(dat, aes(x=Year, y=r)) + 
-  geom_point() +
-  geom_smooth(data=filter(dat, Year<2015), method="lm", se=FALSE, col="red") +
-  geom_smooth(data=filter(dat, Year>2014), method="lm", se=FALSE, col="blue") +
-  ylab("Intrinsic rate of increase") +
-  #ylim(0,2) +
-  geom_hline(yintercept=0, linetype="dotted") +
-  facet_wrap(~Site, scale="free", nrow=3) +
-  theme_classic() #+
-  #theme(strip.background = element_blank(), strip.text.x = element_blank(),
-   #     legend.title = element_blank())
-
-# Note: some sites' slopes (e.g., Buck Meadows, Mill) are affected by 2015-16, which had very high recruitment and we assume indicated relatively early recovery. This is part of the rationale for calculating decline only until 2014-15.
-
-# Note: more generally, slopes are often pulled up or down by single years with extremely high lambdas. High lambda values are dramatically higher with addition of 2016-2019 data and its effects on vital rate model selection and model fits
-
-# Note: Canton, NFMF Tule, SFMF Tule, & Redwood have only one annual transition estimate during drought recovery (because of fire and flood closures that prevented site access in 2016 or 2017)
-
 
 #*******************************************************************************
 ### 3A. Calculate geometric mean population growth rate BEFORE DROUGHT for each site

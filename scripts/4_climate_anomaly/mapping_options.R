@@ -94,7 +94,7 @@ save_plot(filename = "Graphs/Maps/baseline_map_1B.png",
           plot = map_demo,
           bg = "transparent", 
           base_width = 5, base_height = 8)
-save_plot(filename = "Graphs/Maps/demo_map.pdf",
+save_plot(filename = "Graphs/Maps/baseline_map.pdf",
           plot = map_demo,
           bg = "transparent", 
           base_width = 5, base_height = 8)

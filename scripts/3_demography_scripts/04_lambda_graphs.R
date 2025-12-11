@@ -91,7 +91,7 @@ ggplot(r_long, aes(x=factor(time, level=level_order_all), y=mean_r, group=Latitu
     legend.title=element_blank())+
   guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
     fill  = guide_legend(reverse = TRUE))
-ggsave("Graphs/Demography/01b_decline_recovery_rmeans_unfaceted.pdf",width=8, height = 6.5, units = "in")
+ggsave("Graphs/Demography/rmeans_decline_recovery_unfaceted.pdf",width=8, height = 6.5, units = "in")
 
 # All three time periods on same graph (Fig S1, option 1), faceted by population
 ggplot(r_long, aes(x=factor(time, level=level_order_all), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
@@ -120,7 +120,7 @@ ggplot(r_long, aes(x=factor(time, level=level_order_all), y=mean_r, group=Latitu
     legend.title=element_blank())+
   guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
          fill  = guide_legend(reverse = TRUE))
-ggsave("Graphs/Demography/01b_decline_recovery_rmeans_faceted.pdf",width=8, height = 6.5, units = "in")
+ggsave("Graphs/Demography/rmeans_decline_recovery_faceted.pdf",width=8, height = 6.5, units = "in")
 
 # Statistics for U-shape
 r_long <- r_long %>% mutate(time_num = ifelse(time=="pre", 1, ifelse(time=="drought", 2, 3)))

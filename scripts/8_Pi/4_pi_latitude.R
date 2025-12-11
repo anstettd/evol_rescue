@@ -3,7 +3,7 @@
 ## Author Daniel Anstett
 ## 
 ## 
-## Last Modified Jan 20, 2023
+## Last Modified 2025 12 11
 ###################################################################################
 
 # Remove objects and clear workspace
@@ -76,7 +76,7 @@ ggplot(pi_all_pop, aes(x=Lat, y=pi_snp_set)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
-ggsave("Graphs/Pi_latitude/1_lat_pi_snp_set.pdf",width=11, height = 5.5, units = "in")
+ggsave("Graphs/Pi_latitude/1_lat_pi_snp_set_S5C.pdf",width=11, height = 5.5, units = "in")
 
 
 #Pi (Genome-wide) vs. Latitude
@@ -98,10 +98,10 @@ ggplot(pi_all_pop, aes(x=Lat, y=pi_all_snps)) +
     legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
-ggsave("Graphs/Pi_latitude/2_lat_pi_global.pdf",width=11, height = 5.5, units = "in")
+ggsave("Graphs/Pi_latitude/2_lat_pi_global_S5D.pdf",width=11, height = 5.5, units = "in")
 
 
-#Adaptive vs neutral Pi
+#Adaptive vs neutral Pi (not shown in manscript)
 ggplot(pi_all_pop, aes(x = pi_all_snps, y = pi_snp_set)) + 
   geom_point(aes(shape=Type), size=4) +
   stat_smooth(method = lm, color = "black", aes(group=1)) +

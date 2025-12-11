@@ -79,8 +79,7 @@ ggplot(pi_pop_graph, aes(x=pi_snp_set, y=mean.r.recovery)) +
   geom_smooth(method=MASS::rlm, color="black", size=1.8, fill="grey50") +
   geom_point(aes(fill=Lat.Color), shape=21, size =6)+
   geom_hline(yintercept = 0, linetype = "dotted", color = "black", size = 0.7) +
-  scale_y_continuous(name="Mean Pop. Growth after Drought")+
-  #, limits=c(-0.3,2.5),breaks=seq(0,2.5,0.5))+
+  scale_y_continuous(name="Mean Pop. Growth after Drought", limits=c(-5,3), breaks=seq(-4,2,2))+
   scale_x_continuous(name="Pi (Climate SNP)")+
   #, limits=c(0.2,0.35), breaks=seq(0.1,0.35,0.05)) +  
   scale_fill_manual(values=as.character(pi_pop_graph$Lat.Color), 
@@ -97,7 +96,7 @@ ggplot(pi_pop_graph, aes(x=pi_snp_set, y=mean.r.recovery)) +
   guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
          fill  = guide_legend(reverse = TRUE))
 
-ggsave("Graphs/Demography_2/06_pi_demography_snpset_all.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Demography_Genomics/06_pi_demography_snpset_all.pdf",width=8, height = 6, units = "in")
 
 
 ## GENOME SNP (FIG 3E)
@@ -108,8 +107,7 @@ ggplot(pi_pop_graph, aes(x=pi_all_snps, y=mean.r.recovery)) +
   geom_smooth(method=MASS::rlm, color="black", size=1.8, fill="grey50") +
   geom_point(aes(fill=Lat.Color), shape=21, size =6)+
   geom_hline(yintercept = 0, linetype = "dotted", color = "black", size = 0.7) +
-  scale_y_continuous(name="Mean Pop. Growth after Drought")+
-  #, limits=c(-0.3,2.5),breaks=seq(0,2.5,0.5))+
+  scale_y_continuous(name="Mean Pop. Growth after Drought", limits=c(-5,3),breaks=seq(-4,2,2))+
   scale_x_continuous(name="Pi (All SNP)")+
   #, limits=c(0.2,0.35), breaks=seq(0.1,0.35,0.05)) +  
   scale_fill_manual(values=as.character(pi_pop_graph$Lat.Color), 
@@ -125,5 +123,5 @@ ggplot(pi_pop_graph, aes(x=pi_all_snps, y=mean.r.recovery)) +
     legend.key.height = unit(1.6, "lines"))+ # Reduce height
   guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
          fill  = guide_legend(reverse = TRUE))
-ggsave("Graphs/Demography_2/07_pi_demography_global_all.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Demography_Genomics/07_pi_demography_global_all.pdf",width=8, height = 6, units = "in")
 

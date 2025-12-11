@@ -130,7 +130,7 @@ U_mod_raw_quad <- lm(mean_r ~ poly(time_num,2), data=r_long)
 AIC(U_mod_raw_lin, U_mod_raw_quad)
 
 
-# Pre-drought to drought period only
+# Pre-drought to drought period only (FIGURE 1D)
 dodge <- position_dodge(width=0.2)
 r_long_early <- r_long %>% filter(time!="recovery") %>% droplevels()
 level_order_pre = c("pre", "drought")
@@ -165,9 +165,9 @@ a <- ggplot(r_long_early, aes(x=factor(time, level=level_order_pre), y=mean_r, g
     guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
        fill  = guide_legend(reverse = TRUE))
 a
-ggsave("Graphs/Demography/rmeans_decline.pdf",a, width=6, height = 8, units = "in")
+ggsave("Graphs/Demography/rmeans_decline_1D.pdf",a, width=6, height = 8, units = "in")
 
-# Drought to recovery period only
+# Drought to recovery period only (FIGURE 3B)
 r_long_late <- r_long %>% filter(time!="pre") %>% droplevels()
 level_order_post = c("drought", "recovery")
 
@@ -198,7 +198,7 @@ b <- ggplot(r_long_late, aes(x=factor(time, level=level_order_post), y=mean_r, g
   guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
          fill  = guide_legend(reverse = TRUE))
 b
-ggsave("Graphs/Demography/rmeans_recovery.pdf",b, width=6, height = 8, units = "in")
+ggsave("Graphs/Demography/rmeans_recovery_3B.pdf",b, width=6, height = 8, units = "in")
 
 
 #*******************************************************************************

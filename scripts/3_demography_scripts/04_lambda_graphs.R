@@ -64,12 +64,12 @@ colours_in_to_plot<-unique(colours_in) #%>% filter(Lat.Color=="#FDB567") #remove
 ### 2. Visualize mean estimates over each period for all sites
 #*******************************************************************************
 
-# all three time periods (alternative Fig S1, option 1)
+# All three time periods on same graph (Fig S1, option 1), unfaceted
 ggplot(r_long, aes(x=factor(time, level=level_order_all), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
-  facet_wrap(~Latitude, scale="free") +
+  #facet_wrap(~Latitude, scale="free") +
   geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
   geom_point(shape=21, size=3, position=dodge) +
-  #geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
+  geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
   scale_fill_manual(values=colours_in_to_plot$Lat.Color, 
                      labels = unique(r_long$Paper_ID) ) +
   scale_color_manual(values=colours_in_to_plot$Lat.Color, 
@@ -91,15 +91,46 @@ ggplot(r_long, aes(x=factor(time, level=level_order_all), y=mean_r, group=Latitu
     legend.title=element_blank())+
   guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
     fill  = guide_legend(reverse = TRUE))
+ggsave("Graphs/Demography/01b_decline_recovery_rmeans_unfaceted.pdf",width=8, height = 6.5, units = "in")
+
+# All three time periods on same graph (Fig S1, option 1), faceted by population
+ggplot(r_long, aes(x=factor(time, level=level_order_all), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
+  facet_wrap(~Latitude, scale="free") +
+  geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
+  geom_point(shape=21, size=3, position=dodge) +
+  geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
+  scale_fill_manual(values=colours_in_to_plot$Lat.Color, 
+                    labels = unique(r_long$Paper_ID) ) +
+  scale_color_manual(values=colours_in_to_plot$Lat.Color, 
+                     labels = unique(r_long$Paper_ID )) +
+  #scale_color_manual(values=unique(r_long$Lat.Color), aesthetics=c("color", "fill")) +
+  scale_y_continuous(name="Mean Population Growth Rate")+ 
+  scale_x_discrete(name="Time Period", labels=c("Pre", "Dro", "Rec")) + 
+  geom_hline(yintercept=0) +
+  theme_classic() + theme(
+    axis.text.x=element_text(size=16,face="bold"),
+    axis.text.y=element_text(size=16,face="bold"),
+    axis.title.x=element_text(color="black", size=20, vjust=0.5, face="bold"),
+    axis.title.y=element_text(color="black", size=20,vjust=2, face="bold", hjust=0.5),
+    strip.background=element_blank(), 
+    strip.text.x=element_blank(),
+    legend.text = element_text(size = 14),
+    legend.key.size = unit(2, "lines"),
+    legend.key.height = unit(1.6, "lines"), #Reduce height
+    legend.title=element_blank())+
+  guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
+         fill  = guide_legend(reverse = TRUE))
 ggsave("Graphs/Demography/01b_decline_recovery_rmeans_faceted.pdf",width=8, height = 6.5, units = "in")
 
+# Statistics for U-shape
 r_long <- r_long %>% mutate(time_num = ifelse(time=="pre", 1, ifelse(time=="drought", 2, 3)))
 
 U_mod_raw_lin <- lm(mean_r ~ time_num, data=r_long)
 U_mod_raw_quad <- lm(mean_r ~ poly(time_num,2), data=r_long)
 AIC(U_mod_raw_lin, U_mod_raw_quad)
 
-#Pre-drought to drought period
+
+# Pre-drought to drought period only
 dodge <- position_dodge(width=0.2)
 r_long_early <- r_long %>% filter(time!="recovery") %>% droplevels()
 level_order_pre = c("pre", "drought")
@@ -136,7 +167,7 @@ a <- ggplot(r_long_early, aes(x=factor(time, level=level_order_pre), y=mean_r, g
 a
 ggsave("Graphs/Demography/01c_decline.pdf",a, width=6, height = 8, units = "in")
 
-#Drought to recovery period
+# Drought to recovery period only
 r_long_late <- r_long %>% filter(time!="pre") %>% droplevels()
 level_order_post = c("drought", "recovery")
 
@@ -144,7 +175,6 @@ colours_in<-r_long_late %>%
   dplyr::select(Latitude, Lat.Color) 
 
 colours_in_to_plot<-unique(colours_in) #%>% filter(Lat.Color!="#FDB567") #remove this population because it doesn't have drought r value
-
 
 b <- ggplot(r_long_late, aes(x=factor(time, level=level_order_post), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
   geom_point(shape=21, size=4, position=dodge) +
@@ -171,15 +201,13 @@ b
 ggsave("Graphs/Demography/01d_recovery.pdf",b, width=6, height = 8, units = "in")
 
 
-# sensitivity test: remove 3 extirpated populations
+# Sensitivity test: remove 3 extirpated populations
 r_long_late_cull <- filter(r_long_late, mean_r>-2)
 
 colours_in<-r_long_late_cull %>% 
   dplyr::select(Latitude, Lat.Color) 
 
 colours_in_to_plot<-unique(colours_in) #%>% filter(Lat.Color!="#FDB567") #remove this population because it doesn't have drought r value
-
-
 
 ggplot(r_long_late_cull, aes(x=factor(time, level=level_order_post), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
   geom_point(shape=21, size=3, position=dodge) +

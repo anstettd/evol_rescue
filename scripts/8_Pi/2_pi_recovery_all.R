@@ -2,7 +2,7 @@
 #### PROJECT: Evolutionary rescue of Mimulus cardinalis populations during extreme drought
 #### PURPOSE OF THIS SCRIPT: Test whether lambda is predicted by genetic diversity (pi) 
 #### AUTHOR: Daniel Anstett and Amy Angert
-#### DATE LAST MODIFIED: 20250605
+#### DATE LAST MODIFIED: 20251211
 ###################################################################################
 
 # Remove objects and clear workspace
@@ -35,7 +35,7 @@ pi_pop_graph <- drop_na(pi_pop_graph)
 
 #Ordinary least squares regression
 mod_pi_snp <- lm(mean.r.recovery~pi_snp_set,data=pi_pop)
-summary(mod_pi_snp)
+summary(mod_pi_snp) #b=33.25, p=0.00475
 Anova(mod_pi_snp,type="III")
 qqnorm(resid(mod_pi_snp))
 qqline(resid(mod_pi_snp))
@@ -43,7 +43,7 @@ qqline(resid(mod_pi_snp))
 #Robust regression instead
 rob.mod_pi_snp <- rlm(pi_pop$mean.r.recovery~pi_snp_set,data=pi_pop)
 summary(rob.mod_pi_snp)
-f.robftest(rob.mod_pi_snp, var="pi_snp_set")
+f.robftest(rob.mod_pi_snp, var="pi_snp_set") #p=0.003963
 
 
 ###### GENOME-WIDE PI 
@@ -53,7 +53,7 @@ ggplot(pi_pop, aes(x=pi_all_snps, y=mean.r.recovery)) + geom_point()
 
 #Ordinary least squares regression
 mod_pi_all <- lm(mean.r.recovery~pi_all_snps,data=pi_pop)
-summary(mod_pi_all)
+summary(mod_pi_all) #b=-8.337, p=0.554
 Anova(mod_pi_all,type="III")
 qqnorm(resid(mod_pi_all))
 qqline(resid(mod_pi_all))
@@ -61,7 +61,7 @@ qqline(resid(mod_pi_all))
 #Robust regression instead
 rob.mod_pi_all <- rlm(pi_pop$mean.r.recovery~pi_all_snps,data=pi_pop)
 summary(rob.mod_pi_all)
-f.robftest(rob.mod_pi_all, var="pi_all_snps")
+f.robftest(rob.mod_pi_all, var="pi_all_snps") #p=0.8606
 
 
 

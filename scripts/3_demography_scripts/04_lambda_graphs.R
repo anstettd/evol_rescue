@@ -1,7 +1,7 @@
 #### PROJECT: Evolutionary rescue of Mimulus cardinalis populations during extreme drought
 #### PURPOSE OF THIS SCRIPT: Produce demography graphs for publication
 #### AUTHOR: Amy Angert & Daniel Anstett
-#### DATE LAST MODIFIED: 20250610
+#### DATE LAST MODIFIED: 20251211
 
 
 #*******************************************************************************
@@ -52,22 +52,7 @@ dat_decline <- dat %>% filter(Year<2015)
 ### 1. Visualize estimates over time for all sites (Fig S1)
 #*******************************************************************************
 
-#Decline & Recovery (Old Figure S1)
-ggplot(dat, aes(x=Year, y=r)) +
-  geom_point(data=filter(dat, Year<2012), col="grey") +
-  geom_point(data=filter(dat, between(Year,2012,2014)), col="red") +
-  geom_point(data=filter(dat, between(Year,2015,2017)), col="blue") +
-  geom_point(data=filter(dat, Year>2017), col="grey") +
-  scale_y_continuous(name="r")+ 
-  scale_x_continuous(name="Year", limits=c(2010,2017))+
-  geom_hline(yintercept=0, linetype="dotted") +
-  facet_wrap(~Site.Name, scale="free") + theme_classic() + theme(
-    axis.text.x=element_text(face="bold"),
-    axis.text.y=element_text(size=11, face="bold"),
-    axis.title.x=element_text(color="black", size=20, vjust=0.5, face="bold"),
-    axis.title.y=element_text(color="black", size=20,vjust=2, face="bold", hjust=0.5))
 
-ggsave("Graphs/Demography/01_decline_recovery.pdf",width=14, height = 8, units = "in")
 
 # Alternative depiction in same style as climate-year graphs
 r_spag_plot<-ggplot() + 

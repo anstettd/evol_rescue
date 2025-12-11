@@ -2,7 +2,7 @@
 #### PROJECT: Evolutionary rescue of Mimulus cardinalis populations during extreme drought
 #### PURPOSE OF THIS SCRIPT: Correlate population recovery with climate
 #### AUTHOR: Daniel Anstett and Amy Angert
-#### DATE LAST MODIFIED: 20250607
+#### DATE LAST MODIFIED: 20251211
 ###################################################################################
 
 # Remove objects and clear workspace
@@ -38,6 +38,7 @@ recovery.period <- demo_pop %>%
 
 recovery.period <- as.data.frame(recovery.period)
 
+# REGRESSIONS OF DEMOGRAPHIC RECOVERY ~ EACH CLIM ANOM
 recovery_clim_coeff <- data.frame()
 for (i in 2:9){
   recovery_clim_coeff[i-1,1] <- names(recovery.period[i])
@@ -57,10 +58,8 @@ names(recovery_clim_coeff) <- c("Var", "OLS_Slope", "OLS_P", "OLS_AdjR2", "RR_Sl
 write_csv(recovery_clim_coeff,"data/climate_data/recovery_clim_coeff_alldemo.csv") 
 
 
-
-
 ###################################################################################
-#Population recovery and climate anomalies 
+# VISUALIZE DEMOGRAPHIC RECOVERY ~ 2015-17 PRECIPITATION ANOMALY (FIG 3F) 
 
 demo_pop$Lat.Color<-as.factor(demo_pop$Lat.Color)
 demo_pop$Lat.Color<-factor(demo_pop$Lat.Color,levels=demo_pop$Lat.Color)
@@ -69,11 +68,10 @@ a <- ggplot(demo_pop, aes(x=MAP_1517, y=mean.r.recovery)) +
   geom_smooth(method=lm,color="black",size=1.25, linetype="dashed", fill="gray71")+
   geom_smooth(method=MASS::rlm,color="black",size=1.25,fill="gray40")+
   geom_point(aes(fill=demo_pop$Lat.Color), shape=21, size =6)+
-  geom_hline(yintercept = 1, linetype = "dotted", color = "black", size = 0.7) +
-  scale_y_continuous(name="Mean Pop. Growth after Drought")+#, limits=c(0,2.5), breaks=seq(0,2.5,0.5))+
+  geom_hline(yintercept = 0, linetype = "dotted", color = "black", size = 0.7) +
+  scale_y_continuous(name="Mean Pop. Growth after Drought", limits=c(-5,3),breaks=seq(-4,2,2))+
   scale_x_continuous(name="Annual Precipitation Anomaly (2015-2017)")+
   #,breaks=c(0.04,0.045,0.05,0.055,0.06))+
-  #scale_fill_manual(name = "Latitude (°N)",labels=round(demo_pop$Latitude,1), values=as.character(demo_pop$Lat.Color)) +
   scale_fill_manual(values=as.character(demo_pop$Lat.Color), 
                     labels = unique(demo_pop$Paper_ID) ) +
 #  scale_color_manual(values=demo_pop$Lat.Color, 
@@ -91,7 +89,7 @@ a <- ggplot(demo_pop, aes(x=MAP_1517, y=mean.r.recovery)) +
   guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
          fill  = guide_legend(reverse = TRUE))
 a
-ggsave("Graphs/Climate/2_recovery_r_MAP.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Climate/2_recovery_r_MAP_3F.pdf",width=8, height = 6, units = "in")
 
 
 

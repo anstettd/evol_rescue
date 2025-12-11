@@ -2,7 +2,7 @@
 #### PROJECT: Evolutionary rescue of Mimulus cardinalis populations during extreme drought
 #### PURPOSE OF THIS SCRIPT: Correlate lambda decline vs recovery as a quick check for density dependence
 #### AUTHOR: Daniel Anstett
-#### DATE LAST MODIFIED: 202500606
+#### DATE LAST MODIFIED: 20251211
 ###################################################################################
 
 # Remove objects and clear workspace

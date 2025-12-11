@@ -53,37 +53,8 @@ xmax <- bbox["xmax"] + 1
 ymin <- bbox["ymin"] - 1
 ymax <- bbox["ymax"] #+ 1
 
-# Map with numbers 
-card_map_focal_pops = ggplot(data=states_sf,fill="white",col="black",size=0.3) + 
-  geom_sf() +
-  geom_polygon(aes(x = long, y = lat, group = group), data=states,fill="white",col="black",size=0.2) +
-  theme_minimal() +
-  coord_sf(xlim = c(xmin,xmax), ylim = c(ymin+0.5,ymax), expand = FALSE) +
-  #geom_point(aes(x=Long,y=Lat),fill = df$Lat.Color, data=df,shape=21,size=4) +
-  #geom_text(aes(x = Long, y = Lat, label = Paper_ID, color = Lat.Color), data = df, size = 4,fontface = "bold")+
-  geom_text_repel(
-    aes(x = Long, y = Lat, label = Paper_ID, color = Lat.Color),
-    data = df,
-    size = 5,
-    force = 0.001,          # default is 1, try lowering to 0.5 or 0.3
-    max.overlaps = Inf,  # prevent dropping any labels
-    fontface = "bold"
-    ) +
-  scale_color_identity()+
-  #scale_fill_identity()+
-  labs(x="Longitude",y="Latitude") +
-  theme(axis.text=element_text(size=12),axis.title=element_text(size=16),
-        legend.position = "none",
-        legend.justification = c("right", "top"),
-        legend.box.just = "right",
-        legend.margin = margin(6, 6, 6, 6),
-        plot.title=element_text(hjust=0,size=18),
-        legend.title = element_blank()) 
 
-card_map_focal_pops
-
-
-#Use Labels instead
+# MAP OF 55 POPULATIONS
 map_demo = ggplot(data=states_sf,fill="white",col="black",size=0.3) + 
   geom_sf() +
   geom_polygon(aes(x = long, y = lat, group = group), data=states,fill="white",col="black",size=0.2) +
@@ -95,8 +66,7 @@ map_demo = ggplot(data=states_sf,fill="white",col="black",size=0.3) +
              shape = 21,
              color = "black",
              size = 4,
-             stroke = 1)+#,
-             #position = position_jitter(width = 0.2, height = 0.2))+
+             stroke = 1)+,
   
   # Labels next to points, repel to avoid overlap
   geom_text_repel(aes(x = Long, y = Lat, label = Paper_ID),
@@ -119,8 +89,8 @@ map_demo = ggplot(data=states_sf,fill="white",col="black",size=0.3) +
 map_demo
 
 
-# save genomics sampling map 
-save_plot(filename = "Graphs/Maps/demo_map.png",
+# save genomics sampling map (FIGURE 1B)
+save_plot(filename = "Graphs/Maps/baseline_map_1B.png",
           plot = map_demo,
           bg = "transparent", 
           base_width = 5, base_height = 8)

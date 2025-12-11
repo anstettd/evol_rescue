@@ -68,5 +68,5 @@ ggplot(demog_recovery, aes(x=mean.r.drought, y=mean.r.recovery)) +
     fill  = guide_legend(reverse = TRUE)
   )
 
-ggsave("Graphs/Demography/decline_vs_recovery_S9.pdf",width=8, height = 8, units = "in")
+ggsave("Graphs/Demography/decline_vs_recovery_S10.pdf",width=8, height = 8, units = "in")
  

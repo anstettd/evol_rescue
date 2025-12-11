@@ -131,15 +131,13 @@ level_order_pre = c("pre", "drought")
 colours_in<-r_long_early %>% 
   dplyr::select(Latitude, Lat.Color) 
 
-colours_in_to_plot<-unique(colours_in) #%>% filter(Lat.Color!="#FDB567") #remove this population because it doesn't have drought r value
+colours_in_to_plot<-unique(colours_in) 
 
 
 a <- ggplot(r_long_early, aes(x=factor(time, level=level_order_pre), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
   geom_point(shape=21, size=4, position=dodge) +
   geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
   geom_line(aes(colour=as.factor(Latitude)), position=dodge, size=1.5) +
-  #scale_color_manual(values=colours_in_to_plot$Lat.Color, 
-  #                   labels=round(colours_in_to_plot$Latitude,1),aesthetics=c("color", "fill")) +
   scale_fill_manual(values=colours_in_to_plot$Lat.Color, 
                     labels = unique(r_long_early$Paper_ID) ) +
   scale_color_manual(values=colours_in_to_plot$Lat.Color, 
@@ -167,7 +165,7 @@ level_order_post = c("drought", "recovery")
 colours_in<-r_long_late %>% 
   dplyr::select(Latitude, Lat.Color) 
 
-colours_in_to_plot<-unique(colours_in) #%>% filter(Lat.Color!="#FDB567") #remove this population because it doesn't have drought r value
+colours_in_to_plot<-unique(colours_in)
 
 b <- ggplot(r_long_late, aes(x=factor(time, level=level_order_post), y=mean_r, group=Latitude, fill=as.factor(Latitude))) +
   geom_point(shape=21, size=4, position=dodge) +
@@ -251,7 +249,7 @@ c
 ggsave("Graphs/Demography/rmeans_norm_decline_recovery_unfaceted.pdf",width=5, height=4, units="in")
 
 # Normalized trajectories (all relative to starting lambda pre-drought), faceted by population 
-c <- ggplot(filter(r_means_norm_long, Site!="South Fork Middle Fork Tule"), aes(x=factor(time, level=level_order_all), y=mean_r_norm, group=Latitude, fill=as.factor(Latitude))) +
+d <- ggplot(filter(r_means_norm_long, Site!="South Fork Middle Fork Tule"), aes(x=factor(time, level=level_order_all), y=mean_r_norm, group=Latitude, fill=as.factor(Latitude))) +
   facet_wrap(~Latitude, scale="free")+
   geom_point(shape=21, size=3, position=dodge) +
   #geom_errorbar(aes(ymin=ymin, ymax=ymax, colour=as.factor(Latitude)), width=0.1, position=dodge) +
@@ -273,7 +271,7 @@ c <- ggplot(filter(r_means_norm_long, Site!="South Fork Middle Fork Tule"), aes(
     legend.title=element_blank())+
   guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
          fill  = guide_legend(reverse = TRUE))
-c
+d
 ggsave("Graphs/Demography/rmeans_norm_decline_recovery_faceted.pdf",width=5, height=4, units="in")
 
 

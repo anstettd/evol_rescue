@@ -26,7 +26,7 @@ pi_raw <- read_csv("data/genomic_data/raw_pi_clump.csv")
 pi_pop <- left_join(demog_recovery, pi_raw, by=c("Paper_ID"="Site")) 
 
 ###################################################################################
-###### PI OF CLIMATE SNP
+###### STATISTICS FOR DEMOGRAPHIC RECOVERY ~ PI OF CLIMATE SNP
 
 #Visualize scatter plot
 ggplot(pi_pop, aes(x=pi_snp_set, y=mean.r.recovery)) + geom_point()
@@ -40,13 +40,13 @@ Anova(mod_pi_snp,type="III")
 qqnorm(resid(mod_pi_snp))
 qqline(resid(mod_pi_snp))
 
-#Robust regression instead
+#Robust regression 
 rob.mod_pi_snp <- rlm(pi_pop$mean.r.recovery~pi_snp_set,data=pi_pop)
 summary(rob.mod_pi_snp)
 f.robftest(rob.mod_pi_snp, var="pi_snp_set") #p=0.003963
 
 
-###### GENOME-WIDE PI 
+###### STATISTICS FOR DEMOGRAPHIC RECOVERY ~ GENOME-WIDE PI 
 
 #Visualize scatter plot
 ggplot(pi_pop, aes(x=pi_all_snps, y=mean.r.recovery)) + geom_point()
@@ -58,7 +58,7 @@ Anova(mod_pi_all,type="III")
 qqnorm(resid(mod_pi_all))
 qqline(resid(mod_pi_all))
 
-#Robust regression instead
+#Robust regression
 rob.mod_pi_all <- rlm(pi_pop$mean.r.recovery~pi_all_snps,data=pi_pop)
 summary(rob.mod_pi_all)
 f.robftest(rob.mod_pi_all, var="pi_all_snps") #p=0.8606
@@ -67,13 +67,13 @@ f.robftest(rob.mod_pi_all, var="pi_all_snps") #p=0.8606
 
 #####################################################################################
 
-### Graphs of lambda recovery vs genetic diversity
+### GRAPHS OF DEMOGRAPHIC RECOVERY ~ GENETIC DIVERSITY
 
-## CLIMATE SNP (FIG 3D)
+## RECOVERY ~ CLIMATE SNP (FIG 3D)
 pi_pop_graph$Lat.Color<-as.factor(pi_pop_graph$Lat.Color)
 pi_pop_graph$Lat.Color<-factor(pi_pop_graph$Lat.Color,levels=pi_pop_graph$Lat.Color)
 
-#Depicting ordinary regression with and without robust regression
+# Depicting ordinary and robust regression
 ggplot(pi_pop_graph, aes(x=pi_snp_set, y=mean.r.recovery)) +
   geom_smooth(method=lm,color="black", size=1.8, linetype="dashed", fill="gray75")+
   geom_smooth(method=MASS::rlm, color="black", size=1.8, fill="grey50") +
@@ -96,12 +96,12 @@ ggplot(pi_pop_graph, aes(x=pi_snp_set, y=mean.r.recovery)) +
   guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
          fill  = guide_legend(reverse = TRUE))
 
-ggsave("Graphs/Demography_Genomics/06_pi_demography_snpset_all.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Demography_Genomics/06_pi_demography_snpset_all_3D.pdf",width=8, height = 6, units = "in")
 
 
-## GENOME SNP (FIG 3E)
+## RECOVERY ~ GENOME SNP (FIG 3E)
 
-#Depicting ordinary regression with and without robust regression
+# Depicting ordinary and robust regression
 ggplot(pi_pop_graph, aes(x=pi_all_snps, y=mean.r.recovery)) +
   geom_smooth(method=lm,color="black", size=1.8, linetype="dashed", fill="gray75")+
   geom_smooth(method=MASS::rlm, color="black", size=1.8, fill="grey50") +
@@ -123,5 +123,5 @@ ggplot(pi_pop_graph, aes(x=pi_all_snps, y=mean.r.recovery)) +
     legend.key.height = unit(1.6, "lines"))+ # Reduce height
   guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
          fill  = guide_legend(reverse = TRUE))
-ggsave("Graphs/Demography_Genomics/07_pi_demography_global_all.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Demography_Genomics/07_pi_demography_global_all_3E.pdf",width=8, height = 6, units = "in")
 

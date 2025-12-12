@@ -1,7 +1,7 @@
 #### PROJECT: Evolutionary rescue of Mimulus cardinalis populations during extreme drought
 #### PURPOSE OF THIS SCRIPT: Calculate metrics of the rate of demographic decline during drought and rate of recovery after drought
 #### AUTHOR: Amy Angert
-#### DATE LAST MODIFIED: 20250608
+#### DATE LAST MODIFIED: 20251211
 
 
 #*******************************************************************************
@@ -34,34 +34,12 @@ dat <- read.csv("data/demography data/siteYear.lambda_2010-2019.csv") %>% dplyr:
 hist(dat$lambda) #extreme right skew
 hist(log(dat$lambda)) #much better
 
-# express as population growth as intrinsic rate of increase (log lambda)
+# express population growth as intrinsic rate of increase (log lambda)
 dat <- dat %>% mutate(r = log(lambda+0.01)) #adding small value lambdas of 0 don't turn to NA
 
-#*******************************************************************************
-### 2. Visualize estimates over time for each site
-#*******************************************************************************
-
-ggplot(dat, aes(x=Year, y=r)) + 
-  geom_point() +
-  geom_smooth(data=filter(dat, Year<2015), method="lm", se=FALSE, col="red") +
-  geom_smooth(data=filter(dat, Year>2014), method="lm", se=FALSE, col="blue") +
-  ylab("Intrinsic rate of increase") +
-  #ylim(0,2) +
-  geom_hline(yintercept=0, linetype="dotted") +
-  facet_wrap(~Site, scale="free", nrow=3) +
-  theme_classic() #+
-  #theme(strip.background = element_blank(), strip.text.x = element_blank(),
-   #     legend.title = element_blank())
-
-# Note: some sites' slopes (e.g., Buck Meadows, Mill) are affected by 2015-16, which had very high recruitment and we assume indicated relatively early recovery. This is part of the rationale for calculating decline only until 2014-15.
-
-# Note: more generally, slopes are often pulled up or down by single years with extremely high lambdas. High lambda values are dramatically higher with addition of 2016-2019 data and its effects on vital rate model selection and model fits
-
-# Note: Canton, NFMF Tule, SFMF Tule, & Redwood have only one annual transition estimate during drought recovery (because of fire and flood closures that prevented site access in 2016 or 2017)
-
 
 #*******************************************************************************
-### 3A. Calculate geometric mean population growth rate BEFORE DROUGHT for each site
+### 2A. Calculate geometric mean population growth rate BEFORE DROUGHT for each site
 # Before drought = 2010-11, 2011-12 transitions
 #*******************************************************************************
 
@@ -70,14 +48,12 @@ dat.mean.pre <- dat %>%
   filter(Year==2010|Year==2011) %>%
   na.omit() %>%
   dplyr::summarize(mean.r.pre = mean(r, na.rm=TRUE), #arithmetic mean of logs
-                   geomean.l.pre = exp(mean(log(lambda), na.rm=TRUE)),#geometric mean of unlogged values
                    sd.r.pre = sd(r, na.rm=TRUE),
                    se.r.pre = se(r, na.rm=TRUE)) 
 hist(dat.mean.pre$mean.r.pre) # better 
-hist(dat.mean.pre$geomean.l.pre) #long right tail
 
 #*******************************************************************************
-### 3B. Calculate mean lambda DURING CORE DROUGHT for each site 
+### 2B. Calculate mean lambda DURING CORE DROUGHT for each site 
 # Core drought = 2012-13, 2013-14, 2014-15 transitions
 #*******************************************************************************
 
@@ -85,14 +61,12 @@ dat.mean.drought <- dat %>%
   group_by(Latitude, Site) %>% 
   filter(Year==2012|Year==2013|Year==2014) %>% 
   dplyr::summarize(mean.r.drought = mean(r, na.rm=TRUE), 
-                   geomean.l.drought = exp(mean(log(lambda), na.rm=TRUE)),
                    sd.r.drought = sd(r, na.rm=TRUE),
                    se.r.drought = se(r, na.rm=TRUE)) 
 hist(dat.mean.drought$mean.r.drought) #left-skewed
-hist(dat.mean.drought$geomean.l.drought) #better
 
 #*******************************************************************************
-### 3C. Calculate mean lambda DURING POST-DROUGHT for each site
+### 2C. Calculate mean lambda DURING POST-DROUGHT for each site
 # Post drought = 2015-16, 2016-17, 2017-18 transitions
 #*******************************************************************************
 
@@ -100,11 +74,9 @@ dat.mean.recovery <- dat %>%
   group_by(Latitude, Site) %>% 
   filter(Year==2015|Year==2016|Year==2017) %>% 
   dplyr::summarize(mean.r.recovery = mean(r, na.rm=TRUE), 
-            geomean.l.recovery = exp(mean(log(lambda), na.rm=TRUE)),
             sd.r.recovery = sd(r, na.rm=TRUE),
             se.r.recovery = se(r, na.rm=TRUE))
 hist(dat.mean.recovery$mean.r.recovery) #better
-hist(dat.mean.recovery$geomean.l.recovery) #right-skewed
 
 # Add Latitude and other covariates back in
 covar <- read_csv("data/genomic_data/pop_meta_data.csv") %>% 
@@ -119,7 +91,7 @@ write.csv(mean.lambda,"data/demography data/siteYear.lambda_responses_2010-2019.
 
 
 #*******************************************************************************
-### 4. Compare population growth rates during different periods
+### 3. Compare population growth rates during different periods
 
 #*******************************************************************************
 
@@ -141,3 +113,38 @@ t.test(x=r_means_cull$mean.r.pre, y=r_means_cull$mean.r.drought, paired=TRUE)
 t.test(x=r_means_cull$mean.r.recovery, y=r_means_cull$mean.r.drought, paired=TRUE)
 wilcox.test(x=r_means_cull$mean.r.pre, y=r_means_cull$mean.r.drought, paired=TRUE)
 wilcox.test(x=r_means_cull$mean.r.recovery, y=r_means_cull$mean.r.drought, paired=TRUE)
+
+
+# Statistics for U-shape
+
+# raw population growth values
+
+# create long frame
+r_means_long <- r_means %>% 
+  pivot_longer(cols=mean.r.pre:mean.r.recovery, names_to="time", values_to="mean_r")
+r_means_long$time <- gsub("mean.r.", "", r_means_long$time)
+
+# make time numeric for regression
+r_means_long <- r_means_long %>% mutate(time_num=ifelse(time=="pre",1,ifelse(time=="drought",2,3)))
+
+U_mod_raw_lin <- lm(mean_r ~ time_num, data=r_means_long)
+U_mod_raw_quad <- lm(mean_r ~ poly(time_num,2), data=r_means_long)
+AIC(U_mod_raw_lin, U_mod_raw_quad)
+
+# normalized values
+r_means_norm <- r_means %>% 
+  mutate(delta.r.drought.norm = (mean.r.drought-mean.r.pre)/abs(mean.r.pre),
+         delta.r.recovery.norm = (mean.r.recovery-mean.r.pre)/abs(mean.r.pre), 
+         rel.start = mean.r.pre/mean.r.pre)
+
+r_means_norm_long <- r_means_norm %>% 
+  pivot_longer(cols=delta.r.drought.norm:rel.start, names_to="time", values_to="mean_r_norm")
+
+r_means_norm_long <- r_means_norm_long %>% 
+  mutate(time_num = ifelse(time=="delta.r.drought.norm", 2, ifelse(time=="delta.r.recovery.norm", 3, 1)))
+
+U_mod_norm_lin <- lm(mean_r_norm ~ time_num, data=r_means_norm_long)
+summary(U_mod_norm_lin)
+U_mod_norm_quad <- lm(mean_r_norm ~ poly(time_num,2), data=r_means_norm_long)
+summary(U_mod_norm_quad)
+AIC(U_mod_norm_lin, U_mod_norm_quad)

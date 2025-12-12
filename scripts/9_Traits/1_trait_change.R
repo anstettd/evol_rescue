@@ -323,24 +323,13 @@ pred_B_plot <- ggplot(filter(pred_df_B, group==0.01), aes(x=x, y=predicted)) + #
   ylab("Predicted Median S") +
   theme_classic()
 
-# Supplemental Figure Sx
+# Supplemental Figure S8
 plot_grid(pred_A_gg, pred_B_gg)
-ggsave("Graphs/Traits/gas_selection_gg.pdf", width=10, height = 5, units = "in")
+ggsave("Graphs/Traits/gasx_selection_S8.pdf", width=10, height = 5, units = "in")
 
 #Combined Single regression plot
 plot_grid(pred_A_plot, pred_B_plot)
-ggsave("Graphs/Traits/Traits_Selection.pdf")
+#ggsave("Graphs/Traits/Traits_Selection.pdf")
 
 ###################################################################################
-
-
-
-
-
-
-
-
-
-
-
 

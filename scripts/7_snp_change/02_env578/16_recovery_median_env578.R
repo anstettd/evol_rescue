@@ -2,7 +2,7 @@
 #### PROJECT: Evolutionary rescue of Mimulus cardinalis populations during extreme drought
 #### PURPOSE OF THIS SCRIPT: Test whether lambda recovery is predicted by selection slopes
 #### AUTHOR: Daniel Anstett and Amy Angert
-#### DATE LAST MODIFIED: 20250608
+#### DATE LAST MODIFIED: 20251211
 ###################################################################################
 
 # Remove objects and clear workspace
@@ -73,6 +73,6 @@ ggplot(slope_pop, aes(x=Median, y=mean.r.recovery)) +
   )+
   guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
          fill  = guide_legend(reverse = TRUE))
-ggsave("Graphs/Demography_2/01_median_slope_logr_env578.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Demography_Genomics/01_median_slope_meanr_env578_S13A.pdf",width=8, height = 6, units = "in")
 
 

@@ -120,7 +120,7 @@ b <- ggplot(demo_pop, aes(x=Tave_sm_1214, y=mean.r.drought)) +
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
 b
-ggsave("Graphs/Climate/1_drought_meanr_Tavesm_anom.pdf",width=8, height = 6, units = "in")
+#ggsave("Graphs/Climate/1_drought_meanr_Tavesm_anom.pdf",width=8, height = 6, units = "in")
 
 #Demographic decline ~ Climatic Moisture Deficit Anomaly (not shown in manuscript)
 c <- ggplot(demo_pop, aes(x=CMD_1214, y=mean.r.drought)) + 
@@ -143,4 +143,4 @@ c <- ggplot(demo_pop, aes(x=CMD_1214, y=mean.r.drought)) +
     legend.key.height = unit(1.6, "lines") #Reduce height
   )
 c
-ggsave("Graphs/Climate/1_drought_meanr_CMD_anom.pdf",width=8, height = 6, units = "in")
+#ggsave("Graphs/Climate/1_drought_meanr_CMD_anom.pdf",width=8, height = 6, units = "in")

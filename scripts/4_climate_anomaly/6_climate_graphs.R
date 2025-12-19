@@ -105,7 +105,7 @@ MAP_plot<-MAP_plot + theme(legend.position = "none",
                            axis.text.y = element_text(size=16,face="bold"),
                            axis.title.y = element_text(size=24,vjust = 1, face="bold",hjust=0.5))#+
 MAP_plot
-ggsave("Graphs/Climate/MAP_year_pop.pdf",width=6, height = 8, units = "in")
+#ggsave("Graphs/Climate/MAP_year_pop.pdf",width=6, height = 8, units = "in")
 
 
 # Plot Year vs. Winter Precipitation (FIGURE 1C)

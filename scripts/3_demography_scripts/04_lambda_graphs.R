@@ -89,7 +89,7 @@ a <- ggplot(r_long, aes(x=factor(time, level=level_order_all), y=mean_r, group=L
     fill  = guide_legend(reverse = TRUE))
 a
 
-ggsave("Graphs/Demography/rmeans_norm_decline_recovery_unfaceted.pdf",a, width=6, height = 8, units = "in")
+ggsave("Graphs/Demography/rmeans_norm_decline_recovery_unfaceted.pdf",a, width=8, height = 6.5, units = "in")
 
 #*******************************************************************************
 ### Make facetted graph
@@ -220,7 +220,7 @@ b <- ggplot(r_long_early, aes(x=factor(time, level=level_order_pre), y=mean_r, g
     guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
        fill  = guide_legend(reverse = TRUE))
 b
-ggsave("Graphs/Demography/rmeans_raw_decline_1D.pdf",a, width=6, height = 8, units = "in")
+ggsave("Graphs/Demography/rmeans_raw_decline_1D.pdf",b, width=6, height = 8, units = "in")
 
 
 # Drought to recovery period only, raw values, unfaceted (FIGURE 3B)

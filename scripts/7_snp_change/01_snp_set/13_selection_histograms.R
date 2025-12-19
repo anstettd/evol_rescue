@@ -23,22 +23,11 @@ library(tidyverse)
 
 #Import files
 env_obs_ci_unique <- read_csv("data/snp_change_2/obs_ci_env_unique.csv")
-
-
-#Import Medians
-#median_pop <- read_csv("data/snp_change_2/median_pop.csv")
-
 obs_env_unique <- read_csv("data/snp_change_2/slope_obs_all_unique.csv") %>% 
   filter(SE<5) #%>% mutate(abs_slope = abs(Slope))
 
 #Get slope median
 median_pop <- obs_env_unique %>% group_by(Site) %>% summarise(median = median(Slope, na.rm = TRUE))
-
-#Get slope mean
-mean_pop <- obs_env_unique %>% group_by(Site) %>% summarise(mean = mean(Slope, na.rm = TRUE))
-
-
-
 
 #Isolate each pop and lable
 env_p1 <- env_obs_ci_unique %>% select(S,p1,p1_low,p1_up) %>% mutate(Site=1,pop_lable="Site 1")
@@ -78,17 +67,10 @@ env_histPop <- rbind(env_p1,
                      env_p9,
                      env_p10,
                      env_p11)
-
 env_histPop_155 <- env_histPop %>% filter(S <= 1.55 & S>= -1.55) 
-env_histPop_185 <- env_histPop %>% filter(S <= 1.85 & S>= -1.85) 
-
-
 site_unique <- env_histPop %>% select(Site,pop_lable) 
 site_unique <- unique(site_unique)
-
 median_pop <- left_join(median_pop,site_unique, by="Site") %>% filter(Site!=12)
-mean_pop <- left_join(mean_pop,site_unique, by="Site") %>% filter(Site!=12)
-
 
 ###################################################################################
 ## Slope Histogram with Median
@@ -104,37 +86,19 @@ histPop <- ggplot(env_histPop_155 ,aes(x=S,y=obs,ymin=low,ymax=high))+
   theme_ci() + facet_wrap(.~Site) +
   geom_vline(data = median_pop, aes(xintercept = median), size=0.9, linetype="dashed",color="red")
 histPop 
-ggsave("Graphs/snp_change_2/01_selection_1.55_median.pdf", histPop, width=12, height = 8, units = "in")
-
-# -1.85 to 1.85 Has all points.
-histPop <- ggplot(env_histPop_185 ,aes(x=S,y=obs,ymin=low,ymax=high))+
-  geom_bar(colour = "black", stat = "identity", width = 0.1, fill = "pink")+ # was lightblue1
-  #geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.06) +
-  geom_vline(xintercept=0) +
-  labs(x = "Reponse to Selection", y = "Number of SNPs") +
-  #scale_x_continuous(limits=c(-1.85,1.85))+ 
-  theme_ci() + facet_wrap(.~Site) +
-  geom_vline(data = median_pop, aes(xintercept = median), size=0.9, linetype="dashed",color="red")
-histPop 
-#ggsave("Graphs/snp_change_2/01_selection_1.85_median.pdf", histPop, width=12, height = 8, units = "in")
-
+ggsave("Graphs/snp_change_2/01_selection_1.55_median_S7.pdf", histPop, width=12, height = 8, units = "in")
 
 ###################################################################################
 ## Individual Graphs Median
 ###################################################################################
 
 env_histPop_1 <- env_histPop_155 %>% filter(Site==3 | Site==11)
-env_histPop_2 <- env_histPop_155 %>% filter(Site==2 | Site==3 | Site==11)
 env_histPop_3 <- env_histPop_155 %>% filter(Site==3)
 
 env_histPop_1$pop_lable <- as.factor(env_histPop_1$pop_lable) 
 env_histPop_1$pop_lable <- factor(env_histPop_1$pop_lable,levels = c("Site 3", "Site 11"))
 
-env_histPop_2$pop_lable <- as.factor(env_histPop_2$pop_lable) 
-env_histPop_2$pop_lable <- factor(env_histPop_2$pop_lable,levels = c("Site 2", "Site 3", "Site 11"))
-
 median_pop_filter_1<-median_pop %>% filter(Site==3 | Site==11)
-median_pop_filter_2<-median_pop %>% filter(Site==2 | Site==3 | Site==11)
 median_pop_filter_3<-median_pop %>% filter(Site==3 )
 
 #Site 3
@@ -150,11 +114,11 @@ histPop1 <- ggplot(env_histPop_3 ,aes(x=S,y=obs,ymin=low,ymax=high))+
 
 histPop1
 #Export 
-ggsave("Graphs/snp_change_2/02_s_pop_3.pdf",width=4, height = 3.5, units = "in")
+ggsave("Graphs/snp_change_2/02_s_pop_Fig1F.pdf",width=4, height = 3.5, units = "in")
 
 
 
-#Sites 3, 11
+#Sites 3, 11 (Presentation Version)
 histPop1 <- ggplot(env_histPop_1 ,aes(x=S,y=obs,ymin=low,ymax=high))+
   geom_bar(colour = "black", stat = "identity", width = 0.1, fill = "pink")+
   #geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.06) +
@@ -166,7 +130,7 @@ histPop1 <- ggplot(env_histPop_1 ,aes(x=S,y=obs,ymin=low,ymax=high))+
 
 histPop1
 #Export 
-ggsave("Graphs/snp_change_2/02_s_pop_3_11.pdf",width=10, height = 4, units = "in")
+ggsave("Graphs/snp_change_2/s_pop_3_11.pdf",width=10, height = 4, units = "in")
 
 
 

@@ -1,6 +1,7 @@
 ##################################################################################
 #### PROJECT: Evolutionary rescue of Mimulus cardinalis populations during extreme drought
 #### PURPOSE OF THIS SCRIPT: Test whether lambda is predicted by genetic diversity (pi) 
+#### for pi calalcualted from select SNP set with only three enviornmental variables
 #### AUTHOR: Daniel Anstett and Amy Angert
 #### DATE LAST MODIFIED: 20251211
 ###################################################################################

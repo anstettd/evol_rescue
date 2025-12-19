@@ -77,6 +77,6 @@ ggplot(pi_pop_graph, aes(x=pi_env578, y=mean.r.recovery)) +
     legend.key.height = unit(1.6, "lines"))+ # Reduce height
   guides(color = guide_legend(reverse = TRUE, override.aes = list(linetype = 0)),
          fill  = guide_legend(reverse = TRUE))
-ggsave("Graphs/Demography_Genomics/05_pi_meanr_env578_S13B.pdf",width=8, height = 6, units = "in")
+ggsave("Graphs/Demography_Genomics/02_pi_meanr_env578_S13B.pdf",width=8, height = 6, units = "in")
 
 

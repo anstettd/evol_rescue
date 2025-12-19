@@ -89,38 +89,7 @@ histPop <- ggplot(env_histPop_155 ,aes(x=S,y=obs,ymin=low,ymax=high))+
   theme_ci() + facet_wrap(.~Site) +
   geom_vline(data = median_pop, aes(xintercept = median), size=0.9, linetype="dashed",color="red")
 histPop 
-ggsave("Graphs/snp_change_2/01_selection_1.55_median_578.pdf", histPop, width=12, height = 8, units = "in")
-
-
-
-
-# -2.5 to 2.5
-histPop <- ggplot(env_histPop ,aes(x=S,y=obs,ymin=low,ymax=high))+
-  geom_bar(colour = "black", stat = "identity", width = 0.1, fill = "pink")+ # was lightblue1
-  #geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.06) +
-  geom_vline(xintercept=0) +
-  labs(x = "Response to Selection", y = "Number of SNPs") +
-  #scale_y_continuous(limits=c(0,40))+ 
-  theme_ci() + facet_wrap(.~Site) +
-  geom_vline(data = median_pop, aes(xintercept = median), size=0.9, linetype="dashed",color="red")
-histPop 
-#ggsave("Graphs/snp_change_2/01_selection_2.5_median_578.pdf", histPop, width=12, height = 8, units = "in")
-
-
-# -1.25 to 1.25
-histPop <- ggplot(env_histPop_25 ,aes(x=S,y=obs,ymin=low,ymax=high))+
-  geom_bar(colour = "black", stat = "identity", width = 0.1, fill = "pink")+
-  #geom_errorbar(colour = "firebrick2", stat = "identity", width = 0.06) +
-  geom_vline(xintercept=0) +
-  labs(x = "Response to Selection", y = "Number of SNPs") +
-  #scale_y_continuous(limits=c(0,125),breaks=seq(0,125,by=25))+ 
-  theme_ci() + facet_wrap(.~Site)+
-  geom_vline(data = median_pop, aes(xintercept = median), size=1.2, linetype="dashed",color="red")
-
-histPop
-ggsave("Graphs/snp_change_2/02_selection_1.25_median_578.pdf", histPop, width=12, height = 8, units = "in")
-
-
+ggsave("Graphs/snp_change_2/01_selection_1.55_median_578_S11.pdf", histPop, width=12, height = 8, units = "in")
 
 
 

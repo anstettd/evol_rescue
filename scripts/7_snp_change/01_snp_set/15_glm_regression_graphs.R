@@ -166,108 +166,12 @@ freq_table_Final$Site <- factor(freq_table_Final$Site, levels = c(1,2,3,4,5,6,7,
 ggplot(data=freq_table_Final ,aes(Year,Binomial_A,group=SNP_ID)) + 
   geom_line(stat="smooth",method = "glm", method.args = list(family = "binomial"), se = F, alpha=.14,cex=0.4,color="red") + 
   labs(y="SNP Frequency",x="Year") +  facet_wrap(.~Site) + theme_spaghetti()
-ggsave("Graphs/snp_change_2/05_spaghetii_obs.pdf",width=8, height = 7, units = "in")
+ggsave("Graphs/snp_change_2/05_spaghetii_obs_S6.pdf",width=8, height = 7, units = "in")
 
-
-
-#scale_y_continuous(name="Mean Lambda after Drought", limits=c(-0.3,2.5), breaks=seq(0,2.5,0.5))+
-
+#Site 3
 freq_env_3 <- freq_table_Final %>% filter(Site==3)
 ggplot(data=freq_env_3 ,aes(Year,Binomial_A,group=SNP_ID)) + 
   geom_line(stat="smooth",method = "glm", method.args = list(family = "binomial"), se = F, alpha=.19,cex=0.4,color="red") + 
   labs(y="SNP Frequency",x="Year") + theme_spaghetti()
-ggsave("Graphs/snp_change_2/06_spaghetii_obs.pdf",width=4, height = 4, units = "in")
+ggsave("Graphs/snp_change_2/06_spaghetii_obs_2E.pdf",width=4, height = 4, units = "in")
 
-
-freq_env_ver2 <- freq_table_Final %>% filter(Site==3 | Site==11)
-ggplot(data=freq_env_ver2 ,aes(Year,Binomial_A,group=SNP_ID)) + 
-  geom_line(stat="smooth",method = "glm", method.args = list(family = "binomial"), se = F, alpha=.19,cex=0.4,color="red") + 
-  labs(y="SNP Frequency",x="Year") +
-  scale_x_discrete(breaks=seq(2010,2016,2))+
-  facet_wrap(.~Site) + theme_spaghetti() +  
-  theme(strip.text.x = element_text(size=0),axis.title = element_text(size =18, face = "bold"),
-        axis.title.x = element_blank(), axis.text.x = element_text(size = 18, face = "bold"),
-        axis.text.y = element_text(size = 20, face = "bold"))
-ggsave("graphs/snp_change_2/06_3_11spaghetii_obs.pdf",width=8, height = 5, units = "in")
-
-
-
-
-############################################################################################################
-
-
-
-
-
-
-
-
-#All Sites
-ggplot(data=freq_table_Final ,aes(Year,Binomial_A,group=SNP_ID)) + 
-  geom_line(stat="smooth",method = "glm", method.args = list(family = "binomial"), se = F, alpha=.09,cex=0.4,color="red") + 
-  labs(y="SNP Frequency",x="Year") +  facet_wrap(.~Site) + theme_spaghetti()
-ggsave("graphs/snp_change_/spaghetii_obs.pdf",width=8, height = 7, units = "in")
-
-
-
-#scale_y_continuous(name="Mean Lambda after Drought", limits=c(-0.3,2.5), breaks=seq(0,2.5,0.5))+
-
-
-#Combination sites
-freq_env_ver1 <- freq_table_Final %>% filter(Site==2 | Site==3 | Site==11)
-ggplot(data=freq_env_ver1 ,aes(Year,Binomial_A,group=SNP_ID)) + 
-  geom_line(stat="smooth",method = "glm", method.args = list(family = "binomial"), se = F, alpha=.09,cex=0.4,color="red") + 
-  labs(y="SNP Frequency",x="Year") +
-  scale_x_discrete(breaks=seq(2010,2016,2))+
-  facet_wrap(.~Site) + theme_spaghetti() +  
-  theme(strip.text.x = element_text(size=0),axis.title = element_text(size =18, face = "bold"),
-        axis.title.x = element_blank(), axis.text.x = element_text(size = 18, face = "bold"),
-        axis.text.y = element_text(size = 20, face = "bold"))
-ggsave("graphs/snp_change/glm_reg_red/2_3_11spaghetii_obs.pdf",width=14, height = 5, units = "in")
-
-freq_env_ver2 <- freq_table_Final %>% filter(Site==1 | Site==3 | Site==6 | Site==11)
-ggplot(data=freq_env_ver2 ,aes(Year,Binomial_A,group=SNP_ID)) + 
-  geom_line(stat="smooth",method = "glm", method.args = list(family = "binomial"), se = F, alpha=.09,cex=0.4,color="red") + 
-  labs(y="SNP Frequency",x="Year") +  facet_wrap(.~Site, ncol = 4) + theme_spaghetti()
-#ggsave("graphs/snp_change/glm_reg_red/1_3_6_11spaghetii_obs.pdf",width=11, height = 4, units = "in")
-
-freq_env_ver2 <- freq_table_Final %>% filter(Site==3 | Site==11)
-ggplot(data=freq_env_ver1 ,aes(Year,Binomial_A,group=SNP_ID)) + 
-  geom_line(stat="smooth",method = "glm", method.args = list(family = "binomial"), se = F, alpha=.09,cex=0.4,color="red") + 
-  labs(y="SNP Frequency",x="Year") +
-  scale_x_discrete(breaks=seq(2010,2016,2))+
-  facet_wrap(.~Site) + theme_spaghetti() +  
-  theme(strip.text.x = element_text(size=0),axis.title = element_text(size =18, face = "bold"),
-        axis.title.x = element_blank(), axis.text.x = element_text(size = 18, face = "bold"),
-        axis.text.y = element_text(size = 20, face = "bold"))
-ggsave("graphs/snp_change/glm_reg_red/3_11spaghetii_obs.pdf",width=8, height = 5, units = "in")
-
-
-
-#Selected Sites
-freq_env_1 <- freq_table_Final %>% filter(Site==1)
-ggplot(data=freq_env_1 ,aes(Year,Binomial_A,group=SNP_ID)) + 
-  geom_line(stat="smooth",method = "glm", method.args = list(family = "binomial"), se = F, alpha=.09,cex=0.4,color="red") + 
-  labs(y="SNP Frequency",x="Year") + theme_spaghetti()
-ggsave("graphs/snp_change/glm_reg_red/01_spaghetii_obs.pdf",width=4, height = 4, units = "in")
-
-
-freq_env_3 <- freq_table_Final %>% filter(Site==3)
-ggplot(data=freq_env_3 ,aes(Year,Binomial_A,group=SNP_ID)) + 
-  geom_line(stat="smooth",method = "glm", method.args = list(family = "binomial"), se = F, alpha=.09,cex=0.4,color="red") + 
-  labs(y="SNP Frequency",x="Year") + theme_spaghetti()
-ggsave("graphs/snp_change/glm_reg_red/03_spaghetii_obs.pdf",width=4, height = 4, units = "in")
-
-
-freq_env_6 <- freq_table_Final %>% filter(Site==6)
-ggplot(data=freq_env_6 ,aes(Year,Binomial_A,group=SNP_ID)) + 
-  geom_line(stat="smooth",method = "glm", method.args = list(family = "binomial"), se = F, alpha=.09,cex=0.4,color="red") + 
-  labs(y="SNP Frequency",x="Year") + theme_spaghetti()
-ggsave("graphs/snp_change/glm_reg_red/06_spaghetii_obs.pdf",width=4, height = 4, units = "in")
-
-
-freq_env_11 <- freq_table_Final %>% filter(Site==11)
-ggplot(data=freq_env_11 ,aes(Year,Binomial_A,group=SNP_ID)) + 
-  geom_line(stat="smooth",method = "glm", method.args = list(family = "binomial"), se = F, alpha=.09,cex=0.4,color="red") + 
-  labs(y="SNP Frequency",x="Year") + theme_spaghetti()
-ggsave("graphs/snp_change/glm_reg_red/11_spaghetii_obs.pdf",width=4, height = 4, units = "in")

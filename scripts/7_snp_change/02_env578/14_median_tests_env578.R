@@ -1,5 +1,5 @@
 ##################################################################################
-## Statistical tests for median slope
+## Statistical tests for median SNP slopes from 3 climate variables. Sensitivity analysis.
 ## Test climate-associated median slope difference from 0
 ## Test against permuted random slope median
 ## Done for all 12 populations
@@ -71,10 +71,6 @@ for (i in 1:11){
 
 colnames(wilcox.out) <- c("Site","Wilcoxon_Median","Wilcoxon_Mean","Wilcoxon_p_value")
 
-
-#write_csv(wilcox.out, "Graphs/snp_change_2/wilcox_S_env578.csv")
-
-
 ###################################################################################
 #Test climate-associated median slope against permuted slope median
 
@@ -101,21 +97,14 @@ emp_out[i,7] <- 1 - emp_out[i,6]
 colnames(emp_out) <- c("Site","Median","Median_Percentile","Median_p_value",
                        "Mean","Mean_Percentile","Mean_p_value")
 
-#write_csv(emp_out, "Graphs/snp_change_2/mean_median_S_env578.csv")
-#write_csv(emp_out, "data/snp_change_2/mean_median_S_env578.csv")
-
 tableS4_578<-left_join(emp_out,wilcox.out, by="Site") %>% select(Site,Median,Wilcoxon_p_value,Median_Percentile,Median_p_value)
 write_csv(tableS4_578, "Graphs/snp_change_2/tableS4_578.csv")
 
 ###################################################################################
-#Make Median and Mean histograms
+#Make Median S histograms
 
 median_rand$Site <- as.factor(median_rand$Site)
 median_rand$Site <- factor(median_rand$Site, levels = c(1,2,3,4,5,6,7,8,9,10,11))
-
-mean_rand$Site <- as.factor(mean_rand$Site)
-mean_rand$Site <- factor(mean_rand$Site, levels = c(1,2,3,4,5,6,7,8,9,10,11))
-
 
 #Median 
 histPop <- ggplot(median_rand,aes(x=median))+
@@ -126,20 +115,8 @@ histPop <- ggplot(median_rand,aes(x=median))+
 geom_vline(data = median_obs, aes(xintercept = median), size=0.5, linetype="dashed",color="red")
 histPop 
 
-ggsave("Graphs/snp_change_2/03_rand_median_578.pdf",width=12, height = 8, units = "in")
+ggsave("Graphs/snp_change_2/03_rand_median_578_S12.pdf",width=12, height = 8, units = "in")
 
-
-
-#Mean
-histPop_mean <- ggplot(mean_rand,aes(x=mean))+
-  geom_histogram(color="black",fill = "grey70")+
-  labs(x = "Response to Selection", y = "Number of Permutations") +
-  geom_vline(xintercept=0) +
-  theme_ci() + facet_wrap(.~Site) +
-  geom_vline(data = mean_obs, aes(xintercept = mean), size=0.5, linetype="dashed",color="red")
-histPop_mean
-
-#ggsave("Graphs/snp_change_2/04_rand_mean_578.pdf",width=12, height = 8, units = "in")
 
 
 

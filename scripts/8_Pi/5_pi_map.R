@@ -107,11 +107,11 @@ pi_climate_map = ggplot(data=world,fill="lightgrey",col="black",size=0.3) +
 pi_climate_map
 
 # save pi map
-save_plot(filename = "Graphs/Maps/pi_climate_snps_map.png",
+save_plot(filename = "Graphs/Maps/pi_climate_snps_map_S5A.png",
           plot = pi_climate_map,
           bg = "transparent", 
           base_width = 4, base_height = 8)
-save_plot(filename = "Graphs/Maps/pi_climate_snps_map.pdf",
+save_plot(filename = "Graphs/Maps/pi_climate_snps_mapS5A.pdf",
           plot = pi_climate_map,
           bg = "transparent", 
           base_width = 4, base_height = 8)
@@ -134,11 +134,11 @@ pi_global_map = ggplot(data=world,fill="lightgrey",col="black",size=0.3) +
 pi_global_map
 
 # save pi map
-save_plot(filename = "Graphs/Maps/pi_all_snps_map.png",
+save_plot(filename = "Graphs/Maps/pi_all_snps_map_S5B.png",
           plot = pi_global_map,
           bg = "transparent", 
           base_width = 4, base_height = 8)
-save_plot(filename = "Graphs/Maps/pi_all_snps_map.pdf",
+save_plot(filename = "Graphs/Maps/pi_all_snps_map_S5B.pdf",
           plot = pi_global_map,
           bg = "transparent", 
           base_width = 4, base_height = 8)

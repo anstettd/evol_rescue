@@ -71,18 +71,10 @@ for (i in 1:11){
 
 colnames(wilcox.out) <- c("Site","Wilcoxon_Median","Wilcoxon_Mean","Wilcoxon_p_value")
 
-
-#write_csv(wilcox.out, "Graphs/snp_change_2/wilcox_S_all.csv")
-
-
-
-
 ###################################################################################
 #Test climate-associated median slope against permuted slope median
 
 emp_out<-as.data.frame(median_obs %>% select(Site,median))
-
-
 
 for(i in 1:11){
 median_rand_1 <- as.data.frame(median_rand %>% filter(Site==i))
@@ -97,29 +89,20 @@ emp_out[i,5] <- mean_obs[i,2]
 emp_out[i,6] <- ecdf(mean_rand_vec)(pull(mean_obs[i,2]))
 emp_out[i,7] <- 1 - emp_out[i,6]
 #emp_out[i,3] <- sum(median_rand_vec >= pull(median_obs[i,2])) / 1000
-
 }
 
 colnames(emp_out) <- c("Site","Median","Median_Percentile","Median_p_value",
                        "Mean","Mean_Percentile","Mean_p_value") 
 
-#write_csv(emp_out, "Graphs/snp_change_2/mean_median_S_all.csv")
-#write_csv(emp_out, "data/snp_change_2/mean_median_S_all.csv")
-
-tableS4_578<-left_join(emp_out,wilcox.out, by="Site") %>% select(Site,Median,Wilcoxon_p_value,Median_Percentile,Median_p_value)
-write_csv(tableS4_578, "Graphs/snp_change_2/tableS4.csv")
+tableS48<-left_join(emp_out,wilcox.out, by="Site") %>% select(Site,Median,Wilcoxon_p_value,Median_Percentile,Median_p_value)
+write_csv(tableS4, "Graphs/snp_change_2/tableS4.csv")
 
 ###################################################################################
-#Make Median and Mean histograms
+#Make Median S histograms
 
 median_rand$Site <- as.factor(median_rand$Site)
 median_rand$Site <- factor(median_rand$Site, levels = c(1,2,3,4,5,6,7,8,9,10,11))
 
-mean_rand$Site <- as.factor(mean_rand$Site)
-mean_rand$Site <- factor(mean_rand$Site, levels = c(1,2,3,4,5,6,7,8,9,10,11))
-
-
-#Median 
 histPop <- ggplot(median_rand,aes(x=median))+
   geom_histogram(color="black",fill = "grey70")+
   labs(x = "Response to Selection", y = "Number of Permutations") +
@@ -128,13 +111,10 @@ histPop <- ggplot(median_rand,aes(x=median))+
 geom_vline(data = median_obs, aes(xintercept = median), size=0.5, linetype="dashed",color="red")
 histPop 
 
-ggsave("Graphs/snp_change_2/03_rand_median.pdf",width=12, height = 8, units = "in")
-
-
-
+ggsave("Graphs/snp_change_2/03_rand_median_S9.pdf",width=12, height = 8, units = "in")
 
 ###################################################################################
-#Site specific histograms Median
+#Site specific histograms for Median S
 ###################################################################################
 
 
@@ -152,25 +132,6 @@ histPops <- ggplot(median_rand_pops,aes(x=median))+
   theme(strip.text.x = element_text(size=0))
 histPops
 
-ggsave("Graphs/snp_change_2/03_mean_pop_3.pdf",width=4, height = 3.5, units = "in")
-
-
-#Site 3 and 11
-median_rand_pops <- median_rand %>% filter(Site == 3 | Site == 11)
-median_obs_pops <- median_obs %>% filter(Site == 3 | Site == 11)
-
-median_rand_pops$Site <- droplevels(median_rand_pops$Site) %>% na.omit()
-
-histPops <- ggplot(median_rand_pops,aes(x=median))+
-  geom_histogram(color="black",fill = "grey70")+
-  labs(x = "Response to Selection", y = "Number of Permutations") +
-  geom_vline(xintercept=0) +
-  theme_ci() + facet_wrap(.~Site) +
-  geom_vline(data = median_obs_pops, aes(xintercept = median), size=1, linetype="dashed",color="red")+
-  scale_x_continuous(breaks=c(-0.05,0,0.05))+
-  theme(strip.text.x = element_text(size=0))
-histPops
-
-ggsave("Graphs/snp_change_2/03_median_pop_3_11.pdf",width=9, height = 3.5, units = "in")
+ggsave("Graphs/snp_change_2/03_mean_pop_2G.pdf",width=4, height = 3.5, units = "in")
 
 

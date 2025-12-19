@@ -23,22 +23,11 @@ library(tidyverse)
 
 #Import files
 env_obs_ci_unique <- read_csv("data/snp_change_2/obs_ci_env_unique_578.csv")
-
-
-#Import Medians
-#median_pop <- read_csv("data/snp_change_2/median_pop.csv")
-
 obs_env_unique <- read_csv("data/snp_change_2/slope_obs_all_unique_env578.csv") %>% 
   filter(SE<5) %>% mutate(abs_slope = abs(Slope))
 
 #Get slope median
 median_pop <- obs_env_unique %>% group_by(Site) %>% summarise(median = median(Slope, na.rm = TRUE))
-
-#Get slope mean
-mean_pop <- obs_env_unique %>% group_by(Site) %>% summarise(mean = mean(Slope, na.rm = TRUE))
-
-
-
 
 #Isolate each pop and lable
 env_p1 <- env_obs_ci_unique %>% select(S,p1,p1_low,p1_up) %>% mutate(Site=1,pop_lable="Site 1")
@@ -81,17 +70,10 @@ env_histPop <- rbind(env_p1,
                      env_p9,
                      env_p10,
                      env_p11)
-
-env_histPop_25 <- env_histPop %>% filter(S <= 1.25 & S>= -1.25) 
 env_histPop_155 <- env_histPop %>% filter(S <= 1.55 & S>= -1.55) 
-
 site_unique <- env_histPop %>% select(Site,pop_lable) 
 site_unique <- unique(site_unique)
-
 median_pop <- left_join(median_pop,site_unique, by="Site") %>% filter(Site!=12)
-mean_pop <- left_join(mean_pop,site_unique, by="Site") %>% filter(Site!=12)
-
-
 
 ###################################################################################
 ## Slope Histogram with Median

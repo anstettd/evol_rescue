@@ -30,10 +30,6 @@ pi_all_pop <-left_join(all_pop,pi_df,by=c("Paper_ID"="Site"))
 ###################################################################################
 
 #stats
-lm1 <- lm(pi_snp_set~Lat,data=pi_all_pop)
-summary(lm1)
-Anova(lm1,type="III")
-
 lm2 <- lm(pi_snp_set~poly(Lat,2),data=pi_all_pop)
 summary(lm2)
 Anova(lm2,type="III")
@@ -41,10 +37,6 @@ Anova(lm2,type="III")
 lm3 <- lm(pi_all_snps~Lat,data=pi_all_pop)
 summary(lm3)
 Anova(lm3,type="III")
-
-lm4 <- lm(pi_snp_set~pi_all_snps,data=pi_all_pop)
-summary(lm4)
-Anova(lm4,type="III")
 
 
 ###########################################################################################################
@@ -100,25 +92,5 @@ ggplot(pi_all_pop, aes(x=Lat, y=pi_all_snps)) +
   )
 ggsave("Graphs/Pi_latitude/2_lat_pi_global_Fig_S5D.pdf",width=11, height = 5.5, units = "in")
 
-
-#Adaptive vs neutral Pi (not shown in manscript)
-ggplot(pi_all_pop, aes(x = pi_all_snps, y = pi_snp_set)) + 
-  geom_point(aes(shape=Type), size=4) +
-  stat_smooth(method = lm, color = "black", aes(group=1)) +
-  scale_y_continuous(name="Pi (Climate Associated)", breaks=c(0, 0.1, 0.2, 0.3, 0.4)) +
-  scale_x_continuous(name="Pi (Genome-Wide)", breaks=c(0, 0.1, 0.2, 0.3)) +
-  scale_shape_manual(values = c(1,17,18,16))+
-  #scale_fill_manual(values=color.list) +
-  theme_classic() + theme(
-    axis.text.x = element_text(size=20, face="bold"),
-    axis.text.y = element_text(size=20,face="bold"),
-    axis.title.x = element_text(color="black", size=24, vjust = 0.5, face="bold"),
-    axis.title.y = element_text(color="black", size=24,vjust = 1.7, face="bold",hjust=0.5),
-    legend.title = element_blank(),
-    legend.text = element_text(size = 14),  # Increase the size of the legend text
-    legend.key.size = unit(2, "lines"),  # Increase the size of the legend dots
-    legend.key.height = unit(1.6, "lines") #Reduce height
-  )
-ggsave("Graphs/Pi_latitude/3_pi_vs_pi.pdf",width=11, height = 5.5, units = "in")
 
 

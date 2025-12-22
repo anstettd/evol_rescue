@@ -47,15 +47,19 @@ for (i in 2:9){
   rlm.f <- f.robftest(rlm.1)
   #summary(lm.1)
   #summary(rlm.1)
-  recovery_clim_coeff[i-1,2] <- summary(lm.1)$coefficients[2,1] #OLS slope
-  recovery_clim_coeff[i-1,3] <- summary(lm.1)$coefficients[2,4] #OLS P-value
-  recovery_clim_coeff[i-1,4] <- summary(lm.1)$adj.r.squared #OLS R2
-  recovery_clim_coeff[i-1,5] <- rlm.1$coefficients[[2]] #robust slope
-  recovery_clim_coeff[i-1,6] <- rlm.f$p.value #robust P-value
+  recovery_clim_coeff[i-1,2] <- summary(lm.1)$coefficients[2,3] #Slope
+  recovery_clim_coeff[i-1,3] <- summary(lm.1)$coefficients[2,1] #Slope
+  recovery_clim_coeff[i-1,4] <- summary(lm.1)$coefficients[2,4] #P-value
+  recovery_clim_coeff[i-1,5] <- summary(lm.1)$adj.r.squared #R2
+  recovery_clim_coeff[i-1,6] <- rlm.f$statistic[1]
+  recovery_clim_coeff[i-1,7] <- rlm.1$coefficients[[2]] #robust slope
+  recovery_clim_coeff[i-1,8] <- rlm.f$p.value #robust P-value
 }
-names(recovery_clim_coeff) <- c("Var", "OLS_Slope", "OLS_P", "OLS_AdjR2", "RR_Slope", "RR_P")
+names(recovery_clim_coeff) <- c("Var", "t","OLS_Slope", "OLS_P", "OLS_AdjR2", "F", "RR_Slope", "RR_P")
 
 write_csv(recovery_clim_coeff,"data/climate_data/recovery_clim_coeff_alldemo.csv") 
+
+
 
 
 ###################################################################################

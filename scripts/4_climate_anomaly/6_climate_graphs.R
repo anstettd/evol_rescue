@@ -106,6 +106,13 @@ PPTwtseasonal_plot<-PPTwtseasonal_plot + theme(legend.position = "none",
 PPTwtseasonal_plot
 ggsave("Graphs/Climate/PPTwt_year_plot_1C.pdf",width=6, height = 8, units = "in")
 
+#*******************************************************************************
+
+# Set Paper_ID factor levels in anom dataframe (same order as wna2_year)
+anom$Paper_ID <- as.factor(anom$Paper_ID)
+anom$Paper_ID <- factor(anom$Paper_ID, levels = c("55","57","11","9","8","7","6","29","28","27",
+                                                  "5","4","3","58","2","17","1","15","14"))
+
 # Plot Year vs. Winter Precipitation Anomaly (FIGURE S1)
 color_vector <- setNames(anom$Lat.Color, anom$Paper_ID)
 PPTwtanom_plot<-ggplot() + 
@@ -117,13 +124,13 @@ PPTwtanom_plot<-ggplot() +
   scale_x_continuous(breaks=c(2010,2011,2012,2013,2014,2015,2016,2017,2018))+
   scale_color_manual(values=color_vector)
 
-PPTwtanom_plot<-PPTwtanom_plot + theme(legend.position = "none",
+PPTwtanom_plot<-PPTwtanom_plot + theme(
                            axis.title.x=element_text(size=16,vjust = 0, face="bold",hjust=0.5),
                            axis.text.x = element_text(size=14, face="bold", angle=0,hjust=0.5),
                            axis.text.y = element_text(size=14,face="bold"),
                            axis.title.y = element_text(size=16,vjust = 1, face="bold",hjust=0.5))#+
 PPTwtanom_plot
-ggsave("Graphs/Climate/PPTwtanom_year_plot_S1.pdf",width=6, height = 8, units = "in")
+ggsave("Graphs/Climate/PPTwtanom_year_plot_S1.pdf",width=8, height = 8, units = "in")
 
 
 

@@ -124,7 +124,7 @@ PPTwtanom_plot<-ggplot() +
   scale_x_continuous(breaks=c(2010,2011,2012,2013,2014,2015,2016,2017,2018))+
   scale_color_manual(values=color_vector)
 
-PPTwtanom_plot<-PPTwtanom_plot + theme(
+PPTwtanom_plot<-PPTwtanom_plot + theme(legend.title = element_blank(),
                            axis.title.x=element_text(size=16,vjust = 0, face="bold",hjust=0.5),
                            axis.text.x = element_text(size=14, face="bold", angle=0,hjust=0.5),
                            axis.text.y = element_text(size=14,face="bold"),

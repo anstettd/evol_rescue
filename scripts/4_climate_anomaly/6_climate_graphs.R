@@ -86,28 +86,6 @@ wna2_year$Paper_ID<-as.factor(wna2_year$Paper_ID)
 #wna2_year$Paper_ID<-factor(wna2_year$Paper_ID,levels=wna2_year$Paper_ID)
 
 
-
-# Plot Year vs. MAP (not used in manuscript)
-color_vector <- setNames(wna2_year$Lat.Color, wna2_year$Paper_ID)
-MAP_plot<-ggplot() + 
-  geom_line(data = wna2_year, aes(y = MAP.weath, x = Year, 
-                                                group=Latitude,col=factor(Paper_ID)), alpha=0.75,linewidth = 1.5) + 
-  xlab("Year") + 
-  ylab("Mean Annual Precipitation (mm)") +
-  theme_classic()+
-  #scale_color_manual(values = lat_cols) +
-  scale_x_continuous(breaks=c(2010,2011,2012,2013,2014,2015))+
-  scale_color_manual(values=color_vector)
-
-MAP_plot<-MAP_plot + theme(legend.position = "none",
-                           axis.title.x=element_text(size=24,vjust = 0, face="bold",hjust=0.5),
-                           axis.text.x = element_text(size=16, face="bold", angle=0,hjust=0.5),
-                           axis.text.y = element_text(size=16,face="bold"),
-                           axis.title.y = element_text(size=24,vjust = 1, face="bold",hjust=0.5))#+
-MAP_plot
-#ggsave("Graphs/Climate/MAP_year_pop.pdf",width=6, height = 8, units = "in")
-
-
 # Plot Year vs. Winter Precipitation (FIGURE 1C)
 color_vector <- setNames(seasonal$Lat.Color, seasonal$Paper_ID)
 PPTwtseasonal_plot<-ggplot() + 
@@ -128,7 +106,7 @@ PPTwtseasonal_plot<-PPTwtseasonal_plot + theme(legend.position = "none",
 PPTwtseasonal_plot
 ggsave("Graphs/Climate/PPTwt_year_plot_1C.pdf",width=6, height = 8, units = "in")
 
-# Plot Year vs. Winter Precipitation Anomaly (FIGURE S2)
+# Plot Year vs. Winter Precipitation Anomaly (FIGURE S1)
 color_vector <- setNames(anom$Lat.Color, anom$Paper_ID)
 PPTwtanom_plot<-ggplot() + 
   geom_line(data = anom, aes(y = PPT_wt.anom, x = Year,
@@ -145,7 +123,7 @@ PPTwtanom_plot<-PPTwtanom_plot + theme(legend.position = "none",
                            axis.text.y = element_text(size=14,face="bold"),
                            axis.title.y = element_text(size=16,vjust = 1, face="bold",hjust=0.5))#+
 PPTwtanom_plot
-ggsave("Graphs/Climate/PPTwtanom_year_plot_S2.pdf",width=6, height = 8, units = "in")
+ggsave("Graphs/Climate/PPTwtanom_year_plot_S1.pdf",width=6, height = 8, units = "in")
 
 
 

@@ -34,7 +34,7 @@ lm2 <- lm(pi_snp_set~poly(Lat,2),data=pi_all_pop)
 summary(lm2)
 Anova(lm2,type="III")
 
-lm3 <- lm(pi_all_snps~Lat,data=pi_all_pop)
+lm3 <- lm(pi_all_snps~poly(Lat,2),data=pi_all_pop)
 summary(lm3)
 Anova(lm3,type="III")
 

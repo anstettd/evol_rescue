@@ -119,7 +119,7 @@ PPTwtanom_plot<-ggplot() +
   geom_line(data = anom, aes(y = PPT_wt.anom, x = Year,
             group=Latitude,col=factor(Paper_ID)), alpha=0.75,linewidth = 1.5) + 
   xlab("Year") + 
-  ylab("Winter Precipitation Anomaly") +
+  ylab("Winter Precipitation Anomaly (log mm)") +
   theme_classic()+
   scale_x_continuous(breaks=c(2010,2011,2012,2013,2014,2015,2016,2017,2018))+
   scale_color_manual(values=color_vector)
